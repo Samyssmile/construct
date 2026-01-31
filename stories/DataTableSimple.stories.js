@@ -72,11 +72,11 @@ export const DataTableSimple = () => `
       <span>Showing 1-3 of 24</span>
       <nav class="af-pagination" aria-label="Data table pagination">
         <ul class="af-pagination__list">
-          <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
-          <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
-          <li><a class="af-pagination__link" href="#">2</a></li>
-          <li><a class="af-pagination__link" href="#">3</a></li>
-          <li><a class="af-pagination__link" href="#">Next</a></li>
+          <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+          <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
+          <li><button class="af-pagination__link" type="button">2</button></li>
+          <li><button class="af-pagination__link" type="button">3</button></li>
+          <li><button class="af-pagination__link" type="button">Next</button></li>
         </ul>
       </nav>
     </div>

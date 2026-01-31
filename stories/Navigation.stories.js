@@ -18,10 +18,10 @@ export const Tabs = () => `
 export const Pagination = () => `
   <nav class="af-pagination" aria-label="Pagination">
     <ul class="af-pagination__list">
-      <li><a class="af-pagination__link" href="#">1</a></li>
-      <li><a class="af-pagination__link" aria-current="page" href="#">2</a></li>
-      <li><a class="af-pagination__link" href="#">3</a></li>
-      <li><a class="af-pagination__link" href="#">4</a></li>
+      <li><button class="af-pagination__link" type="button">1</button></li>
+      <li><button class="af-pagination__link" aria-current="page" type="button">2</button></li>
+      <li><button class="af-pagination__link" type="button">3</button></li>
+      <li><button class="af-pagination__link" type="button">4</button></li>
     </ul>
   </nav>
 `;
@@ -30,11 +30,11 @@ export const Breadcrumbs = () => `
   <nav class="af-breadcrumbs" aria-label="Breadcrumb">
     <ol class="af-breadcrumbs__list">
       <li class="af-breadcrumbs__item">
-        <a class="af-breadcrumbs__link" href="#">Home</a>
+        <a class="af-breadcrumbs__link" href="/">Home</a>
         <span class="af-breadcrumbs__separator">/</span>
       </li>
       <li class="af-breadcrumbs__item">
-        <a class="af-breadcrumbs__link" href="#">Projects</a>
+        <a class="af-breadcrumbs__link" href="/projects">Projects</a>
         <span class="af-breadcrumbs__separator">/</span>
       </li>
       <li class="af-breadcrumbs__item">

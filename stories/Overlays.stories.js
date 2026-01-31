@@ -11,7 +11,10 @@ export const Modal = () => `
       </div>
       <div class="af-modal__body">
         <p>Send an invite to a new team member.</p>
-        <input class="af-input" placeholder="name@company.com" />
+        <div class="af-field">
+          <label class="af-field__label" for="invite-email">Email</label>
+          <input class="af-input" id="invite-email" type="email" placeholder="name@company.com" />
+        </div>
       </div>
       <div class="af-modal__footer">
         <button class="af-button af-button--secondary">Cancel</button>

@@ -16,14 +16,14 @@ export const DataTable = () => `
     </div>
     <div class="af-data-table__toolbar">
       <div class="af-data-table__filters">
-        <input class="af-input af-control--sm af-data-table__search" placeholder="Search projects" />
-        <select class="af-select af-control--sm">
+        <input class="af-input af-control--sm af-data-table__search" placeholder="Search projects" aria-label="Search projects" />
+        <select class="af-select af-control--sm" aria-label="Filter by status">
           <option>Status</option>
           <option>Active</option>
           <option>Paused</option>
           <option>Archived</option>
         </select>
-        <select class="af-select af-control--sm">
+        <select class="af-select af-control--sm" aria-label="Filter by owner">
           <option>Owner</option>
           <option>J. Chen</option>
           <option>L. Hart</option>
@@ -115,11 +115,11 @@ export const DataTable = () => `
         </div>
         <nav class="af-pagination" aria-label="Data table pagination">
           <ul class="af-pagination__list">
-            <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
-            <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
-            <li><a class="af-pagination__link" href="#">2</a></li>
-            <li><a class="af-pagination__link" href="#">3</a></li>
-            <li><a class="af-pagination__link" href="#">Next</a></li>
+            <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+            <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
+            <li><button class="af-pagination__link" type="button">2</button></li>
+            <li><button class="af-pagination__link" type="button">3</button></li>
+            <li><button class="af-pagination__link" type="button">Next</button></li>
           </ul>
         </nav>
       </div>
@@ -180,11 +180,11 @@ export const DataTableSimple = () => `
       <span>Showing 1-2 of 24</span>
       <nav class="af-pagination" aria-label="Data table pagination">
         <ul class="af-pagination__list">
-          <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
-          <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
-          <li><a class="af-pagination__link" href="#">2</a></li>
-          <li><a class="af-pagination__link" href="#">3</a></li>
-          <li><a class="af-pagination__link" href="#">Next</a></li>
+          <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+          <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
+          <li><button class="af-pagination__link" type="button">2</button></li>
+          <li><button class="af-pagination__link" type="button">3</button></li>
+          <li><button class="af-pagination__link" type="button">Next</button></li>
         </ul>
       </nav>
     </div>

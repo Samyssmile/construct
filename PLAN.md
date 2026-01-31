@@ -14,13 +14,32 @@ Absolute top, nr1, highes priority is. The accessibilty of the ui. We are Access
 - Erledigt: Token-Pipeline (JSON -> CSS/TS, Versionierung, Release-Workflow)
 - Erledigt: Komponenten-Set v1 (CSS + Usage-Notes in `frontend/design/components/*`)
 - Erledigt: Storybook + Doku + Do/Don'ts + A11y-Regeln (`frontend/design/.storybook`, `frontend/design/stories`, `frontend/design/docs`)
+- **Erledigt: Angular Component Library** (`accessful-design-implementation-workspace/projects/angular/`)
+  - 16 Components mit TypeScript API (Button, Input, Select, Textarea, Checkbox, Radio, Switch, Card, DataTable, Modal, Toast+Service, Tabs, Dropdown, Pagination, Breadcrumbs, Datepicker)
+  - ControlValueAccessor für alle Form-Controls
+  - ARIA & Accessibility integriert
+  - Standalone Components mit Signals
+  - Demo-App läuft auf http://localhost:4200
 
 ## Plan (kurz)
-Next step: Visuelle QA (Regression-Tests, A11y-Checks, Review-Prozess)
+Next step: React & Svelte Libraries, dann Visuelle QA
 
 1) Foundations-Stylesheet (Reset, Typo-Defaults, Layout-Raster, Utility-Basics) [done]
 2) Token-Pipeline (JSON -> CSS/TS, Versionierung, Release-Workflow) [done]
-3) Komponenten-Set v1 (Button, Input, Select, Textarea, Checkbox, Radio, Switch, Card, Table, Modal, Toast, Tooltip, Tabs, Dropdown, Pagination, Breadcrumbs, Data‑Table, Datepicker) [done]
+3) Komponenten-Set v1 (CSS + Usage-Notes) [done]
 4) Dokumentation (Storybook/Doku, Usage, Do/Don'ts, A11y-Regeln) [done]
-5) Visuelle QA (Regression-Tests, A11y-Checks, Review-Prozess)
-6) Rollout in Apps (Angular/React/Svelte) + Feedback-Iteration
+5) Framework Libraries
+   - Angular: 16 Components mit TS-API, Forms-Support, Demo-App [done]
+   - React: TBD
+   - Svelte: TBD
+6) Visuelle QA (Regression-Tests, A11y-Checks, Review-Prozess)
+7) Rollout in Apps + Feedback-Iteration
+8) Fehlende Components (aus React-Projekt-Analyse [text](../accessful-ui))
+   - Badge/StatusBadge (Status mit Icon + Color Variants)
+   - FileUpload/DragDropArea (Drag & Drop, Browse, File List, Validation)
+   - Alert/Banner (Info-Banner für Hinweise/Warnungen)
+   - LoadingSpinner/Overlay (Loading States)
+   - ConfirmationDialog (Spezialisiertes Modal)
+   - Skeleton/Placeholder (Loading Placeholders)
+9) Storybook für fehlende Components (HTML/CSS)
+10) Angular API Implementation für fehlende Components

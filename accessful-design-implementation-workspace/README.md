@@ -1,40 +1,63 @@
-# AccessfulDesignImplementationWorkspace
+# Accessful Design Implementation Workspace
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
+Dies ist ein Angular Multi-Projekt-Workspace für das Accessful Design System.
+
+## Projektstruktur
+
+- **projects/angular** - Die Accessful Angular Component Library
+- **projects/demo** - Eine Demo-Anwendung zur Demonstration der Components
+
+## Installation
+
+```bash
+npm install
+```
 
 ## Development server
 
-To start a local development server, run:
+Um die Demo-Anwendung zu starten:
 
 ```bash
-ng serve
+npm start
+# oder
+npm run start:demo
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
+Die Anwendung läuft dann auf `http://localhost:4200/` und aktualisiert sich automatisch bei Änderungen.
 
 ## Building
 
-To build the project run:
+### Beide Projekte bauen
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Nur die Angular Library bauen
+
+```bash
+npm run build:angular
+```
+
+Die Library wird nach `dist/angular/` gebaut.
+
+### Nur die Demo-App bauen
+
+```bash
+npm run build:demo
+```
+
+Die Demo-App wird nach `dist/demo/` gebaut.
+
+## Storybook
+
+Um Storybook zu starten:
+
+```bash
+npm run storybook
+```
+
+Storybook läuft dann auf `http://localhost:6006/`.
 
 ## Running unit tests
 

@@ -66,6 +66,8 @@ Example:
     <input class="af-input af-input--with-icon" id="search" type="search" />
   </div>
 </div>
+</div>
+</div>
 ```
 
 ### Select
@@ -162,6 +164,7 @@ Example:
     </div>
   </div>
 </div>
+</div>
 ```
 
 ### Toast
@@ -172,6 +175,7 @@ Example:
     <div class="af-toast__description">Your changes were saved.</div>
     <button class="af-button af-button--ghost">Undo</button>
   </div>
+</div>
 </div>
 ```
 
@@ -211,9 +215,9 @@ Example:
 ```html
 <nav class="af-pagination" aria-label="Pagination">
   <ul class="af-pagination__list">
-    <li><a class="af-pagination__link" href="#">1</a></li>
-    <li><a class="af-pagination__link" aria-current="page" href="#">2</a></li>
-    <li><a class="af-pagination__link" href="#">3</a></li>
+    <li><button class="af-pagination__link" type="button">1</button></li>
+    <li><button class="af-pagination__link" aria-current="page" type="button">2</button></li>
+    <li><button class="af-pagination__link" type="button">3</button></li>
   </ul>
 </nav>
 ```
@@ -223,7 +227,7 @@ Example:
 <nav class="af-breadcrumbs" aria-label="Breadcrumb">
   <ol class="af-breadcrumbs__list">
     <li class="af-breadcrumbs__item">
-      <a class="af-breadcrumbs__link" href="#">Home</a>
+      <a class="af-breadcrumbs__link" href="/">Home</a>
       <span class="af-breadcrumbs__separator">/</span>
     </li>
     <li class="af-breadcrumbs__item">
@@ -248,11 +252,11 @@ Example:
   </div>
   <div class="af-data-table__toolbar">
     <div class="af-data-table__filters">
-      <input class="af-input af-control--sm af-data-table__search" placeholder="Search projects" />
-      <select class="af-select af-control--sm">
+      <input class="af-input af-control--sm af-data-table__search" placeholder="Search projects" aria-label="Search projects" />
+      <select class="af-select af-control--sm" aria-label="Filter by status">
         <option>Status</option>
       </select>
-      <select class="af-select af-control--sm">
+      <select class="af-select af-control--sm" aria-label="Filter by owner">
         <option>Owner</option>
       </select>
     </div>
@@ -301,17 +305,18 @@ Example:
           <option>50</option>
         </select>
       </div>
-      <nav class="af-pagination" aria-label="Data table pagination">
-        <ul class="af-pagination__list">
-          <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
-          <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
-          <li><a class="af-pagination__link" href="#">2</a></li>
-          <li><a class="af-pagination__link" href="#">3</a></li>
-          <li><a class="af-pagination__link" href="#">Next</a></li>
-        </ul>
-      </nav>
+        <nav class="af-pagination" aria-label="Data table pagination">
+          <ul class="af-pagination__list">
+            <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+            <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
+            <li><button class="af-pagination__link" type="button">2</button></li>
+            <li><button class="af-pagination__link" type="button">3</button></li>
+            <li><button class="af-pagination__link" type="button">Next</button></li>
+          </ul>
+        </nav>
     </div>
   </div>
+</div>
 </div>
 ```
 
@@ -361,11 +366,11 @@ Example:
     <span>Showing 1-10 of 24</span>
     <nav class="af-pagination" aria-label="Data table pagination">
       <ul class="af-pagination__list">
-        <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
-        <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
-        <li><a class="af-pagination__link" href="#">2</a></li>
-        <li><a class="af-pagination__link" href="#">3</a></li>
-        <li><a class="af-pagination__link" href="#">Next</a></li>
+        <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+        <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
+        <li><button class="af-pagination__link" type="button">2</button></li>
+        <li><button class="af-pagination__link" type="button">3</button></li>
+        <li><button class="af-pagination__link" type="button">Next</button></li>
       </ul>
     </nav>
   </div>
@@ -374,15 +379,17 @@ Example:
 
 ### Datepicker
 ```html
-<div class="af-datepicker" data-state="open">
-  <input class="af-input" type="text" placeholder="Select date" />
-  <div class="af-datepicker__popover" role="dialog" aria-label="Choose date">
-    <div class="af-datepicker__header">
-      <button class="af-button af-button--ghost af-button--icon" aria-label="Previous month">Prev</button>
-      <div class="af-datepicker__title">March 2026</div>
-      <button class="af-button af-button--ghost af-button--icon" aria-label="Next month">Next</button>
-    </div>
-    <div class="af-datepicker__grid">
+<div class="af-field">
+  <label class="af-field__label" for="datepicker-docs">Date</label>
+  <div class="af-datepicker" data-state="open">
+    <input class="af-input" id="datepicker-docs" type="text" placeholder="Select date" />
+    <div class="af-datepicker__popover" role="dialog" aria-label="Choose date">
+      <div class="af-datepicker__header">
+        <button class="af-button af-button--ghost af-button--icon" aria-label="Previous month">Prev</button>
+        <div class="af-datepicker__title">March 2026</div>
+        <button class="af-button af-button--ghost af-button--icon" aria-label="Next month">Next</button>
+      </div>
+      <div class="af-datepicker__grid">
       <div class="af-datepicker__weekday">Mo</div>
       <div class="af-datepicker__weekday">Tu</div>
       <div class="af-datepicker__weekday">We</div>
@@ -434,5 +441,6 @@ Example:
       <button class="af-datepicker__day" data-outside="true">5</button>
     </div>
   </div>
+</div>
 </div>
 ```

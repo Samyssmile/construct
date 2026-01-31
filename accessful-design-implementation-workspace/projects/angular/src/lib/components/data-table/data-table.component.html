@@ -11,13 +11,19 @@
               (change)="toggleAll($event)"
               aria-label="Select all rows" />
           </th>
-          <th scope="col" *ngFor="let col of columns">
-            {{ col.header }}
+          <th scope="col" *ngFor="let col of columns" [attr.aria-sort]="getAriaSort(col)">
+            <ng-container *ngIf="col.sortable; else staticHeader">
+              <button class="af-table__sort" type="button" (click)="toggleSort(col)">
+                {{ col.header }}
+                <span class="af-table__sort-indicator" aria-hidden="true"></span>
+              </button>
+            </ng-container>
+            <ng-template #staticHeader>{{ col.header }}</ng-template>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data" (click)="onRowClick(row)">
+        <tr *ngFor="let row of sortedData" (click)="onRowClick(row)">
           <td class="af-table__cell--checkbox">
             <input
               class="af-check__input"

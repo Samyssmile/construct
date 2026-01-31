@@ -4,7 +4,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "angular": [
+      "@accessful/angular": [
         "./dist/angular"
       ]
     },
@@ -33,6 +33,9 @@
     },
     {
       "path": "./projects/angular/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/demo/tsconfig.app.json"
     }
   ]
 }

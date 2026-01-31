@@ -1,4 +1,4 @@
-@import '../tokens/tokens.css';
+@import './tokens.css';
 
 :root {
   --af-control-bg: var(--color-bg-elevated);
