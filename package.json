@@ -1,0 +1,29 @@
+{
+  "name": "@accessful/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-tokens.mjs",
+    "check": "node scripts/build-tokens.mjs --check",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build"
+  },
+  "files": [
+    "tokens/tokens.css",
+    "tokens/tokens.json",
+    "tokens/tokens.ts",
+    "tokens/README.md",
+    "docs/guidelines.md",
+    "components/components.css",
+    "components/README.md",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.0.0",
+    "@storybook/addon-essentials": "^8.0.0",
+    "@storybook/addon-interactions": "^8.0.0",
+    "@storybook/html-vite": "^8.0.0",
+    "storybook": "^8.0.0"
+  }
+}

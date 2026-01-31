@@ -1,0 +1,136 @@
+{
+  "color": {
+    "brand": {
+      "primary": "{color.ocean.700}",
+      "primaryHover": "{color.ocean.800}",
+      "primaryActive": "{color.ocean.900}",
+      "accent": "{color.teal.500}",
+      "accentHover": "{color.teal.600}",
+      "accentActive": "{color.teal.700}"
+    },
+    "text": {
+      "primary": "{color.slate.950}",
+      "secondary": "{color.slate.700}",
+      "muted": "{color.slate.500}",
+      "inverse": "{color.slate.0}"
+    },
+    "background": {
+      "canvas": "{color.slate.0}",
+      "surface": "{color.slate.50}",
+      "elevated": "{color.slate.0}",
+      "muted": "{color.slate.100}"
+    },
+    "border": {
+      "subtle": "{color.slate.200}",
+      "default": "{color.slate.300}",
+      "strong": "{color.slate.500}"
+    },
+    "state": {
+      "info": "{color.ocean.600}",
+      "success": "{color.green.500}",
+      "warning": "{color.amber.400}",
+      "danger": "{color.red.500}"
+    },
+    "stateSurface": {
+      "info": "{color.ocean.50}",
+      "success": "{color.green.50}",
+      "warning": "{color.amber.50}",
+      "danger": "{color.red.50}"
+    },
+    "stateBorder": {
+      "info": "{color.ocean.200}",
+      "success": "{color.green.200}",
+      "warning": "{color.amber.200}",
+      "danger": "{color.red.200}"
+    },
+    "overlay": {
+      "scrim": "rgba(14, 23, 32, 0.6)"
+    },
+    "focus": {
+      "ring": "{color.teal.400}"
+    }
+  },
+  "font": {
+    "family": {
+      "heading": "{font.family.brand}",
+      "body": "{font.family.text}",
+      "code": "{font.family.mono}"
+    }
+  },
+  "typography": {
+    "display": {
+      "fontFamily": "{font.family.heading}",
+      "fontSize": "{font.size.6xl}",
+      "lineHeight": "{font.lineHeight.6xl}",
+      "fontWeight": "{font.weight.bold}",
+      "letterSpacing": "{font.letterSpacing.tight}"
+    },
+    "h1": {
+      "fontFamily": "{font.family.heading}",
+      "fontSize": "{font.size.5xl}",
+      "lineHeight": "{font.lineHeight.5xl}",
+      "fontWeight": "{font.weight.bold}",
+      "letterSpacing": "{font.letterSpacing.tight}"
+    },
+    "h2": {
+      "fontFamily": "{font.family.heading}",
+      "fontSize": "{font.size.4xl}",
+      "lineHeight": "{font.lineHeight.4xl}",
+      "fontWeight": "{font.weight.semibold}",
+      "letterSpacing": "{font.letterSpacing.normal}"
+    },
+    "h3": {
+      "fontFamily": "{font.family.heading}",
+      "fontSize": "{font.size.3xl}",
+      "lineHeight": "{font.lineHeight.3xl}",
+      "fontWeight": "{font.weight.semibold}",
+      "letterSpacing": "{font.letterSpacing.normal}"
+    },
+    "h4": {
+      "fontFamily": "{font.family.heading}",
+      "fontSize": "{font.size.2xl}",
+      "lineHeight": "{font.lineHeight.2xl}",
+      "fontWeight": "{font.weight.semibold}",
+      "letterSpacing": "{font.letterSpacing.normal}"
+    },
+    "body": {
+      "fontFamily": "{font.family.body}",
+      "fontSize": "{font.size.md}",
+      "lineHeight": "{font.lineHeight.md}",
+      "fontWeight": "{font.weight.regular}",
+      "letterSpacing": "{font.letterSpacing.normal}"
+    },
+    "bodySm": {
+      "fontFamily": "{font.family.body}",
+      "fontSize": "{font.size.sm}",
+      "lineHeight": "{font.lineHeight.sm}",
+      "fontWeight": "{font.weight.regular}",
+      "letterSpacing": "{font.letterSpacing.normal}"
+    },
+    "label": {
+      "fontFamily": "{font.family.body}",
+      "fontSize": "{font.size.sm}",
+      "lineHeight": "{font.lineHeight.sm}",
+      "fontWeight": "{font.weight.semibold}",
+      "letterSpacing": "{font.letterSpacing.wide}"
+    },
+    "caption": {
+      "fontFamily": "{font.family.body}",
+      "fontSize": "{font.size.xs}",
+      "lineHeight": "{font.lineHeight.xs}",
+      "fontWeight": "{font.weight.regular}",
+      "letterSpacing": "{font.letterSpacing.normal}"
+    }
+  },
+  "radius": {
+    "control": "{radius.md}",
+    "card": "{radius.lg}",
+    "modal": "{radius.xl}",
+    "pill": "{radius.round}"
+  },
+  "shadow": {
+    "card": "{shadow.sm}",
+    "dropdown": "{shadow.md}",
+    "modal": "{shadow.lg}"
+  }
+}
