@@ -23,6 +23,14 @@ Example:
 - `aria-selected="true"` for tabs and datepicker days
 - `aria-disabled="true"` when disabled but not using native `disabled`
 
+## Keyboard + ARIA (required in wrappers)
+- Tabs: Arrow keys move focus between tabs, Home/End jumps to first/last, Enter/Space activates. Use roving tabindex (active tab `tabindex="0"`, others `tabindex="-1"`).
+- Dropdown (Action-List): Trigger uses `aria-expanded` + `aria-controls`. On open, move focus to first item, Esc closes and returns focus to trigger. Items are normal buttons/links in tab order.
+- Dropdown (Role=menu, optional): Only use if you implement arrow-key navigation, Home/End, typeahead, and roving tabindex.
+- Datepicker: Arrow keys move by day, PageUp/PageDown switches months, Home/End jumps within week, Enter/Space selects. Esc closes and returns focus to trigger.
+- Modal: Focus trap, initial focus inside dialog, Esc closes, focus returns to trigger.
+- Tooltip: Opens on hover/focus, closes on blur/Esc, `role="tooltip"` with `aria-describedby`.
+
 ## Components
 
 ### Button
@@ -123,8 +131,8 @@ Example:
   <table class="af-table af-table--striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Status</th>
+        <th scope="col">Name</th>
+        <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody>
@@ -179,8 +187,8 @@ Example:
 ```html
 <div class="af-tabs">
   <div class="af-tabs__list" role="tablist">
-    <button class="af-tabs__trigger" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">Overview</button>
-    <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">Settings</button>
+    <button class="af-tabs__trigger" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">Overview</button>
+    <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">Settings</button>
   </div>
   <div class="af-tabs__panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">...</div>
 </div>
@@ -189,12 +197,12 @@ Example:
 ### Dropdown
 ```html
 <div class="af-dropdown" data-state="open">
-  <button class="af-button af-button--secondary af-dropdown__trigger" aria-haspopup="menu">Actions</button>
-  <div class="af-dropdown__menu" role="menu">
-    <button class="af-dropdown__item" role="menuitem">Edit</button>
-    <button class="af-dropdown__item" role="menuitem">Duplicate</button>
+  <button class="af-button af-button--secondary af-dropdown__trigger" aria-expanded="true" aria-controls="actions-menu">Actions</button>
+  <div class="af-dropdown__menu" id="actions-menu">
+    <button class="af-dropdown__item" type="button">Edit</button>
+    <button class="af-dropdown__item" type="button">Duplicate</button>
     <div class="af-dropdown__separator" role="separator"></div>
-    <button class="af-dropdown__item" role="menuitem">Archive</button>
+    <button class="af-dropdown__item" type="button">Archive</button>
   </div>
 </div>
 ```
@@ -228,40 +236,136 @@ Example:
 ### Data table
 ```html
 <div class="af-data-table">
-  <div class="af-data-table__toolbar">
-    <div class="af-data-table__filters">
-      <input class="af-input af-control--sm" placeholder="Search" />
-      <select class="af-select af-control--sm">
-        <option>Status</option>
-      </select>
+  <div class="af-data-table__header">
+    <div class="af-data-table__title">
+      <h3>Projects</h3>
+      <span class="af-data-table__meta">24 total · Updated 2 days ago</span>
     </div>
     <div class="af-data-table__actions">
       <button class="af-button af-button--secondary af-button--sm">Export</button>
-      <button class="af-button af-button--sm">New</button>
+      <button class="af-button af-button--sm">New project</button>
     </div>
   </div>
-  <div class="af-table-wrap">
-    <table class="af-table">
+  <div class="af-data-table__toolbar">
+    <div class="af-data-table__filters">
+      <input class="af-input af-control--sm af-data-table__search" placeholder="Search projects" />
+      <select class="af-select af-control--sm">
+        <option>Status</option>
+      </select>
+      <select class="af-select af-control--sm">
+        <option>Owner</option>
+      </select>
+    </div>
+    <div class="af-data-table__actions">
+      <button class="af-button af-button--ghost af-button--sm">Reset</button>
+      <button class="af-button af-button--secondary af-button--sm">Filters</button>
+    </div>
+  </div>
+  <div class="af-data-table__table">
+    <table class="af-table af-table--striped af-table--compact">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Status</th>
+          <th scope="col" class="af-table__cell--checkbox">
+            <input class="af-check__input" type="checkbox" aria-label="Select all rows" />
+          </th>
+          <th scope="col">Project</th>
+          <th scope="col">Status</th>
+          <th scope="col" class="af-table__cell--actions">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Alpha</td>
+          <td class="af-table__cell--checkbox">
+            <input class="af-check__input" type="checkbox" aria-label="Select Alpha" checked />
+          </td>
+          <td>
+            <span class="af-table__title">Alpha</span>
+            <span class="af-table__meta">Enterprise rollout</span>
+          </td>
           <td>Active</td>
+          <td class="af-table__cell--actions">
+            <button class="af-button af-button--ghost af-button--sm">Open</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="af-data-table__footer">
-    <span>Showing 1-10</span>
+    <span>Showing 1-10 of 24</span>
+    <div class="af-data-table__footer-actions">
+      <div class="af-data-table__page-size">
+        <span>Rows</span>
+        <select class="af-select af-control--sm" aria-label="Rows per page">
+          <option>10</option>
+          <option>25</option>
+          <option>50</option>
+        </select>
+      </div>
+      <nav class="af-pagination" aria-label="Data table pagination">
+        <ul class="af-pagination__list">
+          <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
+          <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
+          <li><a class="af-pagination__link" href="#">2</a></li>
+          <li><a class="af-pagination__link" href="#">3</a></li>
+          <li><a class="af-pagination__link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+```
+
+### Data table (simple)
+```html
+<div class="af-data-table af-data-table--simple">
+  <div class="af-data-table__table">
+    <table class="af-table af-table--striped af-table--compact">
+      <thead>
+        <tr>
+          <th scope="col" class="af-table__cell--checkbox">
+            <input class="af-check__input" type="checkbox" aria-label="Select all rows" />
+          </th>
+          <th scope="col" aria-sort="ascending">
+            <button class="af-table__sort" type="button">
+              Project
+              <span class="af-table__sort-indicator" aria-hidden="true"></span>
+            </button>
+          </th>
+          <th scope="col" aria-sort="none">
+            <button class="af-table__sort" type="button">
+              Status
+              <span class="af-table__sort-indicator" aria-hidden="true"></span>
+            </button>
+          </th>
+          <th scope="col" aria-sort="descending">
+            <button class="af-table__sort" type="button">
+              Updated
+              <span class="af-table__sort-indicator" aria-hidden="true"></span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="af-table__cell--checkbox">
+            <input class="af-check__input" type="checkbox" aria-label="Select Alpha" checked />
+          </td>
+          <td>Alpha</td>
+          <td>Active</td>
+          <td>Jan 24, 2026</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="af-data-table__footer">
+    <span>Showing 1-10 of 24</span>
     <nav class="af-pagination" aria-label="Data table pagination">
       <ul class="af-pagination__list">
+        <li><a class="af-pagination__link" aria-disabled="true" href="#">Prev</a></li>
         <li><a class="af-pagination__link" aria-current="page" href="#">1</a></li>
         <li><a class="af-pagination__link" href="#">2</a></li>
+        <li><a class="af-pagination__link" href="#">3</a></li>
+        <li><a class="af-pagination__link" href="#">Next</a></li>
       </ul>
     </nav>
   </div>
@@ -286,9 +390,48 @@ Example:
       <div class="af-datepicker__weekday">Fr</div>
       <div class="af-datepicker__weekday">Sa</div>
       <div class="af-datepicker__weekday">Su</div>
+      <button class="af-datepicker__day" data-outside="true">23</button>
       <button class="af-datepicker__day" data-outside="true">24</button>
+      <button class="af-datepicker__day" data-outside="true">25</button>
+      <button class="af-datepicker__day" data-outside="true">26</button>
+      <button class="af-datepicker__day" data-outside="true">27</button>
+      <button class="af-datepicker__day" data-outside="true">28</button>
+      <button class="af-datepicker__day">1</button>
+      <button class="af-datepicker__day">2</button>
+      <button class="af-datepicker__day">3</button>
+      <button class="af-datepicker__day">4</button>
+      <button class="af-datepicker__day">5</button>
+      <button class="af-datepicker__day">6</button>
+      <button class="af-datepicker__day">7</button>
+      <button class="af-datepicker__day">8</button>
+      <button class="af-datepicker__day">9</button>
+      <button class="af-datepicker__day">10</button>
+      <button class="af-datepicker__day">11</button>
+      <button class="af-datepicker__day">12</button>
+      <button class="af-datepicker__day">13</button>
+      <button class="af-datepicker__day">14</button>
+      <button class="af-datepicker__day">15</button>
+      <button class="af-datepicker__day">16</button>
+      <button class="af-datepicker__day">17</button>
+      <button class="af-datepicker__day">18</button>
+      <button class="af-datepicker__day">19</button>
+      <button class="af-datepicker__day">20</button>
+      <button class="af-datepicker__day">21</button>
+      <button class="af-datepicker__day">22</button>
+      <button class="af-datepicker__day">23</button>
+      <button class="af-datepicker__day">24</button>
       <button class="af-datepicker__day" data-today="true">25</button>
       <button class="af-datepicker__day" aria-selected="true">26</button>
+      <button class="af-datepicker__day">27</button>
+      <button class="af-datepicker__day">28</button>
+      <button class="af-datepicker__day">29</button>
+      <button class="af-datepicker__day">30</button>
+      <button class="af-datepicker__day">31</button>
+      <button class="af-datepicker__day" data-outside="true">1</button>
+      <button class="af-datepicker__day" data-outside="true">2</button>
+      <button class="af-datepicker__day" data-outside="true">3</button>
+      <button class="af-datepicker__day" data-outside="true">4</button>
+      <button class="af-datepicker__day" data-outside="true">5</button>
     </div>
   </div>
 </div>

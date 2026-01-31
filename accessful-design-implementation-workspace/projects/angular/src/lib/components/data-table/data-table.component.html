@@ -1,0 +1,36 @@
+<div class="af-data-table af-data-table--simple">
+  <div class="af-data-table__table">
+    <table [class]="tableClasses">
+      <thead>
+        <tr>
+          <th scope="col" class="af-table__cell--checkbox">
+            <input
+              class="af-check__input"
+              type="checkbox"
+              [checked]="allSelected"
+              (change)="toggleAll($event)"
+              aria-label="Select all rows" />
+          </th>
+          <th scope="col" *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data" (click)="onRowClick(row)">
+          <td class="af-table__cell--checkbox">
+            <input
+              class="af-check__input"
+              type="checkbox"
+              [checked]="isSelected(row)"
+              (change)="toggleSelection(row, $event)"
+              aria-label="Select row" />
+          </td>
+          <td *ngFor="let col of columns">
+            {{ row[col.key] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

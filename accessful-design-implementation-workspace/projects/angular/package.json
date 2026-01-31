@@ -1,0 +1,15 @@
+{
+  "name": "@accessful/angular",
+  "version": "0.1.0",
+  "description": "Angular components for Accessful Design System",
+  "keywords": ["angular", "components", "design-system", "accessful"],
+  "peerDependencies": {
+    "@angular/common": "^21.1.0",
+    "@angular/core": "^21.1.0",
+    "@accessful/design-tokens": "^0.1.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

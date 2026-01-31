@@ -24,9 +24,9 @@ export const Table = () => `
     <table class="af-table af-table--striped">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Status</th>
-          <th>Owner</th>
+          <th scope="col">Name</th>
+          <th scope="col">Status</th>
+          <th scope="col">Owner</th>
         </tr>
       </thead>
       <tbody>

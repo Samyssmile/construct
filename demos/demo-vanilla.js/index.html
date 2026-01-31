@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessful DMS Showcase</title>
+    <link rel="stylesheet" href="./foundations.css" />
+    <link rel="stylesheet" href="./components/components.css" />
+    <style>
+      :root {
+        --demo-sidebar-width: 260px;
+      }
+
+      body {
+        margin: 0;
+        background: var(--color-bg-canvas);
+      }
+
+      .demo-app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: var(--demo-sidebar-width) minmax(0, 1fr);
+      }
+
+      .demo-sidebar {
+        background: var(--color-bg-elevated);
+        border-right: var(--border-thin) solid var(--color-border-subtle);
+        padding: var(--space-6);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+      }
+
+      .demo-brand {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-lg);
+      }
+
+      .demo-brand__dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--color-brand-primary);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .demo-nav {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .demo-nav__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-3) var(--space-4);
+        border-radius: var(--radius-md);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        font-weight: var(--font-weight-medium);
+      }
+
+      .demo-nav__item:hover {
+        background: var(--color-bg-muted);
+      }
+
+      .demo-nav__item--active {
+        background: var(--color-bg-muted);
+        color: var(--color-text-primary);
+      }
+
+      .demo-nav__badge {
+        font-size: var(--font-size-xs);
+        padding: var(--space-1) var(--space-2);
+        border-radius: 999px;
+        background: var(--color-bg-surface);
+        color: var(--color-text-muted);
+      }
+
+      .demo-sidebar__section {
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .demo-sidebar__title {
+        font-size: var(--font-size-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+      }
+
+      .demo-folder-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .demo-folder-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-md);
+        color: var(--color-text-secondary);
+      }
+
+      .demo-folder-list li span {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+      }
+
+      .demo-sidebar__footer {
+        margin-top: auto;
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .demo-main {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .demo-header {
+        padding: var(--space-4) var(--space-6);
+        border-bottom: var(--border-thin) solid var(--color-border-subtle);
+        background: var(--color-bg-elevated);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+      }
+
+      .demo-header__right {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+      }
+
+      .demo-content {
+        padding: var(--space-6);
+        display: grid;
+        gap: var(--space-6);
+      }
+
+      .demo-hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+      }
+
+      .demo-hero p {
+        margin: 0;
+        color: var(--color-text-muted);
+      }
+
+      .demo-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--space-4);
+      }
+
+      .demo-stat {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .demo-stat strong {
+        font-size: var(--font-size-xl);
+      }
+
+      .demo-table-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+      }
+
+      .demo-inline {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+
+      .demo-muted {
+        color: var(--color-text-muted);
+      }
+
+      @media (max-width: 960px) {
+        .demo-app {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-sidebar {
+          display: none;
+        }
+
+        .demo-content {
+          padding: var(--space-5);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-app">
+      <aside class="demo-sidebar">
+        <div class="demo-brand">
+          <span class="demo-brand__dot" aria-hidden="true"></span>
+          Accessful DMS
+        </div>
+        <nav class="demo-nav" aria-label="Primary">
+          <a class="demo-nav__item demo-nav__item--active" href="#">
+            Documents
+            <span class="demo-nav__badge">24</span>
+          </a>
+          <a class="demo-nav__item" href="#">Workflows</a>
+          <a class="demo-nav__item" href="#">Reviews</a>
+          <a class="demo-nav__item" href="#">Retention</a>
+          <a class="demo-nav__item" href="#">Settings</a>
+        </nav>
+        <div class="demo-sidebar__section">
+          <div class="demo-sidebar__title">Folders</div>
+          <ul class="demo-folder-list" id="folderList"></ul>
+        </div>
+        <div class="demo-sidebar__footer">
+          <button class="af-button af-button--secondary af-button--sm">New folder</button>
+          <button class="af-button af-button--ghost af-button--sm">Invite teammate</button>
+        </div>
+      </aside>
+      <div class="demo-main">
+        <header class="demo-header">
+          <nav class="af-breadcrumbs" aria-label="Breadcrumb">
+            <ol class="af-breadcrumbs__list">
+              <li class="af-breadcrumbs__item">
+                <a class="af-breadcrumbs__link" href="#">Home</a>
+                <span class="af-breadcrumbs__separator">/</span>
+              </li>
+              <li class="af-breadcrumbs__item">
+                <span class="af-breadcrumbs__current">Documents</span>
+              </li>
+            </ol>
+          </nav>
+          <div class="demo-header__right">
+            <button class="af-button af-button--secondary af-button--sm">Upload</button>
+            <div class="af-dropdown" data-state="closed" id="userMenu">
+              <button class="af-button af-button--secondary af-button--sm af-dropdown__trigger" aria-haspopup="menu">
+                Ava Stone
+              </button>
+              <div class="af-dropdown__menu" role="menu">
+                <button class="af-dropdown__item" role="menuitem">Profile</button>
+                <button class="af-dropdown__item" role="menuitem">Notifications</button>
+                <div class="af-dropdown__separator" role="separator"></div>
+                <button class="af-dropdown__item" role="menuitem">Sign out</button>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main class="demo-content">
+          <section class="demo-hero">
+            <div>
+              <h1>Document management</h1>
+              <p>Track PDF/UA conversions, reviews, and approvals in one workspace.</p>
+            </div>
+            <div class="demo-table-actions">
+              <button class="af-button af-button--secondary af-button--sm">Create folder</button>
+              <button class="af-button af-button--sm">New document</button>
+            </div>
+          </section>
+
+          <section class="demo-stats">
+            <div class="af-card">
+              <div class="af-card__body demo-stat">
+                <span class="demo-muted">Awaiting review</span>
+                <strong>6</strong>
+                <span class="demo-muted">2 urgent</span>
+              </div>
+            </div>
+            <div class="af-card">
+              <div class="af-card__body demo-stat">
+                <span class="demo-muted">Expiring soon</span>
+                <strong>4</strong>
+                <span class="demo-muted">Next 14 days</span>
+              </div>
+            </div>
+            <div class="af-card">
+              <div class="af-card__body demo-stat">
+                <span class="demo-muted">Templates</span>
+                <strong>9</strong>
+                <span class="demo-muted">Updated weekly</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <div class="af-tabs">
+              <div class="af-tabs__list" role="tablist">
+                <button class="af-tabs__trigger" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">
+                  All documents
+                </button>
+                <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">
+                  In review
+                </button>
+                <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3">
+                  Archived
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="af-data-table" id="documentsTable">
+            <div class="af-data-table__header">
+              <div class="af-data-table__title">
+                <h3>Documents</h3>
+                <span class="af-data-table__meta" id="tableMeta">0 total - 0 selected</span>
+              </div>
+              <div class="af-data-table__actions">
+                <button class="af-button af-button--secondary af-button--sm">Export</button>
+                <button class="af-button af-button--sm">New document</button>
+              </div>
+            </div>
+            <div class="af-data-table__toolbar">
+              <div class="af-data-table__filters">
+                <input
+                  class="af-input af-control--sm af-data-table__search"
+                  id="searchInput"
+                  placeholder="Search documents"
+                  aria-label="Search documents"
+                />
+                <select class="af-select af-control--sm" id="statusFilter" aria-label="Status">
+                  <option value="all">All status</option>
+                  <option value="Active">Active</option>
+                  <option value="Draft">Draft</option>
+                  <option value="Archived">Archived</option>
+                </select>
+                <select class="af-select af-control--sm" id="ownerFilter" aria-label="Owner">
+                  <option value="all">All owners</option>
+                </select>
+                <div class="af-datepicker" id="updatedAfter" data-state="closed">
+                  <input
+                    class="af-input af-control--sm"
+                    type="text"
+                    placeholder="Updated after"
+                    aria-label="Updated after"
+                    readonly
+                  />
+                  <div class="af-datepicker__popover" role="dialog" aria-label="Choose date">
+                    <div class="af-datepicker__header">
+                      <button
+                        class="af-button af-button--ghost af-button--icon"
+                        aria-label="Previous month"
+                        data-action="prev"
+                      >
+                        Prev
+                      </button>
+                      <div class="af-datepicker__title" data-title></div>
+                      <button
+                        class="af-button af-button--ghost af-button--icon"
+                        aria-label="Next month"
+                        data-action="next"
+                      >
+                        Next
+                      </button>
+                    </div>
+                    <div class="af-datepicker__grid" data-grid></div>
+                  </div>
+                </div>
+              </div>
+              <div class="af-data-table__actions">
+                <button class="af-button af-button--ghost af-button--sm" id="clearFilters">Clear</button>
+                <div class="af-dropdown" data-state="closed" id="bulkMenu">
+                  <button class="af-button af-button--secondary af-button--sm af-dropdown__trigger" aria-haspopup="menu">
+                    Bulk actions
+                  </button>
+                  <div class="af-dropdown__menu" role="menu">
+                    <button class="af-dropdown__item" role="menuitem">Move to folder</button>
+                    <button class="af-dropdown__item" role="menuitem">Share link</button>
+                    <div class="af-dropdown__separator" role="separator"></div>
+                    <button class="af-dropdown__item" role="menuitem">Archive</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="af-data-table__table">
+              <table class="af-table af-table--striped af-table--compact" id="documentsTableEl">
+                <thead>
+                  <tr>
+                    <th scope="col" class="af-table__cell--checkbox">
+                      <input class="af-check__input" type="checkbox" aria-label="Select all rows" id="selectAll" />
+                    </th>
+                    <th scope="col" aria-sort="none" data-sort-key="title">
+                      <button class="af-table__sort" type="button" data-sort="title">
+                        Document
+                        <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                      </button>
+                    </th>
+                    <th scope="col" aria-sort="none" data-sort-key="status">
+                      <button class="af-table__sort" type="button" data-sort="status">
+                        Status
+                        <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                      </button>
+                    </th>
+                    <th scope="col" aria-sort="none" data-sort-key="owner">
+                      <button class="af-table__sort" type="button" data-sort="owner">
+                        Owner
+                        <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                      </button>
+                    </th>
+                    <th scope="col" aria-sort="descending" data-sort-key="updatedAt">
+                      <button class="af-table__sort" type="button" data-sort="updatedAt">
+                        Updated
+                        <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                      </button>
+                    </th>
+                    <th scope="col" aria-sort="none" class="af-table__cell--numeric" data-sort-key="sizeKb">
+                      <button class="af-table__sort" type="button" data-sort="sizeKb">
+                        Size
+                        <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                      </button>
+                    </th>
+                    <th scope="col" class="af-table__cell--actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="documentsTbody"></tbody>
+              </table>
+            </div>
+            <div class="af-data-table__footer">
+              <span id="pageInfo">Showing 0-0 of 0</span>
+              <div class="af-data-table__footer-actions">
+                <div class="af-data-table__page-size">
+                  <span>Rows</span>
+                  <select class="af-select af-control--sm" id="pageSize" aria-label="Rows per page">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+                <nav class="af-pagination" aria-label="Documents pagination">
+                  <ul class="af-pagination__list" id="pagination"></ul>
+                </nav>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module">
+      const state = {
+        documents: [],
+        owners: [],
+        folders: [],
+        query: '',
+        status: 'all',
+        ownerId: 'all',
+        dateFrom: null,
+        page: 1,
+        pageSize: 10,
+        sortKey: 'updatedAt',
+        sortDir: 'desc',
+        selected: new Set()
+      };
+
+      const els = {
+        folderList: document.getElementById('folderList'),
+        searchInput: document.getElementById('searchInput'),
+        statusFilter: document.getElementById('statusFilter'),
+        ownerFilter: document.getElementById('ownerFilter'),
+        clearFilters: document.getElementById('clearFilters'),
+        tableMeta: document.getElementById('tableMeta'),
+        tbody: document.getElementById('documentsTbody'),
+        pagination: document.getElementById('pagination'),
+        pageInfo: document.getElementById('pageInfo'),
+        pageSize: document.getElementById('pageSize'),
+        selectAll: document.getElementById('selectAll'),
+        userMenu: document.getElementById('userMenu'),
+        bulkMenu: document.getElementById('bulkMenu'),
+        updatedAfter: document.getElementById('updatedAfter')
+      };
+
+      const fallbackOwners = [
+        { id: 'u-1', name: 'Ava Stone', role: 'Compliance Lead' },
+        { id: 'u-2', name: 'J. Chen', role: 'Ops' },
+        { id: 'u-3', name: 'L. Hart', role: 'Legal' },
+        { id: 'u-4', name: 'S. Rivera', role: 'Product' },
+        { id: 'u-5', name: 'M. Novak', role: 'Finance' }
+      ];
+
+      const fallbackFolders = [
+        { id: 'f-1', name: 'Inbox', count: 6 },
+        { id: 'f-2', name: 'Contracts', count: 12 },
+        { id: 'f-3', name: 'Policies', count: 9 },
+        { id: 'f-4', name: 'Reports', count: 8 },
+        { id: 'f-5', name: 'Compliance', count: 13 }
+      ];
+
+      const fallbackDocuments = [
+        {
+          id: 'doc-001',
+          title: 'Vendor Contract - ACME',
+          status: 'Active',
+          ownerId: 'u-2',
+          updatedAt: '2026-01-24',
+          sizeKb: 842,
+          type: 'PDF/UA',
+          folder: 'Contracts'
+        },
+        {
+          id: 'doc-002',
+          title: 'Accessibility Report - Globex',
+          status: 'Draft',
+          ownerId: 'u-1',
+          updatedAt: '2026-01-21',
+          sizeKb: 1260,
+          type: 'PDF',
+          folder: 'Compliance'
+        }
+      ];
+
+      const ownerNameById = new Map();
+
+      function formatDate(iso) {
+        const date = new Date(iso + 'T00:00:00');
+        return date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      }
+
+      function formatSize(kb) {
+        if (kb >= 1024) {
+          return (kb / 1024).toFixed(1) + ' MB';
+        }
+        return kb + ' KB';
+      }
+
+      function compareValues(a, b, key, dir) {
+        let result = 0;
+        if (key === 'updatedAt') {
+          result = new Date(a.updatedAt) - new Date(b.updatedAt);
+        } else if (key === 'sizeKb') {
+          result = a.sizeKb - b.sizeKb;
+        } else if (key === 'owner') {
+          result = (ownerNameById.get(a.ownerId) || '').localeCompare(
+            ownerNameById.get(b.ownerId) || ''
+          );
+        } else {
+          result = String(a[key] || '').localeCompare(String(b[key] || ''));
+        }
+        return dir === 'asc' ? result : -result;
+      }
+
+      function applyFilters() {
+        const query = state.query.trim().toLowerCase();
+        let rows = state.documents.slice();
+
+        if (query) {
+          rows = rows.filter((doc) => {
+            return (
+              doc.title.toLowerCase().includes(query) ||
+              doc.type.toLowerCase().includes(query) ||
+              doc.folder.toLowerCase().includes(query)
+            );
+          });
+        }
+
+        if (state.status !== 'all') {
+          rows = rows.filter((doc) => doc.status === state.status);
+        }
+
+        if (state.ownerId !== 'all') {
+          rows = rows.filter((doc) => doc.ownerId === state.ownerId);
+        }
+
+        if (state.dateFrom) {
+          const from = new Date(state.dateFrom + 'T00:00:00');
+          rows = rows.filter((doc) => new Date(doc.updatedAt + 'T00:00:00') >= from);
+        }
+
+        rows.sort((a, b) => compareValues(a, b, state.sortKey, state.sortDir));
+        return rows;
+      }
+
+      function paginate(rows) {
+        const total = rows.length;
+        const pageCount = Math.max(1, Math.ceil(total / state.pageSize));
+        if (state.page > pageCount) {
+          state.page = pageCount;
+        }
+        const start = (state.page - 1) * state.pageSize;
+        const end = start + state.pageSize;
+        return {
+          total,
+          pageCount,
+          pageRows: rows.slice(start, end),
+          start,
+          end: Math.min(end, total)
+        };
+      }
+
+      function updateSelectAll(pageRows) {
+        const allSelected = pageRows.length > 0 && pageRows.every((row) => state.selected.has(row.id));
+        const someSelected = pageRows.some((row) => state.selected.has(row.id));
+        els.selectAll.checked = allSelected;
+        els.selectAll.indeterminate = !allSelected && someSelected;
+      }
+
+      function renderTable() {
+        const filtered = applyFilters();
+        const { total, pageCount, pageRows, start, end } = paginate(filtered);
+
+        els.tbody.innerHTML = pageRows
+          .map((doc) => {
+            const owner = ownerNameById.get(doc.ownerId) || 'Unknown';
+            const isSelected = state.selected.has(doc.id);
+            return `
+              <tr>
+                <td class="af-table__cell--checkbox">
+                  <input class="af-check__input" type="checkbox" data-row-select="${doc.id}" aria-label="Select ${doc.title}" ${
+                    isSelected ? 'checked' : ''
+                  } />
+                </td>
+                <td>
+                  <span class="af-table__title">${doc.title}</span>
+                  <span class="af-table__meta">${doc.type} - ${doc.folder}</span>
+                </td>
+                <td>${doc.status}</td>
+                <td>${owner}</td>
+                <td>${formatDate(doc.updatedAt)}</td>
+                <td class="af-table__cell--numeric">${formatSize(doc.sizeKb)}</td>
+                <td class="af-table__cell--actions">
+                  <button class="af-button af-button--ghost af-button--sm">Open</button>
+                </td>
+              </tr>
+            `;
+          })
+          .join('');
+
+        els.pageInfo.textContent = `Showing ${total === 0 ? 0 : start + 1}-${end} of ${total}`;
+        els.tableMeta.textContent = `${total} total - ${state.selected.size} selected`;
+
+        renderPagination(pageCount);
+        updateSelectAll(pageRows);
+      }
+
+      function renderPagination(pageCount) {
+        const pages = [];
+        const current = state.page;
+
+        if (pageCount <= 7) {
+          for (let i = 1; i <= pageCount; i += 1) pages.push(i);
+        } else {
+          pages.push(1);
+          if (current > 3) pages.push('ellipsis-start');
+          const start = Math.max(2, current - 1);
+          const end = Math.min(pageCount - 1, current + 1);
+          for (let i = start; i <= end; i += 1) pages.push(i);
+          if (current < pageCount - 2) pages.push('ellipsis-end');
+          pages.push(pageCount);
+        }
+
+        const prevDisabled = current === 1 ? 'aria-disabled="true"' : '';
+        const nextDisabled = current === pageCount ? 'aria-disabled="true"' : '';
+
+        const items = [
+          `<li><a class="af-pagination__link" href="#" data-page="prev" ${prevDisabled}>Prev</a></li>`,
+          ...pages.map((page) => {
+            if (typeof page === 'string') {
+              return `<li><span class="af-pagination__link" aria-disabled="true">...</span></li>`;
+            }
+            const currentAttr = page === current ? 'aria-current="page"' : '';
+            return `<li><a class="af-pagination__link" href="#" data-page="${page}" ${currentAttr}>${page}</a></li>`;
+          }),
+          `<li><a class="af-pagination__link" href="#" data-page="next" ${nextDisabled}>Next</a></li>`
+        ];
+
+        els.pagination.innerHTML = items.join('');
+      }
+
+      function syncSortHeaders() {
+        document.querySelectorAll('[data-sort-key]').forEach((th) => {
+          const key = th.getAttribute('data-sort-key');
+          if (key === state.sortKey) {
+            th.setAttribute('aria-sort', state.sortDir === 'asc' ? 'ascending' : 'descending');
+          } else {
+            th.setAttribute('aria-sort', 'none');
+          }
+        });
+      }
+
+      function renderFolders() {
+        els.folderList.innerHTML = state.folders
+          .map((folder) => {
+            return `<li>${folder.name} <span>${folder.count}</span></li>`;
+          })
+          .join('');
+      }
+
+      function populateOwners() {
+        els.ownerFilter.innerHTML = '<option value="all">All owners</option>';
+        state.owners.forEach((owner) => {
+          const option = document.createElement('option');
+          option.value = owner.id;
+          option.textContent = owner.name;
+          els.ownerFilter.appendChild(option);
+        });
+      }
+
+      function setupDropdown(root) {
+        const trigger = root.querySelector('.af-dropdown__trigger');
+        trigger.addEventListener('click', (event) => {
+          event.stopPropagation();
+          root.dataset.state = root.dataset.state === 'open' ? 'closed' : 'open';
+        });
+      }
+
+      function closeDropdowns() {
+        document.querySelectorAll('.af-dropdown').forEach((menu) => {
+          menu.dataset.state = 'closed';
+        });
+      }
+
+      function setupDatepicker(root, onSelect) {
+        const input = root.querySelector('input');
+        const title = root.querySelector('[data-title]');
+        const grid = root.querySelector('[data-grid]');
+        const prev = root.querySelector('[data-action="prev"]');
+        const next = root.querySelector('[data-action="next"]');
+        const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+        let viewDate = new Date();
+        let selected = null;
+
+        function open() {
+          root.dataset.state = 'open';
+        }
+
+        function close() {
+          root.dataset.state = 'closed';
+        }
+
+        function formatTitle(date) {
+          return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        function formatValue(date) {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        }
+
+        function renderGrid() {
+          const year = viewDate.getFullYear();
+          const month = viewDate.getMonth();
+          const first = new Date(year, month, 1);
+          const startOffset = (first.getDay() + 6) % 7; // Monday=0
+          const startDate = new Date(year, month, 1 - startOffset);
+          const todayValue = formatValue(new Date());
+
+          const cells = [];
+          weekdays.forEach((day) => {
+            cells.push(`<div class="af-datepicker__weekday">${day}</div>`);
+          });
+
+          for (let i = 0; i < 42; i += 1) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
+            const value = formatValue(date);
+            const outside = date.getMonth() !== month;
+            const isToday = value === todayValue;
+            const isSelected = selected && value === formatValue(selected);
+
+            const attrs = [
+              `data-date="${value}"`,
+              outside ? 'data-outside="true"' : '',
+              isToday ? 'data-today="true"' : '',
+              isSelected ? 'aria-selected="true"' : ''
+            ]
+              .filter(Boolean)
+              .join(' ');
+
+            cells.push(`<button class="af-datepicker__day" ${attrs}>${date.getDate()}</button>`);
+          }
+
+          title.textContent = formatTitle(viewDate);
+          grid.innerHTML = cells.join('');
+        }
+
+        input.addEventListener('click', (event) => {
+          event.stopPropagation();
+          open();
+        });
+
+        input.addEventListener('focus', () => {
+          open();
+        });
+
+        prev.addEventListener('click', (event) => {
+          event.stopPropagation();
+          viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
+          renderGrid();
+        });
+
+        next.addEventListener('click', (event) => {
+          event.stopPropagation();
+          viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
+          renderGrid();
+        });
+
+        grid.addEventListener('click', (event) => {
+          const button = event.target.closest('button[data-date]');
+          if (!button) return;
+          selected = new Date(button.dataset.date + 'T00:00:00');
+          input.value = button.dataset.date;
+          onSelect(button.dataset.date);
+          renderGrid();
+          close();
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!root.contains(event.target)) {
+            close();
+          }
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            close();
+          }
+        });
+
+        renderGrid();
+
+        return {
+          clear() {
+            selected = null;
+            input.value = '';
+            onSelect(null);
+            renderGrid();
+          }
+        };
+      }
+
+      function setupEventHandlers(datepickerApi) {
+        els.searchInput.addEventListener('input', (event) => {
+          state.query = event.target.value;
+          state.page = 1;
+          render();
+        });
+
+        els.statusFilter.addEventListener('change', (event) => {
+          state.status = event.target.value;
+          state.page = 1;
+          render();
+        });
+
+        els.ownerFilter.addEventListener('change', (event) => {
+          state.ownerId = event.target.value;
+          state.page = 1;
+          render();
+        });
+
+        els.pageSize.addEventListener('change', (event) => {
+          state.pageSize = Number(event.target.value) || 10;
+          state.page = 1;
+          render();
+        });
+
+        els.clearFilters.addEventListener('click', () => {
+          state.query = '';
+          state.status = 'all';
+          state.ownerId = 'all';
+          state.dateFrom = null;
+          els.searchInput.value = '';
+          els.statusFilter.value = 'all';
+          els.ownerFilter.value = 'all';
+          datepickerApi.clear();
+          state.page = 1;
+          render();
+        });
+
+        els.selectAll.addEventListener('change', (event) => {
+          const filtered = applyFilters();
+          const { pageRows } = paginate(filtered);
+          if (event.target.checked) {
+            pageRows.forEach((row) => state.selected.add(row.id));
+          } else {
+            pageRows.forEach((row) => state.selected.delete(row.id));
+          }
+          render();
+        });
+
+        els.tbody.addEventListener('change', (event) => {
+          const checkbox = event.target.closest('[data-row-select]');
+          if (!checkbox) return;
+          const id = checkbox.getAttribute('data-row-select');
+          if (checkbox.checked) {
+            state.selected.add(id);
+          } else {
+            state.selected.delete(id);
+          }
+          render();
+        });
+
+        document.querySelectorAll('[data-sort]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const key = button.getAttribute('data-sort');
+            if (state.sortKey === key) {
+              state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+              state.sortKey = key;
+              state.sortDir = key === 'updatedAt' ? 'desc' : 'asc';
+            }
+            syncSortHeaders();
+            render();
+          });
+        });
+
+        els.pagination.addEventListener('click', (event) => {
+          const link = event.target.closest('[data-page]');
+          if (!link || link.getAttribute('aria-disabled') === 'true') return;
+          event.preventDefault();
+          const target = link.getAttribute('data-page');
+          const filtered = applyFilters();
+          const pageCount = Math.max(1, Math.ceil(filtered.length / state.pageSize));
+
+          if (target === 'prev') {
+            state.page = Math.max(1, state.page - 1);
+          } else if (target === 'next') {
+            state.page = Math.min(pageCount, state.page + 1);
+          } else {
+            state.page = Number(target);
+          }
+          render();
+        });
+
+        document.addEventListener('click', () => {
+          closeDropdowns();
+        });
+      }
+
+      function render() {
+        syncSortHeaders();
+        renderTable();
+      }
+
+      async function loadJson(path, fallback) {
+        try {
+          const response = await fetch(path);
+          if (!response.ok) throw new Error('Network response was not ok');
+          return await response.json();
+        } catch (error) {
+          return fallback;
+        }
+      }
+
+      async function init() {
+        const [owners, folders, documents] = await Promise.all([
+          loadJson('./data/owners.json', fallbackOwners),
+          loadJson('./data/folders.json', fallbackFolders),
+          loadJson('./data/documents.json', fallbackDocuments)
+        ]);
+
+        state.owners = owners;
+        state.folders = folders;
+        state.documents = documents;
+
+        owners.forEach((owner) => ownerNameById.set(owner.id, owner.name));
+        populateOwners();
+        renderFolders();
+
+        const datepickerApi = setupDatepicker(els.updatedAfter, (value) => {
+          state.dateFrom = value;
+          state.page = 1;
+          render();
+        });
+
+        setupDropdown(els.userMenu);
+        setupDropdown(els.bulkMenu);
+        setupEventHandlers(datepickerApi);
+        render();
+      }
+
+      init();
+    </script>
+  </body>
+</html>

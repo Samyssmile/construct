@@ -26,11 +26,20 @@ Accessibility hat Prioritaet 1.
 - Labels fuer jede Form-Input-Instanz (explizit oder aria-label).
 - Tastaturbedienung fuer Dropdowns, Tabs, Modal, Tooltip, Datepicker.
 - ARIA-Attribute nur dort, wo semantisches HTML nicht reicht.
+- Links muessen auch ohne Farbe als Links erkennbar sein (z.B. Unterstreichung).
 - Kontrast: Text, Icons, Fokus-Ring muessen gut sichtbar sein.
 - Disabled-States sind erkennbar, aber Inhalt bleibt lesbar.
 - Bewegelemente respektieren prefers-reduced-motion.
 - Live-Regions fuer Toasts/Statusmeldungen (aria-live).
 - Modal: aria-modal, role="dialog", Focus trap im Framework-Wrapper.
+
+## Composite Komponenten: Tastatur-Muster (Minimum)
+- Tabs: Pfeiltasten wechseln den Fokus zwischen Tabs, Home/End springt zum ersten/letzten Tab, Enter/Space aktiviert. Nur der aktive Tab hat tabindex="0" (roving tabindex).
+- Dropdown (Action-List): Trigger-Button mit aria-expanded und aria-controls. Beim Oeffnen Fokus auf das erste Item, Esc schliesst und gibt Fokus zum Trigger zurueck. Items sind normale Buttons/Links in Tab-Reihenfolge.
+- Dropdown (Role=menu, optional): Nur verwenden, wenn Pfeiltasten-Navigation, Home/End, typeahead und roving tabindex umgesetzt sind.
+- Datepicker: Pfeiltasten bewegen den Fokus im Grid, PageUp/PageDown wechselt Monate, Home/End springt zur Wochenkante, Enter/Space waehlt aus. Esc schliesst und gibt Fokus zum Trigger zurueck.
+- Modal: Fokus-Trap, initialer Fokus im Dialog, Esc schliesst, Fokus geht zum Ausloeser zurueck.
+- Tooltip: Oeffnet bei Hover und Fokus, schliesst bei Blur und Esc, role="tooltip" mit aria-describedby.
 
 ## Component States
 - error: aria-invalid="true" + Textfeedback

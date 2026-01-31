@@ -9,7 +9,7 @@ Ein konsistentes, professionelles Enterprise-Design, das in Angular, React und S
 3) Foundations dokumentieren (Typo-Regeln, Layout-Raster, Accessibility-Regeln).
 4) Basis-Komponenten bauen (Button, Input, Select, Table, Card, Modal, Toast).
 5) Storybook/Doku aufsetzen pro Framework (oder zentral mit Package-Links).
-6) Governance etablieren (Review-Prozess, Versionierung, visuelle Regressionstests).
+
 
 ## Ordner
 - `tokens/`: Design Tokens (primitiv + semantisch + CSS Variables)
@@ -57,7 +57,7 @@ npm run build
 
 Check if outputs are up to date:
 ```bash
-node design/scripts/build-tokens.mjs --check
+node scripts/build-tokens.mjs --check
 ```
 
 From `design/`:

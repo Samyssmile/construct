@@ -2,16 +2,14 @@
 const config = {
   stories: ['../stories/**/*.stories.@(js|mdx)'],
   addons: [
-    '@storybook/addon-essentials',
     '@storybook/addon-a11y',
-    '@storybook/addon-interactions'
+    '@storybook/addon-docs',
+    '@storybook/addon-vitest'
   ],
+
   framework: {
     name: '@storybook/html-vite',
     options: {}
-  },
-  docs: {
-    autodocs: true
   }
 };
 

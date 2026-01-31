@@ -26,30 +26,66 @@ Modal.parameters = {
 };
 
 export const Toast = () => `
-  <div class="af-toast-region" aria-live="polite">
-    <div class="af-toast" data-variant="success" data-state="open">
-      <div class="af-toast__title">Saved</div>
-      <div class="af-toast__description">Your changes were saved.</div>
-      <button class="af-button af-button--ghost">Undo</button>
+  <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
+    <div class="af-toast-region" aria-live="polite">
+      <div class="af-toast" data-variant="success" data-state="open">
+        <div class="af-toast__title">Saved</div>
+        <div class="af-toast__description">Your changes were saved.</div>
+        <button class="af-button af-button--ghost">Undo</button>
+      </div>
     </div>
   </div>
 `;
+
+Toast.parameters = {
+  layout: 'fullscreen',
+  docs: {
+    story: {
+      inline: true,
+      height: 320
+    }
+  }
+};
 
 export const Tooltip = () => `
-  <span class="af-tooltip" data-state="open" data-side="top">
-    <button class="af-button af-button--secondary" aria-describedby="tip-1">Hover me</button>
-    <span class="af-tooltip__content" role="tooltip" id="tip-1">Short hint</span>
-  </span>
+  <div style="min-height: 320px; padding: 24px; display: flex; align-items: center; justify-content: center;">
+    <span class="af-tooltip" data-state="open" data-side="top">
+      <button class="af-button af-button--secondary" aria-describedby="tip-1">Hover me</button>
+      <span class="af-tooltip__content" role="tooltip" id="tip-1">Short hint</span>
+    </span>
+  </div>
 `;
 
+Tooltip.parameters = {
+  layout: 'fullscreen',
+  docs: {
+    story: {
+      inline: true,
+      height: 320
+    }
+  }
+};
+
 export const Dropdown = () => `
-  <div class="af-dropdown" data-state="open">
-    <button class="af-button af-button--secondary af-dropdown__trigger" aria-haspopup="menu">Actions</button>
-    <div class="af-dropdown__menu" role="menu">
-      <button class="af-dropdown__item" role="menuitem">Edit</button>
-      <button class="af-dropdown__item" role="menuitem">Duplicate</button>
-      <div class="af-dropdown__separator" role="separator"></div>
-      <button class="af-dropdown__item" role="menuitem">Archive</button>
+  <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
+    <div class="af-dropdown" data-state="open">
+      <button class="af-button af-button--secondary af-dropdown__trigger" aria-expanded="true" aria-controls="actions-menu">Actions</button>
+      <div class="af-dropdown__menu" id="actions-menu">
+        <button class="af-dropdown__item" type="button">Edit</button>
+        <button class="af-dropdown__item" type="button">Duplicate</button>
+        <div class="af-dropdown__separator" role="separator"></div>
+        <button class="af-dropdown__item" type="button">Archive</button>
+      </div>
     </div>
   </div>
 `;
+
+Dropdown.parameters = {
+  layout: 'fullscreen',
+  docs: {
+    story: {
+      inline: true,
+      height: 320
+    }
+  }
+};

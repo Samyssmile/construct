@@ -1,0 +1,7 @@
+[
+  { "id": "f-1", "name": "Inbox", "count": 6 },
+  { "id": "f-2", "name": "Contracts", "count": 12 },
+  { "id": "f-3", "name": "Policies", "count": 9 },
+  { "id": "f-4", "name": "Reports", "count": 8 },
+  { "id": "f-5", "name": "Compliance", "count": 13 }
+]

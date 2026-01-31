@@ -5,9 +5,9 @@ export default {
 export const Tabs = () => `
   <div class="af-tabs" style="max-width: 560px;">
     <div class="af-tabs__list" role="tablist">
-      <button class="af-tabs__trigger" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">Overview</button>
-      <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">Settings</button>
-      <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3">Members</button>
+      <button class="af-tabs__trigger" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">Overview</button>
+      <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">Settings</button>
+      <button class="af-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">Members</button>
     </div>
     <div class="af-tabs__panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">
       <p class="af-muted">Panel content</p>
