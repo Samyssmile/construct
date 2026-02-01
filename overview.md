@@ -107,7 +107,7 @@ npm run storybook:build    # Statisches Storybook bauen
 
 ### 4. Framework-Implementierungen
 - **CSS/HTML**: Direkt nutzbar (siehe `components/README.md`)
-- **Angular**: War im Workspace-Ordner (wurde gelöscht laut Git Status)
+- **Angular**: Noch nicht implementiert
 - **React**: Noch nicht implementiert
 - **Svelte**: Noch nicht implementiert
 
@@ -136,11 +136,9 @@ Details siehe: `docs/guidelines.md`
 - Foundations Stylesheet
 - 16 Komponenten (CSS + HTML Patterns)
 - Storybook Dokumentation
-- Angular Component Library (16 Components mit TypeScript API)
 
 **Nächste Schritte:**
-- React Library implementieren
-- Svelte Library implementieren
+- Framework Libraries (Angular, React, Svelte)
 - Visuelle QA & Regression Tests
 - Fehlende Components (Badge, FileUpload, Alert, LoadingSpinner, etc.)
 
