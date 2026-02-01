@@ -1,4 +1,4 @@
-# Construct Design System
+# Construct - Design System
 
 > Build accessible design constructs for modern web applications
 
