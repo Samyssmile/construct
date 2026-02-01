@@ -1,77 +1,204 @@
-# Accessful Design System (v0)
+# Construct Design System
 
-## Zielbild
-Ein konsistentes, professionelles Enterprise-Design, das in Angular, React und Svelte identisch wirkt.
+> Build accessible design constructs for modern web applications
 
-## Umsetzungsplan (Start bei 0)
-1) Design-Tokens definieren (Farben, Typografie, Spacing, Radius, Shadow, Motion, Z-Index, Breakpoints).
-2) Tokens in allen Apps nutzbar machen (CSS Variables, optional Build-Step fuer TS/JSON).
-3) Foundations dokumentieren (Typo-Regeln, Layout-Raster, Accessibility-Regeln).
-4) Basis-Komponenten bauen (Button, Input, Select, Table, Card, Modal, Toast).
-5) Storybook/Doku aufsetzen pro Framework (oder zentral mit Package-Links).
+**Construct** is an open-source, token-based design system foundation that provides a consistent, accessible UI across Angular, React, Svelte, and vanilla HTML/CSS.
 
+## ✨ Features
 
-## Ordner
-- `tokens/`: Design Tokens (primitiv + semantisch + CSS Variables)
-- `foundations.css`: Reset, Typografie-Defaults, Layout-Utilities, A11y-Grundlagen
-- `components/`: Framework-unabhaengige Komponenten-Styles + Usage-Notes
+- **Design Tokens** - Single source of truth for colors, typography, spacing, and more
+- **Framework-Agnostic CSS** - Works with any framework or vanilla HTML
+- **Accessibility First** - WCAG 2.1 AA compliant, keyboard navigation, ARIA support
+- **Token Pipeline** - Automated build system (JSON → CSS Variables + TypeScript)
+- **Comprehensive Components** - 16+ production-ready components
+- **Storybook Documentation** - Interactive component explorer with a11y testing
+- **TypeScript Support** - Full type definitions for tokens
 
-## Usage (Foundations)
-Import once per app as a global stylesheet:
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+npm install @construct/design
+```
+
+### Usage
+
+Import the foundation styles and components:
+
 ```css
-@import "../design/foundations.css";
+@import "@construct/design/foundations.css";
+@import "@construct/design/components/components.css";
 ```
 
-## Usage (Components)
-Import after foundations:
+Use the components in your HTML:
+
+```html
+<button class="ct-button">Primary Button</button>
+<button class="ct-button ct-button--secondary">Secondary</button>
+```
+
+Or use design tokens directly:
+
 ```css
-@import "../design/foundations.css";
-@import "../design/components/components.css";
+.custom-component {
+  background: var(--color-brand-primary);
+  padding: var(--space-4);
+  border-radius: var(--radius-control);
+}
 ```
 
-## Storybook (Components)
-From `design/`:
-```bash
-npm run storybook
+## 📦 What's Included
+
+```
+@construct/design/
+├── tokens/                     # Design tokens (JSON, CSS, TS)
+│   ├── primitives.json         # Base values (colors, sizes)
+│   ├── semantic.light.json     # Semantic mappings
+│   ├── tokens.css              # CSS Custom Properties
+│   ├── tokens.json             # Resolved JSON output
+│   └── tokens.ts               # TypeScript exports
+├── components/                 # Framework-agnostic styles
+│   ├── components.css          # All component styles
+│   └── README.md               # Component documentation
+├── foundations.css             # Reset, typography, layout utilities
+└── docs/                       # Guidelines & best practices
+    └── guidelines.md
 ```
 
-Build static Storybook:
-```bash
-npm run storybook:build
+## 🎨 Design Tokens
+
+Construct uses a two-tier token system:
+
+### Primitives
+Raw design values (colors, spacing, typography)
+
+```json
+{
+  "color": {
+    "ocean": {
+      "700": "#174C5D"
+    }
+  },
+  "space": {
+    "4": 8
+  }
+}
 ```
 
-## Doku
-- Guidelines (Do/Don'ts + A11y): `docs/guidelines.md`
+### Semantic
+Contextual aliases that reference primitives
 
-## Token build (JSON -> CSS/TS/JSON)
-From repo root:
-```bash
-node scripts/build-tokens.mjs
+```json
+{
+  "color": {
+    "brand": {
+      "primary": "{color.ocean.700}"
+    }
+  }
+}
 ```
 
-From `design/`:
+### Build Pipeline
+
+The token build system automatically generates:
+- **CSS Variables** (`--color-brand-primary`)
+- **TypeScript exports** with type definitions
+- **Resolved JSON** for tooling
 
 ```bash
 npm run build
 ```
 
-Check if outputs are up to date:
+## 🧩 Components
+
+### Base Components
+- Button (6 variants, 3 sizes)
+- Input (text, email, password, search)
+- Select (native dropdown)
+- Textarea
+- Checkbox
+- Radio
+- Switch
+
+### Complex Components
+- Card
+- Table / Data Table
+- Modal
+- Toast (notifications)
+- Tabs
+- Dropdown
+- Pagination
+- Breadcrumbs
+- Datepicker
+
+[View all components in Storybook](https://your-org.github.io/construct-design)
+
+## ♿ Accessibility
+
+Accessibility is a core principle of Construct:
+
+- ✅ Semantic HTML
+- ✅ ARIA attributes where needed
+- ✅ Full keyboard navigation
+- ✅ Focus management
+- ✅ WCAG 2.1 AA contrast standards
+- ✅ Screen reader support
+- ✅ Respects `prefers-reduced-motion`
+- ✅ Live regions for dynamic content
+
+See [Guidelines](docs/guidelines.md) for detailed accessibility rules.
+
+## 🛠️ Development
+
+### Run Storybook
+
 ```bash
-node scripts/build-tokens.mjs --check
+npm run storybook
 ```
 
-From `design/`:
+Open http://localhost:6006
+
+### Build Tokens
+
+```bash
+npm run build
+```
+
+### Check Token Outputs
+
 ```bash
 npm run check
 ```
 
-## Token-Versionierung (SemVer)
-- MAJOR: Entfernen/Renamen von Tokens oder Aenderungen an bestehenden Token-Werten (Farben, Typo, Spacing, Radius, etc.).
-- MINOR: Neue Tokens, neue Skalen oder neue semantische Aliase, ohne bestehende Werte zu aendern.
-- PATCH: Keine Token-Value-Aenderungen (nur Build, Doku, Storybook, interne Pflege).
+## 🎯 Framework Support
 
-## Versionierung & Release (intern)
-1) Version in `design/package.json` hochziehen.
-2) `npm run build` in `design/` ausführen.
-3) Änderungen committen und taggen.
-4) Optional: Paket veröffentlichen (falls gewünscht, `private` entfernen).
+### Current: CSS/HTML
+All components work with vanilla HTML and can be used with any framework.
+
+### Planned: Framework Libraries
+- Angular (standalone components)
+- React (React 18+)
+- Svelte (Svelte 4+)
+
+## 📖 Documentation
+
+- [Design Guidelines](docs/guidelines.md) - Do/Don'ts, accessibility rules
+- [Component Usage](components/README.md) - HTML patterns and examples
+- [Token Details](tokens/README.md) - Token structure and naming
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our contributing guidelines (coming soon).
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 🙏 Credits
+
+Built with accessibility and modern design principles in mind.
+
+---
+
+**Construct** - Build accessible design constructs

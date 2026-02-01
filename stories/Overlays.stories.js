@@ -3,22 +3,22 @@ export default {
 };
 
 export const Modal = () => `
-  <div class="af-modal" data-state="open" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="af-modal__dialog">
-      <div class="af-modal__header">
+  <div class="ct-modal" data-state="open" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="ct-modal__dialog">
+      <div class="ct-modal__header">
         <h2 id="modal-title">Invite team</h2>
-        <button class="af-button af-button--ghost" aria-label="Close">Close</button>
+        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
       </div>
-      <div class="af-modal__body">
+      <div class="ct-modal__body">
         <p>Send an invite to a new team member.</p>
-        <div class="af-field">
-          <label class="af-field__label" for="invite-email">Email</label>
-          <input class="af-input" id="invite-email" type="email" placeholder="name@company.com" />
+        <div class="ct-field">
+          <label class="ct-field__label" for="invite-email">Email</label>
+          <input class="ct-input" id="invite-email" type="email" placeholder="name@company.com" />
         </div>
       </div>
-      <div class="af-modal__footer">
-        <button class="af-button af-button--secondary">Cancel</button>
-        <button class="af-button">Send</button>
+      <div class="ct-modal__footer">
+        <button class="ct-button ct-button--secondary">Cancel</button>
+        <button class="ct-button">Send</button>
       </div>
     </div>
   </div>
@@ -30,11 +30,11 @@ Modal.parameters = {
 
 export const Toast = () => `
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
-    <div class="af-toast-region" aria-live="polite">
-      <div class="af-toast" data-variant="success" data-state="open">
-        <div class="af-toast__title">Saved</div>
-        <div class="af-toast__description">Your changes were saved.</div>
-        <button class="af-button af-button--ghost">Undo</button>
+    <div class="ct-toast-region" aria-live="polite">
+      <div class="ct-toast" data-variant="success" data-state="open">
+        <div class="ct-toast__title">Saved</div>
+        <div class="ct-toast__description">Your changes were saved.</div>
+        <button class="ct-button ct-button--ghost">Undo</button>
       </div>
     </div>
   </div>
@@ -52,9 +52,9 @@ Toast.parameters = {
 
 export const Tooltip = () => `
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: center; justify-content: center;">
-    <span class="af-tooltip" data-state="open" data-side="top">
-      <button class="af-button af-button--secondary" aria-describedby="tip-1">Hover me</button>
-      <span class="af-tooltip__content" role="tooltip" id="tip-1">Short hint</span>
+    <span class="ct-tooltip" data-state="open" data-side="top">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-1">Hover me</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-1">Short hint</span>
     </span>
   </div>
 `;
@@ -71,13 +71,13 @@ Tooltip.parameters = {
 
 export const Dropdown = () => `
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
-    <div class="af-dropdown" data-state="open">
-      <button class="af-button af-button--secondary af-dropdown__trigger" aria-expanded="true" aria-controls="actions-menu">Actions</button>
-      <div class="af-dropdown__menu" id="actions-menu">
-        <button class="af-dropdown__item" type="button">Edit</button>
-        <button class="af-dropdown__item" type="button">Duplicate</button>
-        <div class="af-dropdown__separator" role="separator"></div>
-        <button class="af-dropdown__item" type="button">Archive</button>
+    <div class="ct-dropdown" data-state="open">
+      <button class="ct-button ct-button--secondary ct-dropdown__trigger" aria-expanded="true" aria-controls="actions-menu">Actions</button>
+      <div class="ct-dropdown__menu" id="actions-menu">
+        <button class="ct-dropdown__item" type="button">Edit</button>
+        <button class="ct-dropdown__item" type="button">Duplicate</button>
+        <div class="ct-dropdown__separator" role="separator"></div>
+        <button class="ct-dropdown__item" type="button">Archive</button>
       </div>
     </div>
   </div>

@@ -3,25 +3,25 @@ export default {
 };
 
 export const Card = () => `
-  <section class="af-card" style="max-width: 420px;">
-    <div class="af-card__header">
+  <section class="ct-card" style="max-width: 420px;">
+    <div class="ct-card__header">
       <h3>Team</h3>
-      <button class="af-button af-button--ghost">Edit</button>
+      <button class="ct-button ct-button--ghost">Edit</button>
     </div>
-    <div class="af-card__body">
+    <div class="ct-card__body">
       <p>Shared ownership and clear permissions.</p>
-      <p class="af-muted">Updated 2 days ago</p>
+      <p class="ct-muted">Updated 2 days ago</p>
     </div>
-    <div class="af-card__footer">
-      <span class="af-muted">12 members</span>
-      <button class="af-button af-button--secondary">Open</button>
+    <div class="ct-card__footer">
+      <span class="ct-muted">12 members</span>
+      <button class="ct-button ct-button--secondary">Open</button>
     </div>
   </section>
 `;
 
 export const Table = () => `
-  <div class="af-table-wrap" style="max-width: 720px;">
-    <table class="af-table af-table--striped">
+  <div class="ct-table-wrap" style="max-width: 720px;">
+    <table class="ct-table ct-table--striped">
       <thead>
         <tr>
           <th scope="col">Name</th>

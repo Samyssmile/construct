@@ -3,123 +3,123 @@ export default {
 };
 
 export const DataTable = () => `
-  <div class="af-data-table" style="max-width: 1100px;">
-    <div class="af-data-table__header">
-      <div class="af-data-table__title">
+  <div class="ct-data-table" style="max-width: 1100px;">
+    <div class="ct-data-table__header">
+      <div class="ct-data-table__title">
         <h3>Projects</h3>
-        <span class="af-data-table__meta">24 total · Updated 2 days ago</span>
+        <span class="ct-data-table__meta">24 total · Updated 2 days ago</span>
       </div>
-      <div class="af-data-table__actions">
-        <button class="af-button af-button--secondary af-button--sm">Export</button>
-        <button class="af-button af-button--sm">New project</button>
+      <div class="ct-data-table__actions">
+        <button class="ct-button ct-button--secondary ct-button--sm">Export</button>
+        <button class="ct-button ct-button--sm">New project</button>
       </div>
     </div>
-    <div class="af-data-table__toolbar">
-      <div class="af-data-table__filters">
-        <input class="af-input af-control--sm af-data-table__search" placeholder="Search projects" aria-label="Search projects" />
-        <select class="af-select af-control--sm" aria-label="Filter by status">
+    <div class="ct-data-table__toolbar">
+      <div class="ct-data-table__filters">
+        <input class="ct-input ct-control--sm ct-data-table__search" placeholder="Search projects" aria-label="Search projects" />
+        <select class="ct-select ct-control--sm" aria-label="Filter by status">
           <option>Status</option>
           <option>Active</option>
           <option>Paused</option>
           <option>Archived</option>
         </select>
-        <select class="af-select af-control--sm" aria-label="Filter by owner">
+        <select class="ct-select ct-control--sm" aria-label="Filter by owner">
           <option>Owner</option>
           <option>J. Chen</option>
           <option>L. Hart</option>
           <option>S. Rivera</option>
         </select>
       </div>
-      <div class="af-data-table__actions">
-        <button class="af-button af-button--ghost af-button--sm">Reset</button>
-        <button class="af-button af-button--secondary af-button--sm">Filters</button>
+      <div class="ct-data-table__actions">
+        <button class="ct-button ct-button--ghost ct-button--sm">Reset</button>
+        <button class="ct-button ct-button--secondary ct-button--sm">Filters</button>
       </div>
     </div>
-    <div class="af-data-table__table">
-      <table class="af-table af-table--striped af-table--compact">
+    <div class="ct-data-table__table">
+      <table class="ct-table ct-table--striped ct-table--compact">
         <thead>
           <tr>
-            <th scope="col" class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select all rows" />
+            <th scope="col" class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select all rows" />
             </th>
             <th scope="col">Project</th>
             <th scope="col">Status</th>
             <th scope="col">Owner</th>
-            <th scope="col" class="af-table__cell--numeric">Tasks</th>
+            <th scope="col" class="ct-table__cell--numeric">Tasks</th>
             <th scope="col">Updated</th>
-            <th scope="col" class="af-table__cell--actions">Actions</th>
+            <th scope="col" class="ct-table__cell--actions">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select Alpha" checked />
+            <td class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select Alpha" checked />
             </td>
             <td>
-              <span class="af-table__title">Alpha</span>
-              <span class="af-table__meta">Enterprise rollout</span>
+              <span class="ct-table__title">Alpha</span>
+              <span class="ct-table__meta">Enterprise rollout</span>
             </td>
             <td>Active</td>
             <td>J. Chen</td>
-            <td class="af-table__cell--numeric">128</td>
+            <td class="ct-table__cell--numeric">128</td>
             <td>Jan 24, 2026</td>
-            <td class="af-table__cell--actions">
-              <button class="af-button af-button--ghost af-button--sm">Open</button>
+            <td class="ct-table__cell--actions">
+              <button class="ct-button ct-button--ghost ct-button--sm">Open</button>
             </td>
           </tr>
           <tr>
-            <td class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select Beta" />
+            <td class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select Beta" />
             </td>
             <td>
-              <span class="af-table__title">Beta</span>
-              <span class="af-table__meta">Onboarding</span>
+              <span class="ct-table__title">Beta</span>
+              <span class="ct-table__meta">Onboarding</span>
             </td>
             <td>Paused</td>
             <td>L. Hart</td>
-            <td class="af-table__cell--numeric">64</td>
+            <td class="ct-table__cell--numeric">64</td>
             <td>Jan 18, 2026</td>
-            <td class="af-table__cell--actions">
-              <button class="af-button af-button--ghost af-button--sm">Open</button>
+            <td class="ct-table__cell--actions">
+              <button class="ct-button ct-button--ghost ct-button--sm">Open</button>
             </td>
           </tr>
           <tr>
-            <td class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select Gamma" />
+            <td class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select Gamma" />
             </td>
             <td>
-              <span class="af-table__title">Gamma</span>
-              <span class="af-table__meta">Mobile rework</span>
+              <span class="ct-table__title">Gamma</span>
+              <span class="ct-table__meta">Mobile rework</span>
             </td>
             <td>Active</td>
             <td>S. Rivera</td>
-            <td class="af-table__cell--numeric">92</td>
+            <td class="ct-table__cell--numeric">92</td>
             <td>Jan 10, 2026</td>
-            <td class="af-table__cell--actions">
-              <button class="af-button af-button--ghost af-button--sm">Open</button>
+            <td class="ct-table__cell--actions">
+              <button class="ct-button ct-button--ghost ct-button--sm">Open</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="af-data-table__footer">
+    <div class="ct-data-table__footer">
       <span>Showing 1-3 of 24</span>
-      <div class="af-data-table__footer-actions">
-        <div class="af-data-table__page-size">
+      <div class="ct-data-table__footer-actions">
+        <div class="ct-data-table__page-size">
           <span>Rows</span>
-          <select class="af-select af-control--sm" aria-label="Rows per page">
+          <select class="ct-select ct-control--sm" aria-label="Rows per page">
             <option>10</option>
             <option>25</option>
             <option>50</option>
           </select>
         </div>
-        <nav class="af-pagination" aria-label="Data table pagination">
-          <ul class="af-pagination__list">
-            <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
-            <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
-            <li><button class="af-pagination__link" type="button">2</button></li>
-            <li><button class="af-pagination__link" type="button">3</button></li>
-            <li><button class="af-pagination__link" type="button">Next</button></li>
+        <nav class="ct-pagination" aria-label="Data table pagination">
+          <ul class="ct-pagination__list">
+            <li><button class="ct-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+            <li><button class="ct-pagination__link" aria-current="page" type="button">1</button></li>
+            <li><button class="ct-pagination__link" type="button">2</button></li>
+            <li><button class="ct-pagination__link" type="button">3</button></li>
+            <li><button class="ct-pagination__link" type="button">Next</button></li>
           </ul>
         </nav>
       </div>
@@ -128,46 +128,46 @@ export const DataTable = () => `
 `;
 
 export const DataTableSimple = () => `
-  <div class="af-data-table af-data-table--simple" style="max-width: 900px;">
-    <div class="af-data-table__table">
-      <table class="af-table af-table--striped af-table--compact">
+  <div class="ct-data-table ct-data-table--simple" style="max-width: 900px;">
+    <div class="ct-data-table__table">
+      <table class="ct-table ct-table--striped ct-table--compact">
         <thead>
           <tr>
-            <th scope="col" class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select all rows" />
+            <th scope="col" class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select all rows" />
             </th>
             <th scope="col" aria-sort="ascending">
-              <button class="af-table__sort" type="button">
+              <button class="ct-table__sort" type="button">
                 Project
-                <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                <span class="ct-table__sort-indicator" aria-hidden="true"></span>
               </button>
             </th>
             <th scope="col" aria-sort="none">
-              <button class="af-table__sort" type="button">
+              <button class="ct-table__sort" type="button">
                 Status
-                <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                <span class="ct-table__sort-indicator" aria-hidden="true"></span>
               </button>
             </th>
             <th scope="col" aria-sort="descending">
-              <button class="af-table__sort" type="button">
+              <button class="ct-table__sort" type="button">
                 Updated
-                <span class="af-table__sort-indicator" aria-hidden="true"></span>
+                <span class="ct-table__sort-indicator" aria-hidden="true"></span>
               </button>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select Alpha" checked />
+            <td class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select Alpha" checked />
             </td>
             <td>Alpha</td>
             <td>Active</td>
             <td>Jan 24, 2026</td>
           </tr>
           <tr>
-            <td class="af-table__cell--checkbox">
-              <input class="af-check__input" type="checkbox" aria-label="Select Beta" />
+            <td class="ct-table__cell--checkbox">
+              <input class="ct-check__input" type="checkbox" aria-label="Select Beta" />
             </td>
             <td>Beta</td>
             <td>Paused</td>
@@ -176,15 +176,15 @@ export const DataTableSimple = () => `
         </tbody>
       </table>
     </div>
-    <div class="af-data-table__footer">
+    <div class="ct-data-table__footer">
       <span>Showing 1-2 of 24</span>
-      <nav class="af-pagination" aria-label="Data table pagination">
-        <ul class="af-pagination__list">
-          <li><button class="af-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
-          <li><button class="af-pagination__link" aria-current="page" type="button">1</button></li>
-          <li><button class="af-pagination__link" type="button">2</button></li>
-          <li><button class="af-pagination__link" type="button">3</button></li>
-          <li><button class="af-pagination__link" type="button">Next</button></li>
+      <nav class="ct-pagination" aria-label="Data table pagination">
+        <ul class="ct-pagination__list">
+          <li><button class="ct-pagination__link" aria-disabled="true" disabled type="button">Prev</button></li>
+          <li><button class="ct-pagination__link" aria-current="page" type="button">1</button></li>
+          <li><button class="ct-pagination__link" type="button">2</button></li>
+          <li><button class="ct-pagination__link" type="button">3</button></li>
+          <li><button class="ct-pagination__link" type="button">Next</button></li>
         </ul>
       </nav>
     </div>
