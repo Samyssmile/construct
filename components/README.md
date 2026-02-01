@@ -299,6 +299,132 @@ Notification with variants:
 
 Variants: `success`, `error`, `info`, `warning`
 
+### Alert / Banner
+
+Inline feedback message with variants:
+
+```html
+<div class="ct-alert" data-variant="warning" role="alert">
+  <span class="ct-alert__icon" aria-hidden="true">!</span>
+  <div class="ct-alert__content">
+    <div class="ct-alert__title">Action required</div>
+    <div class="ct-alert__description">Please review the pending changes.</div>
+    <div class="ct-alert__actions">
+      <button class="ct-button ct-button--secondary ct-button--sm">Review</button>
+    </div>
+  </div>
+</div>
+```
+
+Variants: `info`, `success`, `warning`, `danger`
+
+### Badge / Status Badge
+
+Small status indicators with optional icon or dot:
+
+```html
+<span class="ct-badge ct-badge--icon"><span class="ct-badge__dot" aria-hidden="true"></span>Draft</span>
+<span class="ct-badge ct-badge--success ct-badge--icon">
+  <span class="ct-badge__icon" aria-hidden="true">+</span>
+  Approved
+</span>
+```
+
+### Chip / Tag
+
+Compact tags for filters or metadata:
+
+```html
+<button class="ct-chip ct-chip--interactive" type="button" aria-pressed="true">
+  <span class="ct-chip__icon" aria-hidden="true">#</span>
+  Finance
+</button>
+
+<span class="ct-chip">
+  Uploads
+  <button class="ct-chip__remove" type="button" aria-label="Remove tag">x</button>
+</span>
+```
+
+### File Upload / Drag & Drop
+
+Drag area + file list pattern. Use `data-state="dragover"` and `aria-invalid="true"` when needed.
+
+```html
+<div class="ct-file-upload">
+  <label class="ct-file-upload__dropzone" for="files">
+    <input class="ct-file-upload__input" id="files" type="file" multiple />
+    <div class="ct-file-upload__title">Drop files here or browse</div>
+    <div class="ct-file-upload__hint">PDF, DOCX up to 10MB</div>
+    <span class="ct-button ct-button--secondary ct-button--sm">Browse files</span>
+  </label>
+
+  <ul class="ct-file-upload__list">
+    <li class="ct-file-upload__item" data-status="success">
+      <div class="ct-file-upload__file">
+        <div class="ct-file-upload__name">report.pdf</div>
+        <div class="ct-file-upload__meta">820 KB</div>
+      </div>
+      <span class="ct-badge ct-badge--success">Uploaded</span>
+    </li>
+  </ul>
+  <div class="ct-file-upload__error">File is too large.</div>
+</div>
+```
+
+### Loading Spinner + Overlay
+
+Spinner for inline loading and overlay for blocking states:
+
+```html
+<div class="ct-spinner ct-spinner--sm" role="status" aria-live="polite"></div>
+
+<div class="ct-card" style="position: relative; min-height: 180px;">
+  <div class="ct-loading-overlay" data-state="active" aria-busy="true">
+    <div class="ct-loading-overlay__content">
+      <div class="ct-spinner ct-spinner--lg" aria-hidden="true"></div>
+      <div class="ct-loading-overlay__label">Uploading files...</div>
+    </div>
+  </div>
+</div>
+```
+
+### Confirmation Dialog
+
+Use the modal base with a confirmation layout:
+
+```html
+<div class="ct-modal ct-modal--confirmation" data-state="open" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-desc">
+  <div class="ct-modal__dialog">
+    <div class="ct-modal__body">
+      <div class="ct-confirmation" data-variant="danger">
+        <div class="ct-confirmation__icon" aria-hidden="true">!</div>
+        <div class="ct-confirmation__content">
+          <h2 class="ct-confirmation__title" id="confirm-title">Delete file?</h2>
+          <p class="ct-confirmation__description" id="confirm-desc">This action cannot be undone.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ct-modal__footer">
+      <button class="ct-button ct-button--secondary">Cancel</button>
+      <button class="ct-button ct-button--danger">Delete</button>
+    </div>
+  </div>
+</div>
+```
+
+### Skeleton / Placeholder
+
+Use for loading placeholders:
+
+```html
+<div class="ct-stack" style="--ct-stack-space: var(--space-3); max-width: 320px;">
+  <span class="ct-skeleton ct-skeleton--title"></span>
+  <span class="ct-skeleton ct-skeleton--text"></span>
+  <span class="ct-skeleton ct-skeleton--text" style="--ct-skeleton-width: 70%;"></span>
+</div>
+```
+
 ### Tabs
 
 Tab navigation with panels:

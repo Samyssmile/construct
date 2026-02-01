@@ -34,3 +34,8 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Internal/private documentation (not for public repo)
+PLAN.md
+overview.md
+AGENTS.md

@@ -28,6 +28,30 @@ Modal.parameters = {
   layout: 'fullscreen'
 };
 
+export const ConfirmationDialog = () => `
+  <div class="ct-modal ct-modal--confirmation" data-state="open" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-description">
+    <div class="ct-modal__dialog">
+      <div class="ct-modal__body">
+        <div class="ct-confirmation" data-variant="danger">
+          <div class="ct-confirmation__icon" aria-hidden="true">!</div>
+          <div class="ct-confirmation__content">
+            <h2 class="ct-confirmation__title" id="confirm-title">Delete file?</h2>
+            <p class="ct-confirmation__description" id="confirm-description">This action cannot be undone.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ct-modal__footer">
+        <button class="ct-button ct-button--secondary">Cancel</button>
+        <button class="ct-button ct-button--danger">Delete</button>
+      </div>
+    </div>
+  </div>
+`;
+
+ConfirmationDialog.parameters = {
+  layout: 'fullscreen'
+};
+
 export const Toast = () => `
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
     <div class="ct-toast-region" aria-live="polite">
