@@ -65,6 +65,11 @@ From `design/`:
 npm run check
 ```
 
+## Token-Versionierung (SemVer)
+- MAJOR: Entfernen/Renamen von Tokens oder Aenderungen an bestehenden Token-Werten (Farben, Typo, Spacing, Radius, etc.).
+- MINOR: Neue Tokens, neue Skalen oder neue semantische Aliase, ohne bestehende Werte zu aendern.
+- PATCH: Keine Token-Value-Aenderungen (nur Build, Doku, Storybook, interne Pflege).
+
 ## Versionierung & Release (intern)
 1) Version in `design/package.json` hochziehen.
 2) `npm run build` in `design/` ausführen.

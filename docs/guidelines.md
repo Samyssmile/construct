@@ -47,6 +47,11 @@ Accessibility hat Prioritaet 1.
 - selected: aria-selected="true"
 - current: aria-current="page"
 
+## Fonts
+- Standard: Fonts werden in `foundations.css` per Google Fonts geladen (Sora, Source Sans 3, JetBrains Mono).
+- Falls eine App lokal hosten muss (CSP/Privacy), ersetze den Google-Import durch eigene @font-face Regeln.
+- Stelle sicher, dass Gewichte 400/500/600/700 verfuegbar sind.
+
 ## Governance
 - Neue Komponenten nur mit: Tokens, States, A11y-Notizen, Storybook-Story.
 - Vor Merge: visuelle QA + Tastaturtest + Kontrast-Check.
