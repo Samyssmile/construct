@@ -1,14 +1,15 @@
 import '../foundations.css';
 import '../components/components.css';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 export const parameters = {
   layout: 'centered',
 
   backgrounds: {
     options: {
-      canvas: { name: 'canvas', value: '#FFFFFF' },
-      surface: { name: 'surface', value: '#F5F7FA' },
-      muted: { name: 'muted', value: '#E9EEF4' }
+      canvas: { name: 'canvas', value: 'var(--color-bg-canvas)' },
+      surface: { name: 'surface', value: 'var(--color-bg-surface)' },
+      muted: { name: 'muted', value: 'var(--color-bg-muted)' }
     }
   },
 
@@ -26,3 +27,15 @@ export const initialGlobals = {
   }
 };
 export const tags = ['autodocs'];
+
+export const decorators = [
+  withThemeByDataAttribute({
+    themes: {
+      Light: 'light',
+      Dark: 'dark',
+      'High Contrast': 'high-contrast'
+    },
+    defaultTheme: 'Light',
+    attributeName: 'data-theme'
+  })
+];
