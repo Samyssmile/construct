@@ -50,6 +50,9 @@
       "ring": "{color.teal.400}"
     }
   },
+  "theme": {
+    "colorScheme": "light"
+  },
   "font": {
     "family": {
       "heading": "{font.family.brand}",

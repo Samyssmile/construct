@@ -7,7 +7,11 @@ const designDir = path.resolve(scriptDir, '..');
 const tokensDir = path.join(designDir, 'tokens');
 
 const primitivesPath = path.join(tokensDir, 'primitives.json');
-const semanticPath = path.join(tokensDir, 'semantic.light.json');
+const semanticThemeFiles = {
+  light: path.join(tokensDir, 'semantic.light.json'),
+  dark: path.join(tokensDir, 'semantic.dark.json'),
+  highContrast: path.join(tokensDir, 'semantic.high-contrast.json'),
+};
 
 const outCssPath = path.join(tokensDir, 'tokens.css');
 const outJsonPath = path.join(tokensDir, 'tokens.json');
@@ -22,7 +26,7 @@ if (showHelp) {
     [
       'Usage: node design/scripts/build-tokens.mjs [--check]',
       '',
-      'Generates CSS/TS/JSON outputs from primitives.json + semantic.light.json.',
+      'Generates CSS/TS/JSON outputs from primitives.json + semantic theme files.',
       '  --check  exits with non-zero if outputs are not up to date.',
     ].join('\n')
   );
@@ -30,7 +34,11 @@ if (showHelp) {
 }
 
 const primitives = JSON.parse(fs.readFileSync(primitivesPath, 'utf8'));
-const semantic = JSON.parse(fs.readFileSync(semanticPath, 'utf8'));
+const semanticBase = JSON.parse(fs.readFileSync(semanticThemeFiles.light, 'utf8'));
+const semanticOverrides = {
+  dark: JSON.parse(fs.readFileSync(semanticThemeFiles.dark, 'utf8')),
+  highContrast: JSON.parse(fs.readFileSync(semanticThemeFiles.highContrast, 'utf8')),
+};
 
 const fontFallbacks = {
   brand: ['"Segoe UI"', '"Helvetica Neue"', 'Arial', 'sans-serif'],
@@ -55,6 +63,29 @@ const flatten = (obj, basePath = []) => {
     }
   }
   return entries;
+};
+
+const mergeDeep = (base, override) => {
+  if (override === undefined) return base;
+  if (!override || typeof override !== 'object' || Array.isArray(override)) {
+    return override;
+  }
+  const output = Array.isArray(base) ? [...base] : { ...(base ?? {}) };
+  for (const [key, value] of Object.entries(override)) {
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      base &&
+      typeof base[key] === 'object' &&
+      !Array.isArray(base[key])
+    ) {
+      output[key] = mergeDeep(base[key], value);
+    } else {
+      output[key] = value;
+    }
+  }
+  return output;
 };
 
 const setNested = (target, pathParts, value) => {
@@ -165,13 +196,9 @@ const semanticVarName = (pathParts) => {
 };
 
 const primitivesFlat = flatten(primitives);
-const semanticFlat = flatten(semantic);
 
 const primitiveValueByPath = new Map();
 const primitiveVarByPath = new Map();
-const semanticVarByPath = new Map();
-const semanticValueByPath = new Map();
-const semanticPathByKey = new Map();
 
 for (const entry of primitivesFlat) {
   const pathKey = entry.path.join('.');
@@ -180,47 +207,7 @@ for (const entry of primitivesFlat) {
   primitiveVarByPath.set(pathKey, primitiveVarName(entry.path));
 }
 
-for (const entry of semanticFlat) {
-  const pathKey = entry.path.join('.');
-  semanticVarByPath.set(pathKey, semanticVarName(entry.path));
-  semanticValueByPath.set(pathKey, entry.value);
-  semanticPathByKey.set(pathKey, entry.path);
-}
-
-const semanticResolvedByPath = new Map();
-const resolving = new Set();
-
-const resolveSemanticValue = (pathKey) => {
-  if (semanticResolvedByPath.has(pathKey)) return semanticResolvedByPath.get(pathKey);
-  if (resolving.has(pathKey)) {
-    throw new Error(`Circular semantic reference: ${pathKey}`);
-  }
-  resolving.add(pathKey);
-  if (!semanticValueByPath.has(pathKey)) {
-    throw new Error(`Unknown semantic token: ${pathKey}`);
-  }
-  const rawValue = semanticValueByPath.get(pathKey);
-  const refPath = parseReference(rawValue);
-  let resolvedValue;
-  if (refPath) {
-    const refKey = refPath.join('.');
-    if (primitiveValueByPath.has(refKey)) {
-      resolvedValue = primitiveValueByPath.get(refKey);
-    } else if (semanticValueByPath.has(refKey)) {
-      resolvedValue = resolveSemanticValue(refKey);
-    } else {
-      throw new Error(`Unknown token reference: ${rawValue}`);
-    }
-  } else {
-    const pathParts = semanticPathByKey.get(pathKey);
-    resolvedValue = formatValue(pathParts, rawValue);
-  }
-  semanticResolvedByPath.set(pathKey, resolvedValue);
-  resolving.delete(pathKey);
-  return resolvedValue;
-};
-
-const buildCssEntries = (entries, kind) =>
+const buildCssEntries = (entries, kind, { primitiveVarByPath, semanticVarByPath }) =>
   entries.map((entry) => {
     const refPath = parseReference(entry.value);
     const name =
@@ -228,7 +215,7 @@ const buildCssEntries = (entries, kind) =>
     let value;
     if (refPath) {
       const refKey = refPath.join('.');
-      const refVar = primitiveVarByPath.get(refKey) ?? semanticVarByPath.get(refKey);
+      const refVar = primitiveVarByPath.get(refKey) ?? semanticVarByPath?.get(refKey);
       if (!refVar) {
         throw new Error(`Unknown token reference: ${entry.value}`);
       }
@@ -239,12 +226,123 @@ const buildCssEntries = (entries, kind) =>
     return { name, value };
   });
 
-const primitiveCssEntries = buildCssEntries(primitivesFlat, 'primitive');
-const semanticCssEntries = buildCssEntries(semanticFlat, 'semantic');
+const buildSemanticTheme = (semantic) => {
+  const semanticFlat = flatten(semantic);
+  const semanticVarByPath = new Map();
+  const semanticValueByPath = new Map();
+  const semanticPathByKey = new Map();
 
-const section = (label, entries) => {
+  for (const entry of semanticFlat) {
+    const pathKey = entry.path.join('.');
+    semanticVarByPath.set(pathKey, semanticVarName(entry.path));
+    semanticValueByPath.set(pathKey, entry.value);
+    semanticPathByKey.set(pathKey, entry.path);
+  }
+
+  const semanticResolvedByPath = new Map();
+  const resolving = new Set();
+
+  const resolveSemanticValue = (pathKey) => {
+    if (semanticResolvedByPath.has(pathKey)) return semanticResolvedByPath.get(pathKey);
+    if (resolving.has(pathKey)) {
+      throw new Error(`Circular semantic reference: ${pathKey}`);
+    }
+    resolving.add(pathKey);
+    if (!semanticValueByPath.has(pathKey)) {
+      throw new Error(`Unknown semantic token: ${pathKey}`);
+    }
+    const rawValue = semanticValueByPath.get(pathKey);
+    const refPath = parseReference(rawValue);
+    let resolvedValue;
+    if (refPath) {
+      const refKey = refPath.join('.');
+      if (primitiveValueByPath.has(refKey)) {
+        resolvedValue = primitiveValueByPath.get(refKey);
+      } else if (semanticValueByPath.has(refKey)) {
+        resolvedValue = resolveSemanticValue(refKey);
+      } else {
+        throw new Error(`Unknown token reference: ${rawValue}`);
+      }
+    } else {
+      const pathParts = semanticPathByKey.get(pathKey);
+      resolvedValue = formatValue(pathParts, rawValue);
+    }
+    semanticResolvedByPath.set(pathKey, resolvedValue);
+    resolving.delete(pathKey);
+    return resolvedValue;
+  };
+
+  const semanticOut = {};
+  for (const entry of semanticFlat) {
+    const pathKey = entry.path.join('.');
+    const value = resolveSemanticValue(pathKey);
+    setNested(semanticOut, entry.path, value);
+  }
+
+  const semanticCssEntries = buildCssEntries(semanticFlat, 'semantic', {
+    primitiveVarByPath,
+    semanticVarByPath,
+  });
+
+  return { semanticFlat, semanticVarByPath, semanticOut, semanticCssEntries };
+};
+
+const semanticThemes = {
+  light: buildSemanticTheme(semanticBase),
+  dark: buildSemanticTheme(mergeDeep(semanticBase, semanticOverrides.dark)),
+  highContrast: buildSemanticTheme(mergeDeep(semanticBase, semanticOverrides.highContrast)),
+};
+
+const semanticLight = semanticThemes.light;
+const semanticDark = semanticThemes.dark;
+const semanticHighContrast = semanticThemes.highContrast;
+
+const primitiveCssEntries = buildCssEntries(primitivesFlat, 'primitive', {
+  primitiveVarByPath,
+  semanticVarByPath: null,
+});
+
+const semanticLightEntries = semanticLight.semanticCssEntries;
+const semanticDarkEntries = semanticDark.semanticCssEntries;
+const semanticHighContrastEntries = semanticHighContrast.semanticCssEntries;
+
+const semanticTypographyEntries = semanticLightEntries.filter((entry) =>
+  entry.name.startsWith('type-')
+);
+const semanticLightNonTypeEntries = semanticLightEntries.filter(
+  (entry) => !entry.name.startsWith('type-')
+);
+const themeTokenFilter = (entry) =>
+  entry.name.startsWith('color-') || entry.name.startsWith('theme-');
+const semanticDarkThemeEntries = semanticDarkEntries.filter(themeTokenFilter);
+const semanticHighContrastThemeEntries = semanticHighContrastEntries.filter(themeTokenFilter);
+
+const section = (label, entries, indent = 2) => {
   if (!entries.length) return [];
-  return [`  /* ${label} */`, ...entries.map((entry) => `  --${entry.name}: ${entry.value};`)];
+  const pad = ' '.repeat(indent);
+  return [`${pad}/* ${label} */`, ...entries.map((entry) => `${pad}--${entry.name}: ${entry.value};`)];
+};
+
+const themeBlock = (selector, label, entries) => {
+  if (!entries.length) return [];
+  return [
+    `${selector} {`,
+    ...section(`Semantic (${label})`, entries, 2),
+    '}',
+    '',
+  ];
+};
+
+const mediaBlock = (query, selector, label, entries) => {
+  if (!entries.length) return [];
+  return [
+    `@media ${query} {`,
+    `  ${selector} {`,
+    ...section(`Semantic (${label})`, entries, 4),
+    '  }',
+    '}',
+    '',
+  ];
 };
 
 const cssLines = [
@@ -252,7 +350,7 @@ const cssLines = [
   ':root {',
   ...section('Color primitives', primitiveCssEntries.filter((entry) => entry.name.startsWith('color-'))),
   ...section('Typography', primitiveCssEntries.filter((entry) => entry.name.startsWith('font-') || entry.name.startsWith('line-height-') || entry.name.startsWith('letter-spacing-'))),
-  ...section('Semantic typography', semanticCssEntries.filter((entry) => entry.name.startsWith('type-'))),
+  ...section('Semantic typography', semanticTypographyEntries),
   ...section('Spacing', primitiveCssEntries.filter((entry) => entry.name.startsWith('space-'))),
   ...section('Radius', primitiveCssEntries.filter((entry) => entry.name.startsWith('radius-'))),
   ...section('Border widths', primitiveCssEntries.filter((entry) => entry.name.startsWith('border-'))),
@@ -263,13 +361,22 @@ const cssLines = [
   ...section('Motion', primitiveCssEntries.filter((entry) => entry.name.startsWith('duration-') || entry.name.startsWith('easing-'))),
   ...section('Z-Index', primitiveCssEntries.filter((entry) => entry.name.startsWith('z-'))),
   ...section('Breakpoints', primitiveCssEntries.filter((entry) => entry.name.startsWith('bp-'))),
-  ...section('Semantic (light)', semanticCssEntries.filter((entry) => !entry.name.startsWith('type-'))),
+  ...section('Semantic (light)', semanticLightNonTypeEntries),
   '}',
   '',
+  ...themeBlock('[data-theme="dark"]', 'dark', semanticDarkThemeEntries),
+  ...themeBlock('[data-theme="high-contrast"]', 'high-contrast', semanticHighContrastThemeEntries),
+  ...mediaBlock('(prefers-color-scheme: dark)', ':root:not([data-theme])', 'dark (system)', semanticDarkThemeEntries),
+  ...mediaBlock('(prefers-contrast: more)', ':root:not([data-theme])', 'high-contrast (system)', semanticHighContrastThemeEntries),
 ];
 
 const primitivesOut = {};
-const semanticOut = {};
+const semanticOut = semanticLight.semanticOut;
+const semanticThemesOut = {
+  light: semanticLight.semanticOut,
+  dark: semanticDark.semanticOut,
+  highContrast: semanticHighContrast.semanticOut,
+};
 const cssVars = { primitives: {}, semantic: {} };
 
 for (const entry of primitivesFlat) {
@@ -278,14 +385,15 @@ for (const entry of primitivesFlat) {
   setNested(cssVars.primitives, entry.path, `var(--${primitiveVarName(entry.path)})`);
 }
 
-for (const entry of semanticFlat) {
-  const pathKey = entry.path.join('.');
-  const value = resolveSemanticValue(pathKey);
-  setNested(semanticOut, entry.path, value);
+for (const entry of semanticLight.semanticFlat) {
   setNested(cssVars.semantic, entry.path, `var(--${semanticVarName(entry.path)})`);
 }
 
-const jsonOut = JSON.stringify({ primitives: primitivesOut, semantic: semanticOut }, null, 2);
+const jsonOut = JSON.stringify(
+  { primitives: primitivesOut, semantic: semanticOut, semanticThemes: semanticThemesOut },
+  null,
+  2
+);
 const tsOut = [
   '/* Generated by design/scripts/build-tokens.mjs. Do not edit directly. */',
   '',
@@ -293,9 +401,11 @@ const tsOut = [
   '',
   `export const semantic = ${JSON.stringify(semanticOut, null, 2)} as const;`,
   '',
+  `export const semanticThemes = ${JSON.stringify(semanticThemesOut, null, 2)} as const;`,
+  '',
   `export const cssVars = ${JSON.stringify(cssVars, null, 2)} as const;`,
   '',
-  'export const tokens = { primitives, semantic, cssVars } as const;',
+  'export const tokens = { primitives, semantic, semanticThemes, cssVars } as const;',
   '',
 ].join('\n');
 

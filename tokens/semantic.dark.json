@@ -1,0 +1,56 @@
+{
+  "color": {
+    "brand": {
+      "primary": "{color.ocean.400}",
+      "primaryHover": "{color.ocean.300}",
+      "primaryActive": "{color.ocean.500}",
+      "accent": "{color.teal.400}",
+      "accentHover": "{color.teal.300}",
+      "accentActive": "{color.teal.500}"
+    },
+    "text": {
+      "primary": "{color.slate.0}",
+      "secondary": "{color.slate.200}",
+      "muted": "{color.slate.400}",
+      "inverse": "{color.slate.0}"
+    },
+    "background": {
+      "canvas": "{color.slate.950}",
+      "surface": "{color.slate.800}",
+      "elevated": "{color.slate.700}",
+      "muted": "{color.slate.900}"
+    },
+    "border": {
+      "subtle": "{color.slate.800}",
+      "default": "{color.slate.700}",
+      "strong": "{color.slate.600}"
+    },
+    "state": {
+      "info": "{color.ocean.300}",
+      "success": "{color.green.300}",
+      "warning": "{color.amber.300}",
+      "danger": "{color.red.300}"
+    },
+    "stateSurface": {
+      "info": "{color.ocean.900}",
+      "success": "{color.green.900}",
+      "warning": "{color.amber.900}",
+      "danger": "{color.red.900}"
+    },
+    "stateBorder": {
+      "info": "{color.ocean.700}",
+      "success": "{color.green.700}",
+      "warning": "{color.amber.700}",
+      "danger": "{color.red.700}"
+    },
+    "overlay": {
+      "scrim": "rgba(8, 14, 20, 0.7)"
+    },
+    "focus": {
+      "ring": "{color.teal.300}"
+    }
+  },
+  "theme": {
+    "colorScheme": "dark"
+  }
+}

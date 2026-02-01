@@ -33,6 +33,7 @@ A consistent, accessible, professional design system for modern web applications
 - **ARIA**: Use ARIA attributes only where semantic HTML isn't sufficient
 - **Links**: Links must be distinguishable without color alone (e.g., underline)
 - **Contrast**: Text, icons, and focus rings must meet WCAG AA standards
+- **Themes**: Support light, dark, and high-contrast modes; respect user preferences
 - **Disabled States**: Must be recognizable, but content should remain readable
 - **Motion**: Respect `prefers-reduced-motion` for animations
 - **Live Regions**: Use `aria-live` for toasts and status messages

@@ -9,6 +9,7 @@
 - **Design Tokens** - Single source of truth for colors, typography, spacing, and more
 - **Framework-Agnostic CSS** - Works with any framework or vanilla HTML
 - **Accessibility First** - WCAG 2.1 AA compliant, keyboard navigation, ARIA support
+- **Themes** - Light, dark, and high-contrast modes with system preference support
 - **Token Pipeline** - Automated build system (JSON → CSS Variables + TypeScript)
 - **Comprehensive Components** - 16+ production-ready components
 - **Storybook Documentation** - Interactive component explorer with a11y testing
@@ -48,6 +49,25 @@ Or use design tokens directly:
 }
 ```
 
+### Themes
+
+Set a theme on the root element (or any container) to switch modes:
+
+```html
+<html data-theme="dark">
+  ...
+</html>
+```
+
+Available values:
+- `light` (default)
+- `dark`
+- `high-contrast`
+
+If no `data-theme` is set, system preferences are respected:
+- `prefers-color-scheme: dark` → dark theme
+- `prefers-contrast: more` → high-contrast theme
+
 ## 📦 What's Included
 
 ```
@@ -55,6 +75,8 @@ Or use design tokens directly:
 ├── tokens/                     # Design tokens (JSON, CSS, TS)
 │   ├── primitives.json         # Base values (colors, sizes)
 │   ├── semantic.light.json     # Semantic mappings
+│   ├── semantic.dark.json      # Dark theme overrides
+│   ├── semantic.high-contrast.json # High-contrast theme overrides
 │   ├── tokens.css              # CSS Custom Properties
 │   ├── tokens.json             # Resolved JSON output
 │   └── tokens.ts               # TypeScript exports

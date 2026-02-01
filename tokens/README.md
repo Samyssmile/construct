@@ -13,6 +13,8 @@ Design tokens are the single source of truth for all design decisions in the Con
 
 - **`primitives.json`**: Raw values (color palettes, typography scale, spacing, radius, shadows, layout)
 - **`semantic.light.json`**: Semantic mappings for light theme (brand, text, background, state colors)
+- **`semantic.dark.json`**: Dark theme overrides (color + theme metadata)
+- **`semantic.high-contrast.json`**: High-contrast theme overrides (color + theme metadata)
 - **`tokens.css`**: Generated CSS Custom Properties (ready for import)
 - **`tokens.json`**: Generated, resolved token values with units (for tooling)
 - **`tokens.ts`**: Generated TypeScript exports (for JavaScript/TypeScript usage)
@@ -75,6 +77,25 @@ body {
 }
 ```
 
+### Themes
+
+Construct ships with light (default), dark, and high-contrast themes. The generated CSS includes theme overrides and system preference fallbacks.
+
+```html
+<html data-theme="dark">
+  ...
+</html>
+```
+
+Available values:
+- `light` (default)
+- `dark`
+- `high-contrast`
+
+If no `data-theme` is set, the system preferences are respected:
+- `prefers-color-scheme: dark` → dark theme
+- `prefers-contrast: more` → high-contrast theme
+
 ### TypeScript/JavaScript
 
 Import the generated TypeScript file:
@@ -87,6 +108,9 @@ console.log(tokens.semantic.color.brand.primary); // "#174C5D"
 
 // Or use CSS variable references
 console.log(cssVars.semantic.color.brand.primary); // "var(--color-brand-primary)"
+
+// Access full theme maps
+console.log(tokens.semanticThemes.dark.color.background.canvas);
 ```
 
 ## Building Tokens

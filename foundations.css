@@ -2,7 +2,7 @@
 @import './tokens/tokens.css';
 
 :root {
-  color-scheme: light;
+  color-scheme: var(--theme-color-scheme, light);
   font-family: var(--font-family-text);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
