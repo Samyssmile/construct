@@ -1,0 +1,153 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Getting Started" tags={['!autodocs']} />
+
+# Getting Started with Construct
+
+**Construct** is an open-source, token-based design system that provides accessible, framework-agnostic UI components and design tokens for modern web applications.
+
+## What is Construct?
+
+Construct gives you:
+
+- **Design tokens** — a single source of truth for colors, typography, spacing, and more
+- **Framework-agnostic CSS** — works with Angular, React, Svelte, Vue, or vanilla HTML
+- **Accessibility first** — WCAG 2.1 AA compliant, full keyboard navigation, ARIA support
+- **Theming** — light, dark, and high-contrast modes with system-preference fallback
+- **16+ production-ready components** — buttons, forms, tables, modals, and more
+
+---
+
+## Installation
+
+```bash
+npm install @construct/design
+```
+
+---
+
+## Integration
+
+### 1. Import the styles
+
+Add the foundation reset and component styles to your project's global CSS entry point:
+
+```css
+@import '@construct/design/foundations.css';
+@import '@construct/design/components/components.css';
+```
+
+Or using a bundler's JavaScript entry point:
+
+```js
+import '@construct/design/foundations.css';
+import '@construct/design/components/components.css';
+```
+
+### 2. Use components in HTML
+
+All components use the `ct-` prefix with BEM-style modifiers:
+
+```html
+<!-- Button -->
+<button class="ct-button">Primary</button>
+<button class="ct-button ct-button--secondary">Secondary</button>
+<button class="ct-button ct-button--sm">Small</button>
+
+<!-- Form input -->
+<div class="ct-field">
+  <label class="ct-label" for="email">Email address</label>
+  <input class="ct-input" type="email" id="email" />
+</div>
+
+<!-- Card -->
+<div class="ct-card">
+  <div class="ct-card__body">Card content here</div>
+</div>
+```
+
+### 3. Apply a theme
+
+Set `data-theme` on your root element to choose a colour scheme:
+
+```html
+<html data-theme="light">   <!-- default -->
+<html data-theme="dark">
+<html data-theme="high-contrast">
+```
+
+When no `data-theme` is present, Construct automatically respects the user's OS preference:
+- `prefers-color-scheme: dark` → dark theme
+- `prefers-contrast: more` → high-contrast theme
+
+---
+
+## Using Design Tokens
+
+You can use Construct's CSS custom properties directly in your own styles:
+
+```css
+.my-component {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+}
+```
+
+TypeScript and JSON token exports are also available for build-time tooling:
+
+```ts
+import { tokens, cssVars } from '@construct/design/tokens/tokens';
+
+// Resolved value
+tokens.semantic.color.brand.primary; // '#174C5D'
+
+// CSS variable reference
+cssVars.semantic.color.brand.primary; // 'var(--color-brand-primary)'
+```
+
+---
+
+## Framework Examples
+
+### React
+
+```jsx
+export function SaveButton({ onClick }) {
+  return (
+    <button className="ct-button" onClick={onClick}>
+      Save changes
+    </button>
+  );
+}
+```
+
+### Angular
+
+```html
+<!-- my-button.component.html -->
+<button class="ct-button" (click)="save()">Save changes</button>
+```
+
+### Svelte
+
+```svelte
+<button class="ct-button" on:click={save}>Save changes</button>
+```
+
+### Vanilla HTML
+
+```html
+<button class="ct-button">Save changes</button>
+```
+
+---
+
+## What's Next
+
+- **[Design Tokens](?path=/docs/docs-design-tokens--docs)** — learn about the two-tier token pipeline and available token categories
+- **[Theming](?path=/docs/docs-theming--docs)** — configure dark mode and high-contrast support
+- **[Accessibility Guidelines](?path=/docs/docs-accessibility-guidelines--docs)** — keyboard patterns and ARIA guidance
+- Browse the **Components** in the sidebar to explore interactive examples

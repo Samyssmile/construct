@@ -1,0 +1,347 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Accessibility Guidelines" tags={['!autodocs']} />
+
+# Accessibility Guidelines
+
+**Accessibility is Priority #1 in Construct.** Every component is built to meet WCAG 2.1 AA requirements and support full keyboard navigation, screen readers, and high-contrast modes.
+
+---
+
+## Core Principles
+
+### Do
+
+- Use semantic HTML (`button`, `input`, `label`, `table`, `nav`, `main`, `aside`)
+- Use design tokens for colors, spacing, typography, and border radius
+- Maintain clear state logic (hover, focus, active, disabled, error)
+- Use consistent sizes (sm, md, lg) for form controls and buttons
+- Test all components with keyboard navigation (Tab, Shift+Tab, Enter, Space, Arrow keys)
+
+### Don't
+
+- Don't rely on color alone to convey status — always add text or an icon
+- Don't create custom interactive controls without ARIA roles and keyboard support
+- Don't use fixed-pixel layouts for content that can grow
+- Don't use low-contrast text or unreadable disabled states
+- Don't add unnecessary animations for critical or irreversible actions
+
+---
+
+## Minimum Requirements for All Components
+
+| Requirement | Detail |
+|-------------|--------|
+| **Visible Focus** | All interactive elements must have a clearly visible `:focus-visible` indicator |
+| **Labels** | Every form input needs a label — explicit `<label>` or `aria-label` / `aria-labelledby` |
+| **Keyboard Navigation** | All functionality must be reachable and operable by keyboard alone |
+| **ARIA** | Use ARIA attributes only where semantic HTML is insufficient |
+| **Contrast** | Text, icons, and focus rings must meet WCAG AA (4.5:1 normal text, 3:1 large/UI) |
+| **Themes** | Support light, dark, and high-contrast modes; respect system preferences |
+| **Disabled States** | Must be recognisable; content must remain readable (never invisible) |
+| **Motion** | Respect `prefers-reduced-motion`; never hard-code animation durations |
+| **Live Regions** | Use `aria-live` for toasts, status updates, and dynamic content changes |
+| **Links** | Distinguish links from surrounding text without color alone (e.g. underline) |
+
+---
+
+## Component State Attributes
+
+Use these standard attributes — never invent custom state classes:
+
+| State | Attribute | Example |
+|-------|-----------|---------|
+| Error | `aria-invalid="true"` | `<input aria-invalid="true" />` |
+| Disabled | `disabled` or `aria-disabled="true"` | `<button disabled>` |
+| Selected | `aria-selected="true"` | Tab, option, list item |
+| Current page | `aria-current="page"` | Navigation link |
+| Expanded | `aria-expanded="true\|false"` | Accordion, dropdown trigger |
+| Pressed | `aria-pressed="true\|false"` | Toggle button |
+| Checked | `aria-checked="true\|false\|mixed"` | Checkbox, switch |
+
+Always pair `aria-invalid="true"` with visible error text linked via `aria-describedby`.
+
+---
+
+## Keyboard Patterns for Composite Components
+
+### Tabs
+
+| Key | Action |
+|-----|--------|
+| Arrow keys | Move focus between tabs |
+| Home / End | Jump to first / last tab |
+| Enter / Space | Activate the focused tab |
+
+**Implementation:** Use roving tabindex — the active tab has `tabindex="0"`, all others have `tabindex="-1"`.
+
+```html
+<div role="tablist">
+  <button role="tab" aria-selected="true"  tabindex="0"  aria-controls="panel-1">Tab 1</button>
+  <button role="tab" aria-selected="false" tabindex="-1" aria-controls="panel-2">Tab 2</button>
+</div>
+<div role="tabpanel" id="panel-1">Content 1</div>
+<div role="tabpanel" id="panel-2" hidden>Content 2</div>
+```
+
+### Dropdown (Action-List pattern)
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Open dropdown; focus moves to first item |
+| Esc | Close dropdown; return focus to trigger |
+| Tab | Move through items (they stay in natural tab order) |
+
+The trigger uses `aria-expanded` and `aria-controls`:
+
+```html
+<button aria-expanded="false" aria-controls="menu" aria-haspopup="true">
+  Options
+</button>
+<ul id="menu" role="list">
+  <li><button>Edit</button></li>
+  <li><button>Delete</button></li>
+</ul>
+```
+
+> Use this pattern for most dropdowns. Only use `role="menu"` if you also implement arrow-key navigation, Home/End, typeahead, and roving tabindex.
+
+### Datepicker
+
+| Key | Action |
+|-----|--------|
+| Arrow keys | Move focus by day in the calendar grid |
+| Page Up / Page Down | Switch months |
+| Home / End | Jump to start / end of week |
+| Enter / Space | Select the focused date |
+| Esc | Close calendar; return focus to trigger |
+
+### Modal / Dialog
+
+| Key | Action |
+|-----|--------|
+| Esc | Close modal |
+| Tab | Move focus forward within modal (trapped) |
+| Shift+Tab | Move focus backward within modal (trapped) |
+
+**Requirements:**
+- Set `role="dialog"` and `aria-modal="true"` on the modal container
+- Set `aria-labelledby` pointing to the modal's heading
+- On open, move focus to the first focusable element (or a designated element)
+- Trap focus — Tab and Shift+Tab must not leave the modal while it is open
+- On close, return focus to the element that triggered the modal
+
+```html
+<div role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <h2 id="modal-title">Confirm deletion</h2>
+  <p>This action cannot be undone.</p>
+  <button>Cancel</button>
+  <button>Delete</button>
+</div>
+```
+
+### Tooltip
+
+| Event | Action |
+|-------|--------|
+| Hover / Focus | Show tooltip |
+| Mouse leave / Blur | Hide tooltip |
+| Esc | Hide tooltip |
+
+```html
+<button aria-describedby="tip-save">Save</button>
+<div role="tooltip" id="tip-save">Saves your work (Ctrl+S)</div>
+```
+
+### Accordion
+
+| Key | Action |
+|-----|--------|
+| Enter / Space | Toggle panel open / closed |
+| Tab | Move to next interactive element |
+| Shift+Tab | Move to previous interactive element |
+
+```html
+<h3>
+  <button aria-expanded="false" aria-controls="panel-1">
+    Section title
+  </button>
+</h3>
+<div id="panel-1" hidden>Panel content</div>
+```
+
+---
+
+## Focus Management
+
+### Focus Trap
+
+Use a focus trap for modals and other overlays that must confine interaction:
+
+```js
+function trapFocus(container) {
+  const focusable = container.querySelectorAll(
+    'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  container.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  first.focus();
+}
+```
+
+### Roving Tabindex
+
+Use roving tabindex for widget groups (tabs, toolbars, radio groups, menus):
+
+```js
+function initRovingTabindex(container, itemSelector) {
+  const items = [...container.querySelectorAll(itemSelector)];
+  items.forEach((item, i) => {
+    item.tabIndex = i === 0 ? 0 : -1;
+  });
+
+  container.addEventListener('keydown', (e) => {
+    const current = document.activeElement;
+    const idx = items.indexOf(current);
+    let next;
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      next = items[(idx + 1) % items.length];
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      next = items[(idx - 1 + items.length) % items.length];
+    } else if (e.key === 'Home') {
+      next = items[0];
+    } else if (e.key === 'End') {
+      next = items[items.length - 1];
+    }
+
+    if (next) {
+      e.preventDefault();
+      items.forEach(item => { item.tabIndex = -1; });
+      next.tabIndex = 0;
+      next.focus();
+    }
+  });
+}
+```
+
+---
+
+## Live Regions
+
+For dynamic content (toasts, status messages, progress updates) use `aria-live` so screen readers announce changes without requiring focus:
+
+```html
+<!-- Polite: announces after current speech finishes -->
+<div aria-live="polite" aria-atomic="true" class="ct-sr-only" id="status-region"></div>
+
+<!-- Assertive: interrupts immediately (use sparingly for critical errors) -->
+<div aria-live="assertive" aria-atomic="true" class="ct-sr-only" id="alert-region"></div>
+```
+
+```js
+function announce(message, priority = 'polite') {
+  const region = document.getElementById(
+    priority === 'assertive' ? 'alert-region' : 'status-region'
+  );
+  region.textContent = '';
+  requestAnimationFrame(() => { region.textContent = message; });
+}
+
+// Usage
+announce('File uploaded successfully');
+announce('Session expired — please log in again', 'assertive');
+```
+
+---
+
+## Screen Reader Only Text
+
+Visually hide supplementary text that only screen readers need:
+
+```css
+.ct-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+```html
+<!-- Icon-only button with accessible label -->
+<button class="ct-button ct-button--icon" aria-label="Close dialog">
+  <span aria-hidden="true">✕</span>
+</button>
+
+<!-- Table with supplementary context -->
+<td>
+  98%
+  <span class="ct-sr-only">uptime last 30 days</span>
+</td>
+```
+
+---
+
+## Testing Checklist
+
+Before merging any new component, verify:
+
+- [ ] All interactive elements are reachable and operable by keyboard
+- [ ] Focus indicator is visible on all interactive elements (`:focus-visible`)
+- [ ] All images have `alt` text; decorative images have `alt=""`
+- [ ] All form inputs have associated `<label>` elements
+- [ ] Color is not the sole means of conveying information
+- [ ] Contrast ratios pass WCAG AA (4.5:1 for body text, 3:1 for large text/UI)
+- [ ] Component works correctly in dark and high-contrast themes
+- [ ] `aria-live` regions announce dynamic changes
+- [ ] Modals trap focus and restore focus on close
+- [ ] No accessibility violations in the Storybook a11y panel
+
+### Automated testing
+
+The Storybook a11y addon (powered by axe-core) runs on every story and is configured to **fail CI on violations**. Run it locally with:
+
+```bash
+npx vitest --run
+```
+
+---
+
+## Fonts and Typography
+
+Fonts are loaded from Google Fonts in `foundations.css` (Sora, Source Sans 3, JetBrains Mono).
+
+For **CSP or privacy requirements**, replace the Google Fonts `@import` with self-hosted `@font-face` rules. Ensure weights 400, 500, 600, and 700 are available.
+
+---
+
+## Governance
+
+- **New components require:** design tokens, state definitions, accessibility notes, and a Storybook story
+- **Before merge:** visual QA + keyboard testing + contrast check
+- **Review process:** at least one accessibility review for new interactive components
+
+---
+
+## Related
+
+- **[Getting Started](?path=/docs/docs-getting-started--docs)** — installation and integration guide
+- **[Theming](?path=/docs/docs-theming--docs)** — dark mode, high-contrast, and reduced motion
+- [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/) — full specification
+- [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) — keyboard patterns and widget roles

@@ -1,0 +1,258 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Design Tokens" tags={['!autodocs']} />
+
+# Design Tokens
+
+Design tokens are the single source of truth for every visual decision in Construct. They encode colors, typography, spacing, radii, shadows, and motion into named, reusable values that stay consistent across every component and theme.
+
+---
+
+## Two-Tier Token Pipeline
+
+Construct uses a **two-tier** system: primitives define raw values, and semantic tokens map those values to purpose-driven names.
+
+```
+tokens/primitives.json
+tokens/semantic.light.json
+tokens/semantic.dark.json
+tokens/semantic.high-contrast.json
+        │
+        ▼  npm run build
+tokens/tokens.css   ← CSS custom properties
+tokens/tokens.json  ← Resolved JSON (for tooling)
+tokens/tokens.ts    ← TypeScript exports
+```
+
+> **Never hand-edit the generated files.** Edit the source JSON files and run `npm run build`.
+
+### Tier 1 — Primitives
+
+Raw design values that form the palette. They rarely change.
+
+```json
+{
+  "color": {
+    "ocean": { "700": "#174C5D" },
+    "slate": { "950": "#0E1720" }
+  },
+  "space": { "4": 8, "6": 16 },
+  "radius": { "md": 8, "lg": 12 }
+}
+```
+
+### Tier 2 — Semantic
+
+Contextual aliases that reference primitives by role. Swapping a theme means remapping semantic tokens — primitives stay untouched.
+
+```json
+{
+  "color": {
+    "brand": { "primary": "{color.ocean.700}" },
+    "text":  { "primary": "{color.slate.950}" }
+  }
+}
+```
+
+---
+
+## Color Tokens
+
+### Brand
+
+| Token | CSS Variable | Light value |
+|-------|-------------|-------------|
+| `color.brand.primary` | `--color-brand-primary` | `#174C5D` |
+| `color.brand.primaryHover` | `--color-brand-primary-hover` | `#103745` |
+| `color.brand.accent` | `--color-brand-accent` | `#167B76` |
+| `color.brand.accentHover` | `--color-brand-accent-hover` | `#115F5C` |
+
+<div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+  <div style={{ width: 64, height: 64, background: 'var(--color-brand-primary)', borderRadius: 8, border: '1px solid var(--color-border-subtle)' }} title="--color-brand-primary" />
+  <div style={{ width: 64, height: 64, background: 'var(--color-brand-accent)', borderRadius: 8, border: '1px solid var(--color-border-subtle)' }} title="--color-brand-accent" />
+</div>
+
+### Text
+
+| Token | CSS Variable | Role |
+|-------|-------------|------|
+| `color.text.primary` | `--color-text-primary` | Body text |
+| `color.text.secondary` | `--color-text-secondary` | Supporting text |
+| `color.text.muted` | `--color-text-muted` | Hints, placeholders |
+| `color.text.inverse` | `--color-text-inverse` | Text on dark backgrounds |
+
+### Backgrounds
+
+| Token | CSS Variable | Role |
+|-------|-------------|------|
+| `color.background.canvas` | `--color-bg-canvas` | Page background |
+| `color.background.surface` | `--color-bg-surface` | Cards, panels |
+| `color.background.elevated` | `--color-bg-elevated` | Dropdowns, popovers |
+| `color.background.muted` | `--color-bg-muted` | Subtle fills |
+
+### Borders
+
+| Token | CSS Variable | Role |
+|-------|-------------|------|
+| `color.border.subtle` | `--color-border-subtle` | Dividers |
+| `color.border.default` | `--color-border-default` | Input borders |
+| `color.border.strong` | `--color-border-strong` | Emphasis borders |
+
+### States
+
+| Token | CSS Variable | Role |
+|-------|-------------|------|
+| `color.state.info` | `--color-state-info` | Informational |
+| `color.state.success` | `--color-state-success` | Success |
+| `color.state.warning` | `--color-state-warning` | Warning |
+| `color.state.danger` | `--color-state-danger` | Error / danger |
+
+<div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+  <div style={{ width: 64, height: 64, background: 'var(--color-state-info)', borderRadius: 8 }} title="--color-state-info" />
+  <div style={{ width: 64, height: 64, background: 'var(--color-state-success)', borderRadius: 8 }} title="--color-state-success" />
+  <div style={{ width: 64, height: 64, background: 'var(--color-state-warning)', borderRadius: 8 }} title="--color-state-warning" />
+  <div style={{ width: 64, height: 64, background: 'var(--color-state-danger)', borderRadius: 8 }} title="--color-state-danger" />
+</div>
+
+---
+
+## Spacing Tokens
+
+Spacing uses a numeric scale where each step maps to a pixel value. Use `var(--space-N)` in CSS.
+
+| Token | CSS Variable | Value |
+|-------|-------------|-------|
+| `space.1` | `--space-1` | 2px |
+| `space.2` | `--space-2` | 4px |
+| `space.3` | `--space-3` | 6px |
+| `space.4` | `--space-4` | 8px |
+| `space.5` | `--space-5` | 12px |
+| `space.6` | `--space-6` | 16px |
+| `space.7` | `--space-7` | 20px |
+| `space.8` | `--space-8` | 24px |
+| `space.9` | `--space-9` | 32px |
+| `space.10` | `--space-10` | 40px |
+| `space.11` | `--space-11` | 48px |
+| `space.12` | `--space-12` | 64px |
+| `space.13` | `--space-13` | 80px |
+
+<div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', marginBottom: '16px' }}>
+  {[2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48].map((px, i) => (
+    <div key={i} style={{ width: px, height: px, background: 'var(--color-brand-primary)', flexShrink: 0 }} title={`${px}px`} />
+  ))}
+</div>
+
+---
+
+## Typography Tokens
+
+### Font Families
+
+| CSS Variable | Value |
+|-------------|-------|
+| `--font-family-heading` | Sora |
+| `--font-family-body` | Source Sans 3 |
+| `--font-family-code` | JetBrains Mono |
+
+### Font Sizes
+
+| Token | CSS Variable | Value |
+|-------|-------------|-------|
+| `font.size.xs` | `--font-size-xs` | 12px |
+| `font.size.sm` | `--font-size-sm` | 14px |
+| `font.size.md` | `--font-size-md` | 16px |
+| `font.size.lg` | `--font-size-lg` | 18px |
+| `font.size.xl` | `--font-size-xl` | 20px |
+| `font.size.2xl` | `--font-size-2xl` | 24px |
+| `font.size.3xl` | `--font-size-3xl` | 28px |
+| `font.size.4xl` | `--font-size-4xl` | 32px |
+| `font.size.5xl` | `--font-size-5xl` | 40px |
+| `font.size.6xl` | `--font-size-6xl` | 48px |
+
+---
+
+## Border Radius Tokens
+
+| Token | CSS Variable | Value |
+|-------|-------------|-------|
+| `radius.xs` | `--radius-xs` | 2px |
+| `radius.sm` | `--radius-sm` | 4px |
+| `radius.md` | `--radius-md` | 8px |
+| `radius.lg` | `--radius-lg` | 12px |
+| `radius.xl` | `--radius-xl` | 16px |
+| `radius.2xl` | `--radius-2xl` | 24px |
+| `radius.round` | `--radius-round` | 999px (pill) |
+
+Semantic aliases for components:
+
+| CSS Variable | Maps to |
+|-------------|---------|
+| `--radius-control` | `--radius-md` (inputs, buttons) |
+| `--radius-card` | `--radius-lg` (cards) |
+| `--radius-modal` | `--radius-xl` (modals) |
+| `--radius-pill` | `--radius-round` (badges, tags) |
+
+---
+
+## Shadow Tokens
+
+| Token | CSS Variable | Usage |
+|-------|-------------|-------|
+| `shadow.xs` | `--shadow-xs` | Subtle lift |
+| `shadow.sm` | `--shadow-sm` | Cards (`--shadow-card`) |
+| `shadow.md` | `--shadow-md` | Dropdowns (`--shadow-dropdown`) |
+| `shadow.lg` | `--shadow-lg` | Modals (`--shadow-modal`) |
+| `shadow.xl` | `--shadow-xl` | Full-page overlays |
+
+---
+
+## Using Tokens in CSS
+
+```css
+.my-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-8);
+}
+
+.my-card__title {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-2xl);
+  color: var(--color-text-primary);
+}
+```
+
+---
+
+## Using Tokens in TypeScript
+
+```ts
+import { tokens, cssVars } from '@construct/design/tokens/tokens';
+
+// Resolved hex value
+const brand = tokens.semantic.color.brand.primary; // '#174C5D'
+
+// CSS variable reference string (for inline styles)
+const brandVar = cssVars.semantic.color.brand.primary; // 'var(--color-brand-primary)'
+
+// Access theme-specific overrides
+const darkBg = tokens.semanticThemes.dark.color.background.canvas;
+```
+
+---
+
+## Building Tokens
+
+After editing any source JSON file, regenerate the outputs:
+
+```bash
+npm run build
+```
+
+To verify outputs are up-to-date in CI:
+
+```bash
+npm run check
+```
