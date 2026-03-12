@@ -1,8 +1,11 @@
+import { expect, within, userEvent } from 'storybook/test';
+
 export default {
-  title: 'Components/Sidebar'
+  title: 'Components/Sidebar',
 };
 
-export const SideMode = () => `
+export const SideMode = {
+  render: () => `
   <div class="ct-sidebar-layout" style="height: 400px; border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-md); overflow: hidden;">
     <aside class="ct-sidebar ct-sidebar--side" data-state="open" aria-label="Folder navigation">
       <div class="ct-sidebar__header">
@@ -40,9 +43,61 @@ export const SideMode = () => `
       <p style="color: var(--color-text-secondary);">Select a folder to view its contents.</p>
     </div>
   </div>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
 
-export const OverlayMode = () => `
+    // Sidebar is a complementary landmark with accessible label
+    const sidebar = canvasElement.querySelector('aside[aria-label]');
+    expect(sidebar).toBeInTheDocument();
+    expect(sidebar).toHaveAttribute('aria-label', 'Folder navigation');
+
+    // Sidebar is in open state
+    expect(sidebar).toHaveAttribute('data-state', 'open');
+
+    // Navigation list with correct items
+    const navItems = canvasElement.querySelectorAll('.ct-nav-item');
+    expect(navItems).toHaveLength(4);
+
+    // Active nav item marked with aria-current="page"
+    const activeItem = canvasElement.querySelector('.ct-nav-item--active');
+    expect(activeItem).toBeInTheDocument();
+    expect(activeItem).toHaveAttribute('aria-current', 'page');
+    expect(activeItem).toHaveTextContent(/Inbox/);
+
+    // Other nav items must NOT have aria-current
+    const inactiveItems = canvasElement.querySelectorAll('.ct-nav-item:not(.ct-nav-item--active)');
+    for (const item of inactiveItems) {
+      expect(item).not.toHaveAttribute('aria-current');
+    }
+
+    // Nav items are links (semantic navigation)
+    for (const item of navItems) {
+      expect(item.tagName).toBe('A');
+      expect(item).toHaveAttribute('href');
+    }
+
+    // Badges show counts
+    const badges = canvasElement.querySelectorAll('.ct-nav-item__badge');
+    expect(badges.length).toBeGreaterThanOrEqual(2);
+    expect(badges[0]).toHaveTextContent('12');
+
+    // Header action button has accessible label
+    const createBtn = canvas.getByRole('button', { name: 'Create folder' });
+    expect(createBtn).toBeInTheDocument();
+    await userEvent.click(createBtn);
+    expect(createBtn).toHaveFocus();
+
+    // All nav links are focusable
+    for (const item of navItems) {
+      item.focus();
+      expect(item).toHaveFocus();
+    }
+  },
+};
+
+export const OverlayMode = {
+  render: () => `
   <div style="position: relative; height: 400px; border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-md); overflow: hidden;">
     <aside class="ct-sidebar ct-sidebar--over" data-state="open" aria-label="Navigation" style="position: absolute;">
       <div class="ct-sidebar__header">
@@ -65,4 +120,45 @@ export const OverlayMode = () => `
       <p style="color: var(--color-text-secondary);">Overlay sidebar appears above the content with a backdrop.</p>
     </div>
   </div>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Overlay sidebar is a landmark with label
+    const sidebar = canvasElement.querySelector('aside[aria-label]');
+    expect(sidebar).toBeInTheDocument();
+    expect(sidebar).toHaveAttribute('aria-label', 'Navigation');
+    expect(sidebar).toHaveAttribute('data-state', 'open');
+
+    // Close button has accessible label
+    const closeBtn = canvas.getByRole('button', { name: 'Close menu' });
+    expect(closeBtn).toBeInTheDocument();
+
+    // Active page marked correctly
+    const activeLink = canvas.getByRole('link', { name: 'Dashboard' });
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+
+    // Other links must not carry aria-current
+    const docsLink = canvas.getByRole('link', { name: 'Documents' });
+    expect(docsLink).not.toHaveAttribute('aria-current');
+    const supportLink = canvas.getByRole('link', { name: 'Support' });
+    expect(supportLink).not.toHaveAttribute('aria-current');
+    const settingsLink = canvas.getByRole('link', { name: 'Settings' });
+    expect(settingsLink).not.toHaveAttribute('aria-current');
+
+    // All nav items are accessible links
+    const allLinks = canvas.getAllByRole('link');
+    expect(allLinks).toHaveLength(4);
+    for (const link of allLinks) {
+      expect(link).toHaveAttribute('href');
+    }
+
+    // Backdrop element exists (required for overlay mode)
+    const backdrop = canvasElement.querySelector('.ct-sidebar__backdrop');
+    expect(backdrop).toBeInTheDocument();
+
+    // Close button is focusable and clickable
+    await userEvent.click(closeBtn);
+    expect(closeBtn).toHaveFocus();
+  },
+};

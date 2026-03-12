@@ -1,8 +1,11 @@
+import { expect, within, userEvent } from 'storybook/test';
+
 export default {
-  title: 'Components/Data Table'
+  title: 'Components/Data Table',
 };
 
-export const DataTable = () => `
+export const DataTable = {
+  render: () => `
   <div class="ct-data-table" style="max-width: 1100px;">
     <div class="ct-data-table__header">
       <div class="ct-data-table__title">
@@ -125,9 +128,85 @@ export const DataTable = () => `
       </div>
     </div>
   </div>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
 
-export const DataTableSimple = () => `
+    // Table structure: all column headers use scope="col"
+    const headers = canvasElement.querySelectorAll('th[scope="col"]');
+    expect(headers.length).toBeGreaterThanOrEqual(7);
+
+    // "Select all" checkbox has accessible label
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all rows' });
+    expect(selectAll).toBeInTheDocument();
+
+    // Individual row checkboxes have specific labels
+    const selectAlpha = canvas.getByRole('checkbox', { name: 'Select Alpha' });
+    const selectBeta = canvas.getByRole('checkbox', { name: 'Select Beta' });
+    const selectGamma = canvas.getByRole('checkbox', { name: 'Select Gamma' });
+    expect(selectAlpha).toBeChecked();
+    expect(selectBeta).not.toBeChecked();
+    expect(selectGamma).not.toBeChecked();
+
+    // Toggle a row checkbox
+    await userEvent.click(selectBeta);
+    expect(selectBeta).toBeChecked();
+
+    // Uncheck a row
+    await userEvent.click(selectAlpha);
+    expect(selectAlpha).not.toBeChecked();
+
+    // Filter controls have accessible labels
+    const searchInput = canvas.getByRole('textbox', { name: 'Search projects' });
+    expect(searchInput).toBeInTheDocument();
+    await userEvent.type(searchInput, 'Alpha');
+    expect(searchInput).toHaveValue('Alpha');
+
+    const statusFilter = canvas.getByRole('combobox', { name: 'Filter by status' });
+    expect(statusFilter).toBeInTheDocument();
+    await userEvent.selectOptions(statusFilter, 'Active');
+    expect(statusFilter).toHaveValue('Active');
+
+    const ownerFilter = canvas.getByRole('combobox', { name: 'Filter by owner' });
+    expect(ownerFilter).toBeInTheDocument();
+
+    // Pagination: navigation landmark with label
+    const paginationNav = canvas.getByRole('navigation', { name: 'Data table pagination' });
+    expect(paginationNav).toBeInTheDocument();
+
+    // Prev button is disabled on first page
+    const prevBtn = canvas.getByRole('button', { name: 'Prev' });
+    expect(prevBtn).toBeDisabled();
+
+    // Current page marked with aria-current
+    const currentPage = canvas.getByRole('button', { name: '1' });
+    expect(currentPage).toHaveAttribute('aria-current', 'page');
+
+    // Other page buttons are enabled and don't have aria-current
+    const page2 = canvas.getByRole('button', { name: '2' });
+    expect(page2).toBeEnabled();
+    expect(page2).not.toHaveAttribute('aria-current');
+
+    const nextBtn = canvas.getByRole('button', { name: 'Next' });
+    expect(nextBtn).toBeEnabled();
+
+    // Rows per page selector has accessible label
+    const rowsPerPage = canvas.getByRole('combobox', { name: 'Rows per page' });
+    expect(rowsPerPage).toBeInTheDocument();
+    await userEvent.selectOptions(rowsPerPage, '25');
+    expect(rowsPerPage).toHaveValue('25');
+
+    // Action buttons per row
+    const openButtons = canvas.getAllByRole('button', { name: 'Open' });
+    expect(openButtons).toHaveLength(3);
+    for (const btn of openButtons) {
+      expect(btn).toBeEnabled();
+    }
+  },
+};
+
+export const DataTableSimple = {
+  render: () => `
   <div class="ct-data-table ct-data-table--simple" style="max-width: 900px;">
     <div class="ct-data-table__table">
       <table class="ct-table ct-table--striped ct-table--compact">
@@ -189,4 +268,66 @@ export const DataTableSimple = () => `
       </nav>
     </div>
   </div>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Sortable columns: aria-sort on <th> elements
+    const sortableHeaders = canvasElement.querySelectorAll('th[aria-sort]');
+    expect(sortableHeaders.length).toBeGreaterThanOrEqual(3);
+
+    // "Project" column sorted ascending
+    const projectHeader = [...sortableHeaders].find(
+      th => th.textContent.trim().includes('Project')
+    );
+    expect(projectHeader).toHaveAttribute('aria-sort', 'ascending');
+
+    // "Status" column not sorted
+    const statusHeader = [...sortableHeaders].find(
+      th => th.textContent.trim().includes('Status')
+    );
+    expect(statusHeader).toHaveAttribute('aria-sort', 'none');
+
+    // "Updated" column sorted descending
+    const updatedHeader = [...sortableHeaders].find(
+      th => th.textContent.trim().includes('Updated')
+    );
+    expect(updatedHeader).toHaveAttribute('aria-sort', 'descending');
+
+    // Sort indicators are hidden from AT
+    const sortIndicators = canvasElement.querySelectorAll('.ct-table__sort-indicator');
+    for (const indicator of sortIndicators) {
+      expect(indicator).toHaveAttribute('aria-hidden', 'true');
+    }
+
+    // Sort buttons are focusable
+    const sortButtons = canvasElement.querySelectorAll('.ct-table__sort');
+    for (const btn of sortButtons) {
+      expect(btn).toHaveAttribute('type', 'button');
+      await userEvent.click(btn);
+      expect(btn).toHaveFocus();
+    }
+
+    // "Select all" checkbox
+    const selectAll = canvas.getByRole('checkbox', { name: 'Select all rows' });
+    expect(selectAll).not.toBeChecked();
+
+    // Row checkbox: Alpha is pre-selected
+    const selectAlpha = canvas.getByRole('checkbox', { name: 'Select Alpha' });
+    expect(selectAlpha).toBeChecked();
+
+    // Row checkbox: Beta is not selected
+    const selectBeta = canvas.getByRole('checkbox', { name: 'Select Beta' });
+    expect(selectBeta).not.toBeChecked();
+
+    // Toggle selection
+    await userEvent.click(selectBeta);
+    expect(selectBeta).toBeChecked();
+
+    // Pagination
+    const paginationNav = canvas.getByRole('navigation', { name: 'Data table pagination' });
+    expect(paginationNav).toBeInTheDocument();
+    const prevBtn = within(paginationNav).getByRole('button', { name: 'Prev' });
+    expect(prevBtn).toBeDisabled();
+  },
+};

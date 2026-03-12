@@ -1,8 +1,9 @@
 export default {
-  title: 'Components/Icon'
+  title: 'Components/Icon',
 };
 
-export const Sizes = () => `
+export const Sizes = {
+  render: () => `
   <div class="ct-cluster" style="--ct-cluster-gap: var(--space-6); align-items: flex-end;">
     <div style="text-align: center;">
       <span class="ct-icon ct-icon--sm">
@@ -32,9 +33,11 @@ export const Sizes = () => `
       <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">xl (32px)</div>
     </div>
   </div>
-`;
+`,
+};
 
-export const InContext = () => `
+export const InContext = {
+  render: () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-4);">
     <button class="ct-button">
       <span class="ct-icon ct-icon--sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
@@ -54,4 +57,5 @@ export const InContext = () => `
       Approved
     </span>
   </div>
-`;
+`,
+};
