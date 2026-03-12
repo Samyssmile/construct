@@ -1,5 +1,38 @@
 export default {
   title: 'Data Display/Data Table Simple',
+  argTypes: {
+    striped: { control: 'boolean', description: 'Alternate row striping' },
+    compact: { control: 'boolean', description: 'Reduce row padding' },
+  },
+};
+
+export const Playground = {
+  args: {
+    striped: true,
+    compact: true,
+  },
+  render: ({ striped, compact }) => {
+    const stripeClass = striped ? ' ct-table--striped' : '';
+    const compactClass = compact ? ' ct-table--compact' : '';
+    return `
+    <div class="ct-data-table ct-data-table--simple" style="max-width: 600px;">
+      <div class="ct-data-table__table">
+        <table class="ct-table${stripeClass}${compactClass}">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Alpha</td><td>Active</td><td>J. Chen</td></tr>
+            <tr><td>Beta</td><td>Paused</td><td>L. Hart</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  },
 };
 
 export const DataTableSimple = {

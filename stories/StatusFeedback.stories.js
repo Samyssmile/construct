@@ -2,6 +2,36 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Data Display/Status & Feedback',
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'info', 'success', 'warning', 'danger'],
+      description: 'Color variant',
+    },
+    label: { control: 'text', description: 'Badge label text' },
+    withIcon: { control: 'boolean', description: 'Show leading icon' },
+  },
+};
+
+export const Playground = {
+  args: {
+    variant: 'success',
+    label: 'Approved',
+    withIcon: true,
+  },
+  render: ({ variant, label, withIcon }) => {
+    const variantClass = variant !== 'default' ? ` ct-badge--${variant}` : '';
+    const iconMap = { default: '•', info: 'i', success: '+', warning: '!', danger: 'x' };
+    const iconClass = withIcon ? ' ct-badge--icon' : '';
+    const iconHtml = withIcon
+      ? `<span class="ct-badge__icon" aria-hidden="true">${iconMap[variant] || '•'}</span>`
+      : '';
+    return `<span class="ct-badge${variantClass}${iconClass}">${iconHtml}${label}</span>`;
+  },
+  play: async ({ canvasElement }) => {
+    const badge = canvasElement.querySelector('.ct-badge');
+    expect(badge).toBeInTheDocument();
+  },
 };
 
 export const Badges = {

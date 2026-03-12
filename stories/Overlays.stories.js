@@ -2,6 +2,44 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Overlays/Overlays',
+  argTypes: {
+    title: { control: 'text', description: 'Modal title' },
+    description: { control: 'text', description: 'Modal body text' },
+  },
+};
+
+export const Playground = {
+  parameters: {
+    layout: 'fullscreen',
+  },
+  args: {
+    title: 'Invite team',
+    description: 'Send an invite to a new team member.',
+  },
+  render: ({ title, description }) => `
+  <div class="ct-modal" data-state="open" role="dialog" aria-modal="true" aria-labelledby="pg-modal-title">
+    <div class="ct-modal__dialog">
+      <div class="ct-modal__header">
+        <h2 id="pg-modal-title">${title}</h2>
+        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+      </div>
+      <div class="ct-modal__body">
+        <p>${description}</p>
+      </div>
+      <div class="ct-modal__footer">
+        <button class="ct-button ct-button--secondary">Cancel</button>
+        <button class="ct-button">Confirm</button>
+      </div>
+    </div>
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dialog = canvas.getByRole('dialog');
+    expect(dialog).toBeInTheDocument();
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    const closeBtn = canvas.getByRole('button', { name: 'Close' });
+    expect(closeBtn).toBeInTheDocument();
+  },
 };
 
 export const Modal = {

@@ -2,6 +2,52 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Selection Controls',
+  argTypes: {
+    type: {
+      control: 'select',
+      options: ['checkbox', 'radio', 'switch'],
+      description: 'Control type',
+    },
+    label: { control: 'text', description: 'Label text' },
+    checked: { control: 'boolean', description: 'Checked/on state' },
+    disabled: { control: 'boolean', description: 'Disabled state' },
+  },
+};
+
+export const Playground = {
+  args: {
+    type: 'checkbox',
+    label: 'Remember me',
+    checked: false,
+    disabled: false,
+  },
+  render: ({ type, label, checked, disabled }) => {
+    const checkedAttr = checked ? ' checked' : '';
+    const disabledAttr = disabled ? ' disabled' : '';
+    if (type === 'radio') {
+      return `
+      <label class="ct-radio">
+        <input class="ct-radio__input" type="radio" name="playground-group"${checkedAttr}${disabledAttr} />
+        <span class="ct-radio__label">${label}</span>
+      </label>`;
+    }
+    if (type === 'switch') {
+      return `
+      <label class="ct-switch">
+        <input class="ct-switch__input" type="checkbox" role="switch"${checkedAttr}${disabledAttr} />
+        <span class="ct-switch__label">${label}</span>
+      </label>`;
+    }
+    return `
+    <label class="ct-check">
+      <input class="ct-check__input" type="checkbox"${checkedAttr}${disabledAttr} />
+      <span class="ct-check__label">${label}</span>
+    </label>`;
+  },
+  play: async ({ canvasElement }) => {
+    const input = canvasElement.querySelector('input');
+    expect(input).toBeInTheDocument();
+  },
 };
 
 export const Checkbox = {

@@ -1,5 +1,32 @@
 export default {
   title: 'Data Display/Card & Table',
+  argTypes: {
+    title: { control: 'text', description: 'Card title' },
+    body: { control: 'text', description: 'Card body text' },
+    footer: { control: 'text', description: 'Card footer label' },
+  },
+};
+
+export const Playground = {
+  args: {
+    title: 'Team',
+    body: 'Shared ownership and clear permissions.',
+    footer: '12 members',
+  },
+  render: ({ title, body, footer }) => `
+  <section class="ct-card" style="max-width: 420px;">
+    <div class="ct-card__header">
+      <h3>${title}</h3>
+      <button class="ct-button ct-button--ghost">Edit</button>
+    </div>
+    <div class="ct-card__body">
+      <p>${body}</p>
+    </div>
+    <div class="ct-card__footer">
+      <span class="ct-muted">${footer}</span>
+      <button class="ct-button ct-button--secondary">Open</button>
+    </div>
+  </section>`,
 };
 
 export const Card = {

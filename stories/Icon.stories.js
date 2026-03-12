@@ -1,5 +1,25 @@
 export default {
   title: 'Foundations/Icon',
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'xl'],
+      description: 'Icon size',
+    },
+  },
+};
+
+export const Playground = {
+  args: {
+    size: 'md',
+  },
+  render: ({ size }) => {
+    const sizeClass = size !== 'md' ? ` ct-icon--${size}` : '';
+    return `
+    <span class="ct-icon${sizeClass}" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    </span>`;
+  },
 };
 
 export const Sizes = {

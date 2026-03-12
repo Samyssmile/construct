@@ -2,6 +2,43 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/File Upload',
+  argTypes: {
+    state: {
+      control: 'select',
+      options: ['idle', 'dragover'],
+      description: 'Dropzone interaction state',
+    },
+    accept: { control: 'text', description: 'Accepted file types hint text' },
+    multiple: { control: 'boolean', description: 'Allow selecting multiple files' },
+  },
+};
+
+export const Playground = {
+  args: {
+    state: 'idle',
+    accept: 'PDF, DOCX up to 10MB',
+    multiple: true,
+  },
+  render: ({ state, accept, multiple }) => {
+    const stateAttr = state !== 'idle' ? ` data-state="${state}"` : '';
+    const multipleAttr = multiple ? ' multiple' : '';
+    return `
+    <div style="max-width: 480px;">
+      <label class="ct-file-upload__dropzone"${stateAttr} for="pg-files">
+        <input class="ct-file-upload__input" id="pg-files" type="file"${multipleAttr} />
+        <div class="ct-file-upload__title">Drop files here or browse</div>
+        <div class="ct-file-upload__hint">${accept}</div>
+        <span class="ct-button ct-button--secondary ct-button--sm">Browse files</span>
+      </label>
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const dropzone = canvasElement.querySelector('.ct-file-upload__dropzone');
+    expect(dropzone).toBeInTheDocument();
+    const input = canvasElement.querySelector('.ct-file-upload__input');
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute('type', 'file');
+  },
 };
 
 export const DragDrop = {
