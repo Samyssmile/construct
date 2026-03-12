@@ -28,6 +28,10 @@
     "./components/components.css": "./components/components.css",
     "./tokens/tokens.css": "./tokens/tokens.css",
     "./tokens/tokens.json": "./tokens/tokens.json",
+    "./tokens/tokens": {
+      "types": "./tokens/tokens.ts",
+      "default": "./tokens/tokens.js"
+    },
     "./tokens": {
       "types": "./tokens/tokens.ts",
       "default": "./tokens/tokens.js"

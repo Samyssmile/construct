@@ -72,13 +72,14 @@ If no `data-theme` is set, system preferences are respected:
 
 ```
 @construct/design/
-├── tokens/                     # Design tokens (JSON, CSS, TS)
+├── tokens/                     # Design tokens (JSON, CSS, JS, TS)
 │   ├── primitives.json         # Base values (colors, sizes)
 │   ├── semantic.light.json     # Semantic mappings
 │   ├── semantic.dark.json      # Dark theme overrides
 │   ├── semantic.high-contrast.json # High-contrast theme overrides
 │   ├── tokens.css              # CSS Custom Properties
 │   ├── tokens.json             # Resolved JSON output
+│   ├── tokens.js               # JavaScript exports
 │   └── tokens.ts               # TypeScript exports
 ├── components/                 # Framework-agnostic styles
 │   ├── components.css          # All component styles
