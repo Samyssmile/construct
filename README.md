@@ -155,7 +155,7 @@ npm run build
 - Breadcrumbs
 - Datepicker
 
-[View all components in Storybook](https://your-org.github.io/construct-design)
+[View all components in Storybook](https://samyssmile.github.io/construct/)
 
 ## ♿ Accessibility
 
