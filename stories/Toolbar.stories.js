@@ -2,6 +2,32 @@ import { expect, within } from 'storybook/test';
 
 export default {
   title: 'Navigation/Toolbar',
+  argTypes: {
+    brand: { control: 'text', description: 'Brand / product name' },
+  },
+};
+
+export const Playground = {
+  args: {
+    brand: 'Accessful',
+  },
+  render: ({ brand }) => `
+  <nav class="ct-toolbar" aria-label="Main navigation">
+    <a class="ct-toolbar__brand" href="#">${brand}</a>
+    <ul class="ct-toolbar__nav">
+      <li><a class="ct-toolbar__nav-link ct-toolbar__nav-link--active" href="#" aria-current="page">Dashboard</a></li>
+      <li><a class="ct-toolbar__nav-link" href="#">Documents</a></li>
+      <li><a class="ct-toolbar__nav-link" href="#">Settings</a></li>
+    </ul>
+    <div class="ct-toolbar__spacer"></div>
+  </nav>`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nav = canvas.getByRole('navigation', { name: 'Main navigation' });
+    expect(nav).toBeInTheDocument();
+    const activeLink = canvas.getByRole('link', { name: /Dashboard/ });
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+  },
 };
 
 export const Default = {

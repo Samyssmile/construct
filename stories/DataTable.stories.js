@@ -2,6 +2,53 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Data Display/Data Table',
+  argTypes: {
+    title: { control: 'text', description: 'Table title' },
+    striped: { control: 'boolean', description: 'Alternate row striping' },
+    compact: { control: 'boolean', description: 'Reduce row padding' },
+  },
+};
+
+export const Playground = {
+  args: {
+    title: 'Projects',
+    striped: true,
+    compact: true,
+  },
+  render: ({ title, striped, compact }) => {
+    const stripeClass = striped ? ' ct-table--striped' : '';
+    const compactClass = compact ? ' ct-table--compact' : '';
+    return `
+    <div class="ct-data-table" style="max-width: 720px;">
+      <div class="ct-data-table__header">
+        <div class="ct-data-table__title">
+          <h3>${title}</h3>
+        </div>
+      </div>
+      <div class="ct-data-table__table">
+        <table class="ct-table${stripeClass}${compactClass}">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Alpha</td><td>Active</td><td>J. Chen</td></tr>
+            <tr><td>Beta</td><td>Paused</td><td>L. Hart</td></tr>
+            <tr><td>Gamma</td><td>Active</td><td>S. Rivera</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const table = canvasElement.querySelector('.ct-table');
+    expect(table).toBeInTheDocument();
+    const headers = canvasElement.querySelectorAll('th[scope="col"]');
+    expect(headers.length).toBeGreaterThan(0);
+  },
 };
 
 export const DataTable = {

@@ -2,6 +2,48 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Navigation/Navigation',
+  argTypes: {
+    activeTab: {
+      control: 'select',
+      options: ['Overview', 'Settings', 'Members'],
+      description: 'Currently active tab',
+    },
+  },
+};
+
+export const Playground = {
+  args: {
+    activeTab: 'Overview',
+  },
+  render: ({ activeTab }) => {
+    const tabs = ['Overview', 'Settings', 'Members'];
+    const tabItems = tabs.map((tab, i) => {
+      const isActive = tab === activeTab;
+      const panelId = `pg-panel-${i + 1}`;
+      const tabId = `pg-tab-${i + 1}`;
+      return `<button class="ct-tabs__trigger" role="tab" aria-selected="${isActive}" aria-controls="${panelId}" id="${tabId}" tabindex="${isActive ? '0' : '-1'}">${tab}</button>`;
+    }).join('\n      ');
+    const panels = tabs.map((tab, i) => {
+      const isActive = tab === activeTab;
+      const panelId = `pg-panel-${i + 1}`;
+      const tabId = `pg-tab-${i + 1}`;
+      return `<div class="ct-tabs__panel" role="tabpanel" id="${panelId}" aria-labelledby="${tabId}" tabindex="0"${isActive ? '' : ' hidden'}><p class="ct-muted">${tab} content</p></div>`;
+    }).join('\n    ');
+    return `
+    <div class="ct-tabs" style="max-width: 560px;">
+      <div class="ct-tabs__list" role="tablist">
+        ${tabItems}
+      </div>
+      ${panels}
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const tablist = canvas.getByRole('tablist');
+    expect(tablist).toBeInTheDocument();
+    const activeTabEl = canvas.getByRole('tab', { selected: true });
+    expect(activeTabEl).toBeInTheDocument();
+  },
 };
 
 export const Tabs = {

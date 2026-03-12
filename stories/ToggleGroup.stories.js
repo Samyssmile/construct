@@ -2,6 +2,37 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Toggle Group',
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Toggle group size',
+    },
+    label: { control: 'text', description: 'Accessible group label' },
+  },
+};
+
+export const Playground = {
+  args: {
+    size: 'md',
+    label: 'View mode',
+  },
+  render: ({ size, label }) => {
+    const sizeClass = size !== 'md' ? ` ct-toggle-group--${size}` : '';
+    return `
+    <div class="ct-toggle-group${sizeClass}" role="group" aria-label="${label}">
+      <button class="ct-toggle-group__item" type="button" aria-pressed="true">List</button>
+      <button class="ct-toggle-group__item" type="button" aria-pressed="false">Grid</button>
+      <button class="ct-toggle-group__item" type="button" aria-pressed="false">Board</button>
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const group = canvasElement.querySelector('[role="group"]');
+    expect(group).toBeInTheDocument();
+    const buttons = within(group).getAllByRole('button');
+    expect(buttons.length).toBeGreaterThan(0);
+  },
 };
 
 export const SingleSelect = {

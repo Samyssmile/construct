@@ -2,6 +2,51 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Navigation/Sidebar',
+  argTypes: {
+    mode: {
+      control: 'select',
+      options: ['side', 'over'],
+      description: 'Layout mode: side (pushes content) or over (overlays content)',
+    },
+    open: { control: 'boolean', description: 'Sidebar open/closed state' },
+    label: { control: 'text', description: 'Accessible label for the sidebar landmark' },
+  },
+};
+
+export const Playground = {
+  args: {
+    mode: 'side',
+    open: true,
+    label: 'Folder navigation',
+  },
+  render: ({ mode, open, label }) => {
+    const modeClass = ` ct-sidebar--${mode}`;
+    const state = open ? 'open' : 'closed';
+    return `
+    <div class="ct-sidebar-layout" style="height: 300px; border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-md); overflow: hidden;">
+      <aside class="ct-sidebar${modeClass}" data-state="${state}" aria-label="${label}">
+        <div class="ct-sidebar__header">
+          <strong>Menu</strong>
+        </div>
+        <div class="ct-sidebar__content">
+          <ul class="ct-nav-list">
+            <li><a class="ct-nav-item ct-nav-item--active" href="#" aria-current="page">Inbox</a></li>
+            <li><a class="ct-nav-item" href="#">Drafts</a></li>
+            <li><a class="ct-nav-item" href="#">Archive</a></li>
+          </ul>
+        </div>
+      </aside>
+      <div class="ct-sidebar-content" style="padding: var(--space-6);">
+        <p style="color: var(--color-text-secondary);">Main content area</p>
+      </div>
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const sidebar = canvasElement.querySelector('aside[aria-label]');
+    expect(sidebar).toBeInTheDocument();
+    const activeLink = canvasElement.querySelector('[aria-current="page"]');
+    expect(activeLink).toBeInTheDocument();
+  },
 };
 
 export const SideMode = {

@@ -2,6 +2,35 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Datepicker',
+  argTypes: {
+    label: { control: 'text', description: 'Field label' },
+    placeholder: { control: 'text', description: 'Input placeholder text' },
+    disabled: { control: 'boolean', description: 'Disable the date input' },
+  },
+};
+
+export const Playground = {
+  args: {
+    label: 'Date',
+    placeholder: 'Select date',
+    disabled: false,
+  },
+  render: ({ label, placeholder, disabled }) => {
+    const disabledAttr = disabled ? ' disabled' : '';
+    const inputId = 'pg-datepicker';
+    return `
+    <div class="ct-field">
+      <label class="ct-field__label" for="${inputId}">${label}</label>
+      <div class="ct-datepicker" data-state="closed">
+        <input class="ct-input" id="${inputId}" type="text" placeholder="${placeholder}"${disabledAttr} />
+      </div>
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const input = canvasElement.querySelector('.ct-input');
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute('type', 'text');
+  },
 };
 
 export const Datepicker = {
