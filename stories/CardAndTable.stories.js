@@ -78,6 +78,48 @@ export const Card = {
   },
 };
 
+export const Interactive = {
+  render: () => `
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <section class="ct-card ct-card--interactive" tabindex="0" role="button" aria-label="Alpha project" style="max-width: 280px;">
+      <div class="ct-card__header">
+        <h3>Alpha</h3>
+      </div>
+      <div class="ct-card__body">
+        <p>Active project with 3 open tasks.</p>
+      </div>
+      <div class="ct-card__footer">
+        <span class="ct-muted">J. Chen</span>
+      </div>
+    </section>
+    <section class="ct-card ct-card--interactive" tabindex="0" role="button" aria-label="Beta project" style="max-width: 280px;">
+      <div class="ct-card__header">
+        <h3>Beta</h3>
+      </div>
+      <div class="ct-card__body">
+        <p>Paused — awaiting review.</p>
+      </div>
+      <div class="ct-card__footer">
+        <span class="ct-muted">L. Hart</span>
+      </div>
+    </section>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    const cards = canvasElement.querySelectorAll('.ct-card--interactive');
+    expect(cards).toHaveLength(2);
+
+    // Interactive cards must be keyboard-focusable
+    for (const card of cards) {
+      expect(card).toHaveAttribute('tabindex', '0');
+    }
+
+    // Interactive cards carry an accessible label
+    expect(cards[0]).toHaveAttribute('aria-label', 'Alpha project');
+    expect(cards[1]).toHaveAttribute('aria-label', 'Beta project');
+  },
+};
+
 export const Table = {
   render: () => `
   <div class="ct-table-wrap" style="max-width: 720px;">
