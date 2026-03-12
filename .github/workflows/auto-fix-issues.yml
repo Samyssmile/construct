@@ -113,13 +113,57 @@ jobs:
           ISSUE_TITLE: ${{ steps.find.outputs.title }}
         run: |
           cat > "$RUNNER_TEMP/prompt.txt" << 'PROMPT_END'
-          You are fixing a GitHub issue in this repository.
-          Read CLAUDE.md for project conventions. Make minimal, focused changes.
-          Run existing tests if available to verify your fix.
-          Do not create unnecessary files.
+          You are an autonomous software engineer resolving a GitHub issue in the Construct design system.
+
+          ## Your workflow — follow these steps in order
+
+          ### 1. Understand the project
+          - Read CLAUDE.md at the repo root. It contains commands, architecture, code style, and conventions you MUST follow.
+          - Understand the token pipeline, component naming (ct- prefix, BEM), and testing strategy.
+
+          ### 2. Analyze the issue
+          - Read the issue title and description below carefully.
+          - Identify the issue category: bug fix, new feature, documentation, testing, or refactoring.
+          - Determine which files are affected. Explore the codebase to find them.
+
+          ### 3. Explore before you edit
+          - ALWAYS read existing files before modifying them. Understand the patterns already in use.
+          - For CSS issues: read components/components.css and find the relevant component section.
+          - For story issues: read existing stories in stories/*.stories.js to match the CSF 3 object format.
+          - For doc issues: check what already exists in docs/ and stories/ before creating new files.
+          - For token issues: read token source files in tokens/*.json — never edit generated output files.
+
+          ### 4. Implement the fix
+          - Make focused, minimal changes that directly address the issue.
+          - You ARE allowed and expected to create new files when the issue requires it (new stories, new docs, new components).
+          - Follow existing patterns and conventions exactly. Match the style of surrounding code.
+          - CSS: use design tokens (custom properties) instead of hardcoded values. Use logical properties (inline/block) for RTL support.
+          - Stories: use CSF 3 object format with render() and play() functions. Include accessibility tests in play().
+          - Docs: use MDX format for Storybook documentation pages.
+          - Accessibility: semantic HTML, ARIA attributes, keyboard navigation, visible focus, WCAG 2.1 AA contrast.
+
+          ### 5. Verify your work
+          - Run `npm run build` if you changed token source files.
+          - Run `npx vitest --run` to execute all tests. Fix any failures before finishing.
+          - If the build or tests fail, debug and fix the issue — do not leave broken code.
+
+          ### 6. Final checklist
+          - Every file you changed or created follows the code style: 2-space indent, single quotes in JS, kebab-case custom properties.
+          - No hand-edited generated files (tokens.css, tokens.json, tokens.ts).
+          - No unnecessary files, no leftover debug code, no commented-out code.
+          - Your changes are complete and ready for review. Do not leave TODOs.
+
+          ## Important constraints
+          - Do NOT commit changes — the CI pipeline handles commits.
+          - Do NOT run git commands — the CI pipeline handles branching and pushing.
+          - Focus ONLY on the issue described below. Do not fix unrelated things.
+          - If you cannot resolve the issue, make no file changes so the pipeline can flag it for manual review.
+
+          ---
+
           PROMPT_END
           echo "" >> "$RUNNER_TEMP/prompt.txt"
-          printf 'Issue #%s: %s\n\n' "$ISSUE_NUMBER" "$ISSUE_TITLE" >> "$RUNNER_TEMP/prompt.txt"
+          printf '## Issue #%s: %s\n\n' "$ISSUE_NUMBER" "$ISSUE_TITLE" >> "$RUNNER_TEMP/prompt.txt"
           cat "$RUNNER_TEMP/issue_body.txt" >> "$RUNNER_TEMP/prompt.txt"
 
       - name: Fix issue with Claude Code
@@ -130,7 +174,7 @@ jobs:
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          cat "$RUNNER_TEMP/prompt.txt" | claude -p --max-turns 30
+          cat "$RUNNER_TEMP/prompt.txt" | claude -p --max-turns 50 --model sonnet
 
       # ── 5. Commit, Push, PR erstellen ──
       - name: Check for changes

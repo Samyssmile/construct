@@ -61,23 +61,37 @@ jobs:
           git diff origin/main...HEAD > "$RUNNER_TEMP/diff.txt"
 
           cat > "$RUNNER_TEMP/prompt.txt" << 'EOF'
-          You are reviewing a pull request. Analyze the diff and check for:
-          1. Correctness – does the change fix what the linked issue describes?
-          2. Bugs – edge cases, regressions, logic errors?
-          3. Security – any vulnerabilities introduced?
-          4. Style – consistent with project conventions (check CLAUDE.md)?
+          You are a senior code reviewer for the Construct design system. Read CLAUDE.md first for project conventions.
 
-          Your FIRST line of output MUST be exactly one of:
-          APPROVED
-          CHANGES_REQUESTED
+          Review this PR diff against these criteria. Be pragmatic — approve working code, reject only real problems.
 
-          Then write a concise review summary (max 200 words).
+          ## Approve if ALL true:
+          - Changes address what the linked issue describes
+          - No bugs, regressions, or logic errors
+          - No security vulnerabilities (XSS in rendered HTML, injection, etc.)
+          - Follows project conventions: ct- prefix, BEM naming, 2-space indent, single quotes, design tokens instead of hardcoded values
+          - CSS uses logical properties (inline-start/end, block-start/end) for RTL support where applicable
+          - Accessibility: semantic HTML, ARIA attributes present and correct, keyboard navigable
+          - Stories use CSF 3 object format with render() and play() functions
+          - No hand-edited generated files (tokens.css, tokens.json, tokens.ts)
+
+          ## Reject if ANY true:
+          - Changes don't match the issue or are incomplete
+          - Introduces bugs, broken tests, or build failures
+          - Hardcoded colors/spacing/sizes instead of design tokens
+          - Missing or incorrect ARIA attributes on interactive elements
+          - Violates code style conventions from CLAUDE.md
+
+          ## Output format
+          Your FIRST line MUST be exactly: APPROVED or CHANGES_REQUESTED
+          Then write a concise review (max 300 words) explaining your decision.
+          For rejections, list specific issues with file paths and line references.
 
           --- Diff starts here ---
           EOF
 
           cat "$RUNNER_TEMP/diff.txt" >> "$RUNNER_TEMP/prompt.txt"
-          cat "$RUNNER_TEMP/prompt.txt" | claude -p > "$RUNNER_TEMP/review.txt"
+          cat "$RUNNER_TEMP/prompt.txt" | claude -p --model sonnet > "$RUNNER_TEMP/review.txt"
 
           VERDICT=$(head -1 "$RUNNER_TEMP/review.txt")
           if [[ "$VERDICT" != "APPROVED" && "$VERDICT" != "CHANGES_REQUESTED" ]]; then
