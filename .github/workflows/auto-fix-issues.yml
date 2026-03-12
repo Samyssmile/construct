@@ -1,0 +1,268 @@
+name: Auto-Fix Issues
+
+# Nimmt sich EIN Issue pro Run, fixt es, erstellt PR,
+# und triggert sich selbst neu falls weitere Issues vorhanden.
+# Steuerung über Labels: "autofix" → "autofix-in-progress" → "autofix-pr-created" / "autofix-failed"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * 1-5' # Mo-Fr um 08:00 UTC
+
+concurrency:
+  group: auto-fix-issues
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  fix-next-issue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # ── 1. Ältestes offenes Issue mit Label "autofix" finden ──
+      - name: Find next issue
+        id: find
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'autofix',
+              sort: 'created',
+              direction: 'asc',
+              per_page: 1
+            });
+
+            if (issues.length === 0) {
+              core.notice('No issues with "autofix" label found. Done.');
+              return;
+            }
+
+            const issue = issues[0];
+            core.setOutput('found', 'true');
+            core.setOutput('number', String(issue.number));
+            core.setOutput('title', issue.title);
+
+            // Body in Datei schreiben (verhindert Shell-Injection)
+            const fs = require('fs');
+            fs.writeFileSync(
+              process.env.RUNNER_TEMP + '/issue_body.txt',
+              issue.body || 'No description provided.'
+            );
+
+            core.notice(`Processing issue #${issue.number}: ${issue.title}`);
+
+      # ── 2. Issue sperren (verhindert Doppelverarbeitung) ──
+      - name: Label issue as in-progress
+        if: steps.find.outputs.found == 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.find.outputs.number }}
+        with:
+          script: |
+            const num = Number(process.env.ISSUE_NUMBER);
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              name: 'autofix'
+            }).catch(() => {});
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              labels: ['autofix-in-progress']
+            });
+
+      # ── 3. Checkout & Branch ──
+      - name: Checkout repository
+        if: steps.find.outputs.found == 'true'
+        uses: actions/checkout@v4
+
+      - name: Create fix branch
+        if: steps.find.outputs.found == 'true'
+        run: git checkout -b autofix/issue-${{ steps.find.outputs.number }}
+
+      # ── 4. Claude Code ausführen ──
+      - name: Setup Node.js
+        if: steps.find.outputs.found == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: steps.find.outputs.found == 'true'
+        run: npm ci
+
+      - name: Install Claude Code
+        if: steps.find.outputs.found == 'true'
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Build prompt
+        if: steps.find.outputs.found == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.find.outputs.number }}
+          ISSUE_TITLE: ${{ steps.find.outputs.title }}
+        run: |
+          cat > "$RUNNER_TEMP/prompt.txt" << 'PROMPT_END'
+          You are fixing a GitHub issue in this repository.
+          Read CLAUDE.md for project conventions. Make minimal, focused changes.
+          Run existing tests if available to verify your fix.
+          Do not create unnecessary files.
+          PROMPT_END
+          echo "" >> "$RUNNER_TEMP/prompt.txt"
+          printf 'Issue #%s: %s\n\n' "$ISSUE_NUMBER" "$ISSUE_TITLE" >> "$RUNNER_TEMP/prompt.txt"
+          cat "$RUNNER_TEMP/issue_body.txt" >> "$RUNNER_TEMP/prompt.txt"
+
+      - name: Fix issue with Claude Code
+        if: steps.find.outputs.found == 'true'
+        id: claude
+        continue-on-error: true
+        timeout-minutes: 20
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_KEY }}
+        run: |
+          cat "$RUNNER_TEMP/prompt.txt" | claude -p --max-turns 30
+
+      # ── 5. Commit, Push, PR erstellen ──
+      - name: Check for changes
+        if: steps.find.outputs.found == 'true' && steps.claude.outcome == 'success'
+        id: diff
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.find.outputs.number }}
+          ISSUE_TITLE: ${{ steps.find.outputs.title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "$(cat <<EOF
+          fix: resolve #${ISSUE_NUMBER}
+
+          ${ISSUE_TITLE}
+          EOF
+          )"
+          git push -u origin "autofix/issue-${ISSUE_NUMBER}"
+
+      - name: Create pull request
+        if: steps.diff.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.find.outputs.number }}
+          ISSUE_TITLE: ${{ steps.find.outputs.title }}
+        with:
+          script: |
+            const num = Number(process.env.ISSUE_NUMBER);
+            const title = process.env.ISSUE_TITLE;
+
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `fix: resolve #${num} – ${title}`.slice(0, 120),
+              body: [
+                `Closes #${num}`,
+                '',
+                'Automatically generated fix by Claude Code.',
+                '',
+                'Please review the changes before merging.'
+              ].join('\n'),
+              head: `autofix/issue-${num}`,
+              base: 'main'
+            });
+
+            core.notice(`PR created: ${pr.html_url}`);
+
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              name: 'autofix-in-progress'
+            }).catch(() => {});
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              labels: ['autofix-pr-created']
+            });
+
+      # ── 6. Fehlerbehandlung ──
+      - name: Handle failure or no changes
+        if: >-
+          steps.find.outputs.found == 'true' &&
+          (steps.claude.outcome == 'failure' || steps.diff.outputs.changed == 'false')
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.find.outputs.number }}
+          CLAUDE_OUTCOME: ${{ steps.claude.outcome }}
+        with:
+          script: |
+            const num = Number(process.env.ISSUE_NUMBER);
+            const failed = process.env.CLAUDE_OUTCOME === 'failure';
+
+            const body = failed
+              ? 'Claude Code encountered an error while trying to fix this issue. Manual intervention needed.'
+              : 'Claude Code ran successfully but produced no code changes. This issue may need a more detailed description or manual attention.';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              body
+            });
+
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              name: 'autofix-in-progress'
+            }).catch(() => {});
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              labels: ['autofix-failed']
+            });
+
+      # ── 7. Nächsten Run triggern falls weitere Issues vorhanden ──
+      - name: Check for remaining issues
+        id: remaining
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'autofix',
+              per_page: 1
+            });
+            core.setOutput('has_more', String(issues.length > 0));
+
+      - name: Trigger next workflow run
+        if: steps.remaining.outputs.has_more == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'auto-fix-issues.yml',
+              ref: 'main'
+            });
+            core.notice('More autofix issues remain — triggered next run.');

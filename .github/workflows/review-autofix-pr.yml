@@ -1,0 +1,218 @@
+name: Review & Auto-Merge
+
+# Reviewt autofix-PRs automatisch:
+# 1. Tests + Build parallel zu Claude Code Review
+# 2. Merge nur wenn beides grün
+# 3. Triggert nächsten autofix-Run falls weitere Issues offen
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+
+jobs:
+  # ── Tests & Build ──
+  test:
+    if: startsWith(github.head_ref, 'autofix/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Run tests
+        run: npx vitest --run
+
+  # ── Claude Code Review (parallel zu Tests) ──
+  review:
+    if: startsWith(github.head_ref, 'autofix/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    outputs:
+      verdict: ${{ steps.analyze.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Analyze changes
+        id: analyze
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_KEY }}
+        run: |
+          git diff origin/main...HEAD > "$RUNNER_TEMP/diff.txt"
+
+          cat > "$RUNNER_TEMP/prompt.txt" << 'EOF'
+          You are reviewing a pull request. Analyze the diff and check for:
+          1. Correctness – does the change fix what the linked issue describes?
+          2. Bugs – edge cases, regressions, logic errors?
+          3. Security – any vulnerabilities introduced?
+          4. Style – consistent with project conventions (check CLAUDE.md)?
+
+          Your FIRST line of output MUST be exactly one of:
+          APPROVED
+          CHANGES_REQUESTED
+
+          Then write a concise review summary (max 200 words).
+
+          --- Diff starts here ---
+          EOF
+
+          cat "$RUNNER_TEMP/diff.txt" >> "$RUNNER_TEMP/prompt.txt"
+          cat "$RUNNER_TEMP/prompt.txt" | claude -p > "$RUNNER_TEMP/review.txt"
+
+          VERDICT=$(head -1 "$RUNNER_TEMP/review.txt")
+          if [[ "$VERDICT" != "APPROVED" && "$VERDICT" != "CHANGES_REQUESTED" ]]; then
+            VERDICT="CHANGES_REQUESTED"
+          fi
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        env:
+          VERDICT: ${{ steps.analyze.outputs.verdict }}
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync(process.env.RUNNER_TEMP + '/review.txt', 'utf8');
+            const approved = process.env.VERDICT === 'APPROVED';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: `### ${approved ? 'Approved' : 'Changes Requested'} — Claude Code Review\n\n${body}`
+            });
+
+      - name: Label issue on rejection
+        if: steps.analyze.outputs.verdict == 'CHANGES_REQUESTED'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            const match = branch.match(/autofix\/issue-(\d+)/);
+            if (!match) return;
+
+            const num = Number(match[1]);
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              name: 'autofix-pr-created'
+            }).catch(() => {});
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: num,
+              labels: ['autofix-review-failed']
+            });
+
+  # ── Merge (nur wenn Tests + Review bestanden) ──
+  merge:
+    needs: [test, review]
+    if: needs.review.outputs.verdict == 'APPROVED'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Squash-merge PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --squash \
+            --delete-branch
+
+      - name: Trigger next autofix run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'autofix',
+              per_page: 1
+            });
+
+            if (issues.length > 0) {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'auto-fix-issues.yml',
+                ref: 'main'
+              });
+              core.notice('More autofix issues remain — triggered next fix run.');
+            }
+
+  # ── Fehlerbehandlung wenn Tests oder Review fehlschlagen ──
+  handle-failure:
+    needs: [test, review]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Comment and label
+        uses: actions/github-script@v7
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          REVIEW_RESULT: ${{ needs.review.result }}
+        with:
+          script: |
+            const testFailed = process.env.TEST_RESULT === 'failure';
+            const reviewFailed = process.env.REVIEW_RESULT === 'failure';
+
+            let msg = 'Auto-merge blocked:\n';
+            if (testFailed) msg += '- Tests failed\n';
+            if (reviewFailed) msg += '- Review process failed\n';
+            msg += '\nThis PR needs manual attention.';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: msg
+            });
+
+            // Label the linked issue
+            const branch = context.payload.pull_request.head.ref;
+            const match = branch.match(/autofix\/issue-(\d+)/);
+            if (match) {
+              const num = Number(match[1]);
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: num,
+                name: 'autofix-pr-created'
+              }).catch(() => {});
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: num,
+                labels: ['autofix-review-failed']
+              });
+            }
