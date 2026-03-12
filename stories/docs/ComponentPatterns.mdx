@@ -1,0 +1,282 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Component Patterns" tags={['!autodocs']} />
+
+# Component Patterns
+
+This page documents the conventions that all Construct components follow: BEM naming, state management through data attributes and ARIA, sizing, and composition.
+
+---
+
+## BEM Naming Convention
+
+Every component uses the `ct-` prefix with BEM (Block Element Modifier) structure:
+
+```
+ct-{block}
+ct-{block}__{element}
+ct-{block}--{modifier}
+```
+
+### Blocks
+
+A block is a standalone component. It carries the `ct-` prefix:
+
+```html
+<button class="ct-button">Save</button>
+<div class="ct-card">...</div>
+<div class="ct-modal">...</div>
+```
+
+### Elements
+
+An element is a child of a block, separated by double underscores (`__`):
+
+```html
+<div class="ct-card">
+  <div class="ct-card__header">Title</div>
+  <div class="ct-card__body">Content</div>
+  <div class="ct-card__footer">Actions</div>
+</div>
+```
+
+Elements are always scoped to their block. Never nest element selectors (`ct-card__header__title` is wrong — use a new block or a simple child element instead).
+
+### Modifiers
+
+A modifier changes appearance or behaviour, separated by double dashes (`--`):
+
+```html
+<!-- Variant modifiers -->
+<button class="ct-button ct-button--secondary">Cancel</button>
+<button class="ct-button ct-button--danger">Delete</button>
+<button class="ct-button ct-button--ghost">Skip</button>
+
+<!-- Size modifiers -->
+<button class="ct-button ct-button--sm">Small</button>
+<button class="ct-button ct-button--lg">Large</button>
+```
+
+The base class is always required alongside the modifier.
+
+---
+
+## Sizing
+
+Components support three sizes via modifier classes:
+
+| Modifier | Size | Usage |
+|----------|------|-------|
+| `--sm` | Small | Dense UIs, inline actions |
+| *(default)* | Medium | Standard use |
+| `--lg` | Large | Primary actions, touch targets |
+
+Sizing is consistent across related components — a `ct-button--sm` aligns visually with a `ct-input--sm` in the same form row.
+
+---
+
+## State Management
+
+Construct uses **HTML attributes** — not CSS classes — for all interactive state. This makes state queryable, accessible, and framework-independent.
+
+### Data attributes
+
+| Attribute | Values | Components |
+|-----------|--------|------------|
+| `data-state` | `"open"`, `"closed"` | Modal, dropdown, tooltip, sidebar, datepicker |
+| `data-variant` | `"info"`, `"success"`, `"warning"`, `"danger"` | Toast, alert, badge, confirmation |
+| `data-status` | `"success"`, `"error"` | File upload items |
+| `data-side` | `"top"`, `"bottom"`, `"left"`, `"right"` | Tooltip |
+| `data-today` | `"true"` | Datepicker day |
+| `data-outside` | `"true"` | Datepicker day (other month) |
+
+```html
+<!-- Closed dropdown -->
+<div class="ct-dropdown">
+  <button aria-expanded="false">Options</button>
+  <ul class="ct-dropdown__menu" data-state="closed">...</ul>
+</div>
+
+<!-- Open dropdown -->
+<div class="ct-dropdown">
+  <button aria-expanded="true">Options</button>
+  <ul class="ct-dropdown__menu" data-state="open">...</ul>
+</div>
+```
+
+### ARIA attributes for state
+
+These standard ARIA attributes double as CSS selectors:
+
+| Attribute | Purpose | CSS selector |
+|-----------|---------|-------------|
+| `aria-expanded` | Open/closed state for triggers | `[aria-expanded="true"]` |
+| `aria-selected` | Selected tab, option, or day | `[aria-selected="true"]` |
+| `aria-invalid` | Form validation error | `[aria-invalid="true"]` |
+| `aria-pressed` | Toggle button state | `[aria-pressed="true"]` |
+| `aria-disabled` | Disabled but still focusable | `[aria-disabled="true"]` |
+| `aria-current` | Current page in navigation | `[aria-current="page"]` |
+
+```css
+/* Construct styles state via ARIA selectors */
+.ct-input[aria-invalid="true"] {
+  border-color: var(--color-state-danger);
+}
+
+.ct-tabs__trigger[aria-selected="true"] {
+  border-bottom-color: var(--color-brand-primary);
+}
+```
+
+### Why attributes over classes?
+
+- **Accessible by default** — screen readers already understand `aria-expanded`. A `.is-open` class would require separate ARIA wiring
+- **Queryable** — `element.getAttribute('aria-expanded')` works in any framework
+- **Single source of truth** — the attribute is both the style hook and the accessibility signal
+
+---
+
+## ARIA Patterns by Component
+
+### Tabs
+
+Roving tabindex with arrow-key navigation. The active tab has `tabindex="0"`, all others `tabindex="-1"`.
+
+```html
+<div class="ct-tabs">
+  <div class="ct-tabs__list" role="tablist">
+    <button class="ct-tabs__trigger" role="tab"
+            aria-selected="true" tabindex="0"
+            aria-controls="panel-1">Tab 1</button>
+    <button class="ct-tabs__trigger" role="tab"
+            aria-selected="false" tabindex="-1"
+            aria-controls="panel-2">Tab 2</button>
+  </div>
+  <div class="ct-tabs__panel" role="tabpanel" id="panel-1">Content 1</div>
+  <div class="ct-tabs__panel" role="tabpanel" id="panel-2" hidden>Content 2</div>
+</div>
+```
+
+### Modal
+
+Focus is trapped inside. Focus returns to the trigger on close.
+
+```html
+<div class="ct-modal" data-state="open">
+  <div class="ct-modal__dialog" role="dialog"
+       aria-modal="true" aria-labelledby="modal-title">
+    <div class="ct-modal__header">
+      <h2 id="modal-title">Confirm</h2>
+      <button class="ct-button ct-button--ghost ct-button--icon"
+              aria-label="Close">...</button>
+    </div>
+    <div class="ct-modal__body">Are you sure?</div>
+    <div class="ct-modal__footer">
+      <button class="ct-button ct-button--secondary">Cancel</button>
+      <button class="ct-button">Confirm</button>
+    </div>
+  </div>
+</div>
+```
+
+### Dropdown
+
+Trigger toggles `aria-expanded`. Menu items are focusable buttons in natural tab order.
+
+```html
+<div class="ct-dropdown">
+  <button aria-expanded="false" aria-controls="menu-1"
+          aria-haspopup="true">Options</button>
+  <ul class="ct-dropdown__menu" id="menu-1"
+      role="list" data-state="closed">
+    <li><button class="ct-dropdown__item">Edit</button></li>
+    <li><button class="ct-dropdown__item">Delete</button></li>
+  </ul>
+</div>
+```
+
+### Accordion
+
+Uses native `<details>` elements. No JavaScript required for basic functionality.
+
+```html
+<div class="ct-accordion">
+  <details class="ct-accordion__item">
+    <summary class="ct-accordion__trigger">
+      <span class="ct-accordion__heading">Section title</span>
+      <span class="ct-accordion__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="ct-accordion__content">Panel content</div>
+  </details>
+</div>
+```
+
+### Form fields
+
+Labels, hints, and errors are linked via `for`, `id`, and `aria-describedby`:
+
+```html
+<div class="ct-field">
+  <label class="ct-field__label" for="email">Email</label>
+  <span class="ct-field__hint" id="email-hint">We'll never share your email</span>
+  <input class="ct-input" type="email" id="email"
+         aria-describedby="email-hint" />
+</div>
+
+<!-- With validation error -->
+<div class="ct-field">
+  <label class="ct-field__label" for="name">Name</label>
+  <input class="ct-input" id="name"
+         aria-invalid="true" aria-describedby="name-error" />
+  <span class="ct-field__error" id="name-error">Name is required</span>
+</div>
+```
+
+---
+
+## Composition
+
+Components are designed to nest naturally:
+
+```html
+<!-- Card containing a form -->
+<div class="ct-card">
+  <div class="ct-card__header">User Settings</div>
+  <div class="ct-card__body">
+    <div class="ct-stack" style="--ct-stack-space: var(--space-6)">
+      <div class="ct-field">
+        <label class="ct-field__label" for="name">Name</label>
+        <input class="ct-input" id="name" />
+      </div>
+      <div class="ct-field">
+        <label class="ct-field__label" for="bio">Bio</label>
+        <textarea class="ct-textarea" id="bio"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="ct-card__footer">
+    <div class="ct-cluster">
+      <button class="ct-button ct-button--secondary">Cancel</button>
+      <button class="ct-button">Save</button>
+    </div>
+  </div>
+</div>
+```
+
+### Layout utilities
+
+| Class | Purpose |
+|-------|---------|
+| `ct-stack` | Vertical spacing between children (set `--ct-stack-space`) |
+| `ct-cluster` | Horizontal wrapping layout (set `--ct-cluster-space`) |
+| `ct-sr-only` | Visually hidden, accessible to screen readers |
+| `ct-truncate` | Single-line text truncation with ellipsis |
+| `ct-muted` | Muted text colour |
+
+---
+
+## Related
+
+- **[Design Principles](?path=/docs/docs-design-principles--docs)** — accessibility-first, token-based, framework-agnostic
+- **[Accessibility Guidelines](?path=/docs/docs-accessibility-guidelines--docs)** — keyboard patterns and testing checklist
+- **[Design Tokens](?path=/docs/docs-design-tokens--docs)** — full token reference

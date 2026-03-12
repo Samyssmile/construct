@@ -1,0 +1,119 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Docs/Design Principles" tags={['!autodocs']} />
+
+# Design Principles
+
+Construct is built on three pillars: **accessibility first**, **token-based theming**, and **framework agnosticism**. Every decision — from API design to CSS architecture — flows from these principles.
+
+---
+
+## Accessibility First
+
+Accessibility is not an afterthought or a checkbox. It is the primary constraint that shapes every component.
+
+### What this means in practice
+
+- **Semantic HTML by default** — components use `<button>`, `<input>`, `<table>`, `<nav>`, `<details>` instead of generic `<div>` elements with ARIA bolted on
+- **Keyboard operable** — every interaction works without a mouse. Composite widgets (tabs, toolbars, dropdowns) implement roving tabindex and arrow-key navigation
+- **Visible focus indicators** — all interactive elements show a clear `:focus-visible` ring (2px solid, 2px offset)
+- **WCAG 2.1 AA contrast** — all three built-in themes meet minimum contrast ratios. The high-contrast theme exceeds AA
+- **State via ARIA attributes** — component states are expressed through `aria-expanded`, `aria-selected`, `aria-invalid`, and `aria-pressed` rather than visual-only CSS classes
+- **`prefers-reduced-motion` respected** — animations and transitions are disabled when the user's system preference says so
+
+### Why accessibility first?
+
+Building accessible components from the start is dramatically cheaper than retrofitting. When accessibility drives the API, the resulting components are more robust, more testable, and usable by the widest possible audience — including users of screen readers, keyboard-only users, and users with low vision.
+
+---
+
+## Token-Based Theming
+
+Every visual value in Construct — colors, spacing, typography, radii, shadows, motion — is expressed as a **design token**. No magic numbers, no hard-coded hex values.
+
+### Two-tier pipeline
+
+Construct uses a two-tier token system:
+
+1. **Primitives** — raw design values (`ocean.700: #174C5D`, `space.4: 8px`). These are the palette. They rarely change.
+2. **Semantic tokens** — purpose-driven aliases (`color.brand.primary → {color.ocean.700}`). These are what components consume. Swapping a theme means remapping semantic tokens while primitives stay untouched.
+
+### Benefits
+
+- **Consistency** — every component draws from the same set of values. No drift between a card's border radius and a modal's
+- **Theming** — switching from light to dark mode is a single `data-theme` attribute change. Every component updates simultaneously via CSS custom properties
+- **Customisation** — override a few semantic tokens to rebrand the entire system without touching component CSS
+- **Tooling** — tokens are available as CSS custom properties, JSON, and TypeScript exports. Use them at build time or runtime
+
+### Rules
+
+- Always use token references (`var(--color-text-primary)`) — never raw values
+- Add new tokens to the source JSON and run `npm run build`. Never hand-edit generated files
+- When in doubt, prefer an existing token over creating a new one
+
+---
+
+## Framework Agnostic
+
+Construct is pure CSS. It works with React, Angular, Svelte, Vue, Web Components, or plain HTML. There is no JavaScript runtime, no framework adapter, no build plugin.
+
+### How this works
+
+- Components are activated by CSS classes (`ct-button`, `ct-card`, `ct-input`)
+- State is driven by standard HTML attributes (`disabled`, `aria-expanded`, `data-state`)
+- Behaviour (keyboard handling, focus management) is the consumer's responsibility — Construct provides the styles and the patterns, not the JS
+
+### Why no JS?
+
+- **Zero lock-in** — migrate from React to Svelte without changing your design system
+- **Zero bundle cost** — CSS is loaded once and cached. No JS to parse, no hydration overhead
+- **Separation of concerns** — visual presentation (Construct) is decoupled from interaction logic (your framework)
+
+### Integration pattern
+
+```html
+<!-- Works everywhere -->
+<button class="ct-button ct-button--secondary">Cancel</button>
+```
+
+```jsx
+// React
+<button className="ct-button ct-button--secondary">Cancel</button>
+```
+
+```svelte
+<!-- Svelte -->
+<button class="ct-button ct-button--secondary">Cancel</button>
+```
+
+The same HTML structure and class names work in every framework.
+
+---
+
+## Additional Principles
+
+### Simplicity over cleverness
+
+- Flat CSS selectors — no deep nesting, no specificity wars
+- BEM naming — predictable, greppable, no collisions
+- Three-tier sizing (sm, md, lg) — enough flexibility without decision fatigue
+
+### Progressive enhancement
+
+- Components work without JavaScript. A `<details>` accordion, a native `<select>`, a `<button>` — all function before any script loads
+- JavaScript enhances: focus traps, roving tabindex, dynamic announcements via `aria-live`
+
+### Openness
+
+- Source tokens are human-readable JSON
+- Generated files (CSS, JSON, TypeScript) are committed so consumers can inspect exactly what they get
+- No proprietary toolchain — standard CSS, standard HTML, standard build scripts
+
+---
+
+## Related
+
+- **[Getting Started](?path=/docs/docs-getting-started--docs)** — installation and integration guide
+- **[Accessibility Guidelines](?path=/docs/docs-accessibility-guidelines--docs)** — detailed keyboard patterns and ARIA guidance
+- **[Design Tokens](?path=/docs/docs-design-tokens--docs)** — full token reference
+- **[Component Patterns](?path=/docs/docs-component-patterns--docs)** — BEM naming, state management, and ARIA patterns
