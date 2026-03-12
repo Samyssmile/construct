@@ -20,18 +20,22 @@ export const DataTable = {
     <div class="ct-data-table__toolbar">
       <div class="ct-data-table__filters">
         <input class="ct-input ct-control--sm ct-data-table__search" placeholder="Search projects" aria-label="Search projects" />
-        <select class="ct-select ct-control--sm" aria-label="Filter by status">
-          <option>Status</option>
-          <option>Active</option>
-          <option>Paused</option>
-          <option>Archived</option>
-        </select>
-        <select class="ct-select ct-control--sm" aria-label="Filter by owner">
-          <option>Owner</option>
-          <option>J. Chen</option>
-          <option>L. Hart</option>
-          <option>S. Rivera</option>
-        </select>
+        <div class="ct-select-wrap">
+          <select class="ct-select ct-control--sm" aria-label="Filter by status">
+            <option>Status</option>
+            <option>Active</option>
+            <option>Paused</option>
+            <option>Archived</option>
+          </select>
+        </div>
+        <div class="ct-select-wrap">
+          <select class="ct-select ct-control--sm" aria-label="Filter by owner">
+            <option>Owner</option>
+            <option>J. Chen</option>
+            <option>L. Hart</option>
+            <option>S. Rivera</option>
+          </select>
+        </div>
       </div>
       <div class="ct-data-table__actions">
         <button class="ct-button ct-button--ghost ct-button--sm">Reset</button>
@@ -110,11 +114,13 @@ export const DataTable = {
       <div class="ct-data-table__footer-actions">
         <div class="ct-data-table__page-size">
           <span>Rows</span>
-          <select class="ct-select ct-control--sm" aria-label="Rows per page">
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-          </select>
+          <div class="ct-select-wrap">
+            <select class="ct-select ct-control--sm" aria-label="Rows per page">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
         </div>
         <nav class="ct-pagination" aria-label="Data table pagination">
           <ul class="ct-pagination__list">
