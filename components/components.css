@@ -904,12 +904,22 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
   border: var(--border-thin) solid var(--color-border-subtle);
   background: var(--color-bg-elevated);
   box-shadow: var(--shadow-dropdown);
-  display: none;
+  display: grid;
+  opacity: 0;
+  pointer-events: none;
   z-index: var(--z-dropdown);
+  transition: opacity var(--duration-fast) var(--easing-standard);
 }
 
 .ct-dropdown[data-state='open'] .ct-dropdown__menu {
-  display: grid;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-dropdown__menu {
+    transition: none;
+  }
 }
 
 .ct-dropdown__item,
