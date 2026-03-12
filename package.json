@@ -5,8 +5,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/construct-design"
+    "url": "https://github.com/Samyssmile/construct.git"
   },
+  "homepage": "https://samyssmile.github.io/construct",
   "keywords": [
     "design-system",
     "design-tokens",
