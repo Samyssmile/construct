@@ -2,6 +2,13 @@ import { expect, within } from 'storybook/test';
 
 export default {
   title: 'Data Display/Progress Bar',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Accessible progress indicator using the native `<progress>` element. Supports color variants (default, info, success, warning, danger) and size options (sm, md, lg).',
+      },
+    },
+  },
   argTypes: {
     value: {
       control: { type: 'range', min: 0, max: 100, step: 1 },

@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/File Upload',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Drag-and-drop file upload zone with a file list showing per-file name, size, upload progress, and status (success, error). Supports multiple file selection.',
+      },
+    },
+  },
   argTypes: {
     state: {
       control: 'select',

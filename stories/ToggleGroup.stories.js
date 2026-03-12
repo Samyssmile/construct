@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Toggle Group',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Button group for single or multi-select mode. Uses `role="group"` and `aria-pressed` on each item for accessible state management. Suitable for view mode switchers and filter toggles.',
+      },
+    },
+  },
   argTypes: {
     size: {
       control: 'select',

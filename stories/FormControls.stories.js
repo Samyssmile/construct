@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Form Controls',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Form field components including text inputs, selects, and textareas with labels, hint text, and validation error states. Supports icon-prefixed inputs and required field indicators.',
+      },
+    },
+  },
   argTypes: {
     label: { control: 'text', description: 'Field label' },
     placeholder: { control: 'text', description: 'Input placeholder text' },

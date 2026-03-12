@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Navigation/Navigation',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Tab-based navigation using ARIA `tablist`, `tab`, and `tabpanel` roles with roving tabindex for keyboard navigation. Also includes breadcrumb and pagination patterns.',
+      },
+    },
+  },
   argTypes: {
     activeTab: {
       control: 'select',

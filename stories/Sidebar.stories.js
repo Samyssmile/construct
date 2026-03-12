@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Navigation/Sidebar',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Collapsible sidebar navigation supporting side and overlay display modes. Includes nav list items with icons, badges, and active state. Supports keyboard accessibility and `data-state` open/closed toggling.',
+      },
+    },
+  },
   argTypes: {
     mode: {
       control: 'select',

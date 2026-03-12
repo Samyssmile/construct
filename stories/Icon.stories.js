@@ -2,6 +2,13 @@ import { expect } from 'storybook/test';
 
 export default {
   title: 'Foundations/Icon',
+  parameters: {
+    docs: {
+      description: {
+        component: 'SVG icon wrapper with size variants (sm 16px, md 20px, lg 24px, xl 32px) for consistent icon sizing via CSS custom properties. Icons must include `aria-hidden="true"` when decorative.',
+      },
+    },
+  },
   argTypes: {
     size: {
       control: 'select',

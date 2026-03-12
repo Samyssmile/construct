@@ -2,6 +2,13 @@ import { expect, within } from 'storybook/test';
 
 export default {
   title: 'Navigation/Toolbar',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Horizontal navigation bar with brand logo, nav links with icons, and utility action buttons. Uses a `<nav>` landmark with `aria-label` for top-level app navigation.',
+      },
+    },
+  },
   argTypes: {
     brand: { control: 'text', description: 'Brand / product name' },
   },

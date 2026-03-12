@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Data Display/Status & Feedback',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Status and feedback components including badges, alerts, and toast notifications. Supports info, success, warning, and danger semantic color variants with appropriate ARIA live region roles.',
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: 'select',
