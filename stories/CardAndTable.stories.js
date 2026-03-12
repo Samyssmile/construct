@@ -1,3 +1,5 @@
+import { expect, within } from 'storybook/test';
+
 export default {
   title: 'Data Display/Card & Table',
   argTypes: {
@@ -46,6 +48,27 @@ export const Card = {
     </div>
   </section>
 `,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Card uses a semantic <section> element
+    const card = canvasElement.querySelector('.ct-card');
+    expect(card.tagName.toLowerCase()).toBe('section');
+
+    // Header contains a heading and an action button
+    const heading = canvas.getByRole('heading', { level: 3 });
+    expect(heading).toHaveTextContent('Team');
+
+    const buttons = canvas.getAllByRole('button');
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0]).toHaveTextContent('Edit');
+    expect(buttons[1]).toHaveTextContent('Open');
+
+    // All three card sections are present
+    expect(canvasElement.querySelector('.ct-card__header')).toBeInTheDocument();
+    expect(canvasElement.querySelector('.ct-card__body')).toBeInTheDocument();
+    expect(canvasElement.querySelector('.ct-card__footer')).toBeInTheDocument();
+  },
 };
 
 export const Table = {
@@ -74,4 +97,23 @@ export const Table = {
     </table>
   </div>
 `,
+  play: async ({ canvasElement }) => {
+    // Semantic <table> element is present
+    const table = canvasElement.querySelector('table');
+    expect(table).toBeInTheDocument();
+
+    // All column headers have scope="col" for screen reader association
+    const headers = canvasElement.querySelectorAll('th[scope="col"]');
+    expect(headers).toHaveLength(3);
+    expect(headers[0]).toHaveTextContent('Name');
+    expect(headers[1]).toHaveTextContent('Status');
+    expect(headers[2]).toHaveTextContent('Owner');
+
+    // Two data rows, each with a cell for every header column
+    const rows = canvasElement.querySelectorAll('tbody tr');
+    expect(rows).toHaveLength(2);
+    for (const row of rows) {
+      expect(row.querySelectorAll('td')).toHaveLength(3);
+    }
+  },
 };
