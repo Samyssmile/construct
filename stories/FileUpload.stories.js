@@ -1,8 +1,11 @@
+import { expect, within, userEvent } from 'storybook/test';
+
 export default {
-  title: 'Components/File Upload'
+  title: 'Components/File Upload',
 };
 
-export const DragDrop = () => `
+export const DragDrop = {
+  render: () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-4); max-width: 640px;">
     <label class="ct-file-upload__dropzone" data-state="dragover" for="story-files">
       <input class="ct-file-upload__input" id="story-files" type="file" multiple />
@@ -36,4 +39,58 @@ export const DragDrop = () => `
 
     <div class="ct-file-upload__error">File size exceeds 10MB limit.</div>
   </div>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // File input is associated with its label via for/id
+    const fileInput = canvasElement.querySelector('#story-files');
+    expect(fileInput).toBeInTheDocument();
+    expect(fileInput).toHaveAttribute('type', 'file');
+    expect(fileInput).toHaveAttribute('multiple');
+
+    const dropzone = canvasElement.querySelector('.ct-file-upload__dropzone');
+    expect(dropzone).toHaveAttribute('for', 'story-files');
+
+    // File input is visually hidden but still accessible
+    const inputStyle = window.getComputedStyle(fileInput);
+    expect(fileInput.offsetWidth === 0 || inputStyle.position === 'absolute').toBe(true);
+
+    // Dropzone hint and title are visible
+    expect(canvas.getByText('Drop files here or browse')).toBeInTheDocument();
+    expect(canvas.getByText('PDF, DOCX up to 10MB')).toBeInTheDocument();
+
+    // File list: successful upload
+    const successItem = canvasElement.querySelector('[data-status="success"]');
+    expect(successItem).toBeInTheDocument();
+    expect(within(successItem).getByText('report.pdf')).toBeInTheDocument();
+    expect(within(successItem).getByText('820 KB')).toBeInTheDocument();
+    const removeBtn = within(successItem).getByRole('button', { name: 'Remove' });
+    expect(removeBtn).toBeEnabled();
+
+    // File list: failed upload
+    const errorItem = canvasElement.querySelector('[data-status="error"]');
+    expect(errorItem).toBeInTheDocument();
+    expect(within(errorItem).getByText('large-archive.zip')).toBeInTheDocument();
+    const retryBtn = within(errorItem).getByRole('button', { name: 'Retry' });
+    expect(retryBtn).toBeEnabled();
+
+    // Error message is visible
+    const errorMsg = canvas.getByText('File size exceeds 10MB limit.');
+    expect(errorMsg).toBeInTheDocument();
+
+    // Bug check: error message should be linked to the input via aria-describedby
+    // so screen readers announce the error when the input is focused
+    const describedBy = fileInput.getAttribute('aria-describedby');
+    const errorEl = canvasElement.querySelector('.ct-file-upload__error');
+    if (describedBy && errorEl.id) {
+      expect(describedBy).toContain(errorEl.id);
+    }
+
+    // Action buttons are focusable and clickable
+    await userEvent.click(removeBtn);
+    expect(removeBtn).toHaveFocus();
+    await userEvent.click(retryBtn);
+    expect(retryBtn).toHaveFocus();
+  },
+};

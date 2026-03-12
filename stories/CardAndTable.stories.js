@@ -1,8 +1,9 @@
 export default {
-  title: 'Components/Card & Table'
+  title: 'Components/Card & Table',
 };
 
-export const Card = () => `
+export const Card = {
+  render: () => `
   <section class="ct-card" style="max-width: 420px;">
     <div class="ct-card__header">
       <h3>Team</h3>
@@ -17,9 +18,11 @@ export const Card = () => `
       <button class="ct-button ct-button--secondary">Open</button>
     </div>
   </section>
-`;
+`,
+};
 
-export const Table = () => `
+export const Table = {
+  render: () => `
   <div class="ct-table-wrap" style="max-width: 720px;">
     <table class="ct-table ct-table--striped">
       <thead>
@@ -43,4 +46,5 @@ export const Table = () => `
       </tbody>
     </table>
   </div>
-`;
+`,
+};
