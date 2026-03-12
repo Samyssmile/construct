@@ -282,7 +282,6 @@ export const Dropdown = {
     <div class="ct-dropdown" id="story-dd">
       <button class="ct-button ct-button--secondary ct-dropdown__trigger"
               id="story-dd-trigger"
-              aria-haspopup="true"
               aria-expanded="false"
               aria-controls="story-dd-menu">Actions</button>
       <div class="ct-dropdown__menu" id="story-dd-menu" role="group" aria-label="Actions" inert>
@@ -332,7 +331,6 @@ export const Dropdown = {
     });
 
     // Trigger has correct ARIA attributes
-    expect(trigger).toHaveAttribute('aria-haspopup', 'true');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(trigger).toHaveAttribute('aria-controls', 'story-dd-menu');
 
