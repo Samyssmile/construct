@@ -1,3 +1,5 @@
+import { expect } from 'storybook/test';
+
 export default {
   title: 'Data Display/Data Table Simple',
 };
@@ -83,4 +85,57 @@ export const DataTableSimple = {
     </div>
   </div>
 `,
+  play: async ({ canvasElement }) => {
+    // Semantic <table> element is present
+    const table = canvasElement.querySelector('table');
+    expect(table).toBeInTheDocument();
+
+    // All five column headers have scope="col"
+    const headers = canvasElement.querySelectorAll('th[scope="col"]');
+    expect(headers).toHaveLength(5);
+
+    // Sort state is expressed via aria-sort on <th>
+    expect(canvasElement.querySelector('th[aria-sort="ascending"]')).toBeInTheDocument();
+    expect(canvasElement.querySelector('th[aria-sort="descending"]')).toBeInTheDocument();
+    const unsortedHeaders = canvasElement.querySelectorAll('th[aria-sort="none"]');
+    expect(unsortedHeaders).toHaveLength(2);
+
+    // Sort indicator icons are hidden from assistive technology
+    const sortIndicators = canvasElement.querySelectorAll('.ct-table__sort-indicator');
+    expect(sortIndicators.length).toBeGreaterThan(0);
+    for (const indicator of sortIndicators) {
+      expect(indicator).toHaveAttribute('aria-hidden', 'true');
+    }
+
+    // Select-all checkbox has an accessible label
+    const selectAll = canvasElement.querySelector('thead input[type="checkbox"]');
+    expect(selectAll).toHaveAttribute('aria-label', 'Select all rows');
+
+    // Each row checkbox has a unique accessible label
+    const rowCheckboxes = canvasElement.querySelectorAll('tbody input[type="checkbox"]');
+    expect(rowCheckboxes).toHaveLength(3);
+    const rowLabels = [...rowCheckboxes].map(cb => cb.getAttribute('aria-label'));
+    expect(new Set(rowLabels).size).toBe(3);
+
+    // Three data rows, each with 5 cells (checkbox + 4 data columns)
+    const rows = canvasElement.querySelectorAll('tbody tr');
+    expect(rows).toHaveLength(3);
+    for (const row of rows) {
+      expect(row.querySelectorAll('td')).toHaveLength(5);
+    }
+
+    // Pagination nav has an accessible label
+    const pagination = canvasElement.querySelector('nav.ct-pagination');
+    expect(pagination).toHaveAttribute('aria-label');
+
+    // Current page button is marked with aria-current="page"
+    const currentPage = canvasElement.querySelector('[aria-current="page"]');
+    expect(currentPage).toBeInTheDocument();
+    expect(currentPage).toHaveTextContent('1');
+
+    // Previous button is disabled when on the first page
+    const prevButton = canvasElement.querySelector('[aria-disabled="true"]');
+    expect(prevButton).toBeInTheDocument();
+    expect(prevButton).toHaveTextContent('Prev');
+  },
 };
