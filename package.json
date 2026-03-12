@@ -22,9 +22,21 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },
+  "exports": {
+    "./foundations.css": "./foundations.css",
+    "./components/components.css": "./components/components.css",
+    "./tokens/tokens.css": "./tokens/tokens.css",
+    "./tokens/tokens.json": "./tokens/tokens.json",
+    "./tokens": {
+      "types": "./tokens/tokens.ts",
+      "default": "./tokens/tokens.js"
+    }
+  },
   "files": [
+    "foundations.css",
     "tokens/tokens.css",
     "tokens/tokens.json",
+    "tokens/tokens.js",
     "tokens/tokens.ts",
     "tokens/README.md",
     "docs/guidelines.md",

@@ -16,6 +16,7 @@ const semanticThemeFiles = {
 const outCssPath = path.join(tokensDir, 'tokens.css');
 const outJsonPath = path.join(tokensDir, 'tokens.json');
 const outTsPath = path.join(tokensDir, 'tokens.ts');
+const outJsPath = path.join(tokensDir, 'tokens.js');
 
 const args = new Set(process.argv.slice(2));
 const checkOnly = args.has('--check');
@@ -409,10 +410,13 @@ const tsOut = [
   '',
 ].join('\n');
 
+const jsOut = tsOut.replace(/ as const/g, '');
+
 const outputs = [
   { path: outCssPath, content: cssLines.join('\n') },
   { path: outJsonPath, content: jsonOut + '\n' },
   { path: outTsPath, content: tsOut },
+  { path: outJsPath, content: jsOut },
 ];
 
 let needsUpdate = false;

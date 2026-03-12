@@ -4,7 +4,11 @@ node_modules/
 # Generated token files (built by scripts/build-tokens.mjs)
 tokens/tokens.css
 tokens/tokens.json
+tokens/tokens.js
 tokens/tokens.ts
+
+# Generated Angular library asset copies
+packages/construct-angular/projects/construct/src/assets/
 
 # Build artifacts
 dist/
@@ -34,6 +38,17 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Package tarballs
+*.tgz
+
+# Coverage reports
+coverage/
+
+# Temporary/analysis files
+analyze.md
+finding-*.md
+mock-data/
 
 # Internal/private documentation (not for public repo)
 PLAN.md
