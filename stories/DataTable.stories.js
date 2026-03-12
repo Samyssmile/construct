@@ -32,7 +32,7 @@ export const Playground = {
           <h3>${title}</h3>
         </div>
       </div>
-      <div class="ct-data-table__table">
+      <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
         <table class="ct-table${stripeClass}${compactClass}">
           <thead>
             <tr>
@@ -96,7 +96,7 @@ export const DataTable = {
         <button class="ct-button ct-button--secondary ct-button--sm">Filters</button>
       </div>
     </div>
-    <div class="ct-data-table__table">
+    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
       <table class="ct-table ct-table--striped ct-table--compact">
         <thead>
           <tr>
@@ -268,7 +268,7 @@ export const DataTable = {
 export const DataTableSimple = {
   render: () => `
   <div class="ct-data-table ct-data-table--simple" style="max-width: 900px;">
-    <div class="ct-data-table__table">
+    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
       <table class="ct-table ct-table--striped ct-table--compact">
         <thead>
           <tr>

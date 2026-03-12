@@ -12,8 +12,8 @@ export default {
   argTypes: {
     mode: {
       control: 'select',
-      options: ['side', 'over'],
-      description: 'Layout mode: side (pushes content) or over (overlays content)',
+      options: ['side', 'over', 'push'],
+      description: 'Layout mode: side (pushes content), over (overlays content), or push (shifts content)',
     },
     open: { control: 'boolean', description: 'Sidebar open/closed state' },
     label: { control: 'text', description: 'Accessible label for the sidebar landmark' },

@@ -11,29 +11,45 @@ export default {
   },
   argTypes: {
     brand: { control: 'text', description: 'Brand / product name' },
+    ariaLabel: { control: 'text', description: 'Accessible label for the navigation landmark' },
+    activeItem: {
+      control: 'select',
+      options: ['Dashboard', 'Documents', 'Settings'],
+      description: 'Currently active navigation item',
+    },
   },
 };
 
 export const Playground = {
   args: {
     brand: 'Accessful',
+    ariaLabel: 'Main navigation',
+    activeItem: 'Dashboard',
   },
-  render: ({ brand }) => `
-  <nav class="ct-toolbar" aria-label="Main navigation">
+  render: ({ brand, ariaLabel, activeItem }) => {
+    const items = ['Dashboard', 'Documents', 'Settings'];
+    const navLinks = items.map(item => {
+      const isActive = item === activeItem;
+      const activeClass = isActive ? ' ct-toolbar__nav-link--active' : '';
+      const ariaCurrent = isActive ? ' aria-current="page"' : '';
+      return `<li><a class="ct-toolbar__nav-link${activeClass}" href="#"${ariaCurrent}>${item}</a></li>`;
+    }).join('\n      ');
+    return `
+  <nav class="ct-toolbar" aria-label="${ariaLabel}">
     <a class="ct-toolbar__brand" href="#">${brand}</a>
     <ul class="ct-toolbar__nav">
-      <li><a class="ct-toolbar__nav-link ct-toolbar__nav-link--active" href="#" aria-current="page">Dashboard</a></li>
-      <li><a class="ct-toolbar__nav-link" href="#">Documents</a></li>
-      <li><a class="ct-toolbar__nav-link" href="#">Settings</a></li>
+      ${navLinks}
     </ul>
     <div class="ct-toolbar__spacer"></div>
-  </nav>`,
+  </nav>`;
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const nav = canvas.getByRole('navigation', { name: 'Main navigation' });
+    const nav = canvas.getByRole('navigation');
     expect(nav).toBeInTheDocument();
-    const activeLink = canvas.getByRole('link', { name: /Dashboard/ });
-    expect(activeLink).toHaveAttribute('aria-current', 'page');
+    expect(nav).toHaveAttribute('aria-label');
+    const activeLink = canvasElement.querySelector('[aria-current="page"]');
+    expect(activeLink).toBeInTheDocument();
   },
 };
 

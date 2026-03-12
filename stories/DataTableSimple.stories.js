@@ -12,6 +12,8 @@ export default {
   argTypes: {
     striped: { control: 'boolean', description: 'Alternate row striping' },
     compact: { control: 'boolean', description: 'Reduce row padding' },
+    caption: { control: 'text', description: 'Visible table caption providing context' },
+    selectable: { control: 'boolean', description: 'Show row selection checkboxes' },
   },
 };
 
@@ -19,24 +21,33 @@ export const Playground = {
   args: {
     striped: true,
     compact: true,
+    caption: '',
+    selectable: false,
   },
-  render: ({ striped, compact }) => {
+  render: ({ striped, compact, caption, selectable }) => {
     const stripeClass = striped ? ' ct-table--striped' : '';
     const compactClass = compact ? ' ct-table--compact' : '';
+    const captionHtml = caption ? `\n          <caption>${caption}</caption>` : '';
+    const selectAllHeader = selectable
+      ? '\n              <th scope="col" class="ct-table__cell--checkbox"><input class="ct-check__input" type="checkbox" aria-label="Select all rows" /></th>'
+      : '';
+    const selectCell = (name) => selectable
+      ? `<td class="ct-table__cell--checkbox"><input class="ct-check__input" type="checkbox" aria-label="Select ${name}" /></td>`
+      : '';
     return `
     <div class="ct-data-table ct-data-table--simple" style="max-width: 600px;">
-      <div class="ct-data-table__table">
-        <table class="ct-table${stripeClass}${compactClass}">
+      <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
+        <table class="ct-table${stripeClass}${compactClass}">${captionHtml}
           <thead>
-            <tr>
+            <tr>${selectAllHeader}
               <th scope="col">Name</th>
               <th scope="col">Status</th>
               <th scope="col">Owner</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Alpha</td><td>Active</td><td>J. Chen</td></tr>
-            <tr><td>Beta</td><td>Paused</td><td>L. Hart</td></tr>
+            <tr>${selectCell('Alpha')}<td>Alpha</td><td>Active</td><td>J. Chen</td></tr>
+            <tr>${selectCell('Beta')}<td>Beta</td><td>Paused</td><td>L. Hart</td></tr>
           </tbody>
         </table>
       </div>
@@ -47,7 +58,7 @@ export const Playground = {
 export const DataTableSimple = {
   render: () => `
   <div class="ct-data-table ct-data-table--simple" style="max-width: 960px;">
-    <div class="ct-data-table__table">
+    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
       <table class="ct-table ct-table--striped ct-table--compact">
         <thead>
           <tr>

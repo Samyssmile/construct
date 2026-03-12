@@ -13,6 +13,15 @@ export default {
     title: { control: 'text', description: 'Card title' },
     body: { control: 'text', description: 'Card body text' },
     footer: { control: 'text', description: 'Card footer label' },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+      description: 'Card size variant',
+    },
+    interactive: {
+      control: 'boolean',
+      description: 'Enable hover effect and keyboard focus for clickable cards',
+    },
   },
 };
 
@@ -21,9 +30,16 @@ export const Playground = {
     title: 'Team',
     body: 'Shared ownership and clear permissions.',
     footer: '12 members',
+    size: 'md',
+    interactive: false,
   },
-  render: ({ title, body, footer }) => `
-  <section class="ct-card" style="max-width: 420px;">
+  render: ({ title, body, footer, size, interactive }) => {
+    const sizeClass = size !== 'md' ? ` ct-card--${size}` : '';
+    const interactiveClass = interactive ? ' ct-card--interactive' : '';
+    const tag = interactive ? 'div' : 'section';
+    const interactiveAttrs = interactive ? ' tabindex="0" role="button"' : '';
+    return `
+  <${tag} class="ct-card${sizeClass}${interactiveClass}" style="max-width: 420px;"${interactiveAttrs}>
     <div class="ct-card__header">
       <h3>${title}</h3>
       <button class="ct-button ct-button--ghost">Edit</button>
@@ -35,7 +51,8 @@ export const Playground = {
       <span class="ct-muted">${footer}</span>
       <button class="ct-button ct-button--secondary">Open</button>
     </div>
-  </section>`,
+  </${tag}>`;
+  },
 };
 
 export const Card = {
@@ -81,7 +98,7 @@ export const Card = {
 export const Interactive = {
   render: () => `
   <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-    <section class="ct-card ct-card--interactive" tabindex="0" role="button" aria-label="Alpha project" style="max-width: 280px;">
+    <div class="ct-card ct-card--interactive" tabindex="0" role="button" aria-label="Alpha project" style="max-width: 280px;">
       <div class="ct-card__header">
         <h3>Alpha</h3>
       </div>
@@ -91,8 +108,8 @@ export const Interactive = {
       <div class="ct-card__footer">
         <span class="ct-muted">J. Chen</span>
       </div>
-    </section>
-    <section class="ct-card ct-card--interactive" tabindex="0" role="button" aria-label="Beta project" style="max-width: 280px;">
+    </div>
+    <div class="ct-card ct-card--interactive" tabindex="0" role="button" aria-label="Beta project" style="max-width: 280px;">
       <div class="ct-card__header">
         <h3>Beta</h3>
       </div>
@@ -102,7 +119,7 @@ export const Interactive = {
       <div class="ct-card__footer">
         <span class="ct-muted">L. Hart</span>
       </div>
-    </section>
+    </div>
   </div>
 `,
   play: async ({ canvasElement }) => {
