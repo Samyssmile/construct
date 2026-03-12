@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Datepicker',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Calendar date picker with a popover panel, month navigation, and a keyboard-accessible date grid. Uses `role="dialog"` and `aria-label` for screen reader support.',
+      },
+    },
+  },
   argTypes: {
     label: { control: 'text', description: 'Field label' },
     placeholder: { control: 'text', description: 'Input placeholder text' },

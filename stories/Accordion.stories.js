@@ -4,6 +4,13 @@ const chevron = `<svg class="ct-accordion__icon" viewBox="0 0 24 24" fill="none"
 
 export default {
   title: 'Components/Accordion',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Collapsible content panels built on native `<details>`/`<summary>` elements. Supports default and bordered variants with animated chevron indicators and full keyboard accessibility.',
+      },
+    },
+  },
   argTypes: {
     heading: { control: 'text', description: 'Trigger heading text' },
     content: { control: 'text', description: 'Panel content text' },

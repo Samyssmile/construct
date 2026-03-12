@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Data Display/Data Table',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Full-featured data table with header actions, toolbar filters, sortable columns, row selection, and pagination. Use for complex datasets requiring filtering and bulk operations.',
+      },
+    },
+  },
   argTypes: {
     title: { control: 'text', description: 'Table title' },
     striped: { control: 'boolean', description: 'Alternate row striping' },

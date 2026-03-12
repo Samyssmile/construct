@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Button',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Accessible button component supporting primary, secondary, outline, ghost, accent, danger, and link variants. Supports icon-only buttons, size variants (sm, md, lg), and full keyboard navigation.',
+      },
+    },
+  },
   argTypes: {
     label: { control: 'text', description: 'Button text content' },
     variant: {

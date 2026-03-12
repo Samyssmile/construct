@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Forms/Selection Controls',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Checkbox, radio button, and switch components with support for checked, unchecked, indeterminate, and disabled states. All controls use native `<input>` elements for built-in accessibility.',
+      },
+    },
+  },
   argTypes: {
     type: {
       control: 'select',

@@ -2,6 +2,13 @@ import { expect, within, userEvent } from 'storybook/test';
 
 export default {
   title: 'Overlays/Overlays',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Overlay components including modal dialogs, drawers, and toast notifications. Modals use `role="dialog"` and `aria-modal="true"`. Toasts use `role="status"` or `role="alert"` for live region announcements.',
+      },
+    },
+  },
   argTypes: {
     title: { control: 'text', description: 'Modal title' },
     description: { control: 'text', description: 'Modal body text' },

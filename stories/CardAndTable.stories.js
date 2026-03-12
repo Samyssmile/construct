@@ -2,6 +2,13 @@ import { expect, within } from 'storybook/test';
 
 export default {
   title: 'Data Display/Card & Table',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Card container with header, body, and footer sections for surfacing summary content. Also includes a styled HTML table with striped rows and compact variants.',
+      },
+    },
+  },
   argTypes: {
     title: { control: 'text', description: 'Card title' },
     body: { control: 'text', description: 'Card body text' },

@@ -2,6 +2,13 @@ import { expect } from 'storybook/test';
 
 export default {
   title: 'Data Display/Data Table Simple',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Lightweight data table with sortable columns and row selection checkboxes, without toolbar or pagination chrome. Use when a full data table would be too heavy.',
+      },
+    },
+  },
   argTypes: {
     striped: { control: 'boolean', description: 'Alternate row striping' },
     compact: { control: 'boolean', description: 'Reduce row padding' },
