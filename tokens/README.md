@@ -17,7 +17,8 @@ Design tokens are the single source of truth for all design decisions in the Con
 - **`semantic.high-contrast.json`**: High-contrast theme overrides (color + theme metadata)
 - **`tokens.css`**: Generated CSS Custom Properties (ready for import)
 - **`tokens.json`**: Generated, resolved token values with units (for tooling)
-- **`tokens.ts`**: Generated TypeScript exports (for JavaScript/TypeScript usage)
+- **`tokens.js`**: Generated JavaScript module for runtime imports
+- **`tokens.ts`**: Generated TypeScript definitions and typed exports
 
 ## Two-Tier Token System
 
@@ -98,7 +99,7 @@ If no `data-theme` is set, the system preferences are respected:
 
 ### TypeScript/JavaScript
 
-Import the generated TypeScript file:
+Import the generated token module:
 
 ```typescript
 import { tokens, cssVars } from '@construct/design/tokens/tokens';
@@ -115,7 +116,7 @@ console.log(tokens.semanticThemes.dark.color.background.canvas);
 
 ## Building Tokens
 
-The build script generates CSS, JSON, and TypeScript outputs from the source token files.
+The build script generates CSS, JSON, JavaScript, and TypeScript outputs from the source token files.
 
 ### Run Build
 
