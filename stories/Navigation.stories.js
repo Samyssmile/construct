@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Navigation'
+  title: 'Navigation/Navigation'
 };
 
 export const Tabs = () => `

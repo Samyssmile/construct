@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Sidebar'
+  title: 'Navigation/Sidebar'
 };
 
 export const SideMode = () => `

@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Button'
+  title: 'Forms/Button'
 };
 
 export const Variants = () => `

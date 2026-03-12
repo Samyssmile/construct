@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Toolbar'
+  title: 'Navigation/Toolbar'
 };
 
 export const Default = () => `

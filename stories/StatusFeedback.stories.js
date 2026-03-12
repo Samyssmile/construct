@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Status & Feedback'
+  title: 'Data Display/Status & Feedback'
 };
 
 export const Badges = () => `

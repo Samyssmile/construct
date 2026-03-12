@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Form Controls'
+  title: 'Forms/Form Controls'
 };
 
 export const Fields = () => `

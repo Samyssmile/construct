@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Toggle Group'
+  title: 'Forms/Toggle Group'
 };
 
 export const SingleSelect = () => `

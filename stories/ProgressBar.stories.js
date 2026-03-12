@@ -1,5 +1,7 @@
+import { expect, within } from 'storybook/test';
+
 export default {
-  title: 'Components/Progress Bar'
+  title: 'Data Display/Progress Bar'
 };
 
 export const Determinate = () => `
@@ -36,6 +38,42 @@ export const Determinate = () => `
   </div>
 `;
 
+Determinate.play = async ({ canvasElement }) => {
+  const bars = canvasElement.querySelectorAll('[role="progressbar"]');
+  expect(bars).toHaveLength(3);
+
+  // Every determinate bar needs the full aria value triple
+  for (const bar of bars) {
+    expect(bar).toHaveAttribute('aria-valuemin', '0');
+    expect(bar).toHaveAttribute('aria-valuemax', '100');
+    expect(bar).toHaveAttribute('aria-valuenow');
+    expect(bar).toHaveAttribute('aria-label');
+  }
+
+  // aria-valuenow must match the displayed percentage text
+  const expectedValues = ['25', '60', '100'];
+  bars.forEach((bar, i) => {
+    expect(bar).toHaveAttribute('aria-valuenow', expectedValues[i]);
+  });
+
+  // Track inline width must be consistent with aria-valuenow
+  for (const bar of bars) {
+    const track = bar.querySelector('.ct-progress-bar__track');
+    const value = bar.getAttribute('aria-valuenow');
+    expect(track.style.width).toBe(`${value}%`);
+  }
+
+  // 100% bar uses success variant
+  expect(bars[2].classList.contains('ct-progress-bar--success')).toBe(true);
+
+  // aria-label must be descriptive (not empty or a raw number)
+  for (const bar of bars) {
+    const label = bar.getAttribute('aria-label');
+    expect(label.length).toBeGreaterThan(3);
+    expect(label).not.toMatch(/^\d+$/);
+  }
+};
+
 export const Indeterminate = () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-5); max-width: 480px;">
     <div>
@@ -46,6 +84,27 @@ export const Indeterminate = () => `
     </div>
   </div>
 `;
+
+Indeterminate.play = async ({ canvasElement }) => {
+  const bar = canvasElement.querySelector('[role="progressbar"]');
+  expect(bar).toBeInTheDocument();
+
+  // Indeterminate bars MUST NOT have aria-valuenow (WCAG: omitting
+  // the value attribute signals "indeterminate" to assistive tech)
+  expect(bar).not.toHaveAttribute('aria-valuenow');
+
+  // Must still have an accessible label
+  expect(bar).toHaveAttribute('aria-label');
+  expect(bar.getAttribute('aria-label').length).toBeGreaterThan(0);
+
+  // Has the indeterminate modifier class
+  expect(bar.classList.contains('ct-progress-bar--indeterminate')).toBe(true);
+
+  // Track should NOT have an explicit width (animation handles it)
+  const track = bar.querySelector('.ct-progress-bar__track');
+  expect(track).toBeInTheDocument();
+  expect(track.style.width).toBe('');
+};
 
 export const Sizes = () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-5); max-width: 480px;">
@@ -71,6 +130,33 @@ export const Sizes = () => `
     </div>
   </div>
 `;
+
+Sizes.play = async ({ canvasElement }) => {
+  const bars = canvasElement.querySelectorAll('[role="progressbar"]');
+  expect(bars).toHaveLength(3);
+
+  const expected = [
+    { value: '40', size: 'ct-progress-bar--sm' },
+    { value: '60', size: null },
+    { value: '80', size: 'ct-progress-bar--lg' },
+  ];
+
+  bars.forEach((bar, i) => {
+    expect(bar).toHaveAttribute('aria-valuenow', expected[i].value);
+    expect(bar).toHaveAttribute('aria-valuemin', '0');
+    expect(bar).toHaveAttribute('aria-valuemax', '100');
+    expect(bar).toHaveAttribute('aria-label');
+
+    // Track width consistent with value
+    const track = bar.querySelector('.ct-progress-bar__track');
+    expect(track.style.width).toBe(`${expected[i].value}%`);
+
+    // Size modifier class
+    if (expected[i].size) {
+      expect(bar.classList.contains(expected[i].size)).toBe(true);
+    }
+  });
+};
 
 export const Variants = () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-5); max-width: 480px;">

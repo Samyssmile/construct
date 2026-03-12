@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Overlays'
+  title: 'Overlays/Overlays'
 };
 
 export const Modal = () => `

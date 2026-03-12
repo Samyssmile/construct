@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Icon'
+  title: 'Foundations/Icon'
 };
 
 export const Sizes = () => `

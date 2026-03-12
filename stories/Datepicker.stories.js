@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Datepicker'
+  title: 'Forms/Datepicker'
 };
 
 export const Datepicker = () => `

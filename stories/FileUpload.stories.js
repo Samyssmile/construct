@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/File Upload'
+  title: 'Forms/File Upload'
 };
 
 export const DragDrop = () => `
