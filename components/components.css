@@ -742,7 +742,8 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
   box-shadow: var(--ct-tooltip-shadow);
   font-size: var(--font-size-xs);
   line-height: var(--line-height-xs);
-  white-space: nowrap;
+  max-width: 280px;
+  white-space: normal;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--duration-fast) var(--easing-standard),
@@ -753,42 +754,40 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
   opacity: 1;
 }
 
+.ct-tooltip__content {
+  --_tt-offset: calc(100% + var(--space-2));
+}
+
 .ct-tooltip[data-side='top'] .ct-tooltip__content {
-  inset-block-end: calc(100% + var(--space-2));
+  inset-block-end: var(--_tt-offset);
   inset-inline-start: 50%;
   transform: translate(-50%, -4px);
 }
 
-.ct-tooltip[data-state='open'][data-side='top'] .ct-tooltip__content {
-  transform: translate(-50%, 0);
-}
-
 .ct-tooltip[data-side='bottom'] .ct-tooltip__content {
-  inset-block-start: calc(100% + var(--space-2));
+  inset-block-start: var(--_tt-offset);
   inset-inline-start: 50%;
   transform: translate(-50%, 4px);
 }
 
-.ct-tooltip[data-state='open'][data-side='bottom'] .ct-tooltip__content {
-  transform: translate(-50%, 0);
-}
-
 .ct-tooltip[data-side='left'] .ct-tooltip__content {
-  inset-inline-end: calc(100% + var(--space-2));
+  inset-inline-end: var(--_tt-offset);
   inset-block-start: 50%;
   transform: translate(-4px, -50%);
 }
 
-.ct-tooltip[data-state='open'][data-side='left'] .ct-tooltip__content {
-  transform: translate(0, -50%);
-}
-
 .ct-tooltip[data-side='right'] .ct-tooltip__content {
-  inset-inline-start: calc(100% + var(--space-2));
+  inset-inline-start: var(--_tt-offset);
   inset-block-start: 50%;
   transform: translate(4px, -50%);
 }
 
+.ct-tooltip[data-state='open'][data-side='top'] .ct-tooltip__content,
+.ct-tooltip[data-state='open'][data-side='bottom'] .ct-tooltip__content {
+  transform: translate(-50%, 0);
+}
+
+.ct-tooltip[data-state='open'][data-side='left'] .ct-tooltip__content,
 .ct-tooltip[data-state='open'][data-side='right'] .ct-tooltip__content {
   transform: translate(0, -50%);
 }
