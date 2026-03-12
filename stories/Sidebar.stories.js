@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Sidebar',
+  title: 'Navigation/Sidebar',
 };
 
 export const SideMode = {

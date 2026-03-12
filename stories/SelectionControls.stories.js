@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Selection Controls',
+  title: 'Forms/Selection Controls',
 };
 
 export const Checkbox = {

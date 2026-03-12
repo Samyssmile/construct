@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Toggle Group',
+  title: 'Forms/Toggle Group',
 };
 
 export const SingleSelect = {

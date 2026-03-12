@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Button',
+  title: 'Forms/Button',
   argTypes: {
     label: { control: 'text', description: 'Button text content' },
     variant: {

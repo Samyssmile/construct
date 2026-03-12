@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Components/Toolbar',
+  title: 'Navigation/Toolbar',
 };
 
 export const Default = {

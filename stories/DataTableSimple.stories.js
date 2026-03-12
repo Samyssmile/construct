@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Data Table Simple',
+  title: 'Data Display/Data Table Simple',
 };
 
 export const DataTableSimple = {

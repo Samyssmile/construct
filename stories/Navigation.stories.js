@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Navigation',
+  title: 'Navigation/Navigation',
 };
 
 export const Tabs = {

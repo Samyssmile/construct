@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Overlays',
+  title: 'Overlays/Overlays',
 };
 
 export const Modal = {

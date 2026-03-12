@@ -1,5 +1,5 @@
 export default {
-  title: 'Components/Card & Table',
+  title: 'Data Display/Card & Table',
 };
 
 export const Card = {

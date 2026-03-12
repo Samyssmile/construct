@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Components/Progress Bar',
+  title: 'Data Display/Progress Bar',
   argTypes: {
     value: {
       control: { type: 'range', min: 0, max: 100, step: 1 },
