@@ -1873,9 +1873,12 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
 .ct-sidebar-layout {
   display: flex;
   min-height: 100%;
+  /* clip prevents horizontal scroll when push sidebar translates off-screen */
+  overflow: clip;
 }
 
 .ct-sidebar {
+  /* Component-level width token — override via --ct-sidebar-width on the element or a parent */
   --ct-sidebar-width: 260px;
 
   width: var(--ct-sidebar-width);
@@ -1883,36 +1886,59 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
   background: var(--color-bg-elevated);
   border-inline-end: var(--border-thin) solid var(--color-border-subtle);
   overflow-y: auto;
-  transition: transform var(--duration-normal) var(--easing-standard),
-    width var(--duration-normal) var(--easing-standard);
+  transition: translate var(--duration-normal) var(--easing-standard),
+    width var(--duration-normal) var(--easing-standard),
+    margin var(--duration-normal) var(--easing-standard),
+    visibility var(--duration-normal) var(--easing-standard);
 }
 
+/* Side variant: collapses width when closed */
 .ct-sidebar--side:not([data-state='open']) {
   width: 0;
   border: none;
   overflow: hidden;
+  /* hide from assistive tech when collapsed */
+  visibility: hidden;
 }
 
+/* Overlay variant: slides in from the inline-start edge */
 .ct-sidebar--over {
   position: fixed;
   inset-block: 0;
   inset-inline-start: 0;
   z-index: var(--z-overlay);
   box-shadow: var(--shadow-lg);
-  transform: translateX(-100%);
+  /* LTR: slide in from the left */
+  translate: -100% 0;
+}
+
+/* RTL: overlay sidebar starts at inline-start (right edge) — slide in from the right */
+[dir='rtl'] .ct-sidebar--over {
+  translate: 100% 0;
 }
 
 .ct-sidebar--over[data-state='open'] {
-  transform: translateX(0);
+  translate: 0 0;
 }
 
+/* Push variant: slides off-screen and collapses flex space via negative margin */
 .ct-sidebar--push {
   margin-inline-start: calc(-1 * var(--ct-sidebar-width));
-  transition: margin var(--duration-normal) var(--easing-standard);
+  visibility: hidden;
 }
 
 .ct-sidebar--push[data-state='open'] {
   margin-inline-start: 0;
+  visibility: visible;
+}
+
+/* Respect reduced-motion preference — disable all sidebar transitions */
+@media (prefers-reduced-motion: reduce) {
+  .ct-sidebar,
+  .ct-sidebar--over,
+  .ct-sidebar__backdrop {
+    transition: none;
+  }
 }
 
 .ct-sidebar__header {
@@ -1939,7 +1965,9 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
     visibility var(--duration-normal) var(--easing-standard);
 }
 
-.ct-sidebar--over[data-state='open'] ~ .ct-sidebar__backdrop {
+/* Show backdrop when overlay sidebar is open.
+   Uses :has() so DOM order between sidebar and backdrop does not matter. */
+:has(> .ct-sidebar--over[data-state='open']) > .ct-sidebar__backdrop {
   opacity: 1;
   visibility: visible;
 }
