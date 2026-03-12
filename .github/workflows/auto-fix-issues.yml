@@ -206,6 +206,7 @@ jobs:
 
       - name: Create pull request
         if: steps.diff.outputs.changed == 'true'
+        id: pr
         uses: actions/github-script@v7
         env:
           ISSUE_NUMBER: ${{ steps.find.outputs.number }}
@@ -230,6 +231,7 @@ jobs:
               base: 'main'
             });
 
+            core.setOutput('number', String(pr.number));
             core.notice(`PR created: ${pr.html_url}`);
 
             await github.rest.issues.removeLabel({
@@ -244,6 +246,22 @@ jobs:
               issue_number: num,
               labels: ['autofix-pr-created']
             });
+
+      - name: Trigger review workflow
+        if: steps.pr.outputs.number
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'review-autofix-pr.yml',
+              ref: 'main',
+              inputs: {
+                pr_number: '${{ steps.pr.outputs.number }}'
+              }
+            });
+            core.notice('Triggered review workflow for PR #${{ steps.pr.outputs.number }}');
 
       # ── 6. Fehlerbehandlung ──
       - name: Handle failure or no changes
