@@ -279,9 +279,13 @@ export const Dropdown = {
   },
   render: () => `
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
-    <div class="ct-dropdown" data-state="open">
-      <button class="ct-button ct-button--secondary ct-dropdown__trigger" aria-expanded="true" aria-controls="actions-menu">Actions</button>
-      <div class="ct-dropdown__menu" id="actions-menu" role="group" aria-label="Actions">
+    <div class="ct-dropdown" id="story-dd">
+      <button class="ct-button ct-button--secondary ct-dropdown__trigger"
+              id="story-dd-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="story-dd-menu">Actions</button>
+      <div class="ct-dropdown__menu" id="story-dd-menu" role="group" aria-label="Actions" inert>
         <button class="ct-dropdown__item" type="button">Edit</button>
         <button class="ct-dropdown__item" type="button">Duplicate</button>
         <div class="ct-dropdown__separator" role="separator"></div>
@@ -293,47 +297,89 @@ export const Dropdown = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Trigger declares expanded state and controls the menu
+    const dropdown = canvasElement.querySelector('#story-dd');
     const trigger = canvas.getByRole('button', { name: 'Actions' });
+    const menuEl = canvasElement.querySelector('#story-dd-menu');
+
+    // Wire up Action-List keyboard behaviour.
+    // inert is removed/added synchronously so focus() works immediately
+    // without waiting for CSS opacity transition to complete.
+    function openDropdown() {
+      dropdown.dataset.state = 'open';
+      trigger.setAttribute('aria-expanded', 'true');
+      menuEl.removeAttribute('inert');
+      const first = menuEl.querySelector('.ct-dropdown__item:not([aria-disabled="true"])');
+      if (first) first.focus();
+    }
+
+    function closeDropdown() {
+      menuEl.setAttribute('inert', '');
+      delete dropdown.dataset.state;
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.focus();
+    }
+
+    trigger.addEventListener('click', () => {
+      if (dropdown.dataset.state === 'open') closeDropdown();
+      else openDropdown();
+    });
+
+    menuEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeDropdown();
+      }
+    });
+
+    // Trigger has correct ARIA attributes
+    expect(trigger).toHaveAttribute('aria-haspopup', 'true');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveAttribute('aria-controls', 'story-dd-menu');
+
+    // Menu container has a group role and accessible label
+    expect(menuEl).toHaveAttribute('role', 'group');
+    expect(menuEl).toHaveAttribute('aria-label');
+
+    // Open: click trigger → menu opens, focus moves to first item
+    trigger.click();
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(dropdown).toHaveAttribute('data-state', 'open');
 
-    const menuId = trigger.getAttribute('aria-controls');
-    const menu = canvasElement.querySelector(`#${menuId}`);
-    expect(menu).toBeInTheDocument();
-
-    // Menu container has a role and accessible label
-    expect(menu).toHaveAttribute('role');
-    expect(menu).toHaveAttribute('aria-label');
+    const editBtn = menuEl.querySelector('.ct-dropdown__item');
+    expect(editBtn).toHaveFocus();
 
     // Menu items are buttons
-    const menuScope = within(menu);
-    const editBtn = menuScope.getByRole('button', { name: 'Edit' });
-    const dupBtn = menuScope.getByRole('button', { name: 'Duplicate' });
-    const archiveBtn = menuScope.getByRole('button', { name: 'Archive' });
-
-    expect(editBtn).toBeInTheDocument();
-    expect(dupBtn).toBeInTheDocument();
-    expect(archiveBtn).toBeInTheDocument();
+    const menuScope = within(menuEl);
+    expect(menuScope.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+    expect(menuScope.getByRole('button', { name: 'Duplicate' })).toBeInTheDocument();
+    expect(menuScope.getByRole('button', { name: 'Archive' })).toBeInTheDocument();
 
     // Visual separator between groups
     expect(menuScope.getByRole('separator')).toBeInTheDocument();
 
-    // Menu items are focusable and clickable
-    await userEvent.click(editBtn);
-    expect(editBtn).toHaveFocus();
+    // Items are clickable and receive focus on click
+    const dupBtn = menuScope.getByRole('button', { name: 'Duplicate' });
+    await userEvent.click(dupBtn);
+    expect(dupBtn).toHaveFocus();
 
-    await userEvent.click(archiveBtn);
-    expect(archiveBtn).toHaveFocus();
-
-    // Keyboard: Enter activates a focused menu item
+    // Keyboard: Enter activates a focused item
     dupBtn.focus();
     let dupClicked = false;
     dupBtn.addEventListener('click', () => { dupClicked = true; }, { once: true });
     await userEvent.keyboard('{Enter}');
     expect(dupClicked).toBe(true);
 
-    // Trigger is also focusable
-    await userEvent.click(trigger);
+    // Escape: closes dropdown and returns focus to trigger
+    const archiveBtn = menuScope.getByRole('button', { name: 'Archive' });
+    archiveBtn.focus();
+    await userEvent.keyboard('{Escape}');
     expect(trigger).toHaveFocus();
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(dropdown).not.toHaveAttribute('data-state', 'open');
+
+    // Re-open: click trigger → first item focused again
+    trigger.click();
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(editBtn).toHaveFocus();
   },
 };
