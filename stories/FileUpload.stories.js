@@ -17,6 +17,7 @@ export default {
     },
     accept: { control: 'text', description: 'Accepted file types hint text' },
     multiple: { control: 'boolean', description: 'Allow selecting multiple files' },
+    disabled: { control: 'boolean', description: 'Disable the file input' },
   },
 };
 
@@ -25,14 +26,17 @@ export const Playground = {
     state: 'idle',
     accept: 'PDF, DOCX up to 10MB',
     multiple: true,
+    disabled: false,
   },
-  render: ({ state, accept, multiple }) => {
+  render: ({ state, accept, multiple, disabled }) => {
     const stateAttr = state !== 'idle' ? ` data-state="${state}"` : '';
     const multipleAttr = multiple ? ' multiple' : '';
+    const disabledAttr = disabled ? ' disabled' : '';
+    const disabledClass = disabled ? ' aria-disabled="true"' : '';
     return `
     <div style="max-width: 480px;">
-      <label class="ct-file-upload__dropzone"${stateAttr} for="pg-files">
-        <input class="ct-file-upload__input" id="pg-files" type="file"${multipleAttr} />
+      <label class="ct-file-upload__dropzone"${stateAttr}${disabledClass} for="pg-files">
+        <input class="ct-file-upload__input" id="pg-files" type="file"${multipleAttr}${disabledAttr} />
         <div class="ct-file-upload__title">Drop files here or browse</div>
         <div class="ct-file-upload__hint">${accept}</div>
         <span class="ct-button ct-button--secondary ct-button--sm">Browse files</span>

@@ -15,18 +15,38 @@ export default {
       options: ['sm', 'md', 'lg', 'xl'],
       description: 'Icon size',
     },
+    ariaHidden: {
+      control: 'boolean',
+      description: 'Hide from assistive technology (set true for decorative icons)',
+    },
+    icon: {
+      control: 'select',
+      options: ['clock', 'plus', 'check', 'info', 'alert'],
+      description: 'Icon shape',
+    },
   },
+};
+
+const iconPaths = {
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  check: '<polyline points="20 6 9 17 4 12"/>',
+  info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+  alert: '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
 };
 
 export const Playground = {
   args: {
     size: 'md',
+    ariaHidden: true,
+    icon: 'clock',
   },
-  render: ({ size }) => {
+  render: ({ size, ariaHidden, icon }) => {
     const sizeClass = size !== 'md' ? ` ct-icon--${size}` : '';
+    const hiddenAttr = ariaHidden ? ' aria-hidden="true"' : '';
     return `
-    <span class="ct-icon${sizeClass}" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <span class="ct-icon${sizeClass}"${hiddenAttr}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${iconPaths[icon]}</svg>
     </span>`;
   },
 };
