@@ -1,8 +1,11 @@
+import { expect, within } from 'storybook/test';
+
 export default {
-  title: 'Navigation/Toolbar'
+  title: 'Navigation/Toolbar',
 };
 
-export const Default = () => `
+export const Default = {
+  render: () => `
   <nav class="ct-toolbar" aria-label="Main navigation">
     <a class="ct-toolbar__brand" href="#">
       <span class="ct-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
@@ -35,9 +38,37 @@ export const Default = () => `
       </div>
     </div>
   </nav>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
 
-export const Minimal = () => `
+    // Toolbar is a navigation landmark
+    const nav = canvas.getByRole('navigation', { name: 'Main navigation' });
+    expect(nav).toBeInTheDocument();
+
+    // Active page marked with aria-current
+    const activeLink = canvas.getByRole('link', { name: /Dashboard/ });
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+
+    // Other nav links do not carry aria-current
+    const docsLink = canvas.getByRole('link', { name: /Documents/ });
+    expect(docsLink).not.toHaveAttribute('aria-current');
+
+    // All nav links are present
+    expect(canvas.getByRole('link', { name: /Support/ })).toBeInTheDocument();
+    expect(canvas.getByRole('link', { name: /API Keys/ })).toBeInTheDocument();
+
+    // Brand link
+    expect(canvas.getByRole('link', { name: /Accessful/ })).toBeInTheDocument();
+
+    // Icon button has accessible label
+    const profileBtn = canvas.getByRole('button', { name: 'Profile menu' });
+    expect(profileBtn).toHaveAttribute('aria-label', 'Profile menu');
+  },
+};
+
+export const Minimal = {
+  render: () => `
   <nav class="ct-toolbar" aria-label="Main navigation">
     <a class="ct-toolbar__brand" href="#">My App</a>
     <div class="ct-toolbar__spacer"></div>
@@ -45,4 +76,19 @@ export const Minimal = () => `
       <button class="ct-button ct-button--sm">Sign In</button>
     </div>
   </nav>
-`;
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Navigation landmark present
+    const nav = canvas.getByRole('navigation', { name: 'Main navigation' });
+    expect(nav).toBeInTheDocument();
+
+    // Brand link
+    expect(canvas.getByRole('link', { name: 'My App' })).toBeInTheDocument();
+
+    // Sign in button is enabled
+    const signInBtn = canvas.getByRole('button', { name: 'Sign In' });
+    expect(signInBtn).toBeEnabled();
+  },
+};

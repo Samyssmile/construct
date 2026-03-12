@@ -1,8 +1,9 @@
 export default {
-  title: 'Data Display/Data Table Simple'
+  title: 'Data Display/Data Table Simple',
 };
 
-export const DataTableSimple = () => `
+export const DataTableSimple = {
+  render: () => `
   <div class="ct-data-table ct-data-table--simple" style="max-width: 960px;">
     <div class="ct-data-table__table">
       <table class="ct-table ct-table--striped ct-table--compact">
@@ -81,4 +82,5 @@ export const DataTableSimple = () => `
       </nav>
     </div>
   </div>
-`;
+`,
+};
