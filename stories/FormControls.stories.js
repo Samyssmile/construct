@@ -23,11 +23,13 @@ export const Fields = {
 
     <div class="ct-field">
       <label class="ct-field__label" for="role">Role</label>
-      <select class="ct-select" id="role">
-        <option>Designer</option>
-        <option>Engineer</option>
-        <option>Manager</option>
-      </select>
+      <div class="ct-select-wrap">
+        <select class="ct-select" id="role">
+          <option>Designer</option>
+          <option>Engineer</option>
+          <option>Manager</option>
+        </select>
+      </div>
     </div>
 
     <div class="ct-field">
