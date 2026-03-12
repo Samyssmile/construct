@@ -174,7 +174,7 @@ jobs:
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          cat "$RUNNER_TEMP/prompt.txt" | claude -p --max-turns 50 --model sonnet
+          cat "$RUNNER_TEMP/prompt.txt" | claude -p --max-turns 50
 
       # ── 5. Commit, Push, PR erstellen ──
       - name: Check for changes

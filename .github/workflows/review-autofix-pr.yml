@@ -91,7 +91,7 @@ jobs:
           EOF
 
           cat "$RUNNER_TEMP/diff.txt" >> "$RUNNER_TEMP/prompt.txt"
-          cat "$RUNNER_TEMP/prompt.txt" | claude -p --model sonnet > "$RUNNER_TEMP/review.txt"
+          cat "$RUNNER_TEMP/prompt.txt" | claude -p > "$RUNNER_TEMP/review.txt"
 
           VERDICT=$(head -1 "$RUNNER_TEMP/review.txt")
           if [[ "$VERDICT" != "APPROVED" && "$VERDICT" != "CHANGES_REQUESTED" ]]; then
