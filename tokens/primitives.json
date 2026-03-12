@@ -158,7 +158,8 @@
     "controlHeight": {
       "sm": 32,
       "md": 40,
-      "lg": 48
+      "lg": 48,
+      "calendarDay": 36
     },
     "icon": {
       "sm": 16,
