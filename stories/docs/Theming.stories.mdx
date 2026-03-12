@@ -1,0 +1,203 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Theming" tags={['!autodocs']} />
+
+# Theming
+
+Construct ships three built-in colour themes — **light**, **dark**, and **high-contrast** — all controlled through a single `data-theme` HTML attribute and backed by CSS custom properties.
+
+---
+
+## How It Works
+
+All design tokens are emitted as CSS custom properties scoped to `[data-theme]` attribute selectors. Switching the attribute value on any element (or on `<html>`) swaps every token in that subtree simultaneously.
+
+```css
+/* Simplified excerpt from tokens.css */
+:root, [data-theme="light"] {
+  --color-bg-canvas: #FFFFFF;
+  --color-text-primary: #0E1720;
+  --color-brand-primary: #174C5D;
+}
+
+[data-theme="dark"] {
+  --color-bg-canvas: #0E1720;
+  --color-text-primary: #F5F7FA;
+  --color-brand-primary: #4D97AF;
+}
+
+[data-theme="high-contrast"] {
+  --color-bg-canvas: #000000;
+  --color-text-primary: #FFFFFF;
+  --color-brand-primary: #78B1C4;
+}
+```
+
+---
+
+## Applying a Theme
+
+### Full-page theme
+
+Set `data-theme` on the `<html>` element to apply a theme globally:
+
+```html
+<html data-theme="light">   <!-- default -->
+<html data-theme="dark">
+<html data-theme="high-contrast">
+```
+
+### Scoped theme
+
+Set `data-theme` on any container to theme only that section — useful for sidebars, headers, or embedded widgets:
+
+```html
+<body>
+  <!-- Main content uses light theme -->
+  <main>...</main>
+
+  <!-- Sidebar uses dark theme regardless of root -->
+  <aside data-theme="dark">...</aside>
+</body>
+```
+
+### Available values
+
+| Value | Description |
+|-------|-------------|
+| `light` | Light backgrounds, dark text (default) |
+| `dark` | Dark backgrounds, light text |
+| `high-contrast` | Maximum contrast for visual accessibility |
+
+---
+
+## System Preference Fallback
+
+When no `data-theme` attribute is set, Construct respects the user's operating system preference automatically:
+
+```css
+/* Automatically applied when data-theme is absent */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* dark theme tokens */
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root:not([data-theme]) {
+    /* high-contrast theme tokens */
+  }
+}
+```
+
+This means **zero configuration is needed** for users who have already set their OS to dark or high-contrast mode — it just works.
+
+---
+
+## Switching Themes at Runtime
+
+Toggle themes dynamically by updating the `data-theme` attribute:
+
+```js
+// Set a specific theme
+document.documentElement.setAttribute('data-theme', 'dark');
+
+// Follow system preference (remove explicit override)
+document.documentElement.removeAttribute('data-theme');
+
+// Persist the user's choice
+function setTheme(theme) {
+  if (theme === 'system') {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.removeItem('theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+}
+
+// Restore on page load (before paint to avoid flash)
+const saved = localStorage.getItem('theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+```
+
+---
+
+## Storybook Theme Switcher
+
+In this Storybook, use the **Themes** toolbar at the top of the page to switch between Light, Dark, and High Contrast. The switcher sets `data-theme` on the preview iframe's root element.
+
+---
+
+## Customising Themes
+
+### Override tokens for a custom brand
+
+You can override any token after importing `tokens.css`:
+
+```css
+@import '@construct/design/tokens/tokens.css';
+
+/* Override brand colours for your product */
+:root, [data-theme="light"] {
+  --color-brand-primary: #7C3AED;
+  --color-brand-accent:  #0EA5E9;
+}
+
+[data-theme="dark"] {
+  --color-brand-primary: #A78BFA;
+  --color-brand-accent:  #38BDF8;
+}
+```
+
+### Add a custom theme
+
+Define a new `data-theme` value with a full set of semantic token overrides:
+
+```css
+[data-theme="custom"] {
+  --color-bg-canvas:    #FDF4FF;
+  --color-bg-surface:   #FAE8FF;
+  --color-text-primary: #3B0764;
+  --color-brand-primary: #7C3AED;
+  /* ... define all semantic tokens ... */
+}
+```
+
+---
+
+## Reduced Motion
+
+Construct respects `prefers-reduced-motion` throughout its animation tokens. Components using `--motion-duration-*` and `--motion-easing-*` tokens automatically receive shortened or disabled transitions when this preference is active:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+Do not hard-code animation durations in component styles — always use the motion tokens.
+
+---
+
+## Contrast Compliance
+
+All three built-in themes meet **WCAG 2.1 AA** contrast requirements:
+
+| Theme | Text on canvas | Brand on canvas |
+|-------|----------------|-----------------|
+| Light | ≥ 7:1 | ≥ 4.5:1 |
+| Dark | ≥ 7:1 | ≥ 4.5:1 |
+| High Contrast | ≥ 10:1 | ≥ 7:1 |
+
+When creating custom themes, verify contrast ratios using the [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) or a similar tool.
+
+---
+
+## Related
+
+- **[Design Tokens](?path=/docs/docs-design-tokens--docs)** — full token reference
+- **[Accessibility Guidelines](?path=/docs/docs-accessibility-guidelines--docs)** — WCAG requirements and keyboard patterns
