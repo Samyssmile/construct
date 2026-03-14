@@ -84,6 +84,15 @@
   border-color: var(--color-state-danger);
 }
 
+/* ── Touch-target minimums (WCAG 2.5.8: 44×44px) ────────────────── */
+
+@media (pointer: coarse) {
+  :root {
+    --control-height-sm: 44px;
+    --control-height-calendar-day: 44px;
+  }
+}
+
 .ct-control--sm,
 .ct-input--sm,
 .ct-select--sm,

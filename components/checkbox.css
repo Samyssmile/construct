@@ -17,9 +17,20 @@
   background: var(--color-bg-elevated);
   display: grid;
   place-content: center;
+  position: relative;
   transition: background var(--duration-fast) var(--easing-standard),
     border-color var(--duration-fast) var(--easing-standard),
     transform var(--duration-fast) var(--easing-standard);
+}
+
+/* Invisible touch-target expansion (WCAG 2.5.8: 44×44px minimum) */
+@media (pointer: coarse) {
+  .ct-check__input::after,
+  .ct-radio__input::after {
+    content: '';
+    position: absolute;
+    inset: calc((var(--space-6) - 44px) / 2);
+  }
 }
 
 .ct-check__input {

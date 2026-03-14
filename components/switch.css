@@ -49,6 +49,16 @@
   outline-offset: 2px;
 }
 
+/* Invisible touch-target expansion (WCAG 2.5.8: 44×44px minimum) */
+@media (pointer: coarse) {
+  .ct-switch__input::before {
+    content: '';
+    position: absolute;
+    inset-block: calc((var(--ct-switch-height) - 44px) / 2);
+    inset-inline: 0;
+  }
+}
+
 .ct-switch--sm .ct-switch__input {
   --ct-switch-width: 36px;
   --ct-switch-height: 20px;

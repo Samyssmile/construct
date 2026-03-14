@@ -338,6 +338,14 @@
   outline-offset: 2px;
 }
 
+/* ── Touch-target minimums (WCAG 2.5.8: 44×44px) ──────────── */
+
+@media (pointer: coarse) {
+  .ct-chip {
+    min-height: 44px;
+  }
+}
+
 /* ── Reduced motion ──────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

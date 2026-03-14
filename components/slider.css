@@ -269,6 +269,14 @@
   opacity: 1;
 }
 
+/* Touch-target minimums (WCAG 2.5.8: 44×44px minimum) */
+
+@media (pointer: coarse) {
+  .ct-slider {
+    --ct-slider-thumb-size: 44px;
+  }
+}
+
 /* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
