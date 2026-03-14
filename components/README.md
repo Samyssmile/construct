@@ -11,8 +11,8 @@ Import order (recommended):
 
 Example:
 ```css
-@import '@construct/design/foundations.css';
-@import '@construct/design/components/components.css';
+@import '@neuravision/construct/foundations.css';
+@import '@neuravision/construct/components/components.css';
 ```
 
 ## State Conventions

@@ -1,6 +1,7 @@
 import '../foundations.css';
 import '../components/index.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
+import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 
 export const parameters = {
   layout: 'centered',
@@ -11,6 +12,22 @@ export const parameters = {
       surface: { name: 'surface', value: 'var(--color-bg-surface)' },
       muted: { name: 'muted', value: 'var(--color-bg-muted)' }
     }
+  },
+
+  viewport: {
+    options: {
+      ...MINIMAL_VIEWPORTS,
+      xs: {
+        name: 'Breakpoint xs (480px)',
+        styles: { width: '480px', height: '800px' },
+        type: 'mobile',
+      },
+      sm: {
+        name: 'Breakpoint sm (640px)',
+        styles: { width: '640px', height: '900px' },
+        type: 'mobile',
+      },
+    },
   },
 
   a11y: {

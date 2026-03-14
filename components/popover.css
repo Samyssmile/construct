@@ -167,29 +167,29 @@
 .ct-popover[data-side='bottom'] .ct-popover__arrow {
   inset-block-start: calc(var(--_po-arrow-size) / -2);
   inset-inline-start: calc(50% - var(--_po-arrow-size) / 2);
-  border-bottom: none;
-  border-right: none;
+  border-block-end: none;
+  border-inline-end: none;
 }
 
 .ct-popover[data-side='top'] .ct-popover__arrow {
   inset-block-end: calc(var(--_po-arrow-size) / -2);
   inset-inline-start: calc(50% - var(--_po-arrow-size) / 2);
-  border-top: none;
-  border-left: none;
+  border-block-start: none;
+  border-inline-start: none;
 }
 
 .ct-popover[data-side='left'] .ct-popover__arrow {
   inset-inline-end: calc(var(--_po-arrow-size) / -2);
   inset-block-start: calc(50% - var(--_po-arrow-size) / 2);
-  border-left: none;
-  border-bottom: none;
+  border-inline-start: none;
+  border-block-end: none;
 }
 
 .ct-popover[data-side='right'] .ct-popover__arrow {
   inset-inline-start: calc(var(--_po-arrow-size) / -2);
   inset-block-start: calc(50% - var(--_po-arrow-size) / 2);
-  border-right: none;
-  border-top: none;
+  border-inline-end: none;
+  border-block-start: none;
 }
 
 /* ── Content sections ─────────────────────────────────────────────── */

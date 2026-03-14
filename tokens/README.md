@@ -63,7 +63,7 @@ This approach means:
 Import the generated CSS file:
 
 ```css
-@import "@construct/design/tokens/tokens.css";
+@import "@neuravision/construct/tokens/tokens.css";
 
 body {
   font-family: var(--font-family-body);
@@ -102,7 +102,7 @@ If no `data-theme` is set, the system preferences are respected:
 Import the generated token module:
 
 ```typescript
-import { tokens, cssVars } from '@construct/design/tokens/tokens';
+import { tokens, cssVars } from '@neuravision/construct/tokens/tokens';
 
 // Use resolved values
 console.log(tokens.semantic.color.brand.primary); // "#174C5D"

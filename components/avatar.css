@@ -68,8 +68,8 @@
 
 .ct-avatar__status {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  inset-block-end: 0;
+  inset-inline-end: 0;
   width: var(--ct-avatar-status-size);
   height: var(--ct-avatar-status-size);
   border-radius: 50%;

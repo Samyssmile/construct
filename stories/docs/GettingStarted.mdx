@@ -21,7 +21,7 @@ Construct gives you:
 ## Installation
 
 ```bash
-npm install @construct/design
+npm install @neuravision/construct
 ```
 
 ---
@@ -33,15 +33,15 @@ npm install @construct/design
 Add the foundation reset and component styles to your project's global CSS entry point:
 
 ```css
-@import '@construct/design/foundations.css';
-@import '@construct/design/components/components.css';
+@import '@neuravision/construct/foundations.css';
+@import '@neuravision/construct/components/components.css';
 ```
 
 Or using a bundler's JavaScript entry point:
 
 ```js
-import '@construct/design/foundations.css';
-import '@construct/design/components/components.css';
+import '@neuravision/construct/foundations.css';
+import '@neuravision/construct/components/components.css';
 ```
 
 ### 2. Use components in HTML
@@ -99,7 +99,7 @@ You can use Construct's CSS custom properties directly in your own styles:
 TypeScript and JSON token exports are also available for build-time tooling:
 
 ```ts
-import { tokens, cssVars } from '@construct/design/tokens/tokens';
+import { tokens, cssVars } from '@neuravision/construct/tokens/tokens';
 
 // Resolved value
 tokens.semantic.color.brand.primary; // '#174C5D'

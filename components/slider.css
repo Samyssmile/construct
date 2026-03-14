@@ -202,10 +202,10 @@
 .ct-slider--range .ct-slider__track::after {
   content: '';
   position: absolute;
-  top: 50%;
+  inset-block-start: 50%;
   transform: translateY(-50%);
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   height: var(--ct-slider-track-height);
   background: var(--ct-slider-track-bg);
   border-radius: var(--ct-slider-track-radius);
@@ -215,11 +215,11 @@
 .ct-slider--range .ct-slider__track::before {
   content: '';
   position: absolute;
-  top: 50%;
+  inset-block-start: 50%;
   transform: translateY(-50%);
   height: var(--ct-slider-track-height);
-  left: calc(var(--_low, 0) * 1%);
-  right: calc(100% - var(--_high, 100) * 1%);
+  inset-inline-start: calc(var(--_low, 0) * 1%);
+  inset-inline-end: calc(100% - var(--_high, 100) * 1%);
   background: var(--ct-slider-track-fill);
   border-radius: var(--ct-slider-track-radius);
   pointer-events: none;

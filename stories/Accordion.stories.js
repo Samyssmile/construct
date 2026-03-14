@@ -211,7 +211,7 @@ export const Bordered = {
         ${chevron}
       </summary>
       <div class="ct-accordion__content">
-        <p>Install the package with <code>npm install @construct/design</code> and import <code>components.css</code> into your project.</p>
+        <p>Install the package with <code>npm install @neuravision/construct</code> and import <code>components.css</code> into your project.</p>
       </div>
     </details>
     <details class="ct-accordion__item">
