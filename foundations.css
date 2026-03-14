@@ -255,6 +255,38 @@ button {
   white-space: nowrap;
 }
 
+/* ============================================================
+   Visually Hidden
+   Hides content visually while keeping it accessible to screen
+   readers. Uses the modern clip-path technique with clip fallback.
+   ============================================================ */
+
+.ct-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.ct-visually-hidden--focusable:focus,
+.ct-visually-hidden--focusable:focus-visible,
+.ct-visually-hidden--focusable:active {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+  white-space: normal;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
