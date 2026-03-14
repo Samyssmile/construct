@@ -1,7 +1,7 @@
 import { expect, within, userEvent, waitFor } from 'storybook/test';
 
 export default {
-  title: 'Overlays/Overlays',
+  title: 'Overlays/Modal',
   parameters: {
     docs: {
       description: {

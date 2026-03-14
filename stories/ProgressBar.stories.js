@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Data Display/Progress Bar',
+  title: 'Feedback/Progress Bar',
   parameters: {
     docs: {
       description: {

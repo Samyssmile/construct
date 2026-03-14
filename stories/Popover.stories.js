@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Components/Popover',
+  title: 'Overlays/Popover',
   parameters: {
     docs: {
       description: {
