@@ -112,7 +112,7 @@
 
 /* ── Pagination: Responsive ───────────────────────────────── */
 
-@media (max-width: 480px) {
+@media (max-width: 599px) { /* < sm breakpoint (600px) */
   .ct-pagination__list .ct-pagination__page-item {
     display: none;
   }

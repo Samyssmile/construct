@@ -149,7 +149,7 @@
 
 /* Responsive: left/right drawers expand to full width on small viewports */
 
-@media (max-width: 640px) {
+@media (max-width: 599px) { /* < sm breakpoint (600px) */
   .ct-drawer:not(.ct-drawer--bottom):not(.ct-drawer--top):not(.ct-drawer--full) .ct-drawer__panel {
     width: 100vw;
     border-radius: 0;

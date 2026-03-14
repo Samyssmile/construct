@@ -125,7 +125,7 @@
 
 /* Responsive: on small viewports show only first + last items */
 
-@media (max-width: 480px) {
+@media (max-width: 599px) { /* < sm breakpoint (600px) */
   .ct-breadcrumbs--responsive .ct-breadcrumbs__item {
     display: none;
   }

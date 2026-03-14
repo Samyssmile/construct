@@ -92,6 +92,38 @@ Use these attributes for state management:
 - **current**: `aria-current="page"`
 - **expanded**: `aria-expanded="true|false"`
 
+## Breakpoints & Media Queries
+
+Construct defines breakpoint tokens in `tokens/primitives.json`:
+
+| Token | Value | Typical use |
+|-------|-------|-------------|
+| `xs`  | 360px | Small phones |
+| `sm`  | 600px | Large phones / small tablets |
+| `md`  | 900px | Tablets / small laptops |
+| `lg`  | 1200px | Desktops |
+| `xl`  | 1536px | Large screens |
+
+### Convention
+
+CSS custom properties cannot be used inside `@media` queries. Use the raw pixel values with a reference comment:
+
+```css
+@media (max-width: 599px) { /* < sm breakpoint (600px) */
+  /* Mobile styles */
+}
+
+@media (max-width: 899px) { /* < md breakpoint (900px) */
+  /* Tablet styles */
+}
+```
+
+**Rules:**
+- Always use `max-width: <token - 1>px` to target viewports *below* a breakpoint
+- Always add a reference comment noting the breakpoint name and token value
+- Only use values derived from the token system — never arbitrary pixel values
+- Current components use two breakpoints: `< sm` (599px) and `< md` (899px)
+
 ## Fonts
 
 - **Default**: Fonts are loaded via Google Fonts in `foundations.css` (Sora, Source Sans 3, JetBrains Mono)

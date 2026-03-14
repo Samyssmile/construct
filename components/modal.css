@@ -82,7 +82,7 @@
 
 /* Responsive: fullscreen on small viewports */
 
-@media (max-width: 640px) {
+@media (max-width: 599px) { /* < sm breakpoint (600px) */
   .ct-modal {
     padding: 0;
   }

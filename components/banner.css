@@ -227,7 +227,7 @@
 
 /* ---- Responsive ---- */
 
-@media (max-width: 640px) {
+@media (max-width: 599px) { /* < sm breakpoint (600px) */
   .ct-banner {
     flex-wrap: wrap;
   }
