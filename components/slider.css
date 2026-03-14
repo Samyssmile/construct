@@ -94,14 +94,16 @@
 
 /* Hover */
 
-.ct-slider__input:hover::-webkit-slider-thumb {
-  transform: scale(1.15);
-  box-shadow: var(--shadow-sm);
-}
+@media (hover: hover) {
+  .ct-slider__input:hover::-webkit-slider-thumb {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-sm);
+  }
 
-.ct-slider__input:hover::-moz-range-thumb {
-  transform: scale(1.15);
-  box-shadow: var(--shadow-sm);
+  .ct-slider__input:hover::-moz-range-thumb {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-sm);
+  }
 }
 
 /* Focus */

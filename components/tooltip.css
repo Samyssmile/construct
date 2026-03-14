@@ -46,6 +46,17 @@
     visibility 0s linear 0s;
 }
 
+@media (hover: hover) {
+  .ct-tooltip:hover .ct-tooltip__content {
+    --_tt-open: 1;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--duration-fast) var(--easing-standard),
+      transform var(--duration-fast) var(--easing-standard),
+      visibility 0s linear 0s;
+  }
+}
+
 /* Side positioning (default center alignment) */
 
 .ct-tooltip[data-side='top'] .ct-tooltip__content {

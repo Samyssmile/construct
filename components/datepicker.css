@@ -45,8 +45,10 @@
   line-height: inherit;
 }
 
-.ct-datepicker__title:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-datepicker__title:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-datepicker__title:focus-visible {
@@ -89,8 +91,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-datepicker__day:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-datepicker__day:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-datepicker__day:focus-visible {
@@ -177,8 +181,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-datepicker__month:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-datepicker__month:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-datepicker__month:focus-visible {
@@ -224,8 +230,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-datepicker__year:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-datepicker__year:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-datepicker__year:focus-visible {

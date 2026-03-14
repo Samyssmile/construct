@@ -44,9 +44,11 @@
     border-color var(--duration-fast) var(--easing-standard);
 }
 
-:is(a, button, [role='button'], [role='link']).ct-card--interactive:hover {
-  border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-md);
+@media (hover: hover) {
+  :is(a, button, [role='button'], [role='link']).ct-card--interactive:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 :is(a, button, [role='button'], [role='link']).ct-card--interactive:focus-visible {

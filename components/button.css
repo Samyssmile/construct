@@ -31,8 +31,10 @@
     transform var(--duration-fast) var(--easing-standard);
 }
 
-.ct-button:hover {
-  background: var(--ct-button-bg-hover);
+@media (hover: hover) {
+  .ct-button:hover {
+    background: var(--ct-button-bg-hover);
+  }
 }
 
 .ct-button:active {
@@ -103,8 +105,10 @@
   font-weight: var(--font-weight-medium);
 }
 
-.ct-button--link:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .ct-button--link:hover {
+    text-decoration: underline;
+  }
 }
 
 .ct-button--sm {

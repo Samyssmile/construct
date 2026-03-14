@@ -36,8 +36,10 @@
   transition: var(--ct-control-transition);
 }
 
-.ct-select-menu__trigger:hover {
-  border-color: var(--ct-control-border-hover);
+@media (hover: hover) {
+  .ct-select-menu__trigger:hover {
+    border-color: var(--ct-control-border-hover);
+  }
 }
 
 .ct-select-menu__trigger:focus-visible {
@@ -150,8 +152,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-select-menu__option:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-select-menu__option:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-select-menu__option[data-highlighted] {

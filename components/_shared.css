@@ -60,8 +60,10 @@
   color: var(--ct-control-placeholder);
 }
 
-:where(.ct-input, .ct-select, .ct-textarea, .ct-control):hover {
-  border-color: var(--ct-control-border-hover);
+@media (hover: hover) {
+  :where(.ct-input, .ct-select, .ct-textarea, .ct-control):hover {
+    border-color: var(--ct-control-border-hover);
+  }
 }
 
 :where(.ct-input, .ct-select, .ct-textarea, .ct-control):focus-visible {

@@ -56,9 +56,11 @@
     transform var(--duration-fast) var(--easing-standard);
 }
 
-.ct-chip--interactive:hover {
-  background: color-mix(in srgb, var(--ct-chip-accent) 18%, var(--ct-chip-bg));
-  border-color: var(--ct-chip-accent, var(--color-border-strong));
+@media (hover: hover) {
+  .ct-chip--interactive:hover {
+    background: color-mix(in srgb, var(--ct-chip-accent) 18%, var(--ct-chip-bg));
+    border-color: var(--ct-chip-accent, var(--color-border-strong));
+  }
 }
 
 .ct-chip--interactive:active {
@@ -147,8 +149,10 @@
   --ct-chip-color: var(--color-text-primary);
 }
 
-.ct-chip--solid:where(.ct-chip--interactive):hover {
-  filter: brightness(1.1);
+@media (hover: hover) {
+  .ct-chip--solid:where(.ct-chip--interactive):hover {
+    filter: brightness(1.1);
+  }
 }
 
 .ct-chip--solid.ct-chip--info {
@@ -323,8 +327,10 @@
   transition: background var(--duration-fast) var(--easing-standard);
 }
 
-.ct-chip__remove:hover {
-  background: color-mix(in srgb, var(--ct-chip-accent) 15%, transparent);
+@media (hover: hover) {
+  .ct-chip__remove:hover {
+    background: color-mix(in srgb, var(--ct-chip-accent) 15%, transparent);
+  }
 }
 
 .ct-chip__remove:focus-visible {

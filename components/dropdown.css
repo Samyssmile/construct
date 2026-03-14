@@ -86,8 +86,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-dropdown__item:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-dropdown__item:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-dropdown__item:focus-visible {
@@ -147,8 +149,10 @@
   color: var(--color-state-danger);
 }
 
-.ct-dropdown__item--danger:hover {
-  background: var(--color-state-danger-surface);
+@media (hover: hover) {
+  .ct-dropdown__item--danger:hover {
+    background: var(--color-state-danger-surface);
+  }
 }
 
 .ct-dropdown__item--danger:focus-visible,
@@ -270,8 +274,10 @@
   transition: background var(--duration-fast) var(--easing-standard);
 }
 
-.ct-dropdown__sub-trigger:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-dropdown__sub-trigger:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-dropdown__sub-trigger:focus-visible,

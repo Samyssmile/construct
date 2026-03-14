@@ -55,9 +55,11 @@
   border-radius: var(--radius-xs);
 }
 
-.ct-breadcrumbs__link:hover {
-  color: var(--ct-breadcrumbs-link-hover-color);
-  text-decoration-thickness: 2px;
+@media (hover: hover) {
+  .ct-breadcrumbs__link:hover {
+    color: var(--ct-breadcrumbs-link-hover-color);
+    text-decoration-thickness: 2px;
+  }
 }
 
 .ct-breadcrumbs__link:focus-visible {
@@ -109,9 +111,11 @@
   transition: background var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-breadcrumbs__collapse:hover {
-  background: var(--color-bg-muted);
-  color: var(--ct-breadcrumbs-link-hover-color);
+@media (hover: hover) {
+  .ct-breadcrumbs__collapse:hover {
+    background: var(--color-bg-muted);
+    color: var(--ct-breadcrumbs-link-hover-color);
+  }
 }
 
 .ct-breadcrumbs__collapse:focus-visible {

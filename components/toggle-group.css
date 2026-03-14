@@ -50,8 +50,10 @@
   border-inline-end: none;
 }
 
-.ct-toggle-group__item:hover {
-  background: var(--ct-toggle-group-item-bg-hover);
+@media (hover: hover) {
+  .ct-toggle-group__item:hover {
+    background: var(--ct-toggle-group-item-bg-hover);
+  }
 }
 
 /* Active state – aria-pressed for multi-select, aria-checked for single-select */

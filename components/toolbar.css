@@ -66,9 +66,11 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-toolbar__nav-link:hover {
-  background: var(--color-bg-muted);
-  color: var(--color-text-primary);
+@media (hover: hover) {
+  .ct-toolbar__nav-link:hover {
+    background: var(--color-bg-muted);
+    color: var(--color-text-primary);
+  }
 }
 
 .ct-toolbar__nav-link:focus-visible {

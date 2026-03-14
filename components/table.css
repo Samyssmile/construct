@@ -25,16 +25,20 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.ct-table tbody tr:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-table tbody tr:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-table--striped tbody tr:nth-child(even) {
   background: var(--color-bg-surface);
 }
 
-.ct-table--striped tbody tr:hover {
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-table--striped tbody tr:hover {
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-table--compact th,

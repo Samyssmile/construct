@@ -65,8 +65,10 @@
   transition: color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-list__header-action:hover {
-  color: var(--color-brand-primary-hover);
+@media (hover: hover) {
+  .ct-list__header-action:hover {
+    color: var(--color-brand-primary-hover);
+  }
 }
 
 .ct-list__header-action:focus-visible {
@@ -162,8 +164,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-list__item--interactive:hover {
-  background: var(--ct-list-item-bg-hover);
+@media (hover: hover) {
+  .ct-list__item--interactive:hover {
+    background: var(--ct-list-item-bg-hover);
+  }
 }
 
 .ct-list__item--interactive:active {
@@ -184,8 +188,10 @@
   transition: background var(--duration-fast) var(--easing-standard);
 }
 
-.ct-list__item--clickable:hover {
-  background: var(--ct-list-item-bg-hover);
+@media (hover: hover) {
+  .ct-list__item--clickable:hover {
+    background: var(--ct-list-item-bg-hover);
+  }
 }
 
 .ct-list__item--clickable:active {
@@ -345,8 +351,10 @@
     color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-list--nav .ct-list__item:hover {
-  background: var(--ct-list-item-bg-hover);
+@media (hover: hover) {
+  .ct-list--nav .ct-list__item:hover {
+    background: var(--ct-list-item-bg-hover);
+  }
 }
 
 .ct-list--nav .ct-list__item:focus-visible {
@@ -371,8 +379,10 @@
   transition: background var(--duration-fast) var(--easing-standard);
 }
 
-.ct-list--selectable .ct-list__item:hover {
-  background: var(--ct-list-item-bg-hover);
+@media (hover: hover) {
+  .ct-list--selectable .ct-list__item:hover {
+    background: var(--ct-list-item-bg-hover);
+  }
 }
 
 .ct-list--selectable .ct-list__item:focus-visible {

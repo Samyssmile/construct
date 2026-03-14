@@ -42,8 +42,10 @@
   content: none;
 }
 
-.ct-accordion__trigger:hover {
-  background: var(--color-bg-surface);
+@media (hover: hover) {
+  .ct-accordion__trigger:hover {
+    background: var(--color-bg-surface);
+  }
 }
 
 .ct-accordion__trigger:focus-visible {

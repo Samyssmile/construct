@@ -45,9 +45,11 @@
   transition: background var(--duration-fast) var(--easing-standard);
 }
 
-.ct-tabs__trigger:hover {
-  color: var(--color-text-primary);
-  background: var(--color-bg-muted);
+@media (hover: hover) {
+  .ct-tabs__trigger:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-muted);
+  }
 }
 
 .ct-tabs__trigger:focus-visible {

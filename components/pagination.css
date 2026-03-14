@@ -51,8 +51,10 @@
   transition: background-color var(--duration-fast) var(--easing-standard), border-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
 }
 
-.ct-pagination__link:hover {
-  background: var(--ct-pagination-bg-hover);
+@media (hover: hover) {
+  .ct-pagination__link:hover {
+    background: var(--ct-pagination-bg-hover);
+  }
 }
 
 .ct-pagination__link:focus-visible {

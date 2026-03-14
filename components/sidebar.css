@@ -133,9 +133,11 @@
   cursor: pointer;
 }
 
-.ct-nav-item:hover {
-  background: var(--color-bg-muted);
-  color: var(--color-text-primary);
+@media (hover: hover) {
+  .ct-nav-item:hover {
+    background: var(--color-bg-muted);
+    color: var(--color-text-primary);
+  }
 }
 
 .ct-nav-item:focus-visible {
