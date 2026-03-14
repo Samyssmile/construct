@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Construct** is a token-based, framework-agnostic design system (`@construct/design`). It provides CSS component styles, design tokens, and accessibility-first UI patterns for use with any framework or vanilla HTML.
+**Construct** is a token-based, framework-agnostic design system (`@neuravision/construct`). It provides CSS component styles, design tokens, and accessibility-first UI patterns for use with any framework or vanilla HTML.
 
 ## Commands
 
