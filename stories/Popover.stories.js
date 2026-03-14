@@ -334,3 +334,65 @@ export const Closed = {
     expect(content).not.toBeVisible();
   },
 };
+
+/**
+ * Popover width is clamped to viewport via `min(--ct-popover-width, calc(100vw - space-8))`.
+ * On a 320px viewport, a 320px popover would overflow — the clamp prevents this.
+ */
+export const ResponsiveWidth = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Popover width is clamped to never exceed the viewport. ' +
+          'Uses `min(var(--ct-popover-width), calc(100vw - var(--space-8)))` so the ' +
+          'popover shrinks on narrow viewports instead of overflowing.',
+      },
+      story: { inline: true, height: 300 },
+    },
+  },
+  render: () => `
+    <div style="padding: 24px; max-width: 320px;">
+      <div class="ct-popover" data-state="open" data-side="bottom" data-align="start">
+        <button class="ct-button ct-button--secondary"
+                aria-haspopup="dialog" aria-expanded="true">
+          Open popover
+        </button>
+        <div class="ct-popover__content" role="dialog" aria-label="Responsive popover">
+          <div class="ct-popover__header">
+            <h3>Filter</h3>
+          </div>
+          <div class="ct-popover__body">
+            <div class="ct-field">
+              <label class="ct-field__label" for="resp-po-input">Search</label>
+              <input class="ct-input" id="resp-po-input" type="text" placeholder="Filter items..." />
+            </div>
+          </div>
+          <div class="ct-popover__footer">
+            <button class="ct-button ct-button--secondary ct-button--sm">Reset</button>
+            <button class="ct-button ct-button--sm">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const content = canvasElement.querySelector('.ct-popover__content');
+
+    // Popover is visible
+    expect(content).toBeVisible();
+    expect(content).toHaveAttribute('role', 'dialog');
+
+    // Popover does not overflow its container
+    const contentRect = content.getBoundingClientRect();
+    const containerRect = canvasElement.getBoundingClientRect();
+    expect(contentRect.right).toBeLessThanOrEqual(containerRect.right + 1);
+    expect(contentRect.width).toBeGreaterThan(0);
+
+    // Interactive elements are accessible
+    const searchInput = canvas.getByLabelText('Search');
+    expect(searchInput).toBeInTheDocument();
+    const applyBtn = canvas.getByRole('button', { name: 'Apply' });
+    expect(applyBtn).toBeInTheDocument();
+  },
+};

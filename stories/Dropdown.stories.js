@@ -1086,3 +1086,77 @@ export const ContextMenuPattern = {
     expect(items.length).toBe(4);
   },
 };
+
+/**
+ * Sub-menus collapse inline on narrow viewports (< 600px).
+ * On mobile, sub-content becomes a nested indented section instead of
+ * flying out to the side where it would overflow the viewport.
+ */
+export const SubMenuResponsive = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'On viewports below 600px, sub-menus render inline (indented) instead of ' +
+          'positioned to the side, preventing viewport overflow. ' +
+          'Resize the viewport or use Storybook mobile viewport to see the effect.',
+      },
+      story: { inline: true, height: 360 },
+    },
+  },
+  render: () => `
+    <div style="min-height: 320px; padding: 24px; max-width: 320px;">
+      <div class="ct-dropdown" data-state="open">
+        <button class="ct-button ct-button--secondary"
+                aria-haspopup="menu" aria-expanded="true" aria-controls="resp-sub-menu">
+          Actions
+        </button>
+        <div class="ct-dropdown__menu" role="menu" id="resp-sub-menu" aria-label="Actions">
+          <button class="ct-dropdown__item" role="menuitem" tabindex="0">
+            <span class="ct-dropdown__item-icon" aria-hidden="true">${EDIT_SVG}</span>
+            <span class="ct-dropdown__item-label">Edit</span>
+          </button>
+          <div class="ct-dropdown__sub" data-state="open">
+            <button class="ct-dropdown__sub-trigger" role="menuitem"
+                    aria-haspopup="menu" aria-expanded="true" tabindex="-1">
+              <span class="ct-dropdown__item-icon" aria-hidden="true">${SHARE_SVG}</span>
+              <span class="ct-dropdown__item-label">Share via</span>
+              <span class="ct-dropdown__sub-chevron" aria-hidden="true">${CHEVRON_RIGHT_SVG}</span>
+            </button>
+            <div class="ct-dropdown__sub-content" role="menu" aria-label="Share options">
+              <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+                <span class="ct-dropdown__item-icon" aria-hidden="true">${LINK_SVG}</span>
+                <span class="ct-dropdown__item-label">Copy link</span>
+              </button>
+              <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+                <span class="ct-dropdown__item-icon" aria-hidden="true">${MAIL_SVG}</span>
+                <span class="ct-dropdown__item-label">Email</span>
+              </button>
+            </div>
+          </div>
+          <div class="ct-dropdown__separator" role="none"></div>
+          <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1">
+            <span class="ct-dropdown__item-icon" aria-hidden="true">${TRASH_SVG}</span>
+            <span class="ct-dropdown__item-label">Delete</span>
+          </button>
+        </div>
+      </div>
+    </div>`,
+  play: async ({ canvasElement }) => {
+    // Sub-menu content is visible and accessible
+    const subContent = canvasElement.querySelector('.ct-dropdown__sub-content');
+    expect(subContent).toHaveAttribute('role', 'menu');
+    const subStyle = window.getComputedStyle(subContent);
+    expect(subStyle.visibility).toBe('visible');
+
+    // Sub-menu items are in the DOM and accessible
+    const subItems = subContent.querySelectorAll('[role="menuitem"]');
+    expect(subItems.length).toBe(2);
+
+    // Menu does not overflow its container width
+    const menu = canvasElement.querySelector('.ct-dropdown__menu');
+    const menuRect = menu.getBoundingClientRect();
+    const containerRect = canvasElement.getBoundingClientRect();
+    expect(menuRect.right).toBeLessThanOrEqual(containerRect.right + 1);
+  },
+};

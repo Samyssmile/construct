@@ -7,7 +7,7 @@
 
 .ct-popover__content {
   --_po-offset: calc(100% + var(--space-3));
-  --_po-width: var(--ct-popover-width);
+  --_po-width: min(var(--ct-popover-width), calc(100vw - var(--space-8)));
   --_po-arrow-size: 8px;
 
   position: absolute;
@@ -37,11 +37,11 @@
 /* Size variants */
 
 .ct-popover--sm .ct-popover__content {
-  --_po-width: 240px;
+  --_po-width: min(240px, calc(100vw - var(--space-8)));
 }
 
 .ct-popover--lg .ct-popover__content {
-  --_po-width: 480px;
+  --_po-width: min(480px, calc(100vw - var(--space-8)));
 }
 
 /* ── Side positioning ─────────────────────────────────────────────── */
