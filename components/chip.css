@@ -300,6 +300,12 @@
   width: 1em;
 }
 
+/* ── Balanced padding when remove button is present ──────────── */
+
+.ct-chip:has(.ct-chip__remove) {
+  padding-inline-end: var(--space-1);
+}
+
 /* ── Remove button ───────────────────────────────────────────── */
 
 .ct-chip__remove {

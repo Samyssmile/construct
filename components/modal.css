@@ -45,6 +45,11 @@
   border-bottom: var(--border-thin) solid var(--color-border-subtle);
 }
 
+.ct-modal__header .ct-button__icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+}
+
 .ct-modal__body {
   padding: var(--space-6) var(--space-7);
   display: grid;
