@@ -1,0 +1,141 @@
+.ct-button {
+  --ct-button-bg: var(--color-brand-primary);
+  --ct-button-bg-hover: var(--color-brand-primary-hover);
+  --ct-button-bg-active: var(--color-brand-primary-active);
+  --ct-button-border: transparent;
+  --ct-button-color: var(--color-text-inverse);
+  --ct-button-height: var(--control-height-md);
+  --ct-button-padding-x: var(--space-6);
+  --ct-button-font-size: var(--font-size-sm);
+  --ct-button-line-height: var(--line-height-sm);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ct-button-gap);
+  min-height: var(--ct-button-height);
+  padding: 0 var(--ct-button-padding-x);
+  border-radius: var(--ct-button-radius);
+  border: var(--border-thin) solid var(--ct-button-border);
+  background: var(--ct-button-bg);
+  color: var(--ct-button-color);
+  font-weight: var(--ct-button-font-weight);
+  font-size: var(--ct-button-font-size);
+  line-height: var(--ct-button-line-height);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+}
+
+.ct-button:hover {
+  background: var(--ct-button-bg-hover);
+}
+
+.ct-button:active {
+  background: var(--ct-button-bg-active);
+  transform: translateY(1px);
+}
+
+.ct-button:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ct-button:disabled,
+.ct-button[aria-disabled='true'] {
+  opacity: var(--opacity-disabled);
+  transform: none;
+  cursor: not-allowed;
+}
+
+.ct-button--secondary {
+  --ct-button-bg: var(--color-bg-surface);
+  --ct-button-bg-hover: var(--color-bg-muted);
+  --ct-button-bg-active: var(--color-border-subtle);
+  --ct-button-border: var(--color-border-default);
+  --ct-button-color: var(--color-text-primary);
+}
+
+.ct-button--outline {
+  --ct-button-bg: transparent;
+  --ct-button-bg-hover: var(--color-bg-muted);
+  --ct-button-bg-active: var(--color-bg-surface);
+  --ct-button-border: var(--color-brand-primary);
+  --ct-button-color: var(--color-brand-primary);
+}
+
+.ct-button--ghost {
+  --ct-button-bg: transparent;
+  --ct-button-bg-hover: var(--color-bg-muted);
+  --ct-button-bg-active: var(--color-bg-surface);
+  --ct-button-border: transparent;
+  --ct-button-color: var(--color-brand-primary);
+}
+
+.ct-button--accent {
+  --ct-button-bg: var(--color-brand-accent);
+  --ct-button-bg-hover: var(--color-brand-accent-hover);
+  --ct-button-bg-active: var(--color-brand-accent-active);
+  --ct-button-border: transparent;
+  --ct-button-color: var(--color-text-inverse);
+}
+
+.ct-button--danger {
+  --ct-button-bg: var(--color-state-danger);
+  --ct-button-bg-hover: var(--color-red-600);
+  --ct-button-bg-active: var(--color-red-700);
+  --ct-button-border: transparent;
+  --ct-button-color: var(--color-text-inverse);
+}
+
+.ct-button--link {
+  --ct-button-bg: transparent;
+  --ct-button-bg-hover: transparent;
+  --ct-button-bg-active: transparent;
+  --ct-button-border: transparent;
+  --ct-button-color: var(--color-brand-primary);
+  min-height: auto;
+  padding: 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.ct-button--link:hover {
+  text-decoration: underline;
+}
+
+.ct-button--sm {
+  --ct-button-height: var(--control-height-sm);
+  --ct-button-padding-x: var(--space-5);
+  --ct-button-font-size: var(--font-size-xs);
+  --ct-button-line-height: var(--line-height-xs);
+}
+
+.ct-button--lg {
+  --ct-button-height: var(--control-height-lg);
+  --ct-button-padding-x: var(--space-7);
+  --ct-button-font-size: var(--font-size-md);
+  --ct-button-line-height: var(--line-height-md);
+}
+
+.ct-button--icon {
+  width: var(--ct-button-height);
+  padding: 0;
+}
+
+.ct-button__icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-button:active {
+    transform: none;
+  }
+}

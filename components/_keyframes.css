@@ -1,0 +1,23 @@
+@keyframes ct-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ct-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes ct-progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}

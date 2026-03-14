@@ -1,0 +1,38 @@
+/* ============================================================
+   Skip-Link
+   Keyboard-only navigation bypass. Hidden off-screen by default,
+   slides into view on focus. Must be the first focusable element
+   in the document.
+   ============================================================ */
+
+.ct-skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-tooltip);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-brand-primary);
+  color: var(--color-text-inverse);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-sm);
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-control) 0;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-100%);
+  transition: transform var(--duration-normal) var(--easing-decelerate);
+}
+
+.ct-skip-link:focus,
+.ct-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-skip-link {
+    transition: none;
+  }
+}

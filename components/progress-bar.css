@@ -1,0 +1,56 @@
+/* ── Progress Bar ── */
+
+.ct-progress-bar {
+  --ct-progress-height: 8px;
+  --ct-progress-radius: var(--radius-pill);
+  --ct-progress-bg: var(--color-bg-muted);
+  --ct-progress-fill: var(--color-brand-primary);
+
+  width: 100%;
+  height: var(--ct-progress-height);
+  border-radius: var(--ct-progress-radius);
+  background: var(--ct-progress-bg);
+  overflow: hidden;
+}
+
+.ct-progress-bar__track {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ct-progress-fill);
+  transition: width var(--duration-normal) var(--easing-standard);
+}
+
+.ct-progress-bar--indeterminate .ct-progress-bar__track {
+  width: 30%;
+  animation: ct-progress-indeterminate 1.5s var(--easing-standard) infinite;
+}
+
+.ct-progress-bar--sm {
+  --ct-progress-height: 4px;
+}
+
+.ct-progress-bar--lg {
+  --ct-progress-height: 12px;
+}
+
+.ct-progress-bar--info {
+  --ct-progress-fill: var(--color-state-info);
+}
+
+.ct-progress-bar--success {
+  --ct-progress-fill: var(--color-state-success);
+}
+
+.ct-progress-bar--warning {
+  --ct-progress-fill: var(--color-state-warning);
+}
+
+.ct-progress-bar--danger {
+  --ct-progress-fill: var(--color-state-danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-progress-bar--indeterminate .ct-progress-bar__track {
+    animation: none;
+  }
+}

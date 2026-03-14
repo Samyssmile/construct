@@ -1,6 +1,6 @@
 {
   "name": "@construct/design",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Construct Design System - Accessible, token-based design system for modern web applications",
   "license": "MIT",
   "repository": {
@@ -26,6 +26,8 @@
   "exports": {
     "./foundations.css": "./foundations.css",
     "./components/components.css": "./components/components.css",
+    "./components/index.css": "./components/index.css",
+    "./components/*.css": "./components/*.css",
     "./tokens/tokens.css": "./tokens/tokens.css",
     "./tokens/tokens.json": "./tokens/tokens.json",
     "./tokens/tokens": {
@@ -45,7 +47,7 @@
     "tokens/tokens.ts",
     "tokens/README.md",
     "docs/guidelines.md",
-    "components/components.css",
+    "components/*.css",
     "components/README.md",
     "README.md"
   ],

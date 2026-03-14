@@ -1,0 +1,67 @@
+.ct-alert {
+  --ct-alert-bg: var(--color-bg-muted);
+  --ct-alert-border: var(--color-border-subtle);
+  --ct-alert-accent: var(--color-brand-primary);
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-md);
+  border: var(--border-thin) solid var(--ct-alert-border);
+  background: var(--ct-alert-bg);
+  color: var(--color-text-primary);
+}
+
+.ct-alert__icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ct-alert-accent);
+}
+
+.ct-alert__content {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ct-alert__title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.ct-alert__description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.ct-alert__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.ct-alert[data-variant='info'] {
+  --ct-alert-bg: var(--color-state-info-surface);
+  --ct-alert-border: var(--color-state-info-border);
+  --ct-alert-accent: var(--color-state-info);
+}
+
+.ct-alert[data-variant='success'] {
+  --ct-alert-bg: var(--color-state-success-surface);
+  --ct-alert-border: var(--color-state-success-border);
+  --ct-alert-accent: var(--color-state-success);
+}
+
+.ct-alert[data-variant='warning'] {
+  --ct-alert-bg: var(--color-state-warning-surface);
+  --ct-alert-border: var(--color-state-warning-border);
+  --ct-alert-accent: var(--color-amber-700);
+}
+
+.ct-alert[data-variant='danger'] {
+  --ct-alert-bg: var(--color-state-danger-surface);
+  --ct-alert-border: var(--color-state-danger-border);
+  --ct-alert-accent: var(--color-state-danger);
+}

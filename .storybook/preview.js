@@ -1,5 +1,5 @@
 import '../foundations.css';
-import '../components/components.css';
+import '../components/index.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 export const parameters = {

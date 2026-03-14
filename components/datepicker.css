@@ -1,0 +1,99 @@
+.ct-datepicker {
+  position: relative;
+  display: inline-block;
+}
+
+.ct-datepicker__popover {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline-start: 0;
+  width: min(90vw, var(--ct-popover-width));
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  border: var(--border-thin) solid var(--color-border-subtle);
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-dropdown);
+  z-index: var(--z-dropdown);
+  display: none;
+}
+
+.ct-datepicker[data-state='open'] .ct-datepicker__popover {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ct-datepicker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.ct-datepicker__title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.ct-datepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-2);
+  text-align: center;
+  justify-items: center;
+}
+
+.ct-datepicker__row {
+  display: contents;
+}
+
+.ct-datepicker__weekday {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.ct-datepicker__day {
+  width: min(100%, var(--ct-date-day-size));
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.ct-datepicker__day:hover {
+  background: var(--color-bg-muted);
+}
+
+.ct-datepicker__day:focus-visible {
+  outline: var(--border-medium) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ct-datepicker__day[aria-selected='true'] {
+  background: var(--color-brand-primary);
+  color: var(--color-text-inverse);
+}
+
+.ct-datepicker__day[data-outside='true'] {
+  color: var(--color-text-muted);
+}
+
+.ct-datepicker__day[data-today='true'] {
+  border: var(--border-thin) solid var(--color-brand-accent);
+}
+
+.ct-datepicker__day:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-datepicker__day {
+    transition: none;
+  }
+}

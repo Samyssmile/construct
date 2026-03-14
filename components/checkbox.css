@@ -1,0 +1,89 @@
+.ct-check,
+.ct-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  color: var(--color-text-primary);
+}
+
+.ct-check__input,
+.ct-radio__input {
+  appearance: none;
+  width: var(--space-6);
+  height: var(--space-6);
+  border: var(--border-thin) solid var(--color-border-default);
+  background: var(--color-bg-elevated);
+  display: grid;
+  place-content: center;
+  transition: background var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+}
+
+.ct-check__input {
+  border-radius: var(--radius-sm);
+}
+
+.ct-radio__input {
+  border-radius: 50%;
+}
+
+.ct-check__input::before {
+  content: '';
+  width: 10px;
+  height: 6px;
+  border: 2px solid var(--color-text-inverse);
+  border-block-start: 0;
+  border-inline-end: 0;
+  transform: rotate(-45deg) scale(0);
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.ct-radio__input::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-round);
+  background: var(--color-text-inverse);
+  transform: scale(0);
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.ct-check__input:checked,
+.ct-radio__input:checked {
+  background: var(--color-brand-primary);
+  border-color: var(--color-brand-primary);
+}
+
+.ct-check__input:checked::before,
+.ct-radio__input:checked::before {
+  transform: scale(1);
+}
+
+.ct-check__input:disabled,
+.ct-radio__input:disabled {
+  background: var(--color-bg-muted);
+  border-color: var(--color-border-subtle);
+}
+
+.ct-check__input:focus-visible,
+.ct-radio__input:focus-visible {
+  border-color: var(--ct-control-border-focus);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ct-check__input:indeterminate {
+  background: var(--color-brand-primary);
+  border-color: var(--color-brand-primary);
+}
+
+.ct-check__input:indeterminate::before {
+  width: 10px;
+  height: 0;
+  border-block-start: 2px solid var(--color-text-inverse);
+  border-inline-end: 0;
+  transform: scale(1);
+}

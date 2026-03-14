@@ -1,0 +1,98 @@
+:root {
+  --ct-control-bg: var(--color-bg-elevated);
+  --ct-control-bg-hover: var(--color-bg-surface);
+  --ct-control-bg-disabled: var(--color-bg-muted);
+  --ct-control-border: var(--color-border-default);
+  --ct-control-border-hover: var(--color-border-strong);
+  --ct-control-border-focus: var(--color-focus-ring);
+  --ct-control-text: var(--color-text-primary);
+  --ct-control-placeholder: var(--color-text-muted);
+  --ct-control-radius: var(--radius-control);
+  --ct-control-transition: border-color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard),
+    background var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+  --ct-button-font-weight: var(--font-weight-semibold);
+  --ct-button-radius: var(--radius-control);
+  --ct-button-gap: var(--space-3);
+  --ct-switch-width: 44px;
+  --ct-switch-height: 24px;
+  --ct-tooltip-bg: var(--color-slate-950);
+  --ct-tooltip-color: var(--color-text-inverse);
+  --ct-tooltip-radius: var(--radius-sm);
+  --ct-tooltip-shadow: var(--shadow-sm);
+  --ct-tooltip-max-width: 280px;
+  --ct-popover-width: 320px;
+  --ct-popover-bg: var(--color-bg-elevated);
+  --ct-popover-border: var(--color-border-default);
+  --ct-popover-radius: var(--radius-lg);
+  --ct-popover-shadow: var(--shadow-lg);
+  --ct-date-day-size: var(--control-height-calendar-day);
+  --ct-avatar-radius: 50%;
+  --ct-avatar-bg: var(--color-bg-muted);
+  --ct-avatar-color: var(--color-text-secondary);
+  --ct-avatar-status-size: 10px;
+  --ct-avatar-group-overlap: -8px;
+}
+
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control) {
+  width: 100%;
+  border: var(--border-thin) solid var(--ct-control-border);
+  border-radius: var(--ct-control-radius);
+  background: var(--ct-control-bg);
+  color: var(--ct-control-text);
+  font-size: var(--ct-control-font-size, var(--font-size-md));
+  line-height: var(--ct-control-line-height, var(--line-height-md));
+  transition: var(--ct-control-transition);
+}
+
+:where(.ct-input, .ct-select, .ct-control) {
+  height: var(--ct-control-height, var(--control-height-md));
+  padding: 0 var(--ct-control-padding-x, var(--space-5));
+}
+
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control)::placeholder {
+  color: var(--ct-control-placeholder);
+}
+
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control):hover {
+  border-color: var(--ct-control-border-hover);
+}
+
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control):focus-visible {
+  border-color: var(--ct-control-border-focus);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control):disabled,
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control)[aria-disabled='true'] {
+  background: var(--ct-control-bg-disabled);
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-muted);
+}
+
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control)[aria-invalid='true'],
+.ct-field--error :where(.ct-input, .ct-select, .ct-textarea, .ct-control) {
+  border-color: var(--color-state-danger);
+}
+
+.ct-control--sm,
+.ct-input--sm,
+.ct-select--sm,
+.ct-textarea--sm {
+  --ct-control-height: var(--control-height-sm);
+  --ct-control-padding-x: var(--space-4);
+  --ct-control-font-size: var(--font-size-sm);
+  --ct-control-line-height: var(--line-height-sm);
+}
+
+.ct-control--lg,
+.ct-input--lg,
+.ct-select--lg,
+.ct-textarea--lg {
+  --ct-control-height: var(--control-height-lg);
+  --ct-control-padding-x: var(--space-6);
+  --ct-control-font-size: var(--font-size-lg);
+  --ct-control-line-height: var(--line-height-lg);
+}

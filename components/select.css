@@ -1,0 +1,30 @@
+.ct-select-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.ct-select-wrap::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.75em;
+  height: 0.5em;
+  background-color: var(--color-text-muted);
+  --_chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1.4 0L6 4.6 10.6 0 12 1.4l-6 6-6-6z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--_chevron);
+  mask-image: var(--_chevron);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.ct-select-wrap > .ct-select {
+  width: 100%;
+}
+
+.ct-select {
+  appearance: none;
+  padding-inline-end: calc(var(--space-4) + 0.75em + var(--space-4));
+}

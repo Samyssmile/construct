@@ -1,0 +1,111 @@
+.ct-file-upload {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ct-file-upload__dropzone {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  border-radius: var(--radius-lg);
+  border: var(--border-thin) dashed var(--color-border-default);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  transition: border-color var(--duration-fast) var(--easing-standard),
+    background var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+  cursor: pointer;
+}
+
+.ct-file-upload__dropzone:focus-within {
+  border-color: var(--color-focus-ring);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.ct-file-upload__dropzone[data-state='dragover'] {
+  border-color: var(--color-brand-primary);
+  background: var(--color-bg-muted);
+}
+
+.ct-file-upload__dropzone[aria-invalid='true'] {
+  border-color: var(--color-state-danger);
+  background: var(--color-state-danger-surface);
+  color: var(--color-text-primary);
+}
+
+.ct-file-upload__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+.ct-file-upload__title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.ct-file-upload__hint {
+  font-size: var(--font-size-sm);
+}
+
+.ct-file-upload__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.ct-file-upload__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border: var(--border-thin) solid var(--color-border-subtle);
+  background: var(--color-bg-elevated);
+}
+
+.ct-file-upload__item[data-status='success'] {
+  border-color: var(--color-state-success-border);
+  background: var(--color-state-success-surface);
+}
+
+.ct-file-upload__item[data-status='error'] {
+  border-color: var(--color-state-danger-border);
+  background: var(--color-state-danger-surface);
+}
+
+.ct-file-upload__file {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.ct-file-upload__name {
+  font-weight: var(--font-weight-medium);
+}
+
+.ct-file-upload__meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.ct-file-upload__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ct-file-upload__error {
+  color: var(--color-state-danger);
+  font-size: var(--font-size-sm);
+}

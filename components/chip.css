@@ -1,0 +1,167 @@
+/* ── Chip ────────────────────────────────────────────────────── */
+
+.ct-chip {
+  --ct-chip-height: var(--control-height-md);
+  --ct-chip-padding-x: var(--space-3);
+  --ct-chip-font-size: var(--font-size-sm);
+  --ct-chip-line-height: var(--line-height-sm);
+  --ct-chip-gap: var(--space-2);
+  --ct-chip-remove-size: var(--icon-lg);
+  --ct-chip-bg: var(--color-bg-surface);
+  --ct-chip-border: var(--color-border-default);
+  --ct-chip-color: var(--color-text-secondary);
+  --ct-chip-accent: var(--ct-chip-color);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ct-chip-gap);
+  min-height: var(--ct-chip-height);
+  padding: 0 var(--ct-chip-padding-x);
+  border-radius: var(--radius-pill);
+  border: var(--border-thin) solid var(--ct-chip-border);
+  background: var(--ct-chip-bg);
+  color: var(--ct-chip-color);
+  font-size: var(--ct-chip-font-size);
+  line-height: var(--ct-chip-line-height);
+}
+
+/* ── Size variants ───────────────────────────────────────────── */
+
+.ct-chip--sm {
+  --ct-chip-height: var(--control-height-sm);
+  --ct-chip-padding-x: var(--space-2);
+  --ct-chip-font-size: var(--font-size-xs);
+  --ct-chip-line-height: var(--line-height-xs);
+  --ct-chip-remove-size: var(--icon-sm);
+}
+
+.ct-chip--lg {
+  --ct-chip-height: var(--control-height-lg);
+  --ct-chip-padding-x: var(--space-4);
+  --ct-chip-font-size: var(--font-size-md);
+  --ct-chip-line-height: var(--line-height-md);
+  --ct-chip-remove-size: var(--icon-xl);
+}
+
+/* ── Interactive state ───────────────────────────────────────── */
+
+.ct-chip--interactive {
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.ct-chip--interactive:hover {
+  background: var(--color-bg-muted);
+  border-color: var(--color-border-strong);
+}
+
+.ct-chip--interactive:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Selected / pressed state ────────────────────────────────── */
+
+.ct-chip[aria-pressed='true'],
+.ct-chip--selected {
+  --ct-chip-bg: var(--color-brand-primary);
+  --ct-chip-border: var(--color-brand-primary);
+  --ct-chip-color: var(--color-text-inverse);
+  --ct-chip-accent: var(--color-text-inverse);
+}
+
+/* ── Outline variant ─────────────────────────────────────────── */
+
+.ct-chip--outline {
+  --ct-chip-bg: transparent;
+}
+
+.ct-chip--outline[aria-pressed='true'],
+.ct-chip--outline.ct-chip--selected {
+  --ct-chip-bg: var(--color-brand-primary);
+}
+
+/* ── Semantic color variants ─────────────────────────────────── */
+
+.ct-chip--info {
+  --ct-chip-bg: var(--color-state-info-surface);
+  --ct-chip-border: var(--color-state-info-border);
+  --ct-chip-color: var(--color-text-primary);
+  --ct-chip-accent: var(--color-state-info);
+}
+
+.ct-chip--success {
+  --ct-chip-bg: var(--color-state-success-surface);
+  --ct-chip-border: var(--color-state-success-border);
+  --ct-chip-color: var(--color-text-primary);
+  --ct-chip-accent: var(--color-state-success);
+}
+
+.ct-chip--warning {
+  --ct-chip-bg: var(--color-state-warning-surface);
+  --ct-chip-border: var(--color-state-warning-border);
+  --ct-chip-color: var(--color-text-primary);
+  --ct-chip-accent: var(--color-amber-700);
+}
+
+.ct-chip--danger {
+  --ct-chip-bg: var(--color-state-danger-surface);
+  --ct-chip-border: var(--color-state-danger-border);
+  --ct-chip-color: var(--color-text-primary);
+  --ct-chip-accent: var(--color-state-danger);
+}
+
+/* ── Disabled state ──────────────────────────────────────────── */
+
+.ct-chip[aria-disabled='true'] {
+  opacity: var(--opacity-disabled);
+  pointer-events: none;
+}
+
+/* ── Icon element ────────────────────────────────────────────── */
+
+.ct-chip__icon {
+  width: 1em;
+  height: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ct-chip-accent);
+}
+
+/* ── Remove button ───────────────────────────────────────────── */
+
+.ct-chip__remove {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  width: var(--ct-chip-remove-size);
+  height: var(--ct-chip-remove-size);
+  border-radius: var(--radius-round);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--easing-standard);
+}
+
+.ct-chip__remove:hover {
+  background: var(--color-bg-muted);
+}
+
+.ct-chip__remove:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-chip--interactive,
+  .ct-chip__remove {
+    transition: none;
+  }
+}

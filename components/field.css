@@ -1,0 +1,42 @@
+.ct-field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ct-field__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.ct-field__hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.ct-field__error {
+  font-size: var(--font-size-sm);
+  color: var(--color-state-danger);
+}
+
+.ct-field__label--required::after {
+  content: ' *';
+  color: var(--color-state-danger);
+}
+
+.ct-field__counter {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: end;
+}
+
+.ct-field__counter--limit {
+  color: var(--color-state-danger);
+}
+
+.ct-field__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}

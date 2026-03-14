@@ -1,0 +1,38 @@
+.ct-skeleton {
+  --ct-skeleton-bg: var(--color-bg-muted);
+  --ct-skeleton-highlight: var(--color-bg-surface);
+  --ct-skeleton-height: 1rem;
+  --ct-skeleton-width: 100%;
+
+  display: inline-block;
+  width: var(--ct-skeleton-width);
+  height: var(--ct-skeleton-height);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--ct-skeleton-bg), var(--ct-skeleton-highlight), var(--ct-skeleton-bg));
+  background-size: 200% 100%;
+  animation: ct-skeleton 1.4s ease-in-out infinite;
+}
+
+.ct-skeleton--text {
+  --ct-skeleton-height: 1em;
+}
+
+.ct-skeleton--title {
+  --ct-skeleton-height: 1.4em;
+}
+
+.ct-skeleton--avatar {
+  --ct-skeleton-height: 48px;
+  --ct-skeleton-width: 48px;
+  border-radius: var(--radius-round);
+}
+
+.ct-skeleton--rect {
+  --ct-skeleton-height: 160px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-skeleton {
+    animation: none;
+  }
+}

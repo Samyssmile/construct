@@ -1,0 +1,127 @@
+/* ── Avatar ── */
+
+.ct-avatar {
+  --ct-avatar-size: 32px;
+  --ct-avatar-font-size: var(--font-size-sm);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ct-avatar-size);
+  height: var(--ct-avatar-size);
+  border-radius: var(--ct-avatar-radius);
+  background: var(--ct-avatar-bg);
+  color: var(--ct-avatar-color);
+  font-size: var(--ct-avatar-font-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.ct-avatar--sm {
+  --ct-avatar-size: 24px;
+  --ct-avatar-font-size: var(--font-size-xs);
+}
+
+.ct-avatar--lg {
+  --ct-avatar-size: 48px;
+  --ct-avatar-font-size: var(--font-size-lg);
+}
+
+.ct-avatar--xl {
+  --ct-avatar-size: 64px;
+  --ct-avatar-font-size: var(--font-size-xl);
+}
+
+.ct-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.ct-avatar__initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.ct-avatar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 60%;
+}
+
+.ct-avatar__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ct-avatar__status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--ct-avatar-status-size);
+  height: var(--ct-avatar-status-size);
+  border-radius: 50%;
+  border: 2px solid var(--color-bg-canvas);
+  background: var(--color-text-muted);
+}
+
+.ct-avatar__status[data-status='online'] {
+  background: var(--color-state-success);
+}
+
+.ct-avatar__status[data-status='offline'] {
+  background: var(--color-text-muted);
+}
+
+.ct-avatar__status[data-status='busy'] {
+  background: var(--color-state-danger);
+}
+
+.ct-avatar__status[data-status='away'] {
+  background: var(--color-state-warning);
+}
+
+/* ── Avatar Group ── */
+
+.ct-avatar-group {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.ct-avatar-group .ct-avatar {
+  border: 2px solid var(--color-bg-canvas);
+  margin-inline-start: var(--ct-avatar-group-overlap);
+}
+
+.ct-avatar-group .ct-avatar:last-child {
+  margin-inline-start: 0;
+}
+
+.ct-avatar-group__overflow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ct-avatar-size, 32px);
+  height: var(--ct-avatar-size, 32px);
+  border-radius: var(--ct-avatar-radius);
+  background: var(--color-bg-muted);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  border: 2px solid var(--color-bg-canvas);
+  margin-inline-start: var(--ct-avatar-group-overlap);
+  flex-shrink: 0;
+}

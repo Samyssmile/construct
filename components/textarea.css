@@ -1,0 +1,16 @@
+:where(.ct-textarea) {
+  min-height: var(--ct-textarea-height, 120px);
+  padding: var(--ct-control-padding-y, var(--space-4))
+    var(--ct-control-padding-x, var(--space-5));
+  resize: vertical;
+}
+
+.ct-textarea.ct-control--sm {
+  --ct-textarea-height: 96px;
+  --ct-control-padding-y: var(--space-3);
+}
+
+.ct-textarea.ct-control--lg {
+  --ct-textarea-height: 160px;
+  --ct-control-padding-y: var(--space-5);
+}

@@ -1,0 +1,295 @@
+/* ── Slider ── */
+
+.ct-slider {
+  --ct-slider-track-height: 4px;
+  --ct-slider-track-bg: var(--color-bg-muted);
+  --ct-slider-track-fill: var(--color-brand-primary);
+  --ct-slider-track-radius: var(--radius-pill);
+  --ct-slider-thumb-size: 20px;
+  --ct-slider-thumb-bg: var(--color-bg-elevated);
+  --ct-slider-thumb-border: var(--color-brand-primary);
+  --ct-slider-thumb-shadow: var(--shadow-xs);
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+/* Input base */
+
+.ct-slider__input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--ct-slider-thumb-size);
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+/* Track – WebKit */
+
+.ct-slider__input::-webkit-slider-runnable-track {
+  height: var(--ct-slider-track-height);
+  border-radius: var(--ct-slider-track-radius);
+  background: var(--ct-slider-track-bg);
+}
+
+/* Track – Firefox */
+
+.ct-slider__input::-moz-range-track {
+  height: var(--ct-slider-track-height);
+  border-radius: var(--ct-slider-track-radius);
+  background: var(--ct-slider-track-bg);
+  border: none;
+}
+
+/* Filled track – WebKit (requires --_value CSS var set via oninput) */
+
+.ct-slider:not(.ct-slider--range) .ct-slider__input::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--ct-slider-track-fill) calc(var(--_value, 50) * 1%),
+    var(--ct-slider-track-bg) calc(var(--_value, 50) * 1%)
+  );
+}
+
+/* Filled track – Firefox (native pseudo) */
+
+.ct-slider:not(.ct-slider--range) .ct-slider__input::-moz-range-progress {
+  height: var(--ct-slider-track-height);
+  border-radius: var(--ct-slider-track-radius);
+  background: var(--ct-slider-track-fill);
+}
+
+/* Thumb – WebKit */
+
+.ct-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--ct-slider-thumb-size);
+  height: var(--ct-slider-thumb-size);
+  border-radius: var(--radius-round);
+  background: var(--ct-slider-thumb-bg);
+  border: var(--border-medium) solid var(--ct-slider-thumb-border);
+  box-shadow: var(--ct-slider-thumb-shadow);
+  margin-top: calc((var(--ct-slider-track-height) - var(--ct-slider-thumb-size)) / 2);
+  transition: transform var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+/* Thumb – Firefox */
+
+.ct-slider__input::-moz-range-thumb {
+  width: var(--ct-slider-thumb-size);
+  height: var(--ct-slider-thumb-size);
+  border-radius: var(--radius-round);
+  background: var(--ct-slider-thumb-bg);
+  border: var(--border-medium) solid var(--ct-slider-thumb-border);
+  box-shadow: var(--ct-slider-thumb-shadow);
+  transition: transform var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+/* Hover */
+
+.ct-slider__input:hover::-webkit-slider-thumb {
+  transform: scale(1.15);
+  box-shadow: var(--shadow-sm);
+}
+
+.ct-slider__input:hover::-moz-range-thumb {
+  transform: scale(1.15);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Focus */
+
+.ct-slider__input:focus-visible {
+  outline: none;
+}
+
+.ct-slider__input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ct-slider__input:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Active */
+
+.ct-slider__input:active::-webkit-slider-thumb {
+  transform: scale(0.95);
+}
+
+.ct-slider__input:active::-moz-range-thumb {
+  transform: scale(0.95);
+}
+
+/* Disabled */
+
+.ct-slider__input:disabled {
+  pointer-events: none;
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* Invalid */
+
+.ct-slider__input[aria-invalid='true']::-webkit-slider-thumb {
+  border-color: var(--color-state-danger);
+}
+
+.ct-slider__input[aria-invalid='true']::-moz-range-thumb {
+  border-color: var(--color-state-danger);
+}
+
+.ct-slider:not(.ct-slider--range) .ct-slider__input[aria-invalid='true']::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--color-state-danger) calc(var(--_value, 50) * 1%),
+    var(--ct-slider-track-bg) calc(var(--_value, 50) * 1%)
+  );
+}
+
+.ct-slider:not(.ct-slider--range) .ct-slider__input[aria-invalid='true']::-moz-range-progress {
+  background: var(--color-state-danger);
+}
+
+/* Sizes */
+
+.ct-slider--sm {
+  --ct-slider-track-height: 2px;
+  --ct-slider-thumb-size: 16px;
+}
+
+.ct-slider--lg {
+  --ct-slider-track-height: 6px;
+  --ct-slider-thumb-size: 24px;
+}
+
+/* Value display */
+
+.ct-slider__value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+  text-align: end;
+}
+
+.ct-slider__min,
+.ct-slider__max {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Range variant (dual thumbs) */
+
+.ct-slider--range .ct-slider__track {
+  position: relative;
+  flex: 1;
+  height: var(--ct-slider-thumb-size);
+}
+
+.ct-slider--range .ct-slider__track::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  height: var(--ct-slider-track-height);
+  background: var(--ct-slider-track-bg);
+  border-radius: var(--ct-slider-track-radius);
+  pointer-events: none;
+}
+
+.ct-slider--range .ct-slider__track::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--ct-slider-track-height);
+  left: calc(var(--_low, 0) * 1%);
+  right: calc(100% - var(--_high, 100) * 1%);
+  background: var(--ct-slider-track-fill);
+  border-radius: var(--ct-slider-track-radius);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ct-slider--range .ct-slider__input {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ct-slider--range .ct-slider__input::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+.ct-slider--range .ct-slider__input::-moz-range-track {
+  background: transparent;
+}
+
+.ct-slider--range .ct-slider__input::-moz-range-progress {
+  background: transparent;
+}
+
+.ct-slider--range .ct-slider__input::-webkit-slider-thumb {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.ct-slider--range .ct-slider__input::-moz-range-thumb {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Disabled – range variant (track fill inherits faded look) */
+
+.ct-slider:has(.ct-slider__input:disabled) {
+  opacity: var(--opacity-disabled);
+  pointer-events: none;
+}
+
+.ct-slider:has(.ct-slider__input:disabled) .ct-slider__input:disabled {
+  opacity: 1;
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-slider__input::-webkit-slider-thumb {
+    transition: none;
+  }
+
+  .ct-slider__input::-moz-range-thumb {
+    transition: none;
+  }
+}
+
+/* Ticks variant */
+
+.ct-slider--ticks {
+  flex-wrap: wrap;
+}
+
+.ct-slider--ticks .ct-slider__ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}

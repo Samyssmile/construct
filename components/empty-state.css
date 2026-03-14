@@ -1,0 +1,97 @@
+/* ── Empty State ── */
+
+.ct-empty-state {
+  --ct-empty-state-icon-size: 64px;
+  --ct-empty-state-icon-color: var(--color-text-muted);
+  --ct-empty-state-max-width: 400px;
+  --ct-empty-state-padding: var(--space-8);
+  --ct-empty-state-gap: var(--space-4);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: var(--ct-empty-state-max-width);
+  margin-inline: auto;
+  padding: var(--ct-empty-state-padding);
+  gap: var(--ct-empty-state-gap);
+}
+
+.ct-empty-state__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ct-empty-state-icon-size);
+  height: var(--ct-empty-state-icon-size);
+  font-size: calc(var(--ct-empty-state-icon-size) * 0.5);
+  color: var(--ct-empty-state-icon-color);
+  flex-shrink: 0;
+}
+
+.ct-empty-state__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.ct-empty-state__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.ct-empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-2);
+}
+
+/* Sizes */
+
+.ct-empty-state--sm {
+  --ct-empty-state-icon-size: 40px;
+  --ct-empty-state-padding: var(--space-4);
+  --ct-empty-state-gap: var(--space-2);
+}
+
+.ct-empty-state--sm .ct-empty-state__title {
+  font-size: var(--font-size-base);
+}
+
+.ct-empty-state--sm .ct-empty-state__description {
+  font-size: var(--font-size-xs);
+}
+
+.ct-empty-state--lg {
+  --ct-empty-state-icon-size: 96px;
+  --ct-empty-state-padding: var(--space-12);
+  --ct-empty-state-gap: var(--space-6);
+}
+
+.ct-empty-state--lg .ct-empty-state__title {
+  font-size: var(--font-size-xl);
+}
+
+.ct-empty-state--lg .ct-empty-state__description {
+  font-size: var(--font-size-base);
+}
+
+/* Variants */
+
+.ct-empty-state--error .ct-empty-state__icon {
+  color: var(--color-danger-text);
+}
+
+.ct-empty-state--error .ct-empty-state__title {
+  color: var(--color-danger-text);
+}
+
+.ct-empty-state--bordered {
+  border: 2px dashed var(--color-border-default);
+  border-radius: var(--radius-md);
+}

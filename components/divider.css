@@ -1,0 +1,73 @@
+/* ── Divider ── */
+
+.ct-divider {
+  --ct-divider-color: var(--color-border-default);
+  --ct-divider-width: 1px;
+  --ct-divider-spacing: var(--space-4);
+
+  border: none;
+  background: var(--ct-divider-color);
+  height: var(--ct-divider-width);
+  width: 100%;
+  margin-block: var(--ct-divider-spacing);
+}
+
+/* Vertical */
+
+.ct-divider--vertical {
+  width: var(--ct-divider-width);
+  height: auto;
+  align-self: stretch;
+  margin-block: 0;
+  margin-inline: var(--ct-divider-spacing);
+}
+
+/* Color variants */
+
+.ct-divider--strong {
+  --ct-divider-color: var(--color-border-strong);
+}
+
+.ct-divider--muted {
+  --ct-divider-color: var(--color-border-muted);
+}
+
+/* Spacing variants */
+
+.ct-divider--sm {
+  --ct-divider-spacing: var(--space-1);
+}
+
+.ct-divider--lg {
+  --ct-divider-spacing: var(--space-8);
+}
+
+.ct-divider--none {
+  --ct-divider-spacing: 0;
+}
+
+/* Labeled */
+
+.ct-divider--labeled {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: none;
+  height: auto;
+}
+
+.ct-divider--labeled::before,
+.ct-divider--labeled::after {
+  content: '';
+  flex: 1;
+  height: var(--ct-divider-width);
+  background: var(--ct-divider-color);
+}
+
+.ct-divider__label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}

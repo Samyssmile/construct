@@ -38,7 +38,54 @@ Three modes controlled via `data-theme` attribute: `light` (default), `dark`, `h
 
 ### Components
 
-All component styles live in `components/components.css`. Components are pure CSS (no JS framework dependency).
+Component styles are modular per-component files in `components/`. Each component has its own CSS file. The bundle entry point is `components/index.css` (imports all files). Legacy `components/components.css` redirects to `index.css`.
+
+```
+components/
+├── _shared.css          ← :root control variables + shared form control base styles
+├── _keyframes.css       ← ct-spin, ct-skeleton, ct-progress-indeterminate
+├── button.css
+├── field.css            ← Field, Label, Hint, Error, Counter
+├── input.css            ← Input-Wrap, Input-Group, Addons
+├── select.css           ← Select, Select-Wrap
+├── textarea.css
+├── checkbox.css         ← Check + Radio
+├── switch.css
+├── card.css
+├── table.css            ← Table + Table-Wrap
+├── data-table.css
+├── modal.css            ← Modal + Confirmation Dialog
+├── toast.css            ← Toast + Toast-Region
+├── tooltip.css
+├── tabs.css
+├── dropdown.css
+├── pagination.css
+├── breadcrumbs.css
+├── datepicker.css
+├── badge.css
+├── alert.css
+├── chip.css
+├── file-upload.css
+├── spinner.css          ← Spinner + Loading-Overlay
+├── skeleton.css
+├── icon.css
+├── progress-bar.css
+├── toolbar.css
+├── sidebar.css          ← Sidebar-Layout + Sidebar + Nav-List
+├── toggle-group.css
+├── accordion.css
+├── avatar.css           ← Avatar + Avatar-Group
+├── empty-state.css
+├── divider.css
+├── slider.css
+├── popover.css
+├── combobox.css
+├── skip-link.css
+├── drawer.css
+└── index.css            ← @import bundle for all components
+```
+
+Consumers can import `components/index.css` for everything, or individual files for selective imports.
 
 - **Naming:** `ct-` prefix with BEM modifiers (e.g., `ct-button`, `ct-button__icon`, `ct-button--secondary`)
 - **Sizes:** `--sm`, default (md), `--lg`
