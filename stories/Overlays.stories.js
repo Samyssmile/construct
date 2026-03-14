@@ -1,4 +1,4 @@
-import { expect, within, userEvent } from 'storybook/test';
+import { expect, within, userEvent, waitFor } from 'storybook/test';
 
 export default {
   title: 'Overlays/Overlays',
@@ -244,7 +244,7 @@ export const Tooltip = {
   },
   render: () => `
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: center; justify-content: center;">
-    <span class="ct-tooltip" data-state="open" data-side="top">
+    <span class="ct-tooltip" data-side="top">
       <button class="ct-button ct-button--secondary" aria-describedby="tip-1">Hover me</button>
       <span class="ct-tooltip__content" role="tooltip" id="tip-1">Short hint</span>
     </span>
@@ -254,23 +254,32 @@ export const Tooltip = {
     const canvas = within(canvasElement);
 
     const trigger = canvas.getByRole('button', { name: 'Hover me' });
-    const tooltip = canvas.getByRole('tooltip');
+    const tooltipEl = canvasElement.querySelector('.ct-tooltip__content');
 
     // Trigger references tooltip via aria-describedby
-    expect(trigger).toHaveAttribute('aria-describedby', tooltip.id);
-    expect(tooltip).toHaveTextContent('Short hint');
+    expect(trigger).toHaveAttribute('aria-describedby', 'tip-1');
+    expect(tooltipEl).toHaveAttribute('role', 'tooltip');
+    expect(tooltipEl).toHaveTextContent('Short hint');
 
-    // Tooltip has role="tooltip"
-    expect(tooltip).toHaveAttribute('role', 'tooltip');
-
-    // The aria-describedby ID is unique and resolves to the tooltip
+    // aria-describedby ID is unique and resolves to the tooltip
     const describedId = trigger.getAttribute('aria-describedby');
     expect(canvasElement.querySelectorAll(`#${describedId}`)).toHaveLength(1);
-    expect(canvasElement.querySelector(`#${describedId}`)).toBe(tooltip);
+    expect(canvasElement.querySelector(`#${describedId}`)).toBe(tooltipEl);
 
-    // Trigger is focusable (tooltip should show on focus too)
+    // Tooltip is hidden by default (visibility: hidden)
+    const style = getComputedStyle(tooltipEl);
+    expect(style.visibility).toBe('hidden');
+    expect(style.opacity).toBe('0');
+
+    // Tooltip becomes visible on focus via :focus-within
     trigger.focus();
     expect(trigger).toHaveFocus();
+
+    // visibility snaps immediately, opacity transitions
+    expect(getComputedStyle(tooltipEl).visibility).toBe('visible');
+    await waitFor(() => {
+      expect(getComputedStyle(tooltipEl).opacity).toBe('1');
+    });
   },
 };
 
