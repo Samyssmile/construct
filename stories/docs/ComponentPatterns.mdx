@@ -86,7 +86,8 @@ Construct uses **HTML attributes** — not CSS classes — for all interactive s
 | `data-state` | `"open"`, `"closed"` | Modal, dropdown, tooltip, sidebar, datepicker |
 | `data-variant` | `"info"`, `"success"`, `"warning"`, `"danger"` | Toast, alert, badge, confirmation |
 | `data-status` | `"success"`, `"error"` | File upload items |
-| `data-side` | `"top"`, `"bottom"`, `"left"`, `"right"` | Tooltip |
+| `data-side` | `"top"`, `"bottom"`, `"left"`, `"right"` | Tooltip, dropdown |
+| `data-align` | `"start"`, `"end"` | Dropdown |
 | `data-today` | `"true"` | Datepicker day |
 | `data-outside` | `"true"` | Datepicker day (other month) |
 
@@ -181,18 +182,22 @@ Focus is trapped inside. Focus returns to the trigger on close.
 
 ### Dropdown
 
-Trigger toggles `aria-expanded`. Menu items are focusable buttons in natural tab order.
+Trigger toggles `aria-expanded`. Menu uses `role="menu"` with `role="menuitem"` on items. Arrow keys navigate between items, Escape closes. The closed state uses `visibility: hidden` to remove the menu from the accessibility tree.
 
 ```html
 <div class="ct-dropdown">
-  <button aria-expanded="false" aria-controls="menu-1"
-          aria-haspopup="true">Options</button>
-  <ul class="ct-dropdown__menu" id="menu-1"
-      role="list" data-state="closed">
-    <li><button class="ct-dropdown__item">Edit</button></li>
-    <li><button class="ct-dropdown__item">Delete</button></li>
-  </ul>
+  <button aria-haspopup="true" aria-expanded="false"
+          aria-controls="menu-1" id="dd-trigger">Options</button>
+  <div class="ct-dropdown__menu" id="menu-1"
+       role="menu" aria-labelledby="dd-trigger">
+    <button class="ct-dropdown__item" role="menuitem">Edit</button>
+    <div class="ct-dropdown__separator" role="separator"></div>
+    <button class="ct-dropdown__item" role="menuitem">Delete</button>
+  </div>
 </div>
+
+<!-- Position variants: data-side="top" opens above, data-align="end" right-aligns -->
+<div class="ct-dropdown" data-side="top" data-align="end">…</div>
 ```
 
 ### Accordion

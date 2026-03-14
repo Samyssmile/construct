@@ -826,10 +826,16 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
 
 .ct-tooltip__content {
   --_tt-offset: calc(100% + var(--space-2));
-  --_tt-max-width: 280px;
+  --_tt-origin-x: 0px;
+  --_tt-origin-y: 0px;
+  --_tt-slide-dir-x: 0;
+  --_tt-slide-dir-y: 0;
+  --_tt-open: 0;
 
   position: absolute;
   z-index: var(--z-tooltip);
+  width: max-content;
+  max-width: min(var(--ct-tooltip-max-width), 90vw);
   padding: var(--space-2) var(--space-3);
   background: var(--ct-tooltip-bg);
   color: var(--ct-tooltip-color);
@@ -837,11 +843,15 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
   box-shadow: var(--ct-tooltip-shadow);
   font-size: var(--font-size-xs);
   line-height: var(--line-height-xs);
-  max-width: var(--_tt-max-width);
   white-space: normal;
+  overflow-wrap: anywhere;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transform: translate(
+    calc(var(--_tt-origin-x) + var(--_tt-slide-dir-x) * 4px * (1 - var(--_tt-open))),
+    calc(var(--_tt-origin-y) + var(--_tt-slide-dir-y) * 4px * (1 - var(--_tt-open)))
+  );
   transition: opacity var(--duration-fast) var(--easing-standard),
     transform var(--duration-fast) var(--easing-standard),
     visibility 0s linear var(--duration-fast);
@@ -849,6 +859,7 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
 
 .ct-tooltip[data-state='open'] .ct-tooltip__content,
 .ct-tooltip:focus-within .ct-tooltip__content {
+  --_tt-open: 1;
   opacity: 1;
   visibility: visible;
   transition: opacity var(--duration-fast) var(--easing-standard),
@@ -856,42 +867,64 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
     visibility 0s linear 0s;
 }
 
+/* Side positioning (default center alignment) */
+
 .ct-tooltip[data-side='top'] .ct-tooltip__content {
   inset-block-end: var(--_tt-offset);
   inset-inline-start: 50%;
-  transform: translate(-50%, -4px);
+  --_tt-origin-x: -50%;
+  --_tt-slide-dir-y: -1;
 }
 
 .ct-tooltip[data-side='bottom'] .ct-tooltip__content {
   inset-block-start: var(--_tt-offset);
   inset-inline-start: 50%;
-  transform: translate(-50%, 4px);
+  --_tt-origin-x: -50%;
+  --_tt-slide-dir-y: 1;
 }
 
 .ct-tooltip[data-side='left'] .ct-tooltip__content {
   inset-inline-end: var(--_tt-offset);
   inset-block-start: 50%;
-  transform: translate(-4px, -50%);
+  --_tt-origin-y: -50%;
+  --_tt-slide-dir-x: -1;
 }
 
 .ct-tooltip[data-side='right'] .ct-tooltip__content {
   inset-inline-start: var(--_tt-offset);
   inset-block-start: 50%;
-  transform: translate(4px, -50%);
+  --_tt-origin-y: -50%;
+  --_tt-slide-dir-x: 1;
 }
 
-.ct-tooltip[data-state='open'][data-side='top'] .ct-tooltip__content,
-.ct-tooltip[data-state='open'][data-side='bottom'] .ct-tooltip__content,
-.ct-tooltip:focus-within[data-side='top'] .ct-tooltip__content,
-.ct-tooltip:focus-within[data-side='bottom'] .ct-tooltip__content {
-  transform: translate(-50%, 0);
+/* Cross-axis alignment: start */
+
+.ct-tooltip[data-align='start'][data-side='top'] .ct-tooltip__content,
+.ct-tooltip[data-align='start'][data-side='bottom'] .ct-tooltip__content {
+  inset-inline-start: 0;
+  --_tt-origin-x: 0px;
 }
 
-.ct-tooltip[data-state='open'][data-side='left'] .ct-tooltip__content,
-.ct-tooltip[data-state='open'][data-side='right'] .ct-tooltip__content,
-.ct-tooltip:focus-within[data-side='left'] .ct-tooltip__content,
-.ct-tooltip:focus-within[data-side='right'] .ct-tooltip__content {
-  transform: translate(0, -50%);
+.ct-tooltip[data-align='start'][data-side='left'] .ct-tooltip__content,
+.ct-tooltip[data-align='start'][data-side='right'] .ct-tooltip__content {
+  inset-block-start: 0;
+  --_tt-origin-y: 0px;
+}
+
+/* Cross-axis alignment: end */
+
+.ct-tooltip[data-align='end'][data-side='top'] .ct-tooltip__content,
+.ct-tooltip[data-align='end'][data-side='bottom'] .ct-tooltip__content {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  --_tt-origin-x: 0px;
+}
+
+.ct-tooltip[data-align='end'][data-side='left'] .ct-tooltip__content,
+.ct-tooltip[data-align='end'][data-side='right'] .ct-tooltip__content {
+  inset-block-start: auto;
+  inset-block-end: 0;
+  --_tt-origin-y: 0px;
 }
 
 @media (prefers-reduced-motion: reduce) {
