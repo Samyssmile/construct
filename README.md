@@ -20,7 +20,7 @@
 ### Installation
 
 ```bash
-npm install @construct/design
+npm install @neuravision/construct
 ```
 
 ### Usage
@@ -28,8 +28,8 @@ npm install @construct/design
 Import the foundation styles and components:
 
 ```css
-@import "@construct/design/foundations.css";
-@import "@construct/design/components/components.css";
+@import "@neuravision/construct/foundations.css";
+@import "@neuravision/construct/components/components.css";
 ```
 
 Use the components in your HTML:
@@ -71,7 +71,7 @@ If no `data-theme` is set, system preferences are respected:
 ## 📦 What's Included
 
 ```
-@construct/design/
+@neuravision/construct/
 ├── tokens/                     # Design tokens (JSON, CSS, JS, TS)
 │   ├── primitives.json         # Base values (colors, sizes)
 │   ├── semantic.light.json     # Semantic mappings
