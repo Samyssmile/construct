@@ -65,6 +65,7 @@ components/
 ├── datepicker.css       ← Datepicker + Range + Month/Year grid
 ├── badge.css
 ├── alert.css
+├── banner.css           ← Banner / Callout (persistent page-level notices)
 ├── chip.css
 ├── file-upload.css
 ├── spinner.css          ← Spinner + Loading-Overlay
@@ -83,6 +84,8 @@ components/
 ├── combobox.css
 ├── skip-link.css
 ├── drawer.css
+├── navbar.css           ← Navbar / App Header (responsive, dropdown menus, mobile toggle)
+├── list.css             ← List + List Item (rich items, selection, nav, dividers)
 └── index.css            ← @import bundle for all components
 ```
 

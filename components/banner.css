@@ -1,0 +1,243 @@
+/* ----------------------------------------------------------------
+   Banner / Callout
+   Persistent page- or section-level notices.
+   ----------------------------------------------------------------
+   Variants  (data-variant) : info (default) | warning | danger | success | neutral
+   Appearance (class)       : subtle (default) | --solid | --left-accent | --top-accent
+   Position   (class)       : inline (default) | --fixed-top | --fixed-bottom | --sticky
+   Size       (class)       : default | --compact
+   Layout     (class)       : default | --full (no radius, no inline border)
+   State      (data-state)  : open (default) | closed
+   ---------------------------------------------------------------- */
+
+.ct-banner {
+  --ct-banner-bg: var(--color-state-info-surface);
+  --ct-banner-border: var(--color-state-info-border);
+  --ct-banner-accent: var(--color-state-info);
+
+  display: flex;
+  align-items: start;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-md);
+  border: var(--border-thin) solid var(--ct-banner-border);
+  background: var(--ct-banner-bg);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  transition: opacity var(--duration-normal) var(--easing-standard),
+    transform var(--duration-normal) var(--easing-standard);
+}
+
+/* ---- Sub-elements ---- */
+
+.ct-banner__icon {
+  flex-shrink: 0;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ct-banner-accent);
+}
+
+.ct-banner__content {
+  flex: 1 1 0%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ct-banner__title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.ct-banner__message {
+  color: var(--color-text-secondary);
+}
+
+.ct-banner__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.ct-banner__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--font-size-lg);
+  line-height: 1;
+  transition: background var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+.ct-banner__close:hover {
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  color: var(--color-text-primary);
+}
+
+.ct-banner__close:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Semantic Variants ---- */
+
+.ct-banner[data-variant='warning'] {
+  --ct-banner-bg: var(--color-state-warning-surface);
+  --ct-banner-border: var(--color-state-warning-border);
+  --ct-banner-accent: var(--color-amber-700);
+}
+
+.ct-banner[data-variant='danger'] {
+  --ct-banner-bg: var(--color-state-danger-surface);
+  --ct-banner-border: var(--color-state-danger-border);
+  --ct-banner-accent: var(--color-state-danger);
+}
+
+.ct-banner[data-variant='success'] {
+  --ct-banner-bg: var(--color-state-success-surface);
+  --ct-banner-border: var(--color-state-success-border);
+  --ct-banner-accent: var(--color-state-success);
+}
+
+.ct-banner[data-variant='neutral'] {
+  --ct-banner-bg: var(--color-bg-muted);
+  --ct-banner-border: var(--color-border-subtle);
+  --ct-banner-accent: var(--color-text-secondary);
+}
+
+/* ---- Appearance: Solid ---- */
+/* Compound selector raises specificity to (0,2,0) to beat variant overrides */
+
+.ct-banner.ct-banner--solid {
+  --ct-banner-bg: var(--ct-banner-accent);
+  --ct-banner-border: var(--ct-banner-accent);
+  color: var(--color-text-inverse);
+}
+
+.ct-banner--solid .ct-banner__icon,
+.ct-banner--solid .ct-banner__message,
+.ct-banner--solid .ct-banner__close {
+  color: var(--color-text-inverse);
+}
+
+.ct-banner--solid .ct-banner__close:hover {
+  background: color-mix(in srgb, var(--color-text-inverse) 20%, transparent);
+}
+
+/* Solid + success needs darker green for WCAG AA contrast with inverse text */
+.ct-banner.ct-banner--solid[data-variant='success'] {
+  --ct-banner-accent: var(--color-green-700);
+}
+
+/* ---- Appearance: Accents ---- */
+
+.ct-banner--left-accent {
+  border-inline-start: var(--border-thick) solid var(--ct-banner-accent);
+}
+
+.ct-banner--top-accent {
+  border-block-start: var(--border-thick) solid var(--ct-banner-accent);
+}
+
+/* ---- Positions ---- */
+
+.ct-banner--fixed-top {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--z-sticky);
+  border-radius: 0;
+}
+
+.ct-banner--fixed-bottom {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: var(--z-sticky);
+  border-radius: 0;
+}
+
+.ct-banner--sticky {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-sticky);
+  border-radius: 0;
+}
+
+/* ---- Compact ---- */
+
+.ct-banner--compact {
+  padding: var(--space-3) var(--space-5);
+  gap: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-xs);
+}
+
+.ct-banner--compact .ct-banner__icon {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+
+.ct-banner--compact .ct-banner__close {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- Full-Width ---- */
+
+.ct-banner--full {
+  border-radius: 0;
+  border-inline: none;
+}
+
+/* ---- State ---- */
+
+.ct-banner[data-state='closed'] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ct-banner--fixed-top[data-state='closed'],
+.ct-banner--sticky[data-state='closed'] {
+  transform: translateY(-100%);
+}
+
+.ct-banner--fixed-bottom[data-state='closed'] {
+  transform: translateY(100%);
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 640px) {
+  .ct-banner {
+    flex-wrap: wrap;
+  }
+
+  .ct-banner__actions {
+    flex-basis: 100%;
+  }
+}
+
+/* ---- Reduced Motion ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-banner,
+  .ct-banner__close {
+    transition: none;
+  }
+}
