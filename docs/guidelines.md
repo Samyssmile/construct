@@ -70,6 +70,13 @@ A consistent, accessible, professional design system for modern web applications
 - **Esc**: Close modal
 - **Close**: Return focus to trigger element
 
+### Drawer
+- **Focus trap**: Focus stays within drawer panel
+- **Initial focus**: First focusable element or designated element
+- **Esc**: Close drawer
+- **Close**: Return focus to trigger element
+- **Backdrop**: Click closes drawer
+
 ### Tooltip
 - **Open**: On hover and focus
 - **Close**: On blur and Esc
