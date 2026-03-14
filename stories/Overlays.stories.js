@@ -283,6 +283,162 @@ export const Tooltip = {
   },
 };
 
+export const TooltipPositions = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      story: {
+        inline: true,
+        height: 320,
+      },
+    },
+  },
+  render: () => `
+  <div style="min-height: 320px; padding: 80px; display: flex; gap: 48px; align-items: center; justify-content: center; flex-wrap: wrap;">
+    <span class="ct-tooltip" data-side="top" data-state="open">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-top">Top</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-top">Top tooltip</span>
+    </span>
+    <span class="ct-tooltip" data-side="bottom" data-state="open">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-bottom">Bottom</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-bottom">Bottom tooltip</span>
+    </span>
+    <span class="ct-tooltip" data-side="left" data-state="open">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-left">Left</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-left">Left tooltip</span>
+    </span>
+    <span class="ct-tooltip" data-side="right" data-state="open">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-right">Right</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-right">Right tooltip</span>
+    </span>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    const tooltips = canvasElement.querySelectorAll('.ct-tooltip__content');
+    const sides = ['top', 'bottom', 'left', 'right'];
+
+    for (const [i, tooltip] of tooltips.entries()) {
+      expect(tooltip).toHaveAttribute('role', 'tooltip');
+      const wrapper = tooltip.closest('.ct-tooltip');
+      expect(wrapper).toHaveAttribute('data-side', sides[i]);
+
+      // All open tooltips are visible
+      expect(getComputedStyle(tooltip).visibility).toBe('visible');
+      expect(getComputedStyle(tooltip).opacity).toBe('1');
+    }
+  },
+};
+
+export const TooltipAlignment = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      story: {
+        inline: true,
+        height: 400,
+      },
+    },
+  },
+  render: () => `
+  <div style="min-height: 400px; padding: 80px 24px; display: flex; flex-direction: column; gap: 64px;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span class="ct-tooltip" data-side="bottom" data-align="start" data-state="open">
+        <button class="ct-button ct-button--secondary" aria-describedby="tip-align-start">Start</button>
+        <span class="ct-tooltip__content" role="tooltip" id="tip-align-start">Aligned to start edge</span>
+      </span>
+      <span class="ct-tooltip" data-side="bottom" data-state="open">
+        <button class="ct-button ct-button--secondary" aria-describedby="tip-align-center">Center</button>
+        <span class="ct-tooltip__content" role="tooltip" id="tip-align-center">Default center alignment</span>
+      </span>
+      <span class="ct-tooltip" data-side="bottom" data-align="end" data-state="open">
+        <button class="ct-button ct-button--secondary" aria-describedby="tip-align-end">End</button>
+        <span class="ct-tooltip__content" role="tooltip" id="tip-align-end">Aligned to end edge</span>
+      </span>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 64px; align-items: center;">
+      <span class="ct-tooltip" data-side="right" data-align="start" data-state="open">
+        <button class="ct-button ct-button--secondary" aria-describedby="tip-v-start">V-Start</button>
+        <span class="ct-tooltip__content" role="tooltip" id="tip-v-start">Start aligned</span>
+      </span>
+      <span class="ct-tooltip" data-side="right" data-align="end" data-state="open">
+        <button class="ct-button ct-button--secondary" aria-describedby="tip-v-end">V-End</button>
+        <span class="ct-tooltip__content" role="tooltip" id="tip-v-end">End aligned</span>
+      </span>
+    </div>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    const tooltips = canvasElement.querySelectorAll('.ct-tooltip');
+
+    // Verify alignment attributes are present
+    expect(tooltips[0]).toHaveAttribute('data-align', 'start');
+    expect(tooltips[1]).not.toHaveAttribute('data-align');
+    expect(tooltips[2]).toHaveAttribute('data-align', 'end');
+
+    // All tooltips are visible
+    for (const wrapper of tooltips) {
+      const content = wrapper.querySelector('.ct-tooltip__content');
+      expect(getComputedStyle(content).visibility).toBe('visible');
+    }
+  },
+};
+
+export const TooltipKeyboard = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      story: {
+        inline: true,
+        height: 320,
+      },
+    },
+  },
+  render: () => `
+  <div style="min-height: 320px; padding: 24px; display: flex; gap: 24px; align-items: center; justify-content: center;">
+    <span class="ct-tooltip" data-side="top">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-kb-1">First</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-kb-1">Focus to reveal</span>
+    </span>
+    <span class="ct-tooltip" data-side="top">
+      <button class="ct-button ct-button--secondary" aria-describedby="tip-kb-2">Second</button>
+      <span class="ct-tooltip__content" role="tooltip" id="tip-kb-2">Tab navigation works</span>
+    </span>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const first = canvas.getByRole('button', { name: 'First' });
+    const second = canvas.getByRole('button', { name: 'Second' });
+    const tip1 = canvasElement.querySelector('#tip-kb-1');
+    const tip2 = canvasElement.querySelector('#tip-kb-2');
+
+    // Both tooltips hidden initially
+    expect(getComputedStyle(tip1).visibility).toBe('hidden');
+    expect(getComputedStyle(tip2).visibility).toBe('hidden');
+
+    // Tab to first button — tooltip appears via :focus-within
+    await userEvent.tab();
+    expect(first).toHaveFocus();
+    expect(getComputedStyle(tip1).visibility).toBe('visible');
+    expect(getComputedStyle(tip2).visibility).toBe('hidden');
+
+    // Tab to second — first hides (after transition), second shows
+    await userEvent.tab();
+    expect(second).toHaveFocus();
+    expect(getComputedStyle(tip2).visibility).toBe('visible');
+    await waitFor(() => {
+      expect(getComputedStyle(tip1).visibility).toBe('hidden');
+    });
+
+    // Tab away — both hidden
+    await userEvent.tab();
+    await waitFor(() => {
+      expect(getComputedStyle(tip1).visibility).toBe('hidden');
+      expect(getComputedStyle(tip2).visibility).toBe('hidden');
+    });
+  },
+};
+
 export const Dropdown = {
   parameters: {
     layout: 'fullscreen',
