@@ -5,7 +5,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Tab-based navigation using ARIA `tablist`, `tab`, and `tabpanel` roles with roving tabindex and full keyboard navigation (Arrow keys, Home/End). Also includes breadcrumb and pagination patterns.',
+        component: 'Tab-based navigation using ARIA `tablist`, `tab`, and `tabpanel` roles with roving tabindex and full keyboard navigation (Arrow keys, Home/End). Also includes pagination patterns.',
       },
     },
   },
@@ -464,107 +464,6 @@ export const TabsPill = {
   },
 };
 
-export const Pagination = {
-  render: () => `
-  <nav class="ct-pagination" aria-label="Pagination">
-    <ul class="ct-pagination__list">
-      <li><button class="ct-pagination__link" type="button" aria-label="Page 1">1</button></li>
-      <li><button class="ct-pagination__link" aria-current="page" type="button" aria-label="Page 2, current page">2</button></li>
-      <li><button class="ct-pagination__link" type="button" aria-label="Page 3">3</button></li>
-      <li><button class="ct-pagination__link" type="button" aria-label="Page 4">4</button></li>
-    </ul>
-  </nav>
-`,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const nav = canvas.getByRole('navigation', { name: 'Pagination' });
-    const buttons = within(nav).getAllByRole('button');
+/* Pagination stories moved to Pagination.stories.js */
 
-    expect(buttons).toHaveLength(4);
-
-    // Current page is marked with aria-current
-    const currentBtn = buttons[1];
-    expect(currentBtn).toHaveAttribute('aria-current', 'page');
-    expect(currentBtn).toHaveTextContent('2');
-
-    // Other pages must not carry aria-current
-    expect(buttons[0]).not.toHaveAttribute('aria-current');
-    expect(buttons[2]).not.toHaveAttribute('aria-current');
-    expect(buttons[3]).not.toHaveAttribute('aria-current');
-
-    // Every pagination button has a descriptive aria-label (not just "1", "2")
-    for (const btn of buttons) {
-      const label = btn.getAttribute('aria-label');
-      expect(label).toBeTruthy();
-      expect(label).toMatch(/Page \d/);
-    }
-
-    // Current page label identifies it as current
-    expect(currentBtn.getAttribute('aria-label')).toMatch(/current/i);
-
-    // Buttons are focusable via click
-    await userEvent.click(buttons[0]);
-    expect(buttons[0]).toHaveFocus();
-
-    // Keyboard: Enter activates a page button
-    buttons[2].focus();
-    let activated = false;
-    buttons[2].addEventListener('click', () => { activated = true; }, { once: true });
-    await userEvent.keyboard('{Enter}');
-    expect(activated).toBe(true);
-  },
-};
-
-export const Breadcrumbs = {
-  render: () => `
-  <nav class="ct-breadcrumbs" aria-label="Breadcrumb">
-    <ol class="ct-breadcrumbs__list">
-      <li class="ct-breadcrumbs__item">
-        <a class="ct-breadcrumbs__link" href="/">Home</a>
-        <span class="ct-breadcrumbs__separator" aria-hidden="true">/</span>
-      </li>
-      <li class="ct-breadcrumbs__item">
-        <a class="ct-breadcrumbs__link" href="/projects">Projects</a>
-        <span class="ct-breadcrumbs__separator" aria-hidden="true">/</span>
-      </li>
-      <li class="ct-breadcrumbs__item">
-        <span class="ct-breadcrumbs__current" aria-current="page">Alpha</span>
-      </li>
-    </ol>
-  </nav>
-`,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const nav = canvas.getByRole('navigation', { name: 'Breadcrumb' });
-
-    // Uses ordered list for semantic trail
-    const list = nav.querySelector('ol');
-    expect(list).toBeInTheDocument();
-
-    // Ancestor items are links
-    const links = within(nav).getAllByRole('link');
-    expect(links).toHaveLength(2);
-    expect(links[0]).toHaveTextContent('Home');
-    expect(links[1]).toHaveTextContent('Projects');
-
-    // Current page is plain text, not a link
-    const current = canvas.getByText('Alpha');
-    expect(current.tagName).toBe('SPAN');
-    expect(current.closest('a')).toBeNull();
-
-    // Current page is marked with aria-current="page"
-    expect(current).toHaveAttribute('aria-current', 'page');
-
-    // Separators are hidden from assistive technology
-    const separators = canvasElement.querySelectorAll('.ct-breadcrumbs__separator');
-    for (const sep of separators) {
-      expect(sep).toHaveAttribute('aria-hidden', 'true');
-    }
-
-    // Links are keyboard focusable
-    links[0].focus();
-    expect(links[0]).toHaveFocus();
-    await userEvent.tab();
-    expect(links[1]).toHaveFocus();
-  },
-};
+/* Breadcrumb stories moved to Breadcrumbs.stories.js */
