@@ -20,7 +20,15 @@
   border-radius: var(--ct-toggle-group-radius);
   border: var(--border-thin) solid var(--ct-toggle-group-border);
   background: var(--ct-toggle-group-bg);
-  overflow: hidden;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.ct-toggle-group::-webkit-scrollbar {
+  display: none;
 }
 
 /* ── Item ── */
@@ -162,6 +170,21 @@
 
 .ct-toggle-group--full .ct-toggle-group__item {
   flex: 1;
+}
+
+/* ── Wrap variant ── */
+
+.ct-toggle-group--wrap {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.ct-toggle-group--wrap .ct-toggle-group__item {
+  border-block-end: var(--border-thin) solid var(--ct-toggle-group-border);
+}
+
+.ct-toggle-group--wrap .ct-toggle-group__item:last-child {
+  border-block-end: none;
 }
 
 /* ── Reduced motion ── */

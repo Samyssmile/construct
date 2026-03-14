@@ -740,6 +740,112 @@ export const Disabled = {
   },
 };
 
+// ── Responsive (Many Items) ──
+
+export const Responsive = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Toggle groups with many items remain usable on narrow viewports. ' +
+          'The default behavior uses horizontal scrolling (hidden scrollbar, touch-friendly). ' +
+          'The `--wrap` modifier wraps items to multiple rows instead.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-stack" style="--ct-stack-space: var(--space-6); max-width: 320px;">
+    <div>
+      <p style="margin: 0 0 var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Default: horizontal scroll (6 items, 320px container)</p>
+      <div class="ct-toggle-group" role="group" aria-label="Scrollable filters" data-testid="scroll-group">
+        <button class="ct-toggle-group__item" type="button" aria-pressed="true" tabindex="0">All</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Design</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Dev</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Marketing</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Sales</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Support</button>
+      </div>
+    </div>
+
+    <div>
+      <p style="margin: 0 0 var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Wrap variant (same items, wraps to rows)</p>
+      <div class="ct-toggle-group ct-toggle-group--wrap" role="group" aria-label="Wrapped filters" data-testid="wrap-group">
+        <button class="ct-toggle-group__item" type="button" aria-pressed="true" tabindex="0">All</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Design</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Dev</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Marketing</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Sales</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Support</button>
+      </div>
+    </div>
+
+    <div>
+      <p style="margin: 0 0 var(--space-3); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Separated + Wrap (8 items)</p>
+      <div class="ct-toggle-group ct-toggle-group--separated ct-toggle-group--wrap" role="group" aria-label="Tag filters" data-testid="sep-wrap-group">
+        <button class="ct-toggle-group__item" type="button" aria-pressed="true" tabindex="0">React</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="true" tabindex="-1">Vue</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Angular</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Svelte</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Solid</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Lit</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Preact</button>
+        <button class="ct-toggle-group__item" type="button" aria-pressed="false" tabindex="-1">Qwik</button>
+      </div>
+    </div>
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const scrollGroup = canvasElement.querySelector('[data-testid="scroll-group"]');
+    const wrapGroup = canvasElement.querySelector('[data-testid="wrap-group"]');
+    const sepWrapGroup = canvasElement.querySelector('[data-testid="sep-wrap-group"]');
+
+    initToggleGroupKeyboard(scrollGroup);
+    initToggleGroupKeyboard(wrapGroup);
+    initToggleGroupKeyboard(sepWrapGroup);
+    initToggleGroupSelect(scrollGroup);
+    initToggleGroupSelect(wrapGroup);
+    initToggleGroupSelect(sepWrapGroup);
+
+    // All 6 items exist and are in the DOM (not clipped away)
+    const scrollItems = scrollGroup.querySelectorAll('.ct-toggle-group__item');
+    expect(scrollItems).toHaveLength(6);
+
+    const wrapItems = wrapGroup.querySelectorAll('.ct-toggle-group__item');
+    expect(wrapItems).toHaveLength(6);
+
+    const sepItems = sepWrapGroup.querySelectorAll('.ct-toggle-group__item');
+    expect(sepItems).toHaveLength(8);
+
+    // Scroll group: overflow-x is auto (scrollable, not clipped)
+    const scrollStyle = getComputedStyle(scrollGroup);
+    expect(scrollStyle.overflowX).toBe('auto');
+
+    // Wrap group: has flex-wrap
+    const wrapStyle = getComputedStyle(wrapGroup);
+    expect(wrapStyle.flexWrap).toBe('wrap');
+
+    // All items are focusable via keyboard navigation
+    scrollItems[0].focus();
+    expect(scrollItems[0]).toHaveFocus();
+    await userEvent.keyboard('{ArrowRight}');
+    expect(scrollItems[1]).toHaveFocus();
+
+    // Navigate through remaining items and wrap around
+    for (let i = 2; i < 6; i++) {
+      await userEvent.keyboard('{ArrowRight}');
+    }
+    // After 5 ArrowRights total (from index 0): at index 5 (last)
+    expect(scrollItems[5]).toHaveFocus();
+    // One more wraps to first
+    await userEvent.keyboard('{ArrowRight}');
+    expect(scrollItems[0]).toHaveFocus();
+
+    // Wrap group keyboard nav works too
+    wrapItems[0].focus();
+    await userEvent.keyboard('{ArrowRight}');
+    expect(wrapItems[1]).toHaveFocus();
+  },
+};
+
 // ── All Variants Overview ──
 
 export const AllVariants = {
