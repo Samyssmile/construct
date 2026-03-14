@@ -40,7 +40,7 @@ export const Playground = {
     const sizeClass = size !== 'md' ? ` ct-progress-bar--${size}` : '';
     return `
     <div style="max-width: 480px;">
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
+      <div style="display: flex; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
         <span>${label}</span>
         <span>${value}%</span>
       </div>
@@ -61,7 +61,7 @@ export const Determinate = {
   render: () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-5); max-width: 480px;">
     <div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
+      <div style="display: flex; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
         <span>Uploading...</span>
         <span>25%</span>
       </div>
@@ -71,7 +71,7 @@ export const Determinate = {
     </div>
 
     <div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
+      <div style="display: flex; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
         <span>Processing...</span>
         <span>60%</span>
       </div>
@@ -81,7 +81,7 @@ export const Determinate = {
     </div>
 
     <div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
+      <div style="display: flex; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-2); font-size: var(--font-size-sm);">
         <span>Complete</span>
         <span>100%</span>
       </div>
