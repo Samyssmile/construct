@@ -48,7 +48,7 @@
   line-height: var(--ct-pagination-line-height);
   font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--duration-fast) var(--easing-standard), border-color var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
 }
 
 .ct-pagination__link:hover {
@@ -93,8 +93,8 @@
 /* ── Pagination: Size Variants ────────────────────────────── */
 
 .ct-pagination--sm {
-  --ct-pagination-height: var(--control-height-xs, 28px);
-  --ct-pagination-min-width: var(--control-height-xs, 28px);
+  --ct-pagination-height: var(--control-height-xs);
+  --ct-pagination-min-width: var(--control-height-xs);
   --ct-pagination-padding-x: var(--space-2);
   --ct-pagination-font-size: var(--font-size-xs);
   --ct-pagination-line-height: var(--line-height-xs);

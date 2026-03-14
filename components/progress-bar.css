@@ -22,7 +22,7 @@
 
 .ct-progress-bar--indeterminate .ct-progress-bar__track {
   width: 30%;
-  animation: ct-progress-indeterminate 1.5s var(--easing-standard) infinite;
+  animation: ct-progress-indeterminate var(--ct-progress-duration) var(--easing-standard) infinite;
 }
 
 .ct-progress-bar--sm {

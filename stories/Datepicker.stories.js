@@ -5,7 +5,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Calendar date picker with a popover panel, month navigation, and a keyboard-accessible date grid. Uses `role="dialog"` and `aria-label` for screen reader support.',
+        component: 'Calendar date picker with popover panel, month/year navigation, range selection, unavailable days, and keyboard-accessible date grid. Uses `role="dialog"`, `role="grid"`, and `aria-label` for screen reader support. Supports day, month, and year grid views.',
       },
     },
   },
@@ -334,5 +334,386 @@ export const Datepicker = {
     const datepickerEl = canvasElement.querySelector('.ct-datepicker');
     expect(datepickerEl.getAttribute('data-state')).not.toBe('open');
     expect(dateInput).toHaveFocus();
+  },
+};
+
+/* ─── Weekday helpers for grid HTML ─────────────────────────────── */
+
+const WEEKDAY_ROW = `
+  <div role="row" class="ct-datepicker__row">
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Monday">Mo</abbr>
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Tuesday">Tu</abbr>
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Wednesday">We</abbr>
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Thursday">Th</abbr>
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Friday">Fr</abbr>
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Saturday">Sa</abbr>
+    <abbr role="columnheader" class="ct-datepicker__weekday" title="Sunday">Su</abbr>
+  </div>`;
+
+/**
+ * Range selection with start/end/in-range data attributes.
+ */
+export const RangeSelection = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: { story: { inline: true, height: 520 } },
+  },
+  render: () => `
+  <div style="min-height: 520px; padding: 24px; display: flex; align-items: flex-start;">
+    <div class="ct-field">
+      <label class="ct-field__label" for="range-demo">Date range</label>
+      <div class="ct-datepicker" data-state="open">
+        <input class="ct-input" id="range-demo" type="text" placeholder="Start – End" role="combobox" aria-haspopup="dialog" aria-expanded="true" aria-controls="range-popover" />
+        <div id="range-popover" class="ct-datepicker__popover" role="dialog" aria-modal="true" aria-label="Choose date range">
+          <div class="ct-datepicker__header">
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Previous month">Prev</button>
+            <div class="ct-datepicker__title" aria-live="polite">March 2026</div>
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Next month">Next</button>
+          </div>
+          <div role="grid" class="ct-datepicker__grid" aria-label="March 2026">
+            ${WEEKDAY_ROW}
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="23 February 2026">23</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="24 February 2026">24</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="25 February 2026">25</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="26 February 2026">26</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="27 February 2026">27</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="28 February 2026">28</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="1 March 2026">1</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="2 March 2026">2</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="3 March 2026">3</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="4 March 2026">4</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="5 March 2026">5</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="6 March 2026">6</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="7 March 2026">7</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="8 March 2026">8</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="9 March 2026">9</button>
+              <button role="gridcell" class="ct-datepicker__day" aria-selected="true" data-range-start tabindex="0" aria-label="10 March 2026">10</button>
+              <button role="gridcell" class="ct-datepicker__day" data-in-range tabindex="-1" aria-label="11 March 2026">11</button>
+              <button role="gridcell" class="ct-datepicker__day" data-in-range data-today="true" tabindex="-1" aria-label="12 March 2026">12</button>
+              <button role="gridcell" class="ct-datepicker__day" data-in-range tabindex="-1" aria-label="13 March 2026">13</button>
+              <button role="gridcell" class="ct-datepicker__day" data-in-range tabindex="-1" aria-label="14 March 2026">14</button>
+              <button role="gridcell" class="ct-datepicker__day" data-in-range tabindex="-1" aria-label="15 March 2026">15</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" data-in-range tabindex="-1" aria-label="16 March 2026">16</button>
+              <button role="gridcell" class="ct-datepicker__day" data-in-range tabindex="-1" aria-label="17 March 2026">17</button>
+              <button role="gridcell" class="ct-datepicker__day" aria-selected="true" data-range-end tabindex="-1" aria-label="18 March 2026">18</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="19 March 2026">19</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="20 March 2026">20</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="21 March 2026">21</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="22 March 2026">22</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="23 March 2026">23</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="24 March 2026">24</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="25 March 2026">25</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="26 March 2026">26</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="27 March 2026">27</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="28 March 2026">28</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="29 March 2026">29</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="30 March 2026">30</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="31 March 2026">31</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="1 April 2026">1</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="2 April 2026">2</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="3 April 2026">3</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="4 April 2026">4</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="5 April 2026">5</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    // Range start day is marked
+    const rangeStart = canvasElement.querySelector('[data-range-start]');
+    expect(rangeStart).not.toBeNull();
+    expect(rangeStart).toHaveTextContent('10');
+    expect(rangeStart).toHaveAttribute('aria-selected', 'true');
+
+    // Range end day is marked
+    const rangeEnd = canvasElement.querySelector('[data-range-end]');
+    expect(rangeEnd).not.toBeNull();
+    expect(rangeEnd).toHaveTextContent('18');
+    expect(rangeEnd).toHaveAttribute('aria-selected', 'true');
+
+    // In-range days exist between start and end
+    const inRangeDays = canvasElement.querySelectorAll('[data-in-range]');
+    expect(inRangeDays.length).toBeGreaterThanOrEqual(6);
+
+    // Range start has left-rounded border radius (via CSS)
+    const startStyle = window.getComputedStyle(rangeStart);
+    expect(startStyle.borderTopRightRadius).toBe('0px');
+
+    // Range end has right-rounded border radius (via CSS)
+    const endStyle = window.getComputedStyle(rangeEnd);
+    expect(endStyle.borderTopLeftRadius).toBe('0px');
+
+    // In-range days have no border radius (via CSS)
+    const midStyle = window.getComputedStyle(inRangeDays[0]);
+    expect(midStyle.borderRadius).toBe('0px');
+  },
+};
+
+/**
+ * Unavailable and highlighted days demonstrate min/max constraints and keyboard focus.
+ */
+export const UnavailableDays = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: { story: { inline: true, height: 520 } },
+  },
+  render: () => `
+  <div style="min-height: 520px; padding: 24px; display: flex; align-items: flex-start;">
+    <div class="ct-field">
+      <label class="ct-field__label" for="unavail-demo">Appointment</label>
+      <div class="ct-datepicker" data-state="open">
+        <input class="ct-input" id="unavail-demo" type="text" placeholder="Select date" role="combobox" aria-haspopup="dialog" aria-expanded="true" aria-controls="unavail-popover" />
+        <div id="unavail-popover" class="ct-datepicker__popover" role="dialog" aria-modal="true" aria-label="Choose appointment date">
+          <div class="ct-datepicker__header">
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Previous month">Prev</button>
+            <div class="ct-datepicker__title" aria-live="polite">March 2026</div>
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Next month">Next</button>
+          </div>
+          <div role="grid" class="ct-datepicker__grid" aria-label="March 2026">
+            ${WEEKDAY_ROW}
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="23 February 2026">23</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="24 February 2026">24</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="25 February 2026">25</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="26 February 2026">26</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="27 February 2026">27</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="28 February 2026">28</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="1 March 2026">1</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="2 March 2026">2</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="3 March 2026">3</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="4 March 2026">4</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="5 March 2026">5</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="6 March 2026">6</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="7 March 2026">7</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="8 March 2026">8</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="9 March 2026">9</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="10 March 2026">10</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="11 March 2026">11</button>
+              <button role="gridcell" class="ct-datepicker__day" data-today="true" data-highlighted tabindex="0" aria-label="12 March 2026">12</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="13 March 2026">13</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="14 March 2026">14</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="15 March 2026">15</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="16 March 2026">16</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="17 March 2026">17</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="18 March 2026">18</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="19 March 2026">19</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="20 March 2026">20</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="21 March 2026">21</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="22 March 2026">22</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="23 March 2026">23</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="24 March 2026">24</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="25 March 2026">25</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="26 March 2026">26</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="27 March 2026">27</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="28 March 2026">28</button>
+              <button role="gridcell" class="ct-datepicker__day" data-unavailable aria-disabled="true" tabindex="-1" aria-label="29 March 2026">29</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="30 March 2026">30</button>
+              <button role="gridcell" class="ct-datepicker__day" tabindex="-1" aria-label="31 March 2026">31</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="1 April 2026">1</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="2 April 2026">2</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="3 April 2026">3</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="4 April 2026">4</button>
+              <button role="gridcell" class="ct-datepicker__day" data-outside="true" tabindex="-1" aria-label="5 April 2026">5</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    // Unavailable days have data-unavailable and aria-disabled
+    const unavailable = canvasElement.querySelectorAll('[data-unavailable]');
+    expect(unavailable.length).toBeGreaterThanOrEqual(5);
+    for (const day of unavailable) {
+      expect(day).toHaveAttribute('aria-disabled', 'true');
+    }
+
+    // Unavailable days show line-through text decoration (via CSS)
+    const unavailStyle = window.getComputedStyle(unavailable[0]);
+    expect(unavailStyle.textDecorationLine).toContain('line-through');
+
+    // Highlighted day has data-highlighted attribute
+    const highlighted = canvasElement.querySelector('[data-highlighted]');
+    expect(highlighted).not.toBeNull();
+    expect(highlighted).toHaveTextContent('12');
+
+    // Highlighted day has visible outline (via CSS)
+    const hlStyle = window.getComputedStyle(highlighted);
+    expect(hlStyle.outlineStyle).not.toBe('none');
+  },
+};
+
+/**
+ * Month grid view for picking a month.
+ */
+export const MonthGrid = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: { story: { inline: true, height: 420 } },
+  },
+  render: () => `
+  <div style="min-height: 420px; padding: 24px; display: flex; align-items: flex-start;">
+    <div class="ct-field">
+      <label class="ct-field__label" for="month-demo">Month</label>
+      <div class="ct-datepicker" data-state="open">
+        <input class="ct-input" id="month-demo" type="text" placeholder="Select month" role="combobox" aria-haspopup="dialog" aria-expanded="true" aria-controls="month-popover" />
+        <div id="month-popover" class="ct-datepicker__popover" role="dialog" aria-modal="true" aria-label="Choose month">
+          <div class="ct-datepicker__header">
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Previous year">Prev</button>
+            <button class="ct-datepicker__title" aria-live="polite">2026</button>
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Next year">Next</button>
+          </div>
+          <div role="grid" class="ct-datepicker__month-grid" aria-label="2026">
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="January 2026">Jan</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="February 2026">Feb</button>
+              <button role="gridcell" class="ct-datepicker__month" aria-selected="true" tabindex="0" aria-label="March 2026">Mar</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="April 2026">Apr</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="May 2026">May</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="June 2026">Jun</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="July 2026">Jul</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="August 2026">Aug</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="September 2026">Sep</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="October 2026">Oct</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="November 2026">Nov</button>
+              <button role="gridcell" class="ct-datepicker__month" tabindex="-1" aria-label="December 2026">Dec</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    // Month grid has 12 months
+    const months = canvasElement.querySelectorAll('.ct-datepicker__month');
+    expect(months).toHaveLength(12);
+
+    // Grid uses 3-column layout
+    const grid = canvasElement.querySelector('.ct-datepicker__month-grid');
+    expect(grid).toHaveAttribute('role', 'grid');
+    const gridStyle = window.getComputedStyle(grid);
+    expect(gridStyle.display).toBe('grid');
+
+    // Selected month is marked
+    const selected = canvasElement.querySelector('.ct-datepicker__month[aria-selected="true"]');
+    expect(selected).not.toBeNull();
+    expect(selected).toHaveTextContent('Mar');
+    expect(selected).toHaveAttribute('aria-label', 'March 2026');
+
+    // Roving tabindex: only selected month is tabbable
+    const tabbable = canvasElement.querySelectorAll('.ct-datepicker__month[tabindex="0"]');
+    expect(tabbable).toHaveLength(1);
+    expect(tabbable[0]).toBe(selected);
+
+    // Each month has an accessible label
+    for (const month of months) {
+      expect(month.getAttribute('aria-label')).toMatch(/\w+ 2026/);
+    }
+  },
+};
+
+/**
+ * Year grid view for picking a year.
+ */
+export const YearGrid = {
+  parameters: {
+    layout: 'fullscreen',
+    docs: { story: { inline: true, height: 420 } },
+  },
+  render: () => `
+  <div style="min-height: 420px; padding: 24px; display: flex; align-items: flex-start;">
+    <div class="ct-field">
+      <label class="ct-field__label" for="year-demo">Year</label>
+      <div class="ct-datepicker" data-state="open">
+        <input class="ct-input" id="year-demo" type="text" placeholder="Select year" role="combobox" aria-haspopup="dialog" aria-expanded="true" aria-controls="year-popover" />
+        <div id="year-popover" class="ct-datepicker__popover" role="dialog" aria-modal="true" aria-label="Choose year">
+          <div class="ct-datepicker__header">
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Previous decade">Prev</button>
+            <div class="ct-datepicker__title" aria-live="polite">2020 – 2031</div>
+            <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Next decade">Next</button>
+          </div>
+          <div role="grid" class="ct-datepicker__year-grid" aria-label="2020 – 2031">
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2020">2020</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2021">2021</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2022">2022</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2023">2023</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2024">2024</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2025">2025</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__year" aria-selected="true" tabindex="0" aria-label="2026">2026</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2027">2027</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2028">2028</button>
+            </div>
+            <div role="row" class="ct-datepicker__row">
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2029">2029</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2030">2030</button>
+              <button role="gridcell" class="ct-datepicker__year" tabindex="-1" aria-label="2031">2031</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    // Year grid has 12 years
+    const years = canvasElement.querySelectorAll('.ct-datepicker__year');
+    expect(years).toHaveLength(12);
+
+    // Grid uses 3-column layout
+    const grid = canvasElement.querySelector('.ct-datepicker__year-grid');
+    expect(grid).toHaveAttribute('role', 'grid');
+
+    // Selected year is marked
+    const selected = canvasElement.querySelector('.ct-datepicker__year[aria-selected="true"]');
+    expect(selected).not.toBeNull();
+    expect(selected).toHaveTextContent('2026');
+
+    // Roving tabindex: only selected year is tabbable
+    const tabbable = canvasElement.querySelectorAll('.ct-datepicker__year[tabindex="0"]');
+    expect(tabbable).toHaveLength(1);
+    expect(tabbable[0]).toBe(selected);
+
+    // Each year has an accessible label
+    for (const year of years) {
+      const label = year.getAttribute('aria-label');
+      expect(label).toMatch(/\d{4}/);
+    }
   },
 };

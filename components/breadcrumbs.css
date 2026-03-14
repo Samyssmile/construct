@@ -51,7 +51,7 @@
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.15em;
-  transition: color 0.15s ease, text-decoration-thickness 0.15s ease;
+  transition: color var(--duration-fast) var(--easing-standard), text-decoration-thickness var(--duration-fast) var(--easing-standard);
   border-radius: var(--radius-xs);
 }
 
@@ -106,7 +106,7 @@
   font-size: inherit;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--duration-fast) var(--easing-standard), color var(--duration-fast) var(--easing-standard);
 }
 
 .ct-breadcrumbs__collapse:hover {

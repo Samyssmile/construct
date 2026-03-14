@@ -15,6 +15,11 @@
   --ct-button-font-weight: var(--font-weight-semibold);
   --ct-button-radius: var(--radius-control);
   --ct-button-gap: var(--space-3);
+  --ct-spinner-duration: 800ms;
+  --ct-skeleton-duration: 1400ms;
+  --ct-progress-duration: 1500ms;
+  --ct-confirmation-icon-size: 44px;
+  --ct-dropdown-min-width: 200px;
   --ct-switch-width: 44px;
   --ct-switch-height: 24px;
   --ct-tooltip-bg: var(--color-slate-950);

@@ -156,6 +156,7 @@
   },
   "size": {
     "controlHeight": {
+      "xs": 28,
       "sm": 32,
       "md": 40,
       "lg": 48,

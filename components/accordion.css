@@ -7,7 +7,7 @@
 }
 
 .ct-accordion__item {
-  border-bottom: 1px solid var(--ct-accordion-border);
+  border-bottom: var(--border-thin) solid var(--ct-accordion-border);
 }
 
 .ct-accordion__item:last-child {
@@ -91,14 +91,14 @@
 /* ── Bordered variant ── */
 
 .ct-accordion--bordered .ct-accordion__item {
-  border: 1px solid var(--ct-accordion-border);
+  border: var(--border-thin) solid var(--ct-accordion-border);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-2);
 }
 
 .ct-accordion--bordered .ct-accordion__item:last-child {
   margin-bottom: 0;
-  border-bottom: 1px solid var(--ct-accordion-border);
+  border-bottom: var(--border-thin) solid var(--ct-accordion-border);
 }
 
 .ct-accordion--bordered .ct-accordion__trigger {
