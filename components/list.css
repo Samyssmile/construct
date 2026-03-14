@@ -9,7 +9,7 @@
 
   --ct-list-item-padding-x: var(--space-4);
   --ct-list-item-padding-y: var(--space-3);
-  --ct-list-item-gap: var(--space-4);
+  --ct-list-item-gap: var(--space-5);
   --ct-list-item-radius: var(--radius-md);
   --ct-list-item-bg: transparent;
   --ct-list-item-bg-hover: var(--color-bg-muted);

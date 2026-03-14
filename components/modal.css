@@ -46,8 +46,8 @@
 }
 
 .ct-modal__header .ct-button__icon {
-  width: var(--icon-md);
-  height: var(--icon-md);
+  width: var(--icon-lg);
+  height: var(--icon-lg);
 }
 
 .ct-modal__body {

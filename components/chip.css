@@ -303,7 +303,7 @@
 /* ── Balanced padding when remove button is present ──────────── */
 
 .ct-chip:has(.ct-chip__remove) {
-  padding-inline-end: var(--space-1);
+  padding-inline-end: var(--space-2);
 }
 
 /* ── Remove button ───────────────────────────────────────────── */

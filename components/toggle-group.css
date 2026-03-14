@@ -12,6 +12,7 @@
   --ct-toggle-group-item-bg-active: var(--color-brand-primary);
   --ct-toggle-group-item-color-active: var(--color-text-inverse);
   --ct-toggle-group-item-bg-hover: var(--color-bg-muted);
+  --ct-toggle-group-item-min-height: var(--control-height-md);
   --ct-toggle-group-gap: 0;
 
   display: inline-flex;
@@ -28,6 +29,7 @@
   appearance: none;
   border: none;
   background: transparent;
+  min-height: var(--ct-toggle-group-item-min-height);
   padding: var(--ct-toggle-group-item-padding-y) var(--ct-toggle-group-item-padding-x);
   color: var(--ct-toggle-group-item-color);
   font-size: var(--ct-toggle-group-item-font-size);
@@ -92,6 +94,7 @@
 /* ── Size variants ── */
 
 .ct-toggle-group--sm {
+  --ct-toggle-group-item-min-height: var(--control-height-sm);
   --ct-toggle-group-item-padding-x: var(--space-4);
   --ct-toggle-group-item-padding-y: var(--space-2);
   --ct-toggle-group-item-font-size: var(--font-size-xs);
@@ -99,6 +102,7 @@
 }
 
 .ct-toggle-group--lg {
+  --ct-toggle-group-item-min-height: var(--control-height-lg);
   --ct-toggle-group-item-padding-x: var(--space-6);
   --ct-toggle-group-item-padding-y: var(--space-4);
   --ct-toggle-group-item-font-size: var(--font-size-md);
