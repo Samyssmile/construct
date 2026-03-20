@@ -84,11 +84,11 @@
 /* Variants */
 
 .ct-empty-state--error .ct-empty-state__icon {
-  color: var(--color-danger-text);
+  color: var(--color-state-danger);
 }
 
 .ct-empty-state--error .ct-empty-state__title {
-  color: var(--color-danger-text);
+  color: var(--color-state-danger);
 }
 
 .ct-empty-state--bordered {
