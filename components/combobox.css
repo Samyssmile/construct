@@ -348,8 +348,7 @@
   border-top: var(--border-thin) solid var(--color-border-subtle);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   box-shadow: none;
-  border-left: none;
-  border-right: none;
+  border-inline: none;
   border-bottom: none;
 }
 
