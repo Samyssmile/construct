@@ -15,6 +15,7 @@
   height: var(--space-6);
   border: var(--border-thin) solid var(--color-border-default);
   background: var(--color-bg-elevated);
+  cursor: pointer;
   display: grid;
   place-content: center;
   position: relative;
@@ -73,10 +74,29 @@
   transform: scale(1);
 }
 
+@media (hover: hover) {
+  .ct-check__input:not(:disabled):hover,
+  .ct-radio__input:not(:disabled):hover {
+    border-color: var(--ct-control-border-hover);
+  }
+
+  .ct-check__input:checked:not(:disabled):hover,
+  .ct-radio__input:checked:not(:disabled):hover {
+    background: var(--color-brand-primary-hover);
+    border-color: var(--color-brand-primary-hover);
+  }
+
+  .ct-check__input:indeterminate:not(:disabled):hover {
+    background: var(--color-brand-primary-hover);
+    border-color: var(--color-brand-primary-hover);
+  }
+}
+
 .ct-check__input:disabled,
 .ct-radio__input:disabled {
   background: var(--color-bg-muted);
   border-color: var(--color-border-subtle);
+  cursor: not-allowed;
 }
 
 .ct-check__input:focus-visible,

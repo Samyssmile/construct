@@ -12,8 +12,9 @@
   width: var(--ct-switch-width);
   height: var(--ct-switch-height);
   border-radius: var(--radius-pill);
-  background: var(--color-border-default);
+  background: var(--color-border-strong);
   border: var(--border-thin) solid transparent;
+  cursor: pointer;
   position: relative;
   transition: background var(--duration-fast) var(--easing-standard),
     border-color var(--duration-fast) var(--easing-standard);
@@ -40,8 +41,19 @@
   transform: translateX(calc(var(--ct-switch-width) - var(--ct-switch-height)));
 }
 
+@media (hover: hover) {
+  .ct-switch__input:not(:disabled):hover {
+    background: color-mix(in srgb, var(--color-border-strong) 85%, black);
+  }
+
+  .ct-switch__input:checked:not(:disabled):hover {
+    background: var(--color-brand-primary-hover);
+  }
+}
+
 .ct-switch__input:disabled {
   background: var(--color-border-subtle);
+  cursor: not-allowed;
 }
 
 .ct-switch__input:focus-visible {
