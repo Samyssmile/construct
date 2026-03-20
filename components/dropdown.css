@@ -324,6 +324,10 @@
     visibility 0s linear var(--duration-fast);
 }
 
+[dir='rtl'] .ct-dropdown__sub-content {
+  transform: translateX(-4px);
+}
+
 .ct-dropdown__sub[data-state='open'] > .ct-dropdown__sub-content {
   opacity: 1;
   visibility: visible;

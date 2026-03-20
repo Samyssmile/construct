@@ -16,7 +16,7 @@
 .ct-table td {
   padding: var(--space-4) var(--space-5);
   border-bottom: var(--border-thin) solid var(--color-border-subtle);
-  text-align: left;
+  text-align: start;
 }
 
 .ct-table thead th {
@@ -117,12 +117,12 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
 }
 
 .ct-table__cell--numeric {
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 
 .ct-table__cell--actions {
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
 }
 

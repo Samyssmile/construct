@@ -40,6 +40,10 @@
   transform: translateX(calc(var(--ct-switch-width) - var(--ct-switch-height)));
 }
 
+[dir='rtl'] .ct-switch__input:checked::after {
+  transform: translateX(calc(-1 * (var(--ct-switch-width) - var(--ct-switch-height))));
+}
+
 .ct-switch__input:disabled {
   background: var(--color-border-subtle);
 }
