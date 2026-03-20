@@ -57,7 +57,7 @@
 .ct-alert[data-variant='warning'] {
   --ct-alert-bg: var(--color-state-warning-surface);
   --ct-alert-border: var(--color-state-warning-border);
-  --ct-alert-accent: var(--color-amber-700);
+  --ct-alert-accent: var(--color-state-warning-text);
 }
 
 .ct-alert[data-variant='danger'] {

@@ -100,7 +100,7 @@
 .ct-banner[data-variant='warning'] {
   --ct-banner-bg: var(--color-state-warning-surface);
   --ct-banner-border: var(--color-state-warning-border);
-  --ct-banner-accent: var(--color-amber-700);
+  --ct-banner-accent: var(--color-state-warning-text);
 }
 
 .ct-banner[data-variant='danger'] {

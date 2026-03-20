@@ -56,7 +56,7 @@
   --ct-badge-bg: var(--color-state-warning-surface);
   --ct-badge-border: var(--color-state-warning-border);
   --ct-badge-color: var(--color-text-primary);
-  --ct-badge-accent: var(--color-amber-700);
+  --ct-badge-accent: var(--color-state-warning-text);
 }
 
 .ct-badge--danger {

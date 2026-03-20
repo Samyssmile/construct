@@ -155,7 +155,7 @@
 
 .ct-confirmation[data-variant='warning'] {
   --ct-confirmation-icon-bg: var(--color-state-warning-surface);
-  --ct-confirmation-icon-color: var(--color-amber-700);
+  --ct-confirmation-icon-color: var(--color-state-warning-text);
 }
 
 .ct-confirmation[data-variant='danger'] {

@@ -112,8 +112,8 @@
 .ct-chip--warning {
   --ct-chip-bg: var(--color-state-warning-surface);
   --ct-chip-border: var(--color-state-warning-border);
-  --ct-chip-color: var(--color-amber-700);
-  --ct-chip-accent: var(--color-amber-700);
+  --ct-chip-color: var(--color-state-warning-text);
+  --ct-chip-accent: var(--color-state-warning-text);
 }
 
 .ct-chip--danger {
@@ -134,7 +134,7 @@
 }
 
 .ct-chip--outline.ct-chip--warning {
-  --ct-chip-border: var(--color-amber-700);
+  --ct-chip-border: var(--color-state-warning-text);
 }
 
 .ct-chip--outline.ct-chip--danger {

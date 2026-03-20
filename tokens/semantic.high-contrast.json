@@ -43,6 +43,12 @@
       "warning": "{color.amber.700}",
       "danger": "{color.red.700}"
     },
+    "stateText": {
+      "info": "{color.ocean.800}",
+      "success": "{color.green.800}",
+      "warning": "{color.amber.800}",
+      "danger": "{color.red.800}"
+    },
     "overlay": {
       "scrim": "rgba(14, 23, 32, 0.7)"
     },

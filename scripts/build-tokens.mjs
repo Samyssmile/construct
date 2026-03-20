@@ -186,6 +186,7 @@ const semanticVarName = (pathParts) => {
     if (subgroup === 'background') return `color-bg-${kebabize(key)}`;
     if (subgroup === 'stateSurface') return `color-state-${kebabize(key)}-surface`;
     if (subgroup === 'stateBorder') return `color-state-${kebabize(key)}-border`;
+    if (subgroup === 'stateText') return `color-state-${kebabize(key)}-text`;
     if (subgroup === 'focus') return `color-focus-${kebabize(key)}`;
     if (subgroup === 'overlay') return `color-overlay-${kebabize(key)}`;
     return `color-${kebabize(subgroup)}-${kebabize(key)}`;

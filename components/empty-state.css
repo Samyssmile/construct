@@ -60,7 +60,7 @@
 }
 
 .ct-empty-state--sm .ct-empty-state__title {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
 }
 
 .ct-empty-state--sm .ct-empty-state__description {
@@ -78,17 +78,17 @@
 }
 
 .ct-empty-state--lg .ct-empty-state__description {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
 }
 
 /* Variants */
 
 .ct-empty-state--error .ct-empty-state__icon {
-  color: var(--color-danger-text);
+  color: var(--color-state-danger-text);
 }
 
 .ct-empty-state--error .ct-empty-state__title {
-  color: var(--color-danger-text);
+  color: var(--color-state-danger-text);
 }
 
 .ct-empty-state--bordered {

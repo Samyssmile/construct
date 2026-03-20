@@ -21,9 +21,9 @@
       "muted": "{color.slate.900}"
     },
     "border": {
-      "subtle": "{color.slate.800}",
-      "default": "{color.slate.700}",
-      "strong": "{color.slate.600}"
+      "subtle": "{color.slate.700}",
+      "default": "{color.slate.600}",
+      "strong": "{color.slate.500}"
     },
     "state": {
       "info": "{color.ocean.300}",
@@ -42,6 +42,12 @@
       "success": "{color.green.700}",
       "warning": "{color.amber.700}",
       "danger": "{color.red.700}"
+    },
+    "stateText": {
+      "info": "{color.ocean.200}",
+      "success": "{color.green.200}",
+      "warning": "{color.amber.200}",
+      "danger": "{color.red.200}"
     },
     "overlay": {
       "scrim": "rgba(8, 14, 20, 0.7)"

@@ -1,9 +1,9 @@
 {
   "color": {
     "brand": {
-      "primary": "{color.ocean.700}",
-      "primaryHover": "{color.ocean.800}",
-      "primaryActive": "{color.ocean.900}",
+      "primary": "{color.ocean.600}",
+      "primaryHover": "{color.ocean.700}",
+      "primaryActive": "{color.ocean.800}",
       "accent": "{color.teal.600}",
       "accentHover": "{color.teal.700}",
       "accentActive": "{color.teal.800}"
@@ -42,6 +42,12 @@
       "success": "{color.green.200}",
       "warning": "{color.amber.200}",
       "danger": "{color.red.200}"
+    },
+    "stateText": {
+      "info": "{color.ocean.700}",
+      "success": "{color.green.700}",
+      "warning": "{color.amber.700}",
+      "danger": "{color.red.700}"
     },
     "overlay": {
       "scrim": "rgba(14, 23, 32, 0.6)"
