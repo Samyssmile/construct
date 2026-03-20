@@ -84,6 +84,12 @@
   border-color: var(--color-state-danger);
 }
 
+:where(.ct-input, .ct-select, .ct-textarea, .ct-control)[aria-invalid='true']:focus-visible,
+.ct-field--error :where(.ct-input, .ct-select, .ct-textarea, .ct-control):focus-visible {
+  border-color: var(--color-state-danger);
+  outline-color: var(--color-state-danger);
+}
+
 /* ── Touch-target minimums (WCAG 2.5.8: 44×44px) ────────────────── */
 
 @media (pointer: coarse) {
