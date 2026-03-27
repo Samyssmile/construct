@@ -5,6 +5,10 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 2026-03-27
+
+### Changed
+
 ## [1.1.3] - 2026-03-27
 
 ### Changed
@@ -82,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow for Storybook deployment to GitHub Pages
 - Token build script with `--check` mode for CI validation
 
+[1.1.4]: https://github.com/Samyssmile/construct/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/Samyssmile/construct/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/Samyssmile/construct/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/Samyssmile/construct/compare/v1.1.0...v1.1.1
