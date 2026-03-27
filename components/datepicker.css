@@ -16,12 +16,23 @@
   background: var(--color-bg-elevated);
   box-shadow: var(--shadow-dropdown);
   z-index: var(--z-dropdown);
-  display: none;
+  display: grid;
+  gap: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard),
+    visibility 0s linear var(--duration-fast);
 }
 
 .ct-datepicker[data-state='open'] .ct-datepicker__popover {
-  display: grid;
-  gap: var(--space-4);
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard),
+    visibility 0s linear 0s;
 }
 
 /* ── Header ─────────────────────────────────────────────────────── */
@@ -260,6 +271,7 @@
 /* ── Reduced motion ─────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
+  .ct-datepicker__popover,
   .ct-datepicker__day,
   .ct-datepicker__month,
   .ct-datepicker__year {
