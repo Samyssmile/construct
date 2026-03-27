@@ -57,6 +57,9 @@
   overflow-y: auto;
   min-height: 0;
   min-width: 0;
+  /* Use tabindex="0" (not "-1") in markup — main is a scrollable container
+     and must be keyboard-reachable so users can scroll with arrow keys / PgUp / PgDown
+     even when no focusable children are present (axe: scrollable-region-focusable). */
 }
 
 .ct-app-shell__panel {
@@ -160,10 +163,10 @@
 /* ── Modifier: Sidebar Right ── */
 
 .ct-app-shell--sidebar-right {
-  grid-template-columns: var(--_panel-width) 1fr var(--_sidebar-width);
+  grid-template-columns: 1fr var(--_panel-width) var(--_sidebar-width);
   grid-template-areas:
     'header  header  header'
-    'panel   main    sidebar'
+    'main    panel   sidebar'
     'footer  footer  footer';
 }
 
@@ -172,10 +175,15 @@
   border-inline-start: var(--border-thin) solid var(--color-border-subtle);
 }
 
+.ct-app-shell--sidebar-right > .ct-app-shell__panel {
+  border-inline-start: var(--border-thin) solid var(--color-border-subtle);
+  border-inline-end: none;
+}
+
 .ct-app-shell--sidebar-right.ct-app-shell--sidebar-full-height {
   grid-template-areas:
     'header  header  sidebar'
-    'panel   main    sidebar'
+    'main    panel   sidebar'
     'footer  footer  sidebar';
 }
 
@@ -260,24 +268,16 @@
 
 
 /* ── Transitions ── */
+/* Single base transition — state selectors only override delay to avoid  */
+/* conflicts when sidebar + panel states are active simultaneously.       */
 
 .ct-app-shell {
   transition: grid-template-columns var(--ct-shell-transition-duration) var(--ct-shell-transition-easing);
 }
 
-/* Collapsing: delay grid change so labels fade first */
+/* Collapsing: delay grid shrink so labels fade out first */
 .ct-app-shell[data-sidebar-state='collapsed'] {
-  transition: grid-template-columns var(--ct-shell-transition-duration) var(--ct-shell-transition-easing) 120ms;
-}
-
-/* Expanding: grid changes immediately */
-.ct-app-shell[data-sidebar-state='expanded'] {
-  transition: grid-template-columns var(--ct-shell-transition-duration) var(--ct-shell-transition-easing) 0ms;
-}
-
-/* Panel open/close transitions */
-.ct-app-shell[data-panel-state='open'] {
-  transition: grid-template-columns 200ms ease-out;
+  transition-delay: 120ms;
 }
 
 
