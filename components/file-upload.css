@@ -109,3 +109,9 @@
   color: var(--color-state-danger);
   font-size: var(--font-size-sm);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-file-upload__dropzone {
+    transition: none;
+  }
+}
