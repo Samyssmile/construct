@@ -85,6 +85,7 @@ components/
 ├── skip-link.css
 ├── drawer.css
 ├── navbar.css           ← Navbar / App Header (responsive, dropdown menus, mobile toggle)
+├── app-shell.css        ← App Shell (CSS Grid layout shell: Navbar + Sidebar + Main + Panel + Footer)
 ├── list.css             ← List + List Item (rich items, selection, nav, dividers)
 └── index.css            ← @import bundle for all components
 ```

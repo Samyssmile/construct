@@ -1,0 +1,442 @@
+/* ── App Shell ─────────────────────────────────────────────────── */
+/* CSS Grid layout shell that orchestrates Navbar, Sidebar,       */
+/* Main content, optional Panel, and optional Footer.             */
+/*                                                                */
+/* Shell breakpoints (component-specific, differ from --bp-*):    */
+/*   Mobile:  <768px                                              */
+/*   Tablet:  768–1199px                                          */
+/*   Desktop: 1200–1439px                                         */
+/*   Wide:    >=1440px                                             */
+/* ────────────────────────────────────────────────────────────── */
+
+.ct-app-shell {
+  /* ── Public Tokens ── */
+  --ct-sidebar-width: 260px;
+  --ct-sidebar-rail-width: 56px;
+  --ct-panel-width: 320px;
+  --ct-header-height: auto;
+  --ct-footer-height: auto;
+  --ct-shell-transition-duration: 200ms;
+  --ct-shell-transition-easing: ease-out;
+
+  /* ── Internal Variables ── */
+  --_sidebar-width: var(--ct-sidebar-width);
+  --_panel-width: 0px;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: var(--_sidebar-width) 1fr var(--_panel-width);
+  grid-template-areas:
+    'header  header  header'
+    'sidebar main   panel'
+    'footer  footer  footer';
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+
+/* ── Element Grid Placement ── */
+
+.ct-app-shell__header {
+  grid-area: header;
+  z-index: var(--z-sticky);
+  min-width: 0;
+}
+
+.ct-app-shell__sidebar {
+  grid-area: sidebar;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  min-width: 0;
+}
+
+.ct-app-shell__main {
+  grid-area: main;
+  overflow-y: auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.ct-app-shell__panel {
+  grid-area: panel;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  min-width: 0;
+}
+
+.ct-app-shell__footer {
+  grid-area: footer;
+}
+
+
+/* ── Sidebar States ── */
+
+.ct-app-shell[data-sidebar-state='expanded'] {
+  --_sidebar-width: var(--ct-sidebar-width, 260px);
+}
+
+.ct-app-shell[data-sidebar-state='collapsed'] {
+  --_sidebar-width: var(--ct-sidebar-rail-width, 56px);
+}
+
+.ct-app-shell[data-sidebar-state='hidden'] {
+  --_sidebar-width: 0px;
+}
+
+.ct-app-shell[data-sidebar-state='hidden'] > .ct-app-shell__sidebar {
+  visibility: hidden;
+  overflow: hidden;
+}
+
+/* Sidebar inside app-shell fills its grid cell */
+.ct-app-shell__sidebar > .ct-sidebar {
+  width: 100%;
+  height: 100%;
+  border-inline-end: none;
+}
+
+/* The grid area itself gets the sidebar border */
+.ct-app-shell__sidebar {
+  border-inline-end: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.ct-app-shell[data-sidebar-state='hidden'] > .ct-app-shell__sidebar {
+  border-inline-end: none;
+}
+
+
+/* ── Panel State ── */
+
+.ct-app-shell[data-panel-state='open'] {
+  --_panel-width: var(--ct-panel-width, 320px);
+}
+
+.ct-app-shell[data-panel-state='open'] > .ct-app-shell__panel {
+  visibility: visible;
+}
+
+.ct-app-shell:not([data-panel-state='open']) > .ct-app-shell__panel {
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.ct-app-shell__panel {
+  border-inline-start: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.ct-app-shell:not([data-panel-state='open']) > .ct-app-shell__panel {
+  border-inline-start: none;
+}
+
+
+/* ── Header Variant: Sidebar Full Height ── */
+
+.ct-app-shell--sidebar-full-height {
+  grid-template-areas:
+    'sidebar header header'
+    'sidebar main   panel'
+    'sidebar footer footer';
+}
+
+
+/* ── Modifier: No Sidebar ── */
+
+.ct-app-shell--no-sidebar {
+  grid-template-columns: 1fr var(--_panel-width);
+  grid-template-areas:
+    'header header'
+    'main   panel'
+    'footer footer';
+}
+
+.ct-app-shell--no-sidebar > .ct-app-shell__sidebar {
+  display: none;
+}
+
+
+/* ── Modifier: Sidebar Right ── */
+
+.ct-app-shell--sidebar-right {
+  grid-template-columns: var(--_panel-width) 1fr var(--_sidebar-width);
+  grid-template-areas:
+    'header  header  header'
+    'panel   main    sidebar'
+    'footer  footer  footer';
+}
+
+.ct-app-shell--sidebar-right > .ct-app-shell__sidebar {
+  border-inline-end: none;
+  border-inline-start: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.ct-app-shell--sidebar-right.ct-app-shell--sidebar-full-height {
+  grid-template-areas:
+    'header  header  sidebar'
+    'panel   main    sidebar'
+    'footer  footer  sidebar';
+}
+
+
+/* ── Modifier: Footer Sticky ── */
+
+.ct-app-shell--footer-sticky > .ct-app-shell__footer {
+  border-top: var(--border-thin) solid var(--color-border-subtle);
+}
+
+
+/* ── Page Header ── */
+
+.ct-app-shell__page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: var(--border-thin) solid var(--color-border-subtle);
+  flex-shrink: 0;
+}
+
+.ct-app-shell__page-header--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-bg-canvas);
+}
+
+
+/* ── Sidebar Rail Mode: Label/Badge Hiding ── */
+/* When sidebar is collapsed (rail), hide text labels and badges  */
+/* so only icons remain. This intentionally crosses the component */
+/* boundary since the app-shell orchestrates child layout.        */
+
+.ct-app-shell[data-sidebar-state='collapsed'] .ct-nav-item__label,
+.ct-app-shell[data-sidebar-state='collapsed'] .ct-nav-item__badge,
+.ct-app-shell[data-sidebar-state='collapsed'] .ct-sidebar__header span,
+.ct-app-shell[data-sidebar-state='collapsed'] .ct-sidebar__header strong {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  /* Collapsing: labels fade out first, then width snaps */
+  transition:
+    opacity 120ms ease-in-out,
+    width 0ms linear 120ms;
+}
+
+/* Expanding: labels fade in after sidebar width finishes growing */
+.ct-app-shell[data-sidebar-state='expanded'] .ct-nav-item__label,
+.ct-app-shell[data-sidebar-state='expanded'] .ct-nav-item__badge,
+.ct-app-shell[data-sidebar-state='expanded'] .ct-sidebar__header span,
+.ct-app-shell[data-sidebar-state='expanded'] .ct-sidebar__header strong {
+  opacity: 1;
+  width: auto;
+  transition: opacity 120ms ease-in-out 250ms;
+}
+
+/* Rail-mode: center nav items (icon-only) */
+.ct-app-shell[data-sidebar-state='collapsed'] .ct-nav-item {
+  justify-content: center;
+  padding-inline: var(--space-3);
+}
+
+
+/* ── Backdrop (Mobile Sidebar Overlay) ── */
+
+.ct-app-shell__backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay-scrim);
+  z-index: calc(var(--z-overlay) - 1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--ct-shell-transition-duration) var(--ct-shell-transition-easing),
+    visibility var(--ct-shell-transition-duration) var(--ct-shell-transition-easing);
+}
+
+
+/* ── Transitions ── */
+
+.ct-app-shell {
+  transition: grid-template-columns var(--ct-shell-transition-duration) var(--ct-shell-transition-easing);
+}
+
+/* Collapsing: delay grid change so labels fade first */
+.ct-app-shell[data-sidebar-state='collapsed'] {
+  transition: grid-template-columns var(--ct-shell-transition-duration) var(--ct-shell-transition-easing) 120ms;
+}
+
+/* Expanding: grid changes immediately */
+.ct-app-shell[data-sidebar-state='expanded'] {
+  transition: grid-template-columns var(--ct-shell-transition-duration) var(--ct-shell-transition-easing) 0ms;
+}
+
+/* Panel open/close transitions */
+.ct-app-shell[data-panel-state='open'] {
+  transition: grid-template-columns 200ms ease-out;
+}
+
+
+/* ── Bottom Navigation ── */
+
+.ct-app-shell__bottom-nav {
+  display: none;
+}
+
+
+/* ── Responsive: Tablet (768–1199px) ── */
+
+@media (max-width: 1199px) { /* < lg breakpoint (1200px) */
+  /* Auto-collapse sidebar to rail when no explicit state is set */
+  .ct-app-shell:not([data-sidebar-state]) {
+    --_sidebar-width: var(--ct-sidebar-rail-width, 56px);
+  }
+
+  /* Auto-hide labels when sidebar is auto-collapsed */
+  .ct-app-shell:not([data-sidebar-state]) .ct-nav-item__label,
+  .ct-app-shell:not([data-sidebar-state]) .ct-nav-item__badge,
+  .ct-app-shell:not([data-sidebar-state]) .ct-sidebar__header span,
+  .ct-app-shell:not([data-sidebar-state]) .ct-sidebar__header strong {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ct-app-shell:not([data-sidebar-state]) .ct-nav-item {
+    justify-content: center;
+    padding-inline: var(--space-3);
+  }
+
+  /* Panel becomes overlay on tablet */
+  .ct-app-shell[data-panel-state='open'] {
+    --_panel-width: 0px;
+  }
+
+  .ct-app-shell[data-panel-state='open'] > .ct-app-shell__panel {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: min(var(--ct-panel-width, 320px), 100vw);
+    z-index: var(--z-overlay);
+    visibility: visible;
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+
+/* ── Responsive: Mobile (<768px) ── */
+
+@media (max-width: 767px) { /* < tablet breakpoint (768px) */
+  /* Auto-hide sidebar when no explicit state is set */
+  .ct-app-shell:not([data-sidebar-state]) {
+    --_sidebar-width: 0px;
+  }
+
+  .ct-app-shell:not([data-sidebar-state]) > .ct-app-shell__sidebar {
+    visibility: hidden;
+    overflow: hidden;
+    border-inline-end: none;
+  }
+
+  /* Expanded sidebar on mobile = fixed overlay */
+  .ct-app-shell[data-sidebar-state='expanded'] {
+    --_sidebar-width: 0px;
+  }
+
+  .ct-app-shell[data-sidebar-state='expanded'] > .ct-app-shell__sidebar {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--ct-sidebar-width, 260px);
+    z-index: var(--z-overlay);
+    visibility: visible;
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Show backdrop when sidebar overlay is open */
+  .ct-app-shell[data-sidebar-state='expanded'] > .ct-app-shell__backdrop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Collapsed sidebar on mobile = hidden */
+  .ct-app-shell[data-sidebar-state='collapsed'] {
+    --_sidebar-width: 0px;
+  }
+
+  .ct-app-shell[data-sidebar-state='collapsed'] > .ct-app-shell__sidebar {
+    visibility: hidden;
+    overflow: hidden;
+    border-inline-end: none;
+  }
+
+  /* Panel overlay on mobile */
+  .ct-app-shell[data-panel-state='open'] {
+    --_panel-width: 0px;
+  }
+
+  .ct-app-shell[data-panel-state='open'] > .ct-app-shell__panel {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: min(var(--ct-panel-width, 320px), 100vw);
+    z-index: var(--z-overlay);
+    visibility: visible;
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-lg);
+    border-inline-start: none;
+  }
+
+  /* Bottom nav: show on mobile when modifier is active */
+  .ct-app-shell--bottom-nav > .ct-app-shell__bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: var(--space-2) 0;
+    background: var(--color-bg-surface);
+    border-top: var(--border-thin) solid var(--color-border-subtle);
+    grid-area: footer;
+  }
+
+  /* When bottom-nav is active, hide sidebar completely on mobile */
+  .ct-app-shell--bottom-nav {
+    --_sidebar-width: 0px;
+  }
+
+  .ct-app-shell--bottom-nav > .ct-app-shell__sidebar {
+    display: none;
+  }
+
+  /* Full-height variant falls back to standard on mobile */
+  .ct-app-shell--sidebar-full-height {
+    grid-template-areas:
+      'header  header  header'
+      'sidebar main   panel'
+      'footer  footer  footer';
+  }
+}
+
+
+/* ── Reduced Motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-app-shell,
+  .ct-app-shell__sidebar,
+  .ct-app-shell__panel,
+  .ct-app-shell__backdrop,
+  .ct-app-shell .ct-nav-item__label,
+  .ct-app-shell .ct-nav-item__badge,
+  .ct-app-shell .ct-sidebar__header span,
+  .ct-app-shell .ct-sidebar__header strong {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
