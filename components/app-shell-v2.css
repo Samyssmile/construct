@@ -1,0 +1,497 @@
+/* ── App Shell V2: Floating Canvas ─────────────────────────────── */
+/* All chrome floats as elevated surfaces on a tinted canvas,      */
+/* separated by space and shadow — not borders.                    */
+/*                                                                 */
+/* Architecture:                                                   */
+/*   2-column CSS Grid: [sidebar] [body]                           */
+/*   Body is a flex container: [main] + optional [panel]           */
+/*   Surfaces have rounded corners + elevation — zero hard edges.  */
+/*                                                                 */
+/*   ╭─────────────────────────────────────────────────────╮       */
+/*   │ canvas background                                    │       */
+/*   │  ╭────────╮ ╭──────────────────────────────────╮    │       */
+/*   │  │        │ │  toolbar (optional, sticky)       │    │       */
+/*   │  │ Side-  │ ├───────────────────┬──────────────│    │       */
+/*   │  │ bar    │ │  main (scrolls)   │  panel       │    │       */
+/*   │  │        │ │                   │  (optional)  │    │       */
+/*   │  ╰────────╯ ╰───────────────────┴──────────────╯    │       */
+/*   ╰─────────────────────────────────────────────────────╯       */
+/*                                                                 */
+/* Shell breakpoints:                                              */
+/*   Mobile:  <768px                                               */
+/*   Tablet:  768–1199px                                           */
+/*   Desktop: >=1200px                                             */
+/* ─────────────────────────────────────────────────────────────── */
+
+.ct-app-shell-v2 {
+  /* ── Public Tokens ── */
+  --ct-v2-sidebar-width: 260px;
+  --ct-v2-sidebar-rail-width: 64px;
+  --ct-v2-panel-width: 340px;
+  --ct-v2-gap: var(--space-4);
+  --ct-v2-radius: var(--radius-lg);
+  --ct-v2-canvas-bg: var(--color-bg-muted);
+  --ct-v2-surface-bg: var(--color-bg-canvas);
+  --ct-v2-surface-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --ct-v2-transition-duration: 250ms;
+  --ct-v2-transition-easing: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ── Internal ── */
+  --_v2-sidebar-w: var(--ct-v2-sidebar-width);
+
+  display: grid;
+  grid-template-columns: var(--_v2-sidebar-w) 1fr;
+  grid-template-areas: 'sidebar body';
+  gap: var(--ct-v2-gap);
+  padding: var(--ct-v2-gap);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--ct-v2-canvas-bg);
+  transition: grid-template-columns var(--ct-v2-transition-duration) var(--ct-v2-transition-easing);
+}
+
+
+/* ── Floating Surface ── */
+/* Shared elevated-card look for all chrome panels. */
+
+.ct-app-shell-v2__sidebar,
+.ct-app-shell-v2__body,
+.ct-app-shell-v2__header {
+  background: var(--ct-v2-surface-bg);
+  border-radius: var(--ct-v2-radius);
+  box-shadow: var(--ct-v2-surface-shadow);
+  overflow: hidden;
+}
+
+
+/* ── Grid Area Assignment ── */
+
+.ct-app-shell-v2__sidebar { grid-area: sidebar; }
+.ct-app-shell-v2__body    { grid-area: body; }
+.ct-app-shell-v2__header  { grid-area: header; }
+
+
+/* ── Sidebar ── */
+
+.ct-app-shell-v2__sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  min-width: 0;
+  transition: opacity var(--ct-v2-transition-duration) var(--ct-v2-transition-easing);
+}
+
+/* Sidebar child component fills its slot — override default sidebar chrome */
+.ct-app-shell-v2__sidebar > .ct-sidebar {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border-inline-end: none;
+  border-radius: 0;
+}
+
+
+/* ── Body (Main + Panel container) ── */
+
+.ct-app-shell-v2__body {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+
+/* ── Main ── */
+
+.ct-app-shell-v2__main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ── Panel ── */
+
+.ct-app-shell-v2__panel {
+  width: var(--ct-v2-panel-width);
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  border-inline-start: var(--border-thin) solid var(--color-border-subtle);
+  transition:
+    width var(--ct-v2-transition-duration) var(--ct-v2-transition-easing),
+    visibility 0s linear var(--ct-v2-transition-duration);
+}
+
+.ct-app-shell-v2:not([data-panel-state='open']) .ct-app-shell-v2__panel {
+  visibility: hidden;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  border-inline-start: none;
+}
+
+
+/* ── Footer (inside main or body) ── */
+
+.ct-app-shell-v2__footer {
+  flex-shrink: 0;
+  border-top: var(--border-thin) solid var(--color-border-subtle);
+}
+
+
+/* ── Toolbar (inside main — replaces full-width header) ── */
+
+.ct-app-shell-v2__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: var(--border-thin) solid var(--color-border-subtle);
+  flex-shrink: 0;
+}
+
+.ct-app-shell-v2__toolbar--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--ct-v2-surface-bg);
+}
+
+
+/* ── Sidebar States ── */
+
+.ct-app-shell-v2[data-sidebar-state='expanded'] {
+  --_v2-sidebar-w: var(--ct-v2-sidebar-width);
+}
+
+.ct-app-shell-v2[data-sidebar-state='collapsed'] {
+  --_v2-sidebar-w: var(--ct-v2-sidebar-rail-width);
+}
+
+.ct-app-shell-v2[data-sidebar-state='hidden'] {
+  --_v2-sidebar-w: 0px;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'body';
+}
+
+.ct-app-shell-v2[data-sidebar-state='hidden'].ct-app-shell-v2--with-header {
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'body';
+}
+
+.ct-app-shell-v2[data-sidebar-state='hidden'] > .ct-app-shell-v2__sidebar {
+  visibility: hidden;
+  overflow: hidden;
+  opacity: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* ── Panel State ── */
+
+.ct-app-shell-v2[data-panel-state='open'] .ct-app-shell-v2__panel {
+  visibility: visible;
+  transition:
+    width var(--ct-v2-transition-duration) var(--ct-v2-transition-easing),
+    visibility 0s linear 0s;
+}
+
+
+
+/* ── Header Variant (Optional Full-Width Floating Bar) ── */
+
+.ct-app-shell-v2--with-header {
+  grid-template-rows: auto 1fr;
+  grid-template-columns: var(--_v2-sidebar-w) 1fr;
+  grid-template-areas:
+    'header header'
+    'sidebar body';
+}
+
+/* Navbar inside header — strip its own background/border */
+.ct-app-shell-v2__header > .ct-navbar {
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+
+/* ── Sidebar Full Height + Header ── */
+
+.ct-app-shell-v2--sidebar-full-height.ct-app-shell-v2--with-header {
+  grid-template-areas:
+    'sidebar header'
+    'sidebar body';
+}
+
+
+/* ── Modifier: No Sidebar ── */
+
+.ct-app-shell-v2--no-sidebar {
+  grid-template-columns: 1fr;
+  grid-template-areas: 'body';
+}
+
+.ct-app-shell-v2--no-sidebar.ct-app-shell-v2--with-header {
+  grid-template-areas:
+    'header'
+    'body';
+}
+
+.ct-app-shell-v2--no-sidebar > .ct-app-shell-v2__sidebar {
+  display: none;
+}
+
+
+/* ── Modifier: Sidebar Right ── */
+
+.ct-app-shell-v2--sidebar-right {
+  grid-template-columns: 1fr var(--_v2-sidebar-w);
+  grid-template-areas: 'body sidebar';
+}
+
+.ct-app-shell-v2--sidebar-right.ct-app-shell-v2--with-header {
+  grid-template-areas:
+    'header  header'
+    'body    sidebar';
+}
+
+.ct-app-shell-v2--sidebar-right.ct-app-shell-v2--sidebar-full-height.ct-app-shell-v2--with-header {
+  grid-template-areas:
+    'header  sidebar'
+    'body    sidebar';
+}
+
+
+/* ── Modifier: Sidebar Branded (Dark) ── */
+/* Tinted sidebar surface — Slack / Linear / Discord aesthetic. */
+
+.ct-app-shell-v2--sidebar-branded > .ct-app-shell-v2__sidebar {
+  --_branded-hover-bg: color-mix(in srgb, var(--color-slate-0) 8%, transparent);
+  --_branded-active-bg: color-mix(in srgb, var(--color-slate-0) 12%, transparent);
+  --_branded-badge-bg: color-mix(in srgb, var(--color-slate-0) 15%, transparent);
+  background: var(--color-slate-900);
+  color: var(--color-text-inverse);
+  box-shadow: none;
+}
+
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-sidebar {
+  background: transparent;
+}
+
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-sidebar__header {
+  border-bottom-color: var(--color-slate-700);
+  color: var(--color-slate-0);
+}
+
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item {
+  color: var(--color-slate-300);
+}
+
+@media (hover: hover) {
+  .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item:hover {
+    background: var(--_branded-hover-bg);
+    color: var(--color-slate-0);
+  }
+}
+
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item--active,
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item[aria-current='page'] {
+  background: var(--_branded-active-bg);
+  color: var(--color-slate-0);
+}
+
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item__badge {
+  background: var(--_branded-badge-bg);
+  color: var(--color-slate-100);
+}
+
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item--active .ct-nav-item__badge,
+.ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item[aria-current='page'] .ct-nav-item__badge {
+  background: var(--color-brand-primary);
+  color: var(--color-text-inverse);
+}
+
+
+/* ── Modifier: Glass Effect ── */
+/* Subtle frosted glass on surfaces — optional modern flourish. */
+
+.ct-app-shell-v2--glass > .ct-app-shell-v2__sidebar,
+.ct-app-shell-v2--glass > .ct-app-shell-v2__body,
+.ct-app-shell-v2--glass > .ct-app-shell-v2__header {
+  background: color-mix(in srgb, var(--ct-v2-surface-bg) 85%, transparent);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+
+/* ── Backdrop (Mobile Sidebar Overlay) ── */
+
+.ct-app-shell-v2__backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay-scrim);
+  z-index: calc(var(--z-overlay) - 1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--ct-v2-transition-duration) var(--ct-v2-transition-easing),
+    visibility var(--ct-v2-transition-duration) var(--ct-v2-transition-easing);
+}
+
+
+/* ── Transitions ── */
+
+/* Delay grid shrink on collapse so labels fade out first */
+.ct-app-shell-v2[data-sidebar-state='collapsed'] {
+  transition-delay: 120ms;
+}
+
+
+/* ── Responsive: Tablet (768–1199px) ── */
+
+@media (max-width: 1199px) {
+  /* Auto-collapse sidebar to rail when no explicit state */
+  .ct-app-shell-v2:not([data-sidebar-state]) {
+    --_v2-sidebar-w: var(--ct-v2-sidebar-rail-width);
+  }
+
+  /* Panel becomes floating overlay on tablet */
+  .ct-app-shell-v2[data-panel-state='open'] .ct-app-shell-v2__panel {
+    position: fixed;
+    inset-block: var(--ct-v2-gap);
+    inset-inline-end: var(--ct-v2-gap);
+    width: min(var(--ct-v2-panel-width), calc(100vw - 2 * var(--ct-v2-gap)));
+    z-index: var(--z-overlay);
+    visibility: visible;
+    background: var(--ct-v2-surface-bg);
+    border-radius: var(--ct-v2-radius);
+    box-shadow: var(--shadow-lg);
+    border-inline-start: none;
+  }
+}
+
+
+/* ── Responsive: Mobile (<768px) ── */
+
+@media (max-width: 767px) {
+  .ct-app-shell-v2 {
+    --ct-v2-gap: var(--space-3);
+  }
+
+  /* Auto-hide sidebar */
+  .ct-app-shell-v2:not([data-sidebar-state]) {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'body';
+  }
+
+  .ct-app-shell-v2:not([data-sidebar-state]) > .ct-app-shell-v2__sidebar {
+    display: none;
+  }
+
+  /* Expanded sidebar = floating overlay with rounded corners */
+  .ct-app-shell-v2[data-sidebar-state='expanded'] {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'body';
+  }
+
+  .ct-app-shell-v2[data-sidebar-state='expanded'] > .ct-app-shell-v2__sidebar {
+    position: fixed;
+    inset-block: var(--ct-v2-gap);
+    inset-inline-start: var(--ct-v2-gap);
+    width: min(var(--ct-v2-sidebar-width), calc(100vw - 2 * var(--ct-v2-gap)));
+    z-index: var(--z-overlay);
+    visibility: visible;
+    opacity: 1;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .ct-app-shell-v2[data-sidebar-state='expanded'] > .ct-app-shell-v2__backdrop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Collapsed sidebar = hidden on mobile */
+  .ct-app-shell-v2[data-sidebar-state='collapsed'] {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'body';
+  }
+
+  .ct-app-shell-v2[data-sidebar-state='collapsed'] > .ct-app-shell-v2__sidebar {
+    visibility: hidden;
+    overflow: hidden;
+    opacity: 0;
+    width: 0;
+  }
+
+  /* Hidden sidebar on mobile */
+  .ct-app-shell-v2[data-sidebar-state='hidden'] > .ct-app-shell-v2__sidebar {
+    display: none;
+  }
+
+  /* Panel = floating overlay on mobile */
+  .ct-app-shell-v2[data-panel-state='open'] .ct-app-shell-v2__panel {
+    position: fixed;
+    inset-block: var(--ct-v2-gap);
+    inset-inline-end: var(--ct-v2-gap);
+    width: min(var(--ct-v2-panel-width), calc(100vw - 2 * var(--ct-v2-gap)));
+    z-index: var(--z-overlay);
+    visibility: visible;
+    background: var(--ct-v2-surface-bg);
+    border-radius: var(--ct-v2-radius);
+    box-shadow: var(--shadow-lg);
+    border-inline-start: none;
+  }
+
+  /* With-header collapses to single column on mobile */
+  .ct-app-shell-v2--with-header {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'body';
+  }
+
+  .ct-app-shell-v2--sidebar-full-height.ct-app-shell-v2--with-header {
+    grid-template-areas:
+      'header'
+      'body';
+  }
+
+  /* Sidebar-right falls back to standard on mobile */
+  .ct-app-shell-v2--sidebar-right {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'body';
+  }
+
+  .ct-app-shell-v2--sidebar-right.ct-app-shell-v2--with-header {
+    grid-template-areas:
+      'header'
+      'body';
+  }
+}
+
+
+/* ── Reduced Motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-app-shell-v2,
+  .ct-app-shell-v2[data-sidebar-state],
+  .ct-app-shell-v2__sidebar,
+  .ct-app-shell-v2__panel,
+  .ct-app-shell-v2__backdrop {
+    transition: none;
+  }
+}

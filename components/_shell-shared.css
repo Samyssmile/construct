@@ -1,0 +1,78 @@
+/* ── Shared App Shell: Rail Mode ────────────────────────────────── */
+/* Common sidebar rail-mode styles used by App Shell V1 and V2.    */
+/* Crosses component boundary: shells orchestrate child layout.    */
+/* ─────────────────────────────────────────────────────────────── */
+
+
+/* ── Collapsed: Hide Labels & Badges ── */
+
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-nav-item__label,
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-nav-item__badge,
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-sidebar__header span,
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-sidebar__header strong {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  /* Collapsing: labels fade out first, then width snaps */
+  transition:
+    opacity 120ms ease-in-out,
+    width 0ms linear 120ms;
+}
+
+
+/* ── Expanded: Restore Labels & Badges ── */
+
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-nav-item__label,
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-nav-item__badge,
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-sidebar__header span,
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-sidebar__header strong {
+  opacity: 1;
+  width: auto;
+  /* Expanding: labels fade in after sidebar width finishes growing */
+  transition: opacity 120ms ease-in-out 250ms;
+}
+
+
+/* ── Collapsed: Center Nav Items (Icon-Only) ── */
+
+:is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-nav-item {
+  justify-content: center;
+  padding-inline: var(--space-3);
+}
+
+
+/* ── Tablet: Auto-Collapse to Rail ── */
+
+@media (max-width: 1199px) {
+  :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-nav-item__label,
+  :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-nav-item__badge,
+  :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-sidebar__header span,
+  :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-sidebar__header strong {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-nav-item {
+    justify-content: center;
+    padding-inline: var(--space-3);
+  }
+}
+
+
+/* ── Reduced Motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-nav-item__label,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-nav-item__badge,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-sidebar__header span,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='collapsed'] .ct-sidebar__header strong,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-nav-item__label,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-nav-item__badge,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-sidebar__header span,
+  :is(.ct-app-shell, .ct-app-shell-v2)[data-sidebar-state='expanded'] .ct-sidebar__header strong {
+    transition: none;
+  }
+}
