@@ -48,4 +48,5 @@
 @import './navbar.css';
 @import './app-shell.css';
 @import './app-shell-v2.css';
+@import './_shell-shared.css';
 @import './list.css';

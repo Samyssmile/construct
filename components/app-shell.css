@@ -92,6 +92,8 @@
 .ct-app-shell[data-sidebar-state='hidden'] > .ct-app-shell__sidebar {
   visibility: hidden;
   overflow: hidden;
+  border-inline-start: none;
+  border-inline-end: none;
 }
 
 /* Sidebar inside app-shell fills its grid cell */
@@ -104,10 +106,6 @@
 /* The grid area itself gets the sidebar border */
 .ct-app-shell__sidebar {
   border-inline-end: var(--border-thin) solid var(--color-border-subtle);
-}
-
-.ct-app-shell[data-sidebar-state='hidden'] > .ct-app-shell__sidebar {
-  border-inline-end: none;
 }
 
 
@@ -157,6 +155,15 @@
 
 .ct-app-shell--no-sidebar > .ct-app-shell__sidebar {
   display: none;
+}
+
+/* --no-sidebar takes precedence over --sidebar-right */
+.ct-app-shell--no-sidebar.ct-app-shell--sidebar-right {
+  grid-template-columns: 1fr var(--_panel-width);
+  grid-template-areas:
+    'header header'
+    'main   panel'
+    'footer footer';
 }
 
 
@@ -215,41 +222,6 @@
 }
 
 
-/* ── Sidebar Rail Mode: Label/Badge Hiding ── */
-/* When sidebar is collapsed (rail), hide text labels and badges  */
-/* so only icons remain. This intentionally crosses the component */
-/* boundary since the app-shell orchestrates child layout.        */
-
-.ct-app-shell[data-sidebar-state='collapsed'] .ct-nav-item__label,
-.ct-app-shell[data-sidebar-state='collapsed'] .ct-nav-item__badge,
-.ct-app-shell[data-sidebar-state='collapsed'] .ct-sidebar__header span,
-.ct-app-shell[data-sidebar-state='collapsed'] .ct-sidebar__header strong {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  /* Collapsing: labels fade out first, then width snaps */
-  transition:
-    opacity 120ms ease-in-out,
-    width 0ms linear 120ms;
-}
-
-/* Expanding: labels fade in after sidebar width finishes growing */
-.ct-app-shell[data-sidebar-state='expanded'] .ct-nav-item__label,
-.ct-app-shell[data-sidebar-state='expanded'] .ct-nav-item__badge,
-.ct-app-shell[data-sidebar-state='expanded'] .ct-sidebar__header span,
-.ct-app-shell[data-sidebar-state='expanded'] .ct-sidebar__header strong {
-  opacity: 1;
-  width: auto;
-  transition: opacity 120ms ease-in-out 250ms;
-}
-
-/* Rail-mode: center nav items (icon-only) */
-.ct-app-shell[data-sidebar-state='collapsed'] .ct-nav-item {
-  justify-content: center;
-  padding-inline: var(--space-3);
-}
-
 
 /* ── Backdrop (Mobile Sidebar Overlay) ── */
 
@@ -294,22 +266,6 @@
   /* Auto-collapse sidebar to rail when no explicit state is set */
   .ct-app-shell:not([data-sidebar-state]) {
     --_sidebar-width: var(--ct-sidebar-rail-width, 56px);
-  }
-
-  /* Auto-hide labels when sidebar is auto-collapsed */
-  .ct-app-shell:not([data-sidebar-state]) .ct-nav-item__label,
-  .ct-app-shell:not([data-sidebar-state]) .ct-nav-item__badge,
-  .ct-app-shell:not([data-sidebar-state]) .ct-sidebar__header span,
-  .ct-app-shell:not([data-sidebar-state]) .ct-sidebar__header strong {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .ct-app-shell:not([data-sidebar-state]) .ct-nav-item {
-    justify-content: center;
-    padding-inline: var(--space-3);
   }
 
   /* Panel becomes overlay on tablet */
@@ -360,6 +316,12 @@
     box-shadow: var(--shadow-lg);
   }
 
+  /* Sidebar-right: overlay slides in from inline-end */
+  .ct-app-shell--sidebar-right[data-sidebar-state='expanded'] > .ct-app-shell__sidebar {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+  }
+
   /* Show backdrop when sidebar overlay is open */
   .ct-app-shell[data-sidebar-state='expanded'] > .ct-app-shell__backdrop {
     opacity: 1;
@@ -406,6 +368,11 @@
     grid-area: footer;
   }
 
+  /* When bottom-nav is active, hide footer to avoid grid-area collision */
+  .ct-app-shell--bottom-nav > .ct-app-shell__footer {
+    display: none;
+  }
+
   /* When bottom-nav is active, hide sidebar completely on mobile */
   .ct-app-shell--bottom-nav {
     --_sidebar-width: 0px;
@@ -429,14 +396,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ct-app-shell,
+  .ct-app-shell[data-sidebar-state],
   .ct-app-shell__sidebar,
   .ct-app-shell__panel,
-  .ct-app-shell__backdrop,
-  .ct-app-shell .ct-nav-item__label,
-  .ct-app-shell .ct-nav-item__badge,
-  .ct-app-shell .ct-sidebar__header span,
-  .ct-app-shell .ct-sidebar__header strong {
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
+  .ct-app-shell__backdrop {
+    transition: none;
   }
 }

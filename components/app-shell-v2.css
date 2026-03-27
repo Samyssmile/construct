@@ -122,10 +122,17 @@
   overflow-x: hidden;
   min-height: 0;
   border-inline-start: var(--border-thin) solid var(--color-border-subtle);
+  transition:
+    width var(--ct-v2-transition-duration) var(--ct-v2-transition-easing),
+    visibility 0s linear var(--ct-v2-transition-duration);
 }
 
 .ct-app-shell-v2:not([data-panel-state='open']) .ct-app-shell-v2__panel {
-  display: none;
+  visibility: hidden;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  border-inline-start: none;
 }
 
 
@@ -173,6 +180,14 @@
   grid-template-areas: 'body';
 }
 
+.ct-app-shell-v2[data-sidebar-state='hidden'].ct-app-shell-v2--with-header {
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'body';
+}
+
 .ct-app-shell-v2[data-sidebar-state='hidden'] > .ct-app-shell-v2__sidebar {
   visibility: hidden;
   overflow: hidden;
@@ -186,39 +201,12 @@
 /* ── Panel State ── */
 
 .ct-app-shell-v2[data-panel-state='open'] .ct-app-shell-v2__panel {
-  display: block;
-}
-
-
-/* ── Rail Mode: Label/Badge Hiding ── */
-/* Crosses component boundary: shell orchestrates child layout. */
-
-.ct-app-shell-v2[data-sidebar-state='collapsed'] .ct-nav-item__label,
-.ct-app-shell-v2[data-sidebar-state='collapsed'] .ct-nav-item__badge,
-.ct-app-shell-v2[data-sidebar-state='collapsed'] .ct-sidebar__header span,
-.ct-app-shell-v2[data-sidebar-state='collapsed'] .ct-sidebar__header strong {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
-  white-space: nowrap;
+  visibility: visible;
   transition:
-    opacity 120ms ease-in-out,
-    width 0ms linear 120ms;
+    width var(--ct-v2-transition-duration) var(--ct-v2-transition-easing),
+    visibility 0s linear 0s;
 }
 
-.ct-app-shell-v2[data-sidebar-state='expanded'] .ct-nav-item__label,
-.ct-app-shell-v2[data-sidebar-state='expanded'] .ct-nav-item__badge,
-.ct-app-shell-v2[data-sidebar-state='expanded'] .ct-sidebar__header span,
-.ct-app-shell-v2[data-sidebar-state='expanded'] .ct-sidebar__header strong {
-  opacity: 1;
-  width: auto;
-  transition: opacity 120ms ease-in-out 250ms;
-}
-
-.ct-app-shell-v2[data-sidebar-state='collapsed'] .ct-nav-item {
-  justify-content: center;
-  padding-inline: var(--space-3);
-}
 
 
 /* ── Header Variant (Optional Full-Width Floating Bar) ── */
@@ -290,6 +278,9 @@
 /* Tinted sidebar surface — Slack / Linear / Discord aesthetic. */
 
 .ct-app-shell-v2--sidebar-branded > .ct-app-shell-v2__sidebar {
+  --_branded-hover-bg: color-mix(in srgb, var(--color-slate-0) 8%, transparent);
+  --_branded-active-bg: color-mix(in srgb, var(--color-slate-0) 12%, transparent);
+  --_branded-badge-bg: color-mix(in srgb, var(--color-slate-0) 15%, transparent);
   background: var(--color-slate-900);
   color: var(--color-text-inverse);
   box-shadow: none;
@@ -310,19 +301,19 @@
 
 @media (hover: hover) {
   .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--_branded-hover-bg);
     color: var(--color-slate-0);
   }
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item--active,
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item[aria-current='page'] {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--_branded-active-bg);
   color: var(--color-slate-0);
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item__badge {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--_branded-badge-bg);
   color: var(--color-slate-100);
 }
 
@@ -377,21 +368,6 @@
     --_v2-sidebar-w: var(--ct-v2-sidebar-rail-width);
   }
 
-  .ct-app-shell-v2:not([data-sidebar-state]) .ct-nav-item__label,
-  .ct-app-shell-v2:not([data-sidebar-state]) .ct-nav-item__badge,
-  .ct-app-shell-v2:not([data-sidebar-state]) .ct-sidebar__header span,
-  .ct-app-shell-v2:not([data-sidebar-state]) .ct-sidebar__header strong {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .ct-app-shell-v2:not([data-sidebar-state]) .ct-nav-item {
-    justify-content: center;
-    padding-inline: var(--space-3);
-  }
-
   /* Panel becomes floating overlay on tablet */
   .ct-app-shell-v2[data-panel-state='open'] .ct-app-shell-v2__panel {
     position: fixed;
@@ -399,7 +375,7 @@
     inset-inline-end: var(--ct-v2-gap);
     width: min(var(--ct-v2-panel-width), calc(100vw - 2 * var(--ct-v2-gap)));
     z-index: var(--z-overlay);
-    display: block;
+    visibility: visible;
     background: var(--ct-v2-surface-bg);
     border-radius: var(--ct-v2-radius);
     box-shadow: var(--shadow-lg);
@@ -473,7 +449,7 @@
     inset-inline-end: var(--ct-v2-gap);
     width: min(var(--ct-v2-panel-width), calc(100vw - 2 * var(--ct-v2-gap)));
     z-index: var(--z-overlay);
-    display: block;
+    visibility: visible;
     background: var(--ct-v2-surface-bg);
     border-radius: var(--ct-v2-radius);
     box-shadow: var(--shadow-lg);
@@ -512,14 +488,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ct-app-shell-v2,
+  .ct-app-shell-v2[data-sidebar-state],
   .ct-app-shell-v2__sidebar,
   .ct-app-shell-v2__panel,
-  .ct-app-shell-v2__backdrop,
-  .ct-app-shell-v2 .ct-nav-item__label,
-  .ct-app-shell-v2 .ct-nav-item__badge,
-  .ct-app-shell-v2 .ct-sidebar__header span,
-  .ct-app-shell-v2 .ct-sidebar__header strong {
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
+  .ct-app-shell-v2__backdrop {
+    transition: none;
   }
 }
