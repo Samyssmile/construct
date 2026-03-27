@@ -144,7 +144,7 @@
 
 /* Solid + success needs darker green for WCAG AA contrast with inverse text */
 .ct-banner.ct-banner--solid[data-variant='success'] {
-  --ct-banner-accent: var(--color-green-700);
+  --ct-banner-accent: var(--color-state-success-text);
 }
 
 /* ---- Appearance: Accents ---- */

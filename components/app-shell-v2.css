@@ -32,7 +32,7 @@
   --ct-v2-radius: var(--radius-lg);
   --ct-v2-canvas-bg: var(--color-bg-muted);
   --ct-v2-surface-bg: var(--color-bg-canvas);
-  --ct-v2-surface-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --ct-v2-surface-shadow: var(--shadow-xs);
   --ct-v2-transition-duration: 250ms;
   --ct-v2-transition-easing: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -278,10 +278,16 @@
 /* Tinted sidebar surface — Slack / Linear / Discord aesthetic. */
 
 .ct-app-shell-v2--sidebar-branded > .ct-app-shell-v2__sidebar {
-  --_branded-hover-bg: color-mix(in srgb, var(--color-slate-0) 8%, transparent);
-  --_branded-active-bg: color-mix(in srgb, var(--color-slate-0) 12%, transparent);
-  --_branded-badge-bg: color-mix(in srgb, var(--color-slate-0) 15%, transparent);
-  background: var(--color-slate-900);
+  --_branded-bg: var(--color-slate-900);
+  --_branded-border: var(--color-slate-700);
+  --_branded-text: var(--color-slate-300);
+  --_branded-text-strong: var(--color-slate-0);
+  --_branded-text-muted: var(--color-slate-100);
+  --_branded-hover-bg: color-mix(in srgb, var(--_branded-text-strong) 8%, transparent);
+  --_branded-active-bg: color-mix(in srgb, var(--_branded-text-strong) 12%, transparent);
+  --_branded-badge-bg: color-mix(in srgb, var(--_branded-text-strong) 15%, transparent);
+
+  background: var(--_branded-bg);
   color: var(--color-text-inverse);
   box-shadow: none;
 }
@@ -291,30 +297,30 @@
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-sidebar__header {
-  border-bottom-color: var(--color-slate-700);
-  color: var(--color-slate-0);
+  border-bottom-color: var(--_branded-border);
+  color: var(--_branded-text-strong);
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item {
-  color: var(--color-slate-300);
+  color: var(--_branded-text);
 }
 
 @media (hover: hover) {
   .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item:hover {
     background: var(--_branded-hover-bg);
-    color: var(--color-slate-0);
+    color: var(--_branded-text-strong);
   }
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item--active,
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item[aria-current='page'] {
   background: var(--_branded-active-bg);
-  color: var(--color-slate-0);
+  color: var(--_branded-text-strong);
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item__badge {
   background: var(--_branded-badge-bg);
-  color: var(--color-slate-100);
+  color: var(--_branded-text-muted);
 }
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item--active .ct-nav-item__badge,

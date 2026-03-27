@@ -40,6 +40,12 @@
 
 /* ── Brand ──────────────────────────────────────────────────────── */
 
+.ct-navbar__brand-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .ct-navbar__brand {
   display: inline-flex;
   align-items: center;
@@ -487,24 +493,31 @@
 /* ── Dark ──────────────────────────────────────────────────────── */
 
 .ct-navbar--dark {
-  --ct-navbar-bg: var(--color-slate-900);
-  --ct-navbar-border-color: var(--color-slate-800);
-  color: var(--color-text-inverse);
+  --_dark-bg: var(--color-slate-900);
+  --_dark-bg-hover: var(--color-slate-800);
+  --_dark-border: var(--color-slate-800);
+  --_dark-text: var(--color-slate-300);
+  --_dark-text-strong: var(--color-text-inverse);
+  --_dark-text-muted: var(--color-slate-400);
+
+  --ct-navbar-bg: var(--_dark-bg);
+  --ct-navbar-border-color: var(--_dark-border);
+  color: var(--_dark-text-strong);
 }
 
 .ct-navbar--dark .ct-navbar__link {
-  color: var(--color-slate-300);
+  color: var(--_dark-text);
 }
 
 @media (hover: hover) {
   .ct-navbar--dark .ct-navbar__link:hover {
-    background: var(--color-slate-800);
-    color: var(--color-text-inverse);
+    background: var(--_dark-bg-hover);
+    color: var(--_dark-text-strong);
   }
 }
 
 .ct-navbar--dark .ct-navbar__link[aria-current='page'] {
-  color: var(--color-text-inverse);
+  color: var(--_dark-text-strong);
 }
 
 .ct-navbar--dark .ct-navbar__link[aria-current='page']::after {
@@ -512,48 +525,62 @@
 }
 
 .ct-navbar--dark .ct-navbar__link-chevron {
-  color: var(--color-slate-400);
+  color: var(--_dark-text-muted);
 }
 
 .ct-navbar--dark .ct-navbar__toggle {
-  color: var(--color-text-inverse);
+  color: var(--_dark-text-strong);
 }
 
 @media (hover: hover) {
   .ct-navbar--dark .ct-navbar__toggle:hover {
-    background: var(--color-slate-800);
+    background: var(--_dark-bg-hover);
   }
 }
 
 .ct-navbar--dark .ct-navbar__mobile-menu {
-  background: var(--color-slate-900);
-  border-color: var(--color-slate-800);
+  background: var(--_dark-bg);
+  border-color: var(--_dark-border);
 }
 
 .ct-navbar--dark .ct-navbar__mobile-menu .ct-navbar__link {
-  color: var(--color-slate-300);
+  color: var(--_dark-text);
 }
 
 @media (hover: hover) {
   .ct-navbar--dark .ct-navbar__mobile-menu .ct-navbar__link:hover {
-    background: var(--color-slate-800);
-    color: var(--color-text-inverse);
+    background: var(--_dark-bg-hover);
+    color: var(--_dark-text-strong);
   }
 }
 
 .ct-navbar--dark .ct-navbar__mobile-menu .ct-navbar__link[aria-current='page'] {
-  background: var(--color-slate-800);
-  color: var(--color-text-inverse);
+  background: var(--_dark-bg-hover);
+  color: var(--_dark-text-strong);
 }
 
 .ct-navbar--dark .ct-navbar__actions .ct-button {
-  color: var(--color-text-inverse);
+  color: var(--_dark-text-strong);
 }
 
 /* ── Center Nav ────────────────────────────────────────────────── */
 
+.ct-navbar--center .ct-navbar__brand-wrapper {
+  flex: 1;
+}
+
 .ct-navbar--center .ct-navbar__nav {
-  margin-inline: auto;
+  justify-content: center;
+}
+
+.ct-navbar--center .ct-navbar__actions {
+  flex: 1;
+  justify-content: flex-end;
+  margin-inline-start: 0;
+}
+
+.ct-navbar--center .ct-navbar__spacer {
+  display: none;
 }
 
 /* ── Responsive ────────────────────────────────────────────────── */

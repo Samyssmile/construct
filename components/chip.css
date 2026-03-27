@@ -98,14 +98,14 @@
 .ct-chip--info {
   --ct-chip-bg: var(--color-state-info-surface);
   --ct-chip-border: var(--color-state-info-border);
-  --ct-chip-color: var(--color-ocean-700);
+  --ct-chip-color: var(--color-state-info-text);
   --ct-chip-accent: var(--color-state-info);
 }
 
 .ct-chip--success {
   --ct-chip-bg: var(--color-state-success-surface);
   --ct-chip-border: var(--color-state-success-border);
-  --ct-chip-color: var(--color-green-700);
+  --ct-chip-color: var(--color-state-success-text);
   --ct-chip-accent: var(--color-state-success);
 }
 
@@ -119,7 +119,7 @@
 .ct-chip--danger {
   --ct-chip-bg: var(--color-state-danger-surface);
   --ct-chip-border: var(--color-state-danger-border);
-  --ct-chip-color: var(--color-red-700);
+  --ct-chip-color: var(--color-state-danger-text);
   --ct-chip-accent: var(--color-state-danger);
 }
 
@@ -163,17 +163,17 @@
 }
 
 .ct-chip--solid.ct-chip--success {
-  --ct-chip-bg: var(--color-green-700);
-  --ct-chip-border: var(--color-green-700);
+  --ct-chip-bg: var(--color-state-success-text);
+  --ct-chip-border: var(--color-state-success-text);
   --ct-chip-color: var(--color-text-inverse);
   --ct-chip-accent: var(--color-text-inverse);
 }
 
 .ct-chip--solid.ct-chip--warning {
-  --ct-chip-bg: var(--color-amber-500);
-  --ct-chip-border: var(--color-amber-500);
-  --ct-chip-color: var(--color-amber-900);
-  --ct-chip-accent: var(--color-amber-900);
+  --ct-chip-bg: var(--color-state-warning-text);
+  --ct-chip-border: var(--color-state-warning-text);
+  --ct-chip-color: var(--color-text-inverse);
+  --ct-chip-accent: var(--color-text-inverse);
 }
 
 .ct-chip--solid.ct-chip--danger {

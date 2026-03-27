@@ -88,8 +88,8 @@
 
 .ct-button--danger {
   --ct-button-bg: var(--color-state-danger);
-  --ct-button-bg-hover: var(--color-red-600);
-  --ct-button-bg-active: var(--color-red-700);
+  --ct-button-bg-hover: color-mix(in srgb, var(--color-state-danger) 85%, black);
+  --ct-button-bg-active: color-mix(in srgb, var(--color-state-danger) 70%, black);
   --ct-button-border: transparent;
   --ct-button-color: var(--color-text-inverse);
 }
