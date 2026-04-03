@@ -95,11 +95,11 @@
 .ct-accordion--bordered .ct-accordion__item {
   border: var(--border-thin) solid var(--ct-accordion-border);
   border-radius: var(--radius-md);
-  margin-bottom: var(--space-2);
+  margin-block-end: var(--space-2);
 }
 
 .ct-accordion--bordered .ct-accordion__item:last-child {
-  margin-bottom: 0;
+  margin-block-end: 0;
   border-bottom: var(--border-thin) solid var(--ct-accordion-border);
 }
 
@@ -120,5 +120,19 @@
   .ct-accordion__icon,
   .ct-accordion__item::details-content {
     transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-accordion__trigger {
+    border: 1px solid transparent;
+  }
+
+  .ct-accordion__trigger:focus-visible {
+    outline: 2px solid LinkText;
+  }
+
+  .ct-accordion__icon {
+    forced-color-adjust: auto;
   }
 }

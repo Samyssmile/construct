@@ -1,5 +1,5 @@
 .ct-input--with-icon {
-  padding-left: calc(var(--space-8) + var(--space-4));
+  padding-inline-start: calc(var(--space-8) + var(--space-4));
 }
 
 .ct-input-wrap {
