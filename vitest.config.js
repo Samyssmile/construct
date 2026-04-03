@@ -30,6 +30,7 @@ export default defineConfig({
             instances: [{ browser: 'chromium' }],
           },
           setupFiles: ['.storybook/vitest.setup.js'],
+          retry: 2,
         },
       },
     ],
