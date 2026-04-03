@@ -36,6 +36,7 @@
   --ct-chip-font-size: var(--font-size-xs);
   --ct-chip-line-height: var(--line-height-xs);
   --ct-chip-remove-size: var(--icon-sm);
+  --ct-chip-gap: var(--space-1);
 }
 
 .ct-chip--lg {
@@ -44,6 +45,7 @@
   --ct-chip-font-size: var(--font-size-md);
   --ct-chip-line-height: var(--line-height-md);
   --ct-chip-remove-size: var(--icon-xl);
+  --ct-chip-gap: var(--space-3);
 }
 
 /* ── Interactive state ───────────────────────────────────────── */
