@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.6] - 2026-04-09
+
+### Changed
+
 ### Added
 
 - Avatar seeded color palette: `.ct-avatar[data-seed-color="N"]` (N = 1–8) selects a deterministic background/foreground pair from the palette, letting consumers give each user a stable color. Avatars without the attribute keep the existing default — fully backwards compatible. (#85)
@@ -99,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow for Storybook deployment to GitHub Pages
 - Token build script with `--check` mode for CI validation
 
+[1.1.6]: https://github.com/Samyssmile/construct/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/Samyssmile/construct/compare/v1.1.4...v1.1.5
 [1.1.4]: https://github.com/Samyssmile/construct/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/Samyssmile/construct/compare/v1.1.2...v1.1.3
