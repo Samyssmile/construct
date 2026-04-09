@@ -216,6 +216,82 @@ export const StatusIndicators = {
   },
 };
 
+export const SeededColors = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Avatars accept an optional `data-seed-color` attribute (integer 1–8) that selects a deterministic color pair from the palette. Consumers compute a stable hash from a user identifier (UUID, email, …) and write the resulting index — the design system owns the actual colors and contrast guarantees. Without the attribute, avatars render with the default background, so the feature is fully backwards compatible.',
+      },
+    },
+  },
+  render: () => {
+    const seeds = [
+      { i: 1, label: 'Ava Bauer' },
+      { i: 2, label: 'Ben Cordes' },
+      { i: 3, label: 'Carla Dahl' },
+      { i: 4, label: 'Dario Eich' },
+      { i: 5, label: 'Eva Frahm' },
+      { i: 6, label: 'Felix Grau' },
+      { i: 7, label: 'Greta Holm' },
+      { i: 8, label: 'Hugo Imker' },
+    ];
+    const initials = (name) =>
+      name
+        .split(' ')
+        .map((p) => p[0])
+        .join('')
+        .toUpperCase();
+    const cells = seeds
+      .map(
+        ({ i, label }) => `
+    <div style="text-align: center;">
+      <span class="ct-avatar ct-avatar--lg" role="img" aria-label="${label}" data-seed-color="${i}">
+        <span class="ct-avatar__initials" aria-hidden="true">${initials(label)}</span>
+      </span>
+      <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">seed ${i}</div>
+    </div>`
+      )
+      .join('');
+    return `
+  <div class="ct-stack" style="--ct-stack-space: var(--space-7);">
+    <div>
+      <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-3);">Palette (8 deterministic colors)</div>
+      <div class="ct-cluster" style="--ct-cluster-gap: var(--space-6); align-items: center;">${cells}</div>
+    </div>
+    <div>
+      <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-3);">Default (no seed)</div>
+      <span class="ct-avatar ct-avatar--lg" role="img" aria-label="Unseeded user">
+        <span class="ct-avatar__initials" aria-hidden="true">UU</span>
+      </span>
+    </div>
+  </div>
+`;
+  },
+  play: async ({ canvasElement }) => {
+    const seededAvatars = canvasElement.querySelectorAll('.ct-avatar[data-seed-color]');
+    expect(seededAvatars).toHaveLength(8);
+
+    // Each seed value 1..8 must be represented exactly once
+    const seenSeeds = new Set();
+    for (const avatar of seededAvatars) {
+      const seed = avatar.getAttribute('data-seed-color');
+      seenSeeds.add(seed);
+      // Initials remain the primary identifier (color is just a visual hint)
+      expect(avatar.querySelector('.ct-avatar__initials')).toBeInTheDocument();
+      // Accessible name comes from aria-label, not the color
+      expect(avatar).toHaveAttribute('aria-label');
+    }
+    expect(seenSeeds.size).toBe(8);
+
+    // Unseeded avatar still renders without a seed attribute
+    const unseededAvatars = canvasElement.querySelectorAll(
+      '.ct-avatar:not([data-seed-color])'
+    );
+    expect(unseededAvatars.length).toBeGreaterThan(0);
+  },
+};
+
 export const Group = {
   render: () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-8);">

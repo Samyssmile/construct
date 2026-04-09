@@ -38,6 +38,22 @@
   --ct-avatar-color: var(--color-text-secondary);
   --ct-avatar-status-size: 10px;
   --ct-avatar-group-overlap: -8px;
+  --ct-avatar-seed-1-bg: var(--color-avatar-seed-1-bg);
+  --ct-avatar-seed-1-fg: var(--color-avatar-seed-1-fg);
+  --ct-avatar-seed-2-bg: var(--color-avatar-seed-2-bg);
+  --ct-avatar-seed-2-fg: var(--color-avatar-seed-2-fg);
+  --ct-avatar-seed-3-bg: var(--color-avatar-seed-3-bg);
+  --ct-avatar-seed-3-fg: var(--color-avatar-seed-3-fg);
+  --ct-avatar-seed-4-bg: var(--color-avatar-seed-4-bg);
+  --ct-avatar-seed-4-fg: var(--color-avatar-seed-4-fg);
+  --ct-avatar-seed-5-bg: var(--color-avatar-seed-5-bg);
+  --ct-avatar-seed-5-fg: var(--color-avatar-seed-5-fg);
+  --ct-avatar-seed-6-bg: var(--color-avatar-seed-6-bg);
+  --ct-avatar-seed-6-fg: var(--color-avatar-seed-6-fg);
+  --ct-avatar-seed-7-bg: var(--color-avatar-seed-7-bg);
+  --ct-avatar-seed-7-fg: var(--color-avatar-seed-7-fg);
+  --ct-avatar-seed-8-bg: var(--color-avatar-seed-8-bg);
+  --ct-avatar-seed-8-fg: var(--color-avatar-seed-8-fg);
 }
 
 :where(.ct-input, .ct-select, .ct-textarea, .ct-control) {

@@ -36,6 +36,52 @@
   --ct-avatar-font-size: var(--font-size-xl);
 }
 
+/* ── Seeded colors ── */
+/* Deterministic palette for initials avatars. The consumer hashes a stable
+   identifier (userUUID, email, …) into [0, palette-size - 1] and writes the
+   resulting index to data-seed-color. Without the attribute, .ct-avatar
+   keeps its default background — fully backwards compatible. */
+
+.ct-avatar[data-seed-color='1'] {
+  background: var(--ct-avatar-seed-1-bg);
+  color: var(--ct-avatar-seed-1-fg);
+}
+
+.ct-avatar[data-seed-color='2'] {
+  background: var(--ct-avatar-seed-2-bg);
+  color: var(--ct-avatar-seed-2-fg);
+}
+
+.ct-avatar[data-seed-color='3'] {
+  background: var(--ct-avatar-seed-3-bg);
+  color: var(--ct-avatar-seed-3-fg);
+}
+
+.ct-avatar[data-seed-color='4'] {
+  background: var(--ct-avatar-seed-4-bg);
+  color: var(--ct-avatar-seed-4-fg);
+}
+
+.ct-avatar[data-seed-color='5'] {
+  background: var(--ct-avatar-seed-5-bg);
+  color: var(--ct-avatar-seed-5-fg);
+}
+
+.ct-avatar[data-seed-color='6'] {
+  background: var(--ct-avatar-seed-6-bg);
+  color: var(--ct-avatar-seed-6-fg);
+}
+
+.ct-avatar[data-seed-color='7'] {
+  background: var(--ct-avatar-seed-7-bg);
+  color: var(--ct-avatar-seed-7-fg);
+}
+
+.ct-avatar[data-seed-color='8'] {
+  background: var(--ct-avatar-seed-8-bg);
+  color: var(--ct-avatar-seed-8-fg);
+}
+
 .ct-avatar__image {
   width: 100%;
   height: 100%;

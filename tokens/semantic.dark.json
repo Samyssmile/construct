@@ -54,6 +54,24 @@
     },
     "focus": {
       "ring": "{color.teal.300}"
+    },
+    "avatarSeed": {
+      "1Bg": "{color.ocean.800}",
+      "1Fg": "{color.ocean.200}",
+      "2Bg": "{color.teal.800}",
+      "2Fg": "{color.teal.200}",
+      "3Bg": "{color.amber.800}",
+      "3Fg": "{color.amber.200}",
+      "4Bg": "{color.red.800}",
+      "4Fg": "{color.red.200}",
+      "5Bg": "{color.green.800}",
+      "5Fg": "{color.green.200}",
+      "6Bg": "{color.purple.800}",
+      "6Fg": "{color.purple.200}",
+      "7Bg": "{color.pink.800}",
+      "7Fg": "{color.pink.200}",
+      "8Bg": "{color.slate.700}",
+      "8Fg": "{color.slate.200}"
     }
   },
   "theme": {

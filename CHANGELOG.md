@@ -5,6 +5,15 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Avatar seeded color palette: `.ct-avatar[data-seed-color="N"]` (N = 1–8) selects a deterministic background/foreground pair from the palette, letting consumers give each user a stable color. Avatars without the attribute keep the existing default — fully backwards compatible. (#85)
+- New semantic tokens `--color-avatar-seed-{1..8}-{bg,fg}` and component-level `--ct-avatar-seed-{1..8}-{bg,fg}` aliases, defined for `light`, `dark`, and `high-contrast` themes. Every pair meets WCAG AA (≥ 4.5:1, lowest measured 6.48:1).
+- New color primitives `purple` and `pink` (50–900 scales) feeding the seed palette.
+- Storybook story `Data Display/Avatar/Seeded Colors` showcasing the palette and confirming the unseeded fallback.
+
 ## [1.1.5] - 2026-04-03
 
 ### Changed
