@@ -82,6 +82,65 @@ A consistent, accessible, professional design system for modern web applications
 - **Close**: On blur and Esc
 - **Role**: `role="tooltip"` with `aria-describedby`
 
+### Tree (`ct-tree`)
+
+Hierarchical disclosure following the [WAI-ARIA Tree View pattern](https://www.w3.org/WAI/ARIA/apg/patterns/treeview/). Use it for n-level nested data such as file explorers, organisation hierarchies, or category trees.
+
+**Roles**
+- Container: `<ul role="tree">` with an `aria-label` or `aria-labelledby` reference
+- Node: `<li role="treeitem">` with `aria-level` (1-based), `aria-setsize`, `aria-posinset`
+- Children container: `<ul role="group">`
+- Expandable nodes carry `aria-expanded="true|false"`. Leaf nodes omit the attribute.
+
+**Indent**
+Set `--ct-level` inline on each `.ct-tree__row` (matches the node's `aria-level`). The bundled JS controller used in Storybook fills it in automatically; framework wrappers should generate it during render.
+
+**Keyboard**
+- `↑` / `↓`: focus previous / next visible row
+- `→`: if collapsed, expand. If expanded, focus first child. Leaf: nothing.
+- `←`: if expanded, collapse. Otherwise, focus parent row.
+- `Home` / `End`: focus first / last visible row
+- `Enter`: activate (consumer-defined; emit `ct-tree:activate`)
+- `Space`: toggle selection (multi/single) or activate (no selection)
+- `*`: expand all siblings on the same level
+- Type-ahead (`A`–`Z`): focus next row whose label starts with the typed prefix; buffer resets after 500 ms
+
+**Roving tabindex**
+Exactly one `<li role="treeitem">` carries `tabindex="0"`. All others carry `tabindex="-1"`. Arrow keys move focus — and the `tabindex` — along with them. The `tabindex` lives on the element with the `treeitem` role, never on the inner `.ct-tree__row` `<div>`: a focused `<div>` without a role would orphan the screen-reader announcement of level, posinset, expanded and selected state.
+
+**Toggle / chevron**
+The `.ct-tree__toggle` is a non-focusable `<span aria-hidden="true">`. Expand/collapse is reachable via keyboard through `←`/`→` on the row and via mouse through clicking the chevron. We deliberately avoid making the toggle a `<button>`: a focusable button inside a focusable row violates `aria-hidden-focus` / `nested-interactive`, and the row already provides the keyboard affordance.
+
+**Row actions**
+Buttons in the `.ct-tree__actions` slot live inside the focusable treeitem. Give them `tabindex="-1"` so the tree exposes a single Tab stop, as required by the WAI-ARIA Tree View pattern. Reach them via mouse, or expose a row-level action hotkey from the consuming framework.
+
+**Selection**
+- `aria-selected="true|false"` on the `<li role="treeitem">` (only when selection is active).
+- For multi-selection, the container needs `aria-multiselectable="true"`. The Storybook controller (`attachTree`) sets and tears this down automatically when invoked with `selection: 'multi'`.
+- Construct only styles selection — the consumer decides whether to clear other rows (`single`) or keep them (`multi`).
+
+**Async children**
+Set `aria-busy="true"` on the `<li role="treeitem">` while its children are loading. The chevron switches to a spinner via the existing `ct-spin` keyframe and the toggle becomes non-interactive while busy.
+
+**Disabled nodes**
+Use `aria-disabled="true"` on the `<li>`. Do **not** use the HTML `disabled` attribute — `treeitem` is not a form control. The Storybook controller skips activation, selection and toggle for disabled nodes; arrow-key navigation still passes through them so screen readers can announce them.
+
+**Orphan state**
+For sub-nodes whose parent reference is missing in the data set, render them on the root level with the `.ct-tree__node--orphan` modifier. They get a warning-tinted surface and a dashed border so the data inconsistency is visible without breaking the tree.
+
+**Custom events**
+The Storybook controller emits four bubbling `CustomEvent`s on the focused treeitem so consumers can wire up application logic without re-implementing the keyboard model:
+
+| Event | Detail | Fires on |
+|---|---|---|
+| `ct-tree:expand` | `{ node }` | Node opened (click on toggle, `→`, `*`) |
+| `ct-tree:collapse` | `{ node }` | Node closed (click on toggle, `←`) |
+| `ct-tree:select` | `{ node, mode: 'click'\|'enter'\|'space' }` | Selection changed (only when `selection !== 'none'`) |
+| `ct-tree:activate` | `{ node }` | Row primary-action (click, `Enter`, or `Space` when no selection) |
+
+**What's not in Phase 1**
+Drag & drop reparenting, virtual scrolling, and tristate parent-derived checkboxes are out of scope and tracked separately.
+
 ## Component States
 
 Use these attributes for state management:

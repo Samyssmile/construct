@@ -1,0 +1,328 @@
+/* ── Tree (WAI-ARIA Tree View) ─────────────────────── */
+
+.ct-tree {
+  --ct-tree-indent: 1.5rem;
+  --ct-tree-row-height: 2rem;
+  --ct-tree-row-padding-y: var(--space-2);
+  --ct-tree-row-padding-x: var(--space-4);
+  --ct-tree-row-gap: var(--space-3);
+  --ct-tree-row-radius: var(--radius-sm);
+  --ct-tree-row-bg: transparent;
+  --ct-tree-row-bg-hover: var(--color-bg-muted);
+  --ct-tree-row-bg-selected: color-mix(in srgb, var(--color-brand-primary) 14%, transparent);
+  --ct-tree-row-color: var(--color-text-primary);
+  --ct-tree-row-color-selected: var(--color-brand-primary);
+
+  --ct-tree-guide-color: var(--color-border-subtle);
+  --ct-tree-guide-width: 1px;
+
+  --ct-tree-toggle-size: 1rem;
+  --ct-tree-toggle-color: var(--color-text-muted);
+  --ct-tree-toggle-color-hover: var(--color-text-primary);
+  --ct-tree-toggle-radius: var(--radius-xs);
+
+  --ct-tree-orphan-color: var(--color-state-warning-text);
+  --ct-tree-orphan-bg: var(--color-state-warning-surface);
+  --ct-tree-orphan-border: var(--color-state-warning-border);
+
+  --ct-tree-actions-opacity: 0;
+
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-body);
+  color: var(--ct-tree-row-color);
+}
+
+.ct-tree__group {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.ct-tree__node {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.ct-tree__node[aria-expanded='false'] > .ct-tree__group {
+  display: none;
+}
+
+/* ── Row (focus + click target) ── */
+
+.ct-tree__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ct-tree-row-gap);
+  min-height: var(--ct-tree-row-height);
+  padding-block: var(--ct-tree-row-padding-y);
+  padding-inline-end: var(--ct-tree-row-padding-x);
+  /* Indent: --ct-level is 1-based and set inline by consumers */
+  padding-inline-start: calc(
+    var(--ct-tree-row-padding-x) +
+    var(--ct-tree-indent) * (var(--ct-level, 1) - 1)
+  );
+  border-radius: var(--ct-tree-row-radius);
+  background: var(--ct-tree-row-bg);
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+}
+
+@media (hover: hover) {
+  .ct-tree__row:hover {
+    background: var(--ct-tree-row-bg-hover);
+  }
+
+  .ct-tree__row:hover .ct-tree__actions {
+    --ct-tree-actions-opacity: 1;
+  }
+}
+
+/* Focus lives on the `<li role="treeitem">`; outline is rendered on the row */
+.ct-tree__node:focus {
+  outline: none;
+}
+
+.ct-tree__node:focus-visible > .ct-tree__row {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+/* ── Toggle (chevron) ── */
+
+.ct-tree__toggle,
+.ct-tree__spacer {
+  flex-shrink: 0;
+  inline-size: var(--ct-tree-toggle-size);
+  block-size: var(--ct-tree-toggle-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ct-tree__toggle {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--ct-tree-toggle-radius);
+  color: var(--ct-tree-toggle-color);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--easing-standard),
+    background var(--duration-fast) var(--easing-standard);
+}
+
+@media (hover: hover) {
+  .ct-tree__toggle:hover {
+    color: var(--ct-tree-toggle-color-hover);
+  }
+}
+
+.ct-tree__chevron {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.ct-tree__node[aria-expanded='true'] > .ct-tree__row .ct-tree__chevron {
+  transform: rotate(90deg);
+}
+
+[dir='rtl'] .ct-tree__chevron {
+  transform: rotate(180deg);
+}
+
+[dir='rtl'] .ct-tree__node[aria-expanded='true'] > .ct-tree__row .ct-tree__chevron {
+  transform: rotate(90deg);
+}
+
+/* ── Content / actions slots ── */
+
+.ct-tree__content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ct-tree__content > svg {
+  flex-shrink: 0;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+  color: var(--color-text-secondary);
+}
+
+.ct-tree__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ct-tree__label mark {
+  background: color-mix(in srgb, var(--color-brand-primary) 22%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding-inline: 1px;
+}
+
+.ct-tree__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  opacity: var(--ct-tree-actions-opacity);
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.ct-tree__node:focus-visible > .ct-tree__row .ct-tree__actions,
+.ct-tree__row:focus-within .ct-tree__actions {
+  --ct-tree-actions-opacity: 1;
+}
+
+/* ── Selection ── */
+
+.ct-tree__node[aria-selected='true'] > .ct-tree__row,
+.ct-tree__node--selected > .ct-tree__row {
+  background: var(--ct-tree-row-bg-selected);
+  color: var(--ct-tree-row-color-selected);
+  font-weight: var(--font-weight-semibold);
+}
+
+.ct-tree__node[aria-selected='true'] > .ct-tree__row .ct-tree__content > svg,
+.ct-tree__node--selected > .ct-tree__row .ct-tree__content > svg {
+  color: var(--ct-tree-row-color-selected);
+}
+
+/* ── Disabled ── */
+
+.ct-tree__node[aria-disabled='true'] > .ct-tree__row {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.ct-tree__node[aria-disabled='true'] > .ct-tree__row:hover {
+  background: var(--ct-tree-row-bg);
+}
+
+/* ── Async loading (aria-busy on the `<li role="treeitem">`) ── */
+
+.ct-tree__node[aria-busy='true'] > .ct-tree__row .ct-tree__chevron {
+  animation: ct-spin var(--duration-xslow) linear infinite;
+  transform-origin: center;
+}
+
+.ct-tree__node[aria-busy='true'] > .ct-tree__row .ct-tree__toggle {
+  pointer-events: none;
+}
+
+/* ── Orphan state ── */
+
+.ct-tree__node--orphan > .ct-tree__row {
+  --ct-tree-row-bg: var(--ct-tree-orphan-bg);
+  border: 1px dashed var(--ct-tree-orphan-border);
+  color: var(--ct-tree-orphan-color);
+}
+
+.ct-tree__node--orphan > .ct-tree__row .ct-tree__content > svg {
+  color: var(--ct-tree-orphan-color);
+}
+
+/* ── Modifier: indent guides ── */
+
+.ct-tree--guides .ct-tree__group::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  /* Anchor guide under parent's chevron centre */
+  inset-inline-start: calc(
+    var(--ct-tree-row-padding-x) +
+    var(--ct-tree-indent) * (var(--ct-parent-level, 0)) +
+    var(--ct-tree-toggle-size) / 2
+  );
+  inline-size: var(--ct-tree-guide-width);
+  background: var(--ct-tree-guide-color);
+  pointer-events: none;
+}
+
+/* ── Modifier: dense ── */
+
+.ct-tree--dense {
+  --ct-tree-row-height: 1.5rem;
+  --ct-tree-row-padding-y: var(--space-1);
+  --ct-tree-row-gap: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+/* ── Modifier: bordered (optional surface variant) ── */
+
+.ct-tree--bordered {
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  background: var(--color-bg-elevated);
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-tree__row,
+  .ct-tree__chevron,
+  .ct-tree__toggle,
+  .ct-tree__actions {
+    transition: none;
+  }
+
+  .ct-tree__node[aria-busy='true'] > .ct-tree__row .ct-tree__chevron {
+    animation: none;
+  }
+}
+
+/* ── Forced colors / High-contrast ── */
+
+@media (forced-colors: active) {
+  .ct-tree__row {
+    border: 1px solid transparent;
+  }
+
+  .ct-tree__node:focus-visible > .ct-tree__row {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .ct-tree__node[aria-selected='true'] > .ct-tree__row,
+  .ct-tree__node--selected > .ct-tree__row {
+    border: 2px solid Highlight;
+    background: Canvas;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .ct-tree--guides .ct-tree__group::before {
+    background: CanvasText;
+  }
+
+  .ct-tree__node--orphan > .ct-tree__row {
+    border: 1px dashed Mark;
+    color: Mark;
+  }
+
+  .ct-tree__chevron,
+  .ct-tree__content > svg {
+    forced-color-adjust: auto;
+  }
+}
