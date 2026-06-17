@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+### Fixed
+
+- **a11y / focus:** Raised the `--color-focus-ring` contrast so the focus indicator meets the WCAG 2.2 ≥ 3:1 non-text-contrast minimum against the canvas and surface backgrounds. The `light` ring (`teal.400`, 2.59:1 on canvas) → `teal.600` (5.09:1) and the `high-contrast` ring (`amber.400`, 2.07:1) → `amber.700` (6.68:1); the `dark` ring already passed and is unchanged. Affects every component that uses the shared focus token (24 files).
+
+
 ## [1.3.0] - 2026-06-17
 
 ### Added

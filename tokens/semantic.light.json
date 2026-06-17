@@ -53,7 +53,7 @@
       "scrim": "rgba(14, 23, 32, 0.6)"
     },
     "focus": {
-      "ring": "{color.teal.400}"
+      "ring": "{color.teal.600}"
     },
     "avatarSeed": {
       "1Bg": "{color.ocean.100}",
