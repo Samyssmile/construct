@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.3.0] - 2026-06-17
+
+### Added
+
+- Chart styling skin (`ct-chart`) — a framework-agnostic theme layer for SVG data-visualisation primitives (line/area, bar, donut, sparkline, gauge). Provides series colour mapping (`.ct-chart__series--{1..8}` via `currentColor`), grid/axis, legend, donut/gauge text, and a visually-hidden **accessible data-table fallback** (`.ct-chart__table`, revealed with `.ct-chart--show-table`). Geometry is supplied by the consuming layer; this file only themes the result. `prefers-reduced-motion` and `forced-colors` supported.
+- New categorical chart palette tokens `--color-chart-series-{1..8}`, defined for `light`, `dark`, and `high-contrast` themes. Every series colour meets the WCAG 1.4.11 non-text contrast minimum (≥ 3:1) against both the canvas and surface backgrounds.
+
 ## [1.2.0] - 2026-05-07
 
 ### Added

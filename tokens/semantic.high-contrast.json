@@ -72,6 +72,16 @@
       "7Fg": "{color.pink.900}",
       "8Bg": "{color.slate.50}",
       "8Fg": "{color.slate.950}"
+    },
+    "chartSeries": {
+      "1": "{color.ocean.800}",
+      "2": "{color.amber.700}",
+      "3": "{color.green.700}",
+      "4": "{color.purple.700}",
+      "5": "{color.pink.700}",
+      "6": "{color.teal.700}",
+      "7": "{color.red.700}",
+      "8": "{color.slate.800}"
     }
   },
   "theme": {

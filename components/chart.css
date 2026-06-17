@@ -1,0 +1,353 @@
+/* ── Chart ──
+ *
+ * Framework-agnostic styling skin for SVG data-visualisation primitives
+ * (line / area, bar, donut, sparkline, gauge). The geometry (path data,
+ * scales, arcs) is produced by the consuming layer (e.g. the ng-construct
+ * `af-*-chart` components); this file only themes the resulting SVG and the
+ * accessible data-table fallback that every chart ships with.
+ *
+ * Series colour is carried via `color` on a `.ct-chart__series--N` element and
+ * read back through `currentColor`, so line, fill, dots and legend swatch all
+ * share a single source of truth and consumers can override one custom
+ * property to re-theme a series.
+ */
+
+.ct-chart {
+  --ct-chart-grid: var(--color-border-subtle);
+  --ct-chart-axis: var(--color-border-default);
+  --ct-chart-label: var(--color-text-muted);
+  --ct-chart-track: var(--color-bg-muted);
+  --ct-chart-area-opacity: 0.16;
+  --ct-chart-line-width: 2px;
+  --ct-chart-radius: var(--radius-xs);
+
+  --ct-chart-series-1: var(--color-chart-series-1);
+  --ct-chart-series-2: var(--color-chart-series-2);
+  --ct-chart-series-3: var(--color-chart-series-3);
+  --ct-chart-series-4: var(--color-chart-series-4);
+  --ct-chart-series-5: var(--color-chart-series-5);
+  --ct-chart-series-6: var(--color-chart-series-6);
+  --ct-chart-series-7: var(--color-chart-series-7);
+  --ct-chart-series-8: var(--color-chart-series-8);
+
+  display: block;
+  inline-size: 100%;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-body);
+}
+
+.ct-chart__figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.ct-chart__svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+}
+
+/* ── Series colour mapping ── */
+.ct-chart__series--1 { color: var(--ct-chart-series-1); }
+.ct-chart__series--2 { color: var(--ct-chart-series-2); }
+.ct-chart__series--3 { color: var(--ct-chart-series-3); }
+.ct-chart__series--4 { color: var(--ct-chart-series-4); }
+.ct-chart__series--5 { color: var(--ct-chart-series-5); }
+.ct-chart__series--6 { color: var(--ct-chart-series-6); }
+.ct-chart__series--7 { color: var(--ct-chart-series-7); }
+.ct-chart__series--8 { color: var(--ct-chart-series-8); }
+
+/* ── Axes & grid ── */
+.ct-chart__grid-line {
+  stroke: var(--ct-chart-grid);
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.ct-chart__axis-line {
+  stroke: var(--ct-chart-axis);
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.ct-chart__tick-label,
+.ct-chart__axis-title {
+  fill: var(--ct-chart-label);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-body);
+}
+
+.ct-chart__axis-title {
+  font-weight: var(--font-weight-medium);
+  fill: var(--color-text-secondary);
+}
+
+/* ── Line & area ── */
+.ct-chart__line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--ct-chart-line-width);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.ct-chart__area {
+  fill: currentColor;
+  opacity: var(--ct-chart-area-opacity);
+  stroke: none;
+}
+
+.ct-chart__dot {
+  fill: currentColor;
+  stroke: var(--color-bg-elevated);
+  stroke-width: 1.5px;
+}
+
+.ct-chart__dot--hollow {
+  fill: var(--color-bg-elevated);
+  stroke: currentColor;
+  stroke-width: var(--ct-chart-line-width);
+}
+
+/* ── Bars ── */
+.ct-chart__bar {
+  fill: currentColor;
+  rx: var(--ct-chart-radius);
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.ct-chart__bar:hover {
+  opacity: 0.85;
+}
+
+/* ── Donut / pie ── */
+.ct-chart__slice {
+  fill: currentColor;
+  stroke: var(--color-bg-elevated);
+  stroke-width: 2px;
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.ct-chart__slice:hover {
+  opacity: 0.85;
+}
+
+.ct-chart__donut-value {
+  fill: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-heading);
+}
+
+.ct-chart__donut-label {
+  fill: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+/* ── Gauge ── */
+.ct-chart__gauge-track {
+  fill: none;
+  stroke: var(--ct-chart-track);
+  stroke-width: var(--ct-chart-gauge-width, 14px);
+  stroke-linecap: round;
+}
+
+.ct-chart__gauge-value {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--ct-chart-gauge-width, 14px);
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--duration-normal) var(--easing-standard);
+}
+
+.ct-chart__gauge-value--default { color: var(--color-brand-primary); }
+.ct-chart__gauge-value--success { color: var(--color-state-success); }
+.ct-chart__gauge-value--warning { color: var(--color-state-warning); }
+.ct-chart__gauge-value--danger { color: var(--color-state-danger); }
+
+.ct-chart__gauge-text {
+  fill: var(--color-text-primary);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-heading);
+}
+
+.ct-chart__gauge-caption {
+  fill: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+/* ── Sparkline ── */
+.ct-chart--sparkline {
+  inline-size: auto;
+}
+
+.ct-chart--sparkline .ct-chart__svg {
+  inline-size: auto;
+}
+
+/* Compact, inline empty state for sparklines (overrides the card-sized default). */
+.ct-chart--sparkline .ct-chart__empty {
+  display: inline;
+  min-block-size: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: var(--font-size-xs);
+}
+
+/* ── Legend ── */
+.ct-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ct-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.ct-chart__legend-marker {
+  inline-size: 12px;
+  block-size: 12px;
+  flex: none;
+  border-radius: var(--radius-xs);
+  background: currentColor;
+}
+
+.ct-chart__legend-marker--line {
+  block-size: 3px;
+  border-radius: var(--radius-pill);
+}
+
+/* ── Accessible data-table fallback ──
+ * Hidden visually by default; revealed when the consumer toggles
+ * `.ct-chart--show-table`. Always present in the DOM for assistive tech. */
+.ct-chart__table-wrap {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ct-chart--show-table .ct-chart__table-wrap {
+  position: static;
+  inline-size: auto;
+  block-size: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+.ct-chart__table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  text-align: start;
+}
+
+.ct-chart__table caption {
+  text-align: start;
+  color: var(--color-text-muted);
+  padding-block-end: var(--space-3);
+}
+
+.ct-chart__table th,
+.ct-chart__table td {
+  border: var(--border-thin) solid var(--color-border-subtle);
+  padding: var(--space-3) var(--space-4);
+}
+
+.ct-chart__table th {
+  background: var(--color-bg-muted);
+  font-weight: var(--font-weight-semibold);
+  text-align: start;
+}
+
+.ct-chart__table td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Toggle button for the table fallback ── */
+.ct-chart__toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ct-chart__toggle {
+  appearance: none;
+  background: transparent;
+  border: var(--border-thin) solid var(--color-border-default);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  min-block-size: 24px;
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+}
+
+.ct-chart__toggle:hover {
+  background: var(--color-bg-muted);
+}
+
+.ct-chart__toggle:focus-visible {
+  outline: var(--border-medium) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Empty state ── */
+.ct-chart__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 120px;
+  padding: var(--space-7);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  background: var(--color-bg-surface);
+  border: var(--border-thin) dashed var(--color-border-subtle);
+  border-radius: var(--radius-card);
+}
+
+/* ── Motion & high-contrast ── */
+@media (prefers-reduced-motion: reduce) {
+  .ct-chart__bar,
+  .ct-chart__slice,
+  .ct-chart__gauge-value {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-chart__line,
+  .ct-chart__gauge-value {
+    stroke: CanvasText;
+  }
+  .ct-chart__bar,
+  .ct-chart__slice,
+  .ct-chart__legend-marker {
+    forced-color-adjust: none;
+  }
+  .ct-chart__grid-line,
+  .ct-chart__axis-line {
+    stroke: GrayText;
+  }
+}
