@@ -19,6 +19,7 @@
   --ct-chart-track: var(--color-bg-muted);
   --ct-chart-area-opacity: 0.16;
   --ct-chart-line-width: 2px;
+  --ct-chart-gauge-width: 14px;
   --ct-chart-radius: var(--radius-xs);
 
   --ct-chart-series-1: var(--color-chart-series-1);
@@ -135,6 +136,15 @@
   opacity: 0.85;
 }
 
+/* Focus parity for interactive marks: any chart shape the consumer makes
+ * keyboard-focusable (tabindex) gets the same visible affordance as :hover. */
+.ct-chart__bar:focus-visible,
+.ct-chart__slice:focus-visible,
+.ct-chart__dot:focus-visible {
+  outline: var(--border-medium) solid var(--color-focus-ring);
+  outline-offset: 1px;
+}
+
 .ct-chart__donut-value {
   fill: var(--color-text-primary);
   font-size: var(--font-size-2xl);
@@ -151,14 +161,14 @@
 .ct-chart__gauge-track {
   fill: none;
   stroke: var(--ct-chart-track);
-  stroke-width: var(--ct-chart-gauge-width, 14px);
+  stroke-width: var(--ct-chart-gauge-width);
   stroke-linecap: round;
 }
 
 .ct-chart__gauge-value {
   fill: none;
   stroke: currentColor;
-  stroke-width: var(--ct-chart-gauge-width, 14px);
+  stroke-width: var(--ct-chart-gauge-width);
   stroke-linecap: round;
   transition: stroke-dashoffset var(--duration-normal) var(--easing-standard);
 }
@@ -337,15 +347,21 @@
 }
 
 @media (forced-colors: active) {
+  /* Data marks encode meaning through colour, so they opt out of the forced
+   * palette to stay internally consistent — otherwise a coloured legend would
+   * describe monochrome lines. The always-present data-table fallback remains
+   * the fully forced-colors-compliant path to the underlying values. */
   .ct-chart__line,
-  .ct-chart__gauge-value {
-    stroke: CanvasText;
-  }
+  .ct-chart__area,
+  .ct-chart__dot,
   .ct-chart__bar,
   .ct-chart__slice,
-  .ct-chart__legend-marker {
+  .ct-chart__legend-marker,
+  .ct-chart__gauge-track,
+  .ct-chart__gauge-value {
     forced-color-adjust: none;
   }
+  /* Chrome (grid & axes) follows the user's forced palette. */
   .ct-chart__grid-line,
   .ct-chart__axis-line {
     stroke: GrayText;

@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Chart styling skin (`ct-chart`) — a framework-agnostic theme layer for SVG data-visualisation primitives (line/area, bar, donut, sparkline, gauge). Provides series colour mapping (`.ct-chart__series--{1..8}` via `currentColor`), grid/axis, legend, donut/gauge text, and a visually-hidden **accessible data-table fallback** (`.ct-chart__table`, revealed with `.ct-chart--show-table`). Geometry is supplied by the consuming layer; this file only themes the result. `prefers-reduced-motion` and `forced-colors` supported.
 - New categorical chart palette tokens `--color-chart-series-{1..8}`, defined for `light`, `dark`, and `high-contrast` themes. Every series colour meets the WCAG 1.4.11 non-text contrast minimum (≥ 3:1) against both the canvas and surface backgrounds.
+- Storybook coverage for `ct-chart` (`Chart.stories.js`): line/area, bar, donut, gauge, sparkline, empty state, the interactive data-table toggle (documenting the `aria-expanded`/`aria-controls` contract), and an optional keyboard-focusable-marks example. All stories pass the a11y addon in `error` mode.
+
+### Fixed
+
+- `ct-chart`: interactive marks (`.ct-chart__bar`, `.ct-chart__slice`, `.ct-chart__dot`) now have `:focus-visible` parity with their `:hover` affordance, so consumer-focusable data points show a visible focus ring.
+- `ct-chart`: hoisted `--ct-chart-gauge-width` into the `.ct-chart` config block (was an inline `var()` fallback duplicated across two rules), making it discoverable and overridable like the other `--ct-chart-*` properties.
+- `ct-chart`: consistent `forced-colors` behaviour — data marks (line, area, dots, bars, slices, legend marker, gauge) now uniformly preserve their series/state colour via `forced-color-adjust: none`, so a coloured legend no longer describes monochrome lines in Windows High Contrast. Grid and axes still follow the user's forced palette, and the data-table fallback remains the fully compliant path.
 
 ## [1.2.0] - 2026-05-07
 
