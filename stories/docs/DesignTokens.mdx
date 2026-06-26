@@ -33,8 +33,8 @@ Raw design values that form the palette. They rarely change.
 ```json
 {
   "color": {
-    "ocean": { "700": "#174C5D" },
-    "slate": { "950": "#0E1720" }
+    "orange": { "500": "#F4581C" },
+    "stone": { "950": "#16130F" }
   },
   "space": { "4": 8, "6": 16 },
   "radius": { "md": 8, "lg": 12 }
@@ -48,8 +48,8 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
 ```json
 {
   "color": {
-    "brand": { "primary": "{color.ocean.700}" },
-    "text":  { "primary": "{color.slate.950}" }
+    "brand": { "primary": "{color.stone.950}", "accent": "{color.orange.500}" },
+    "text":  { "primary": "{color.stone.950}" }
   }
 }
 ```
@@ -150,8 +150,8 @@ Spacing uses a numeric scale where each step maps to a pixel value. Use `var(--s
 
 | CSS Variable | Value |
 |-------------|-------|
-| `--font-family-heading` | Sora |
-| `--font-family-body` | Source Sans 3 |
+| `--font-family-heading` | Manrope |
+| `--font-family-body` | Manrope |
 | `--font-family-code` | JetBrains Mono |
 
 ### Font Sizes

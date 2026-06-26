@@ -180,7 +180,7 @@
 
 .ct-combobox__option[data-highlighted] {
   background: var(--color-bg-muted);
-  outline: var(--border-medium) solid var(--color-brand-primary);
+  outline: var(--border-medium) solid var(--color-focus-ring);
   outline-offset: -2px;
 }
 

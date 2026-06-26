@@ -7,7 +7,7 @@
   --ct-tabs-trigger-font-size: var(--font-size-sm);
   --ct-tabs-trigger-line-height: var(--line-height-sm);
   --ct-tabs-indicator-size: 2px;
-  --ct-tabs-indicator-color: var(--color-brand-primary);
+  --ct-tabs-indicator-color: var(--color-brand-accent);
 
   display: grid;
   gap: var(--ct-tabs-gap);

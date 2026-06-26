@@ -185,9 +185,9 @@ CSS custom properties cannot be used inside `@media` queries. Use the raw pixel 
 
 ## Fonts
 
-- **Default**: Fonts are loaded via Google Fonts in `foundations.css` (Sora, Source Sans 3, JetBrains Mono)
+- **Default**: Fonts are loaded via Google Fonts in `foundations.css` (Manrope for display + body, JetBrains Mono for code/data)
 - **Self-hosting**: For CSP or privacy requirements, replace Google Fonts import with local `@font-face` rules
-- **Weights**: Ensure 400, 500, 600, and 700 are available
+- **Weights**: Ensure 400, 500, 600, 700, and 800 are available
 
 ## Governance
 

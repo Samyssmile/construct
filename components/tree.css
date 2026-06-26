@@ -9,7 +9,7 @@
   --ct-tree-row-radius: var(--radius-sm);
   --ct-tree-row-bg: transparent;
   --ct-tree-row-bg-hover: var(--color-bg-muted);
-  --ct-tree-row-bg-selected: color-mix(in srgb, var(--color-brand-primary) 14%, transparent);
+  --ct-tree-row-bg-selected: color-mix(in srgb, var(--color-brand-accent) 14%, transparent);
   --ct-tree-row-color: var(--color-text-primary);
   --ct-tree-row-color-selected: var(--color-brand-primary);
 
@@ -173,7 +173,7 @@
 }
 
 .ct-tree__label mark {
-  background: color-mix(in srgb, var(--color-brand-primary) 22%, transparent);
+  background: color-mix(in srgb, var(--color-brand-accent) 22%, transparent);
   color: inherit;
   border-radius: 2px;
   padding-inline: 1px;

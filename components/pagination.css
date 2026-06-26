@@ -10,11 +10,11 @@
   --ct-pagination-radius: var(--radius-sm);
   --ct-pagination-bg: var(--color-bg-elevated);
   --ct-pagination-bg-hover: var(--color-bg-muted);
-  --ct-pagination-bg-active: var(--color-brand-primary);
+  --ct-pagination-bg-active: var(--color-brand-accent);
   --ct-pagination-border: var(--color-border-default);
-  --ct-pagination-border-active: var(--color-brand-primary);
+  --ct-pagination-border-active: var(--color-brand-accent);
   --ct-pagination-color: var(--color-text-primary);
-  --ct-pagination-color-active: var(--color-text-inverse);
+  --ct-pagination-color-active: var(--color-brand-on-accent);
   --ct-pagination-color-muted: var(--color-text-muted);
 
   display: flex;

@@ -278,11 +278,11 @@
 /* Tinted sidebar surface — Slack / Linear / Discord aesthetic. */
 
 .ct-app-shell-v2--sidebar-branded > .ct-app-shell-v2__sidebar {
-  --_branded-bg: var(--color-slate-900);
-  --_branded-border: var(--color-slate-700);
-  --_branded-text: var(--color-slate-300);
-  --_branded-text-strong: var(--color-slate-0);
-  --_branded-text-muted: var(--color-slate-100);
+  --_branded-bg: var(--color-stone-900);
+  --_branded-border: var(--color-stone-700);
+  --_branded-text: var(--color-stone-300);
+  --_branded-text-strong: var(--color-stone-0);
+  --_branded-text-muted: var(--color-stone-100);
   --_branded-hover-bg: color-mix(in srgb, var(--_branded-text-strong) 8%, transparent);
   --_branded-active-bg: color-mix(in srgb, var(--_branded-text-strong) 12%, transparent);
   --_branded-badge-bg: color-mix(in srgb, var(--_branded-text-strong) 15%, transparent);
@@ -325,8 +325,8 @@
 
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item--active .ct-nav-item__badge,
 .ct-app-shell-v2--sidebar-branded .ct-app-shell-v2__sidebar .ct-nav-item[aria-current='page'] .ct-nav-item__badge {
-  background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-brand-accent);
+  color: var(--color-brand-on-accent);
 }
 
 

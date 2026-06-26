@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import './tokens/tokens.css';
 
 :root {
@@ -186,7 +186,7 @@ button {
 
 ::selection {
   background: var(--color-brand-accent);
-  color: var(--color-text-inverse);
+  color: var(--color-brand-on-accent);
 }
 
 .ct-container {

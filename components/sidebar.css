@@ -150,6 +150,8 @@
   background: var(--color-bg-muted);
   color: var(--color-brand-primary);
   font-weight: var(--font-weight-semibold);
+  /* The datum: an orange leading edge marks the current location. */
+  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent);
 }
 
 .ct-nav-item__icon {
@@ -178,6 +180,6 @@
 
 .ct-nav-item--active .ct-nav-item__badge,
 .ct-nav-item[aria-current='page'] .ct-nav-item__badge {
-  background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-brand-accent);
+  color: var(--color-brand-on-accent);
 }

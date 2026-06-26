@@ -9,8 +9,8 @@
   --ct-toggle-group-item-font-size: var(--font-size-sm);
   --ct-toggle-group-item-line-height: var(--line-height-sm);
   --ct-toggle-group-item-color: var(--color-text-secondary);
-  --ct-toggle-group-item-bg-active: var(--color-brand-primary);
-  --ct-toggle-group-item-color-active: var(--color-text-inverse);
+  --ct-toggle-group-item-bg-active: var(--color-brand-accent);
+  --ct-toggle-group-item-color-active: var(--color-brand-on-accent);
   --ct-toggle-group-item-bg-hover: var(--color-bg-muted);
   --ct-toggle-group-item-min-height: var(--control-height-md);
   --ct-toggle-group-gap: 0;

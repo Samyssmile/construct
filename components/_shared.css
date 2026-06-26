@@ -22,7 +22,7 @@
   --ct-dropdown-min-width: 200px;
   --ct-switch-width: 44px;
   --ct-switch-height: 24px;
-  --ct-tooltip-bg: var(--color-slate-950);
+  --ct-tooltip-bg: var(--color-stone-950);
   --ct-tooltip-color: var(--color-text-inverse);
   --ct-tooltip-radius: var(--radius-sm);
   --ct-tooltip-shadow: var(--shadow-sm);

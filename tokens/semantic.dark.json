@@ -1,35 +1,38 @@
 {
   "color": {
     "brand": {
-      "primary": "{color.ocean.400}",
-      "primaryHover": "{color.ocean.300}",
-      "primaryActive": "{color.ocean.500}",
-      "accent": "{color.teal.400}",
-      "accentHover": "{color.teal.300}",
-      "accentActive": "{color.teal.500}"
+      "primary": "{color.stone.100}",
+      "primaryHover": "{color.stone.0}",
+      "primaryActive": "{color.stone.200}",
+      "accent": "{color.orange.400}",
+      "accentHover": "{color.orange.300}",
+      "accentActive": "{color.orange.500}",
+      "onAccent": "{color.stone.950}"
     },
     "text": {
-      "primary": "{color.slate.0}",
-      "secondary": "{color.slate.200}",
-      "muted": "{color.slate.400}",
-      "inverse": "{color.slate.0}"
+      "primary": "{color.stone.0}",
+      "secondary": "{color.stone.200}",
+      "muted": "{color.stone.400}",
+      "inverse": "{color.stone.0}",
+      "onPrimary": "{color.stone.950}"
     },
     "background": {
-      "canvas": "{color.slate.950}",
-      "surface": "{color.slate.800}",
-      "elevated": "{color.slate.700}",
-      "muted": "{color.slate.900}"
+      "canvas": "{color.stone.950}",
+      "surface": "{color.stone.800}",
+      "elevated": "{color.stone.700}",
+      "muted": "{color.stone.900}"
     },
     "border": {
-      "subtle": "{color.slate.700}",
-      "default": "{color.slate.600}",
-      "strong": "{color.slate.500}"
+      "subtle": "{color.stone.700}",
+      "default": "{color.stone.600}",
+      "strong": "{color.stone.500}"
     },
     "state": {
       "info": "{color.ocean.300}",
       "success": "{color.green.300}",
       "warning": "{color.amber.300}",
-      "danger": "{color.red.300}"
+      "danger": "{color.red.300}",
+      "onSolid": "{color.stone.950}"
     },
     "stateSurface": {
       "info": "{color.ocean.900}",
@@ -50,10 +53,10 @@
       "danger": "{color.red.200}"
     },
     "overlay": {
-      "scrim": "rgba(8, 14, 20, 0.7)"
+      "scrim": "rgba(8, 6, 4, 0.72)"
     },
     "focus": {
-      "ring": "{color.teal.300}"
+      "ring": "{color.orange.400}"
     },
     "avatarSeed": {
       "1Bg": "{color.ocean.800}",
@@ -70,8 +73,8 @@
       "6Fg": "{color.purple.200}",
       "7Bg": "{color.pink.800}",
       "7Fg": "{color.pink.200}",
-      "8Bg": "{color.slate.700}",
-      "8Fg": "{color.slate.200}"
+      "8Bg": "{color.stone.700}",
+      "8Fg": "{color.stone.200}"
     },
     "chartSeries": {
       "1": "{color.ocean.300}",
@@ -81,7 +84,7 @@
       "5": "{color.pink.300}",
       "6": "{color.teal.300}",
       "7": "{color.red.300}",
-      "8": "{color.slate.300}"
+      "8": "{color.stone.300}"
     }
   },
   "theme": {

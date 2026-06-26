@@ -127,18 +127,18 @@
 .ct-banner.ct-banner--solid {
   --ct-banner-bg: var(--ct-banner-accent);
   --ct-banner-border: var(--ct-banner-accent);
-  color: var(--color-text-inverse);
+  color: var(--color-state-on-solid);
 }
 
 .ct-banner--solid .ct-banner__icon,
 .ct-banner--solid .ct-banner__message,
 .ct-banner--solid .ct-banner__close {
-  color: var(--color-text-inverse);
+  color: var(--color-state-on-solid);
 }
 
 @media (hover: hover) {
   .ct-banner--solid .ct-banner__close:hover {
-    background: color-mix(in srgb, var(--color-text-inverse) 20%, transparent);
+    background: color-mix(in srgb, var(--color-state-on-solid) 20%, transparent);
   }
 }
 

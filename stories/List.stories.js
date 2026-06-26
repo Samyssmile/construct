@@ -176,7 +176,7 @@ export const Playground = {
         <span class="ct-list__item-trailing">${chevronRightSvg}</span>
       </li>
       <li class="ct-list__item ct-list__item--interactive">
-        <span class="ct-list__item-leading">${avatar('SK', 'var(--color-slate-600)')}</span>
+        <span class="ct-list__item-leading">${avatar('SK', 'var(--color-stone-600)')}</span>
         <span class="ct-list__item-content">
           <span class="ct-list__item-title">Sam Kim</span>
           <span class="ct-list__item-description">Product Manager</span>
@@ -275,7 +275,7 @@ export const RichList = {
     </li>
     <li class="ct-list__divider ct-list__divider--inset" role="separator" aria-hidden="true"></li>
     <li class="ct-list__item ct-list__item--interactive">
-      <span class="ct-list__item-leading">${avatar('SK', 'var(--color-slate-600)')}</span>
+      <span class="ct-list__item-leading">${avatar('SK', 'var(--color-stone-600)')}</span>
       <span class="ct-list__item-content">
         <span class="ct-list__item-title">Sam Kim</span>
         <span class="ct-list__item-description">Sprint planning meeting moved to 3 PM tomorrow.</span>
@@ -710,7 +710,7 @@ export const Variants = {
           </li>
           <li class="ct-list__divider" role="separator" aria-hidden="true"></li>
           <li class="ct-list__item">
-            <span class="ct-list__item-leading">${avatar('SK', 'var(--color-slate-600)')}</span>
+            <span class="ct-list__item-leading">${avatar('SK', 'var(--color-stone-600)')}</span>
             <span class="ct-list__item-content">
               <span class="ct-list__item-title">Sam Kim</span>
             </span>
@@ -1362,13 +1362,15 @@ export const ActiveItem = {
     const title = activeItem.querySelector('.ct-list__item-title');
     expect(title.textContent).toBe('Messages');
 
-    // Active item has brand-primary color on title
+    // Active item is distinguished by weight + the orange "datum" leading
+    // edge — not by color alone (WCAG 1.4.1: color is never the sole signal).
     const style = window.getComputedStyle(title);
     const nonActiveTitle = canvasElement.querySelector(
       '.ct-list__item:not(.ct-list__item--active) .ct-list__item-title'
     );
     const nonActiveStyle = window.getComputedStyle(nonActiveTitle);
-    expect(style.color).not.toBe(nonActiveStyle.color);
+    expect(style.fontWeight).not.toBe(nonActiveStyle.fontWeight);
+    expect(window.getComputedStyle(activeItem).boxShadow).not.toBe('none');
   },
 };
 
