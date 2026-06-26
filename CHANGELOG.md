@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.4.0] - 2026-06-27
+
+### Added
+
+- **Tooling — design-sync for [claude.ai/design](https://claude.ai/design):** Construct can now be synced to a Claude Design project so Claude's design agent builds with the real Construct components. Because Construct is a pure CSS/token system, an off-script generator (`.design-sync/build.mjs`) flattens the authored CSS into one bundle and builds one preview card per component from the true Storybook-rendered HTML, plus per-component usage docs and a class-vocabulary README header. Sync state lives under `.design-sync/`; no change to the published package surface.
+
+
 ## [1.3.1] - 2026-06-17
 
 ### Fixed
@@ -129,6 +136,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow for Storybook deployment to GitHub Pages
 - Token build script with `--check` mode for CI validation
 
+[1.4.0]: https://github.com/Samyssmile/construct/compare/v1.3.1...v1.4.0
+[1.3.1]: https://github.com/Samyssmile/construct/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/Samyssmile/construct/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Samyssmile/construct/compare/v1.1.6...v1.2.0
 [1.1.6]: https://github.com/Samyssmile/construct/compare/v1.1.5...v1.1.6
 [1.1.5]: https://github.com/Samyssmile/construct/compare/v1.1.4...v1.1.5
