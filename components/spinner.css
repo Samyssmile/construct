@@ -1,7 +1,7 @@
 .ct-spinner {
   --ct-spinner-size: 24px;
   --ct-spinner-border: 3px;
-  --ct-spinner-color: var(--color-brand-primary);
+  --ct-spinner-color: var(--color-brand-accent);
   --ct-spinner-track: var(--color-border-subtle);
 
   width: var(--ct-spinner-size);

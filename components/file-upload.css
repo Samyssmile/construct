@@ -26,7 +26,7 @@
 }
 
 .ct-file-upload__dropzone[data-state='dragover'] {
-  border-color: var(--color-brand-primary);
+  border-color: var(--color-brand-accent);
   background: var(--color-bg-muted);
 }
 

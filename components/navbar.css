@@ -131,7 +131,7 @@
   inset-inline: var(--ct-navbar-item-padding-x);
   inset-block-end: calc(-1 * var(--ct-navbar-item-padding-y));
   height: var(--ct-navbar-item-indicator-size);
-  background: var(--ct-navbar-item-color-active);
+  background: var(--color-brand-accent);
   border-radius: var(--radius-round);
 }
 
@@ -223,7 +223,7 @@
 .ct-navbar__menu-item:focus-visible,
 .ct-navbar__menu-item[data-highlighted] {
   background: var(--color-bg-muted);
-  outline: var(--border-medium) solid var(--color-brand-primary);
+  outline: var(--border-medium) solid var(--color-focus-ring);
   outline-offset: -2px;
 }
 
@@ -493,12 +493,12 @@
 /* ── Dark ──────────────────────────────────────────────────────── */
 
 .ct-navbar--dark {
-  --_dark-bg: var(--color-slate-900);
-  --_dark-bg-hover: var(--color-slate-800);
-  --_dark-border: var(--color-slate-800);
-  --_dark-text: var(--color-slate-300);
+  --_dark-bg: var(--color-stone-900);
+  --_dark-bg-hover: var(--color-stone-800);
+  --_dark-border: var(--color-stone-800);
+  --_dark-text: var(--color-stone-300);
   --_dark-text-strong: var(--color-text-inverse);
-  --_dark-text-muted: var(--color-slate-400);
+  --_dark-text-muted: var(--color-stone-400);
 
   --ct-navbar-bg: var(--_dark-bg);
   --ct-navbar-border-color: var(--_dark-border);
@@ -521,7 +521,7 @@
 }
 
 .ct-navbar--dark .ct-navbar__link[aria-current='page']::after {
-  background: var(--color-brand-primary);
+  background: var(--color-brand-accent);
 }
 
 .ct-navbar--dark .ct-navbar__link-chevron {

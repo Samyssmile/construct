@@ -3,11 +3,11 @@
 .ct-slider {
   --ct-slider-track-height: 4px;
   --ct-slider-track-bg: var(--color-bg-muted);
-  --ct-slider-track-fill: var(--color-brand-primary);
+  --ct-slider-track-fill: var(--color-brand-accent);
   --ct-slider-track-radius: var(--radius-pill);
   --ct-slider-thumb-size: 20px;
   --ct-slider-thumb-bg: var(--color-bg-elevated);
-  --ct-slider-thumb-border: var(--color-brand-primary);
+  --ct-slider-thumb-border: var(--color-brand-accent);
   --ct-slider-thumb-shadow: var(--shadow-xs);
 
   display: flex;

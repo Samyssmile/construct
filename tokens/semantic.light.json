@@ -1,35 +1,38 @@
 {
   "color": {
     "brand": {
-      "primary": "{color.ocean.600}",
-      "primaryHover": "{color.ocean.700}",
-      "primaryActive": "{color.ocean.800}",
-      "accent": "{color.teal.600}",
-      "accentHover": "{color.teal.700}",
-      "accentActive": "{color.teal.800}"
+      "primary": "{color.stone.950}",
+      "primaryHover": "{color.stone.800}",
+      "primaryActive": "{color.stone.900}",
+      "accent": "{color.orange.500}",
+      "accentHover": "{color.orange.600}",
+      "accentActive": "{color.orange.700}",
+      "onAccent": "{color.stone.950}"
     },
     "text": {
-      "primary": "{color.slate.950}",
-      "secondary": "{color.slate.700}",
-      "muted": "{color.slate.600}",
-      "inverse": "{color.slate.0}"
+      "primary": "{color.stone.950}",
+      "secondary": "{color.stone.700}",
+      "muted": "{color.stone.600}",
+      "inverse": "{color.stone.0}",
+      "onPrimary": "{color.stone.0}"
     },
     "background": {
-      "canvas": "{color.slate.0}",
-      "surface": "{color.slate.50}",
-      "elevated": "{color.slate.0}",
-      "muted": "{color.slate.100}"
+      "canvas": "{color.stone.50}",
+      "surface": "{color.stone.100}",
+      "elevated": "{color.stone.0}",
+      "muted": "{color.stone.200}"
     },
     "border": {
-      "subtle": "{color.slate.200}",
-      "default": "{color.slate.300}",
-      "strong": "{color.slate.500}"
+      "subtle": "{color.stone.200}",
+      "default": "{color.stone.300}",
+      "strong": "{color.stone.500}"
     },
     "state": {
       "info": "{color.ocean.600}",
       "success": "{color.green.500}",
       "warning": "{color.amber.400}",
-      "danger": "{color.red.500}"
+      "danger": "{color.red.500}",
+      "onSolid": "{color.stone.0}"
     },
     "stateSurface": {
       "info": "{color.ocean.50}",
@@ -50,10 +53,10 @@
       "danger": "{color.red.700}"
     },
     "overlay": {
-      "scrim": "rgba(14, 23, 32, 0.6)"
+      "scrim": "rgba(22, 19, 15, 0.58)"
     },
     "focus": {
-      "ring": "{color.teal.600}"
+      "ring": "{color.orange.600}"
     },
     "avatarSeed": {
       "1Bg": "{color.ocean.100}",
@@ -70,8 +73,8 @@
       "6Fg": "{color.purple.800}",
       "7Bg": "{color.pink.100}",
       "7Fg": "{color.pink.800}",
-      "8Bg": "{color.slate.200}",
-      "8Fg": "{color.slate.800}"
+      "8Bg": "{color.stone.200}",
+      "8Fg": "{color.stone.800}"
     },
     "chartSeries": {
       "1": "{color.ocean.600}",
@@ -81,7 +84,7 @@
       "5": "{color.pink.500}",
       "6": "{color.teal.600}",
       "7": "{color.red.500}",
-      "8": "{color.slate.600}"
+      "8": "{color.stone.600}"
     }
   },
   "theme": {
@@ -99,7 +102,7 @@
       "fontFamily": "{font.family.heading}",
       "fontSize": "{font.size.6xl}",
       "lineHeight": "{font.lineHeight.6xl}",
-      "fontWeight": "{font.weight.bold}",
+      "fontWeight": "{font.weight.extrabold}",
       "letterSpacing": "{font.letterSpacing.tight}"
     },
     "h1": {

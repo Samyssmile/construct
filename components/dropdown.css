@@ -94,13 +94,13 @@
 
 .ct-dropdown__item:focus-visible {
   background: var(--color-bg-muted);
-  outline: var(--border-medium) solid var(--color-brand-primary);
+  outline: var(--border-medium) solid var(--color-focus-ring);
   outline-offset: -2px;
 }
 
 .ct-dropdown__item[data-highlighted] {
   background: var(--color-bg-muted);
-  outline: var(--border-medium) solid var(--color-brand-primary);
+  outline: var(--border-medium) solid var(--color-focus-ring);
   outline-offset: -2px;
 }
 
@@ -207,7 +207,7 @@
 }
 
 .ct-dropdown__item[aria-checked='true'] .ct-dropdown__item-radio::before {
-  background: var(--color-brand-primary);
+  background: var(--color-brand-accent);
 }
 
 /* ── Label (group header, non-interactive) ───────────────────────── */
@@ -283,7 +283,7 @@
 .ct-dropdown__sub-trigger:focus-visible,
 .ct-dropdown__sub-trigger[data-highlighted] {
   background: var(--color-bg-muted);
-  outline: var(--border-medium) solid var(--color-brand-primary);
+  outline: var(--border-medium) solid var(--color-focus-ring);
   outline-offset: -2px;
 }
 

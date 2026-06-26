@@ -46,7 +46,7 @@
   content: '';
   width: 10px;
   height: 6px;
-  border: 2px solid var(--color-text-inverse);
+  border: 2px solid var(--color-brand-on-accent);
   border-block-start: 0;
   border-inline-end: 0;
   transform: rotate(-45deg) scale(0);
@@ -58,15 +58,15 @@
   width: 8px;
   height: 8px;
   border-radius: var(--radius-round);
-  background: var(--color-text-inverse);
+  background: var(--color-brand-on-accent);
   transform: scale(0);
   transition: transform var(--duration-fast) var(--easing-standard);
 }
 
 .ct-check__input:checked,
 .ct-radio__input:checked {
-  background: var(--color-brand-primary);
-  border-color: var(--color-brand-primary);
+  background: var(--color-brand-accent);
+  border-color: var(--color-brand-accent);
 }
 
 .ct-check__input:checked::before,
@@ -82,13 +82,13 @@
 
   .ct-check__input:checked:not(:disabled):hover,
   .ct-radio__input:checked:not(:disabled):hover {
-    background: var(--color-brand-primary-hover);
-    border-color: var(--color-brand-primary-hover);
+    background: var(--color-brand-accent-hover);
+    border-color: var(--color-brand-accent-hover);
   }
 
   .ct-check__input:indeterminate:not(:disabled):hover {
-    background: var(--color-brand-primary-hover);
-    border-color: var(--color-brand-primary-hover);
+    background: var(--color-brand-accent-hover);
+    border-color: var(--color-brand-accent-hover);
   }
 }
 
@@ -107,14 +107,14 @@
 }
 
 .ct-check__input:indeterminate {
-  background: var(--color-brand-primary);
-  border-color: var(--color-brand-primary);
+  background: var(--color-brand-accent);
+  border-color: var(--color-brand-accent);
 }
 
 .ct-check__input:indeterminate::before {
   width: 10px;
   height: 0;
-  border-block-start: 2px solid var(--color-text-inverse);
+  border-block-start: 2px solid var(--color-brand-on-accent);
   border-inline-end: 0;
   transform: scale(1);
 }

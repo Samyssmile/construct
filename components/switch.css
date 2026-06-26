@@ -34,7 +34,7 @@
 }
 
 .ct-switch__input:checked {
-  background: var(--color-brand-primary);
+  background: var(--color-brand-accent);
 }
 
 .ct-switch__input:checked::after {
@@ -47,7 +47,7 @@
   }
 
   .ct-switch__input:checked:not(:disabled):hover {
-    background: var(--color-brand-primary-hover);
+    background: var(--color-brand-accent-hover);
   }
 }
 

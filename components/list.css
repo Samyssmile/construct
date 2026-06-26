@@ -218,8 +218,11 @@
 /* ── Active / Highlighted ── */
 
 .ct-list__item--active,
-.ct-list__item[data-state='active'] {
+.ct-list__item[data-state='active'],
+.ct-list__item[aria-selected='true'] {
   background: var(--ct-list-item-bg-active);
+  /* The datum: an orange leading edge marks the active/selected item. */
+  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent);
 }
 
 .ct-list__item--active .ct-list__item-title,

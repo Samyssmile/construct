@@ -59,7 +59,7 @@
 }
 
 .ct-card--interactive[aria-selected='true'] {
-  border-color: var(--color-brand-primary);
+  border-color: var(--color-brand-accent);
   box-shadow: var(--shadow-md);
 }
 

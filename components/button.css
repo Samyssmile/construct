@@ -3,7 +3,7 @@
   --ct-button-bg-hover: var(--color-brand-primary-hover);
   --ct-button-bg-active: var(--color-brand-primary-active);
   --ct-button-border: transparent;
-  --ct-button-color: var(--color-text-inverse);
+  --ct-button-color: var(--color-text-on-primary);
   --ct-button-height: var(--control-height-md);
   --ct-button-padding-x: var(--space-6);
   --ct-button-font-size: var(--font-size-sm);
@@ -83,7 +83,7 @@
   --ct-button-bg-hover: var(--color-brand-accent-hover);
   --ct-button-bg-active: var(--color-brand-accent-active);
   --ct-button-border: transparent;
-  --ct-button-color: var(--color-text-inverse);
+  --ct-button-color: var(--color-brand-on-accent);
 }
 
 .ct-button--danger {
@@ -91,7 +91,7 @@
   --ct-button-bg-hover: color-mix(in srgb, var(--color-state-danger) 85%, black);
   --ct-button-bg-active: color-mix(in srgb, var(--color-state-danger) 70%, black);
   --ct-button-border: transparent;
-  --ct-button-color: var(--color-text-inverse);
+  --ct-button-color: var(--color-state-on-solid);
 }
 
 .ct-button--link {

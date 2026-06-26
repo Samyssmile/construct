@@ -78,10 +78,10 @@
 
 .ct-chip[aria-pressed='true'],
 .ct-chip--selected {
-  --ct-chip-bg: var(--color-brand-primary);
-  --ct-chip-border: var(--color-brand-primary);
-  --ct-chip-color: var(--color-text-inverse);
-  --ct-chip-accent: var(--color-text-inverse);
+  --ct-chip-bg: var(--color-brand-accent);
+  --ct-chip-border: var(--color-brand-accent);
+  --ct-chip-color: var(--color-brand-on-accent);
+  --ct-chip-accent: var(--color-brand-on-accent);
 }
 
 /* ── Outline variant ─────────────────────────────────────────── */
@@ -92,7 +92,7 @@
 
 .ct-chip--outline[aria-pressed='true'],
 .ct-chip--outline.ct-chip--selected {
-  --ct-chip-bg: var(--color-brand-primary);
+  --ct-chip-bg: var(--color-brand-accent);
 }
 
 /* ── Semantic color variants (Subtle — default) ────────────── */
@@ -160,29 +160,29 @@
 .ct-chip--solid.ct-chip--info {
   --ct-chip-bg: var(--color-state-info);
   --ct-chip-border: var(--color-state-info);
-  --ct-chip-color: var(--color-text-inverse);
-  --ct-chip-accent: var(--color-text-inverse);
+  --ct-chip-color: var(--color-state-on-solid);
+  --ct-chip-accent: var(--color-state-on-solid);
 }
 
 .ct-chip--solid.ct-chip--success {
   --ct-chip-bg: var(--color-state-success-text);
   --ct-chip-border: var(--color-state-success-text);
-  --ct-chip-color: var(--color-text-inverse);
-  --ct-chip-accent: var(--color-text-inverse);
+  --ct-chip-color: var(--color-state-on-solid);
+  --ct-chip-accent: var(--color-state-on-solid);
 }
 
 .ct-chip--solid.ct-chip--warning {
   --ct-chip-bg: var(--color-state-warning-text);
   --ct-chip-border: var(--color-state-warning-text);
-  --ct-chip-color: var(--color-text-inverse);
-  --ct-chip-accent: var(--color-text-inverse);
+  --ct-chip-color: var(--color-state-on-solid);
+  --ct-chip-accent: var(--color-state-on-solid);
 }
 
 .ct-chip--solid.ct-chip--danger {
   --ct-chip-bg: var(--color-state-danger);
   --ct-chip-border: var(--color-state-danger);
-  --ct-chip-color: var(--color-text-inverse);
-  --ct-chip-accent: var(--color-text-inverse);
+  --ct-chip-color: var(--color-state-on-solid);
+  --ct-chip-accent: var(--color-state-on-solid);
 }
 
 /* ── Disabled state ──────────────────────────────────────────── */

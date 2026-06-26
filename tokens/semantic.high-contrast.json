@@ -1,35 +1,38 @@
 {
   "color": {
     "brand": {
-      "primary": "{color.ocean.800}",
-      "primaryHover": "{color.ocean.900}",
-      "primaryActive": "{color.ocean.700}",
-      "accent": "{color.teal.700}",
-      "accentHover": "{color.teal.800}",
-      "accentActive": "{color.teal.600}"
+      "primary": "{color.stone.950}",
+      "primaryHover": "{color.stone.900}",
+      "primaryActive": "{color.stone.800}",
+      "accent": "{color.orange.700}",
+      "accentHover": "{color.orange.800}",
+      "accentActive": "{color.orange.600}",
+      "onAccent": "{color.stone.0}"
     },
     "text": {
-      "primary": "{color.slate.950}",
-      "secondary": "{color.slate.800}",
-      "muted": "{color.slate.700}",
-      "inverse": "{color.slate.0}"
+      "primary": "{color.stone.950}",
+      "secondary": "{color.stone.800}",
+      "muted": "{color.stone.700}",
+      "inverse": "{color.stone.0}",
+      "onPrimary": "{color.stone.0}"
     },
     "background": {
-      "canvas": "{color.slate.0}",
-      "surface": "{color.slate.0}",
-      "elevated": "{color.slate.0}",
-      "muted": "{color.slate.50}"
+      "canvas": "{color.stone.0}",
+      "surface": "{color.stone.0}",
+      "elevated": "{color.stone.0}",
+      "muted": "{color.stone.50}"
     },
     "border": {
-      "subtle": "{color.slate.400}",
-      "default": "{color.slate.700}",
-      "strong": "{color.slate.950}"
+      "subtle": "{color.stone.400}",
+      "default": "{color.stone.700}",
+      "strong": "{color.stone.950}"
     },
     "state": {
       "info": "{color.ocean.800}",
       "success": "{color.green.700}",
       "warning": "{color.amber.700}",
-      "danger": "{color.red.700}"
+      "danger": "{color.red.700}",
+      "onSolid": "{color.stone.0}"
     },
     "stateSurface": {
       "info": "{color.ocean.100}",
@@ -53,7 +56,7 @@
       "scrim": "rgba(14, 23, 32, 0.7)"
     },
     "focus": {
-      "ring": "{color.amber.700}"
+      "ring": "{color.orange.700}"
     },
     "avatarSeed": {
       "1Bg": "{color.ocean.50}",
@@ -70,8 +73,8 @@
       "6Fg": "{color.purple.900}",
       "7Bg": "{color.pink.50}",
       "7Fg": "{color.pink.900}",
-      "8Bg": "{color.slate.50}",
-      "8Fg": "{color.slate.950}"
+      "8Bg": "{color.stone.50}",
+      "8Fg": "{color.stone.950}"
     },
     "chartSeries": {
       "1": "{color.ocean.800}",
@@ -81,7 +84,7 @@
       "5": "{color.pink.700}",
       "6": "{color.teal.700}",
       "7": "{color.red.700}",
-      "8": "{color.slate.800}"
+      "8": "{color.stone.800}"
     }
   },
   "theme": {

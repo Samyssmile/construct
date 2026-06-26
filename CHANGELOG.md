@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.0] - 2026-06-27
+
+A new visual identity — *"engineered for everyone."* Construct moves from a generic tech-blue/slate look to a distinctive system: warm concrete neutrals, an ink-steel primary, and a safety-orange accent that acts as a single recurring **"datum"** marking what is focused / active / selected / current. Verified WCAG AA across light, dark, and high-contrast themes.
+
+**BREAKING CHANGES:**
+
+- **Neutral primitive ramp renamed `slate` → `stone`.** Consumers referencing `color.slate.*` or `--color-slate-*` must migrate to `stone.*`. The neutral palette is now warm concrete/graphite instead of cool blue-grey.
+- **Default typefaces changed** from Sora + Source Sans 3 to **Manrope** (display + body). The Google Fonts import in `foundations.css` was updated accordingly; self-hosting consumers must update their font files.
+
+### Added
+
+- **The "datum" signature** — the orange accent now marks focus rings, active tab underlines, checked selection controls, slider fills, selected chips, the current pagination page, and active navigation (leading edge) across all components.
+- New semantic tokens: `color.brand.onAccent`, `color.text.onPrimary`, `color.state.onSolid` (theme-aware foregrounds for solid fills), and the `font.weight.extrabold` (800) display weight.
+- New `orange` primitive ramp (structural safety orange).
+
+### Changed
+
+- State ramps retuned to widen hue separation from the brand orange: `ocean` → blueprint blue (info), `amber` → gold (warning), `red` → crimson (danger).
+- Shadows warmed (warm-ink instead of cool blue); display headings now use weight 800.
+- Solid chips and solid banners now use a theme-aware foreground (`state.onSolid`) so their labels meet AA contrast in dark and high-contrast themes.
+
+
 ## [1.4.0] - 2026-06-27
 
 ### Added
@@ -136,6 +158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow for Storybook deployment to GitHub Pages
 - Token build script with `--check` mode for CI validation
 
+[2.0.0]: https://github.com/Samyssmile/construct/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/Samyssmile/construct/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/Samyssmile/construct/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Samyssmile/construct/compare/v1.2.0...v1.3.0

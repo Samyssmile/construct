@@ -4,7 +4,7 @@
   --ct-progress-height: 8px;
   --ct-progress-radius: var(--radius-pill);
   --ct-progress-bg: var(--color-bg-muted);
-  --ct-progress-fill: var(--color-brand-primary);
+  --ct-progress-fill: var(--color-brand-accent);
 
   width: 100%;
   height: var(--ct-progress-height);
