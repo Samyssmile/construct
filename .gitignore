@@ -54,3 +54,11 @@ mock-data/
 PLAN.md
 overview.md
 AGENTS.md
+
+# design-sync (claude.ai/design) — generated/transient artifacts
+ds-bundle/
+.ds-sync/
+.design-sync/sb-reference/
+.design-sync/learnings/
+.design-sync/.cache/
+.design-sync/node_modules
