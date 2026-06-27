@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.1] - 2026-06-27
+
+### Fixed
+
+- **Navbar height token.** The navbar referenced a non-existent `--control-height-xl` primitive (the control-height scale ends at `lg`), so the navbar fell back to an undefined height. Introduced a dedicated `layout.navbar.height` primitive (`--navbar-height`, 56px) and pointed `.ct-navbar` at it. The control-height scale stays reserved for form controls.
+
+
 ## [2.0.0] - 2026-06-27
 
 A new visual identity — *"engineered for everyone."* Construct moves from a generic tech-blue/slate look to a distinctive system: warm concrete neutrals, an ink-steel primary, and a safety-orange accent that acts as a single recurring **"datum"** marking what is focused / active / selected / current. Verified WCAG AA across light, dark, and high-contrast themes.
@@ -158,6 +165,7 @@ A new visual identity — *"engineered for everyone."* Construct moves from a ge
 - GitHub Actions workflow for Storybook deployment to GitHub Pages
 - Token build script with `--check` mode for CI validation
 
+[2.0.1]: https://github.com/Samyssmile/construct/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Samyssmile/construct/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/Samyssmile/construct/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/Samyssmile/construct/compare/v1.3.0...v1.3.1
