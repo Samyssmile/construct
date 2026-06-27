@@ -203,7 +203,7 @@ function initShellToggle(root) {
 /* ═══════════════════════════════════════════════════════════════ */
 
 export default {
-  title: 'Layout/App Shell',
+  title: 'Components/Layout/App Shell',
   parameters: {
     layout: 'fullscreen',
     docs: {

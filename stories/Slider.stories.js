@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Forms/Slider',
+  title: 'Components/Forms/Slider',
   parameters: {
     docs: {
       description: {

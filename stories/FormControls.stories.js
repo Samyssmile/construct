@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Forms/Form Controls',
+  title: 'Components/Forms/Form Controls',
   parameters: {
     docs: {
       description: {

@@ -114,7 +114,7 @@ function initToggleGroupSelect(container) {
 // ── Story config ──
 
 export default {
-  title: 'Forms/Toggle Group',
+  title: 'Components/Forms/Toggle Group',
   parameters: {
     docs: {
       description: {

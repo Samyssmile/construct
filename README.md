@@ -99,8 +99,11 @@ Raw design values (colors, spacing, typography)
 ```json
 {
   "color": {
-    "ocean": {
-      "700": "#174C5D"
+    "stone": {
+      "950": "#16130F"
+    },
+    "orange": {
+      "500": "#F4581C"
     }
   },
   "space": {
@@ -116,7 +119,7 @@ Contextual aliases that reference primitives
 {
   "color": {
     "brand": {
-      "primary": "{color.ocean.700}"
+      "primary": "{color.stone.950}"
     }
   }
 }

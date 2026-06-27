@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Layout/Divider',
+  title: 'Components/Layout/Divider',
   parameters: {
     docs: {
       description: {

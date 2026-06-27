@@ -137,7 +137,7 @@ const fileTree = [
 /* ── Storybook config ────────────────────────────── */
 
 export default {
-  title: 'Data Display/Tree',
+  title: 'Components/Data Display/Tree',
   parameters: {
     layout: 'padded',
     docs: {

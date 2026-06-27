@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 
-<Meta title="Docs/Design Tokens" tags={['!autodocs']} />
+<Meta title="Foundations/Design Tokens" tags={['!autodocs']} />
+
+<span className="ct-eyebrow">Foundations · The source of truth</span>
 
 # Design Tokens
 
@@ -60,16 +62,31 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
 
 ### Brand
 
-| Token | CSS Variable | Light value |
-|-------|-------------|-------------|
-| `color.brand.primary` | `--color-brand-primary` | `#174C5D` |
-| `color.brand.primaryHover` | `--color-brand-primary-hover` | `#103745` |
-| `color.brand.accent` | `--color-brand-accent` | `#167B76` |
-| `color.brand.accentHover` | `--color-brand-accent-hover` | `#115F5C` |
+| Token | CSS Variable | Light value | Role |
+|-------|-------------|-------------|------|
+| `color.brand.primary` | `--color-brand-primary` | `#16130F` | Ink — solid buttons, active text & links |
+| `color.brand.primaryHover` | `--color-brand-primary-hover` | `#353128` | Ink hover |
+| `color.brand.accent` | `--color-brand-accent` | `#F4581C` | Safety orange — **the datum** (non-text indicators) |
+| `color.brand.accentHover` | `--color-brand-accent-hover` | `#DD4A0F` | Accent hover |
+| `color.brand.accentActive` | `--color-brand-accent-active` | `#B23C0C` | Accent as text (AA-safe ~5.7:1) |
 
-<div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
-  <div style={{ width: 64, height: 64, background: 'var(--color-brand-primary)', borderRadius: 8, border: '1px solid var(--color-border-subtle)' }} title="--color-brand-primary" />
-  <div style={{ width: 64, height: 64, background: 'var(--color-brand-accent)', borderRadius: 8, border: '1px solid var(--color-border-subtle)' }} title="--color-brand-accent" />
+<div className="ct-swatches">
+  <div className="ct-swatch">
+    <div className="ct-swatch__chip" style={{ background: 'var(--color-brand-primary)' }} />
+    <div className="ct-swatch__meta"><span className="ct-swatch__name">brand.primary</span><span className="ct-swatch__val">#16130F · ink</span></div>
+  </div>
+  <div className="ct-swatch">
+    <div className="ct-swatch__chip" style={{ background: 'var(--color-brand-accent)' }} />
+    <div className="ct-swatch__meta"><span className="ct-swatch__name">brand.accent</span><span className="ct-swatch__val">#F4581C · the datum</span></div>
+  </div>
+  <div className="ct-swatch">
+    <div className="ct-swatch__chip" style={{ background: 'var(--color-brand-accent-hover)' }} />
+    <div className="ct-swatch__meta"><span className="ct-swatch__name">accent.hover</span><span className="ct-swatch__val">#DD4A0F</span></div>
+  </div>
+  <div className="ct-swatch">
+    <div className="ct-swatch__chip" style={{ background: 'var(--color-brand-accent-active)' }} />
+    <div className="ct-swatch__meta"><span className="ct-swatch__name">accent.active</span><span className="ct-swatch__val">#B23C0C · on text</span></div>
+  </div>
 </div>
 
 ### Text
@@ -150,9 +167,11 @@ Spacing uses a numeric scale where each step maps to a pixel value. Use `var(--s
 
 | CSS Variable | Value |
 |-------------|-------|
-| `--font-family-heading` | Manrope |
-| `--font-family-body` | Manrope |
-| `--font-family-code` | JetBrains Mono |
+| `--font-family-brand` | Manrope (display & headings) |
+| `--font-family-text` | Manrope (body) |
+| `--font-family-mono` | JetBrains Mono (code & data) |
+
+Manrope and JetBrains Mono are one geometric superfamily pairing — compact, high x-height, engineered. The aliases `--font-family-heading`, `--font-family-body`, and `--font-family-code` resolve to brand, text, and mono respectively.
 
 ### Font Sizes
 
@@ -232,7 +251,7 @@ Semantic aliases for components:
 import { tokens, cssVars } from '@neuravision/construct/tokens/tokens';
 
 // Resolved hex value
-const brand = tokens.semantic.color.brand.primary; // '#174C5D'
+const brand = tokens.semantic.color.brand.primary; // '#16130F'
 
 // CSS variable reference string (for inline styles)
 const brandVar = cssVars.semantic.color.brand.primary; // 'var(--color-brand-primary)'

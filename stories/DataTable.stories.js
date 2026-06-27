@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Data Display/Data Table',
+  title: 'Components/Data Display/Data Table',
   parameters: {
     docs: {
       description: {

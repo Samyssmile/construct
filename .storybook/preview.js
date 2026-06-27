@@ -1,10 +1,42 @@
 import '../foundations.css';
 import '../components/index.css';
+import './docs.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 
 export const parameters = {
   layout: 'centered',
+
+  options: {
+    storySort: {
+      order: [
+        'Get Started',
+        ['Introduction', 'Installation'],
+        'Foundations',
+        [
+          'Design Principles',
+          'Design Tokens',
+          'Typography',
+          'Theming',
+          'Iconography',
+          'Accessibility'
+        ],
+        'Components',
+        [
+          'Actions',
+          'Forms',
+          'Data Display',
+          'Navigation',
+          'Feedback',
+          'Overlays',
+          'Layout',
+          'Accessibility'
+        ],
+        'Patterns',
+        '*'
+      ]
+    }
+  },
 
   backgrounds: {
     options: {

@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 
-<Meta title="Docs/Accessibility Guidelines" tags={['!autodocs']} />
+<Meta title="Foundations/Accessibility" tags={['!autodocs']} />
+
+<span className="ct-eyebrow">Foundations · The a11y contract</span>
 
 # Accessibility Guidelines
 
@@ -325,7 +327,7 @@ npx vitest --run
 
 ## Fonts and Typography
 
-Fonts are loaded from Google Fonts in `foundations.css` (Sora, Source Sans 3, JetBrains Mono).
+Fonts are loaded from Google Fonts in `foundations.css` (Manrope for display and body, JetBrains Mono for code and data).
 
 For **CSP or privacy requirements**, replace the Google Fonts `@import` with self-hosted `@font-face` rules. Ensure weights 400, 500, 600, and 700 are available.
 
@@ -341,7 +343,7 @@ For **CSP or privacy requirements**, replace the Google Fonts `@import` with sel
 
 ## Related
 
-- **[Getting Started](?path=/docs/docs-getting-started--docs)** — installation and integration guide
-- **[Theming](?path=/docs/docs-theming--docs)** — dark mode, high-contrast, and reduced motion
+- **[Installation](?path=/docs/get-started-installation--docs)** — installation and integration guide
+- **[Theming](?path=/docs/foundations-theming--docs)** — dark mode, high-contrast, and reduced motion
 - [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/) — full specification
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) — keyboard patterns and widget roles

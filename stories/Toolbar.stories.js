@@ -119,7 +119,7 @@ function renderNavToolbar({ modifier = '', ariaLabel = 'Main navigation', active
 }
 
 export default {
-  title: 'Navigation/Toolbar',
+  title: 'Components/Navigation/Toolbar',
   parameters: {
     docs: {
       description: {

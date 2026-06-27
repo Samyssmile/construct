@@ -1,7 +1,7 @@
 import { expect, within, userEvent, waitFor } from 'storybook/test';
 
 export default {
-  title: 'Overlays/Toast',
+  title: 'Components/Overlays/Toast',
   parameters: {
     layout: 'fullscreen',
     docs: {

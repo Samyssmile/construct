@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 
-<Meta title="Docs/Design Principles" tags={['!autodocs']} />
+<Meta title="Foundations/Design Principles" tags={['!autodocs']} />
+
+<span className="ct-eyebrow">Foundations · Philosophy</span>
 
 # Design Principles
 
@@ -35,8 +37,8 @@ Every visual value in Construct — colors, spacing, typography, radii, shadows,
 
 Construct uses a two-tier token system:
 
-1. **Primitives** — raw design values (`ocean.700: #174C5D`, `space.4: 8px`). These are the palette. They rarely change.
-2. **Semantic tokens** — purpose-driven aliases (`color.brand.primary → {color.ocean.700}`). These are what components consume. Swapping a theme means remapping semantic tokens while primitives stay untouched.
+1. **Primitives** — raw design values (`stone.950: #16130F`, `orange.500: #F4581C`, `space.4: 8px`). These are the palette. They rarely change.
+2. **Semantic tokens** — purpose-driven aliases (`color.brand.primary → {color.stone.950}`). These are what components consume. Swapping a theme means remapping semantic tokens while primitives stay untouched.
 
 ### Benefits
 
@@ -113,7 +115,7 @@ The same HTML structure and class names work in every framework.
 
 ## Related
 
-- **[Getting Started](?path=/docs/docs-getting-started--docs)** — installation and integration guide
-- **[Accessibility Guidelines](?path=/docs/docs-accessibility-guidelines--docs)** — detailed keyboard patterns and ARIA guidance
-- **[Design Tokens](?path=/docs/docs-design-tokens--docs)** — full token reference
-- **[Component Patterns](?path=/docs/docs-component-patterns--docs)** — BEM naming, state management, and ARIA patterns
+- **[Installation](?path=/docs/get-started-installation--docs)** — installation and integration guide
+- **[Accessibility](?path=/docs/foundations-accessibility--docs)** — detailed keyboard patterns and ARIA guidance
+- **[Design Tokens](?path=/docs/foundations-design-tokens--docs)** — full token reference
+- **[Component Patterns](?path=/docs/patterns-component-patterns--docs)** — BEM naming, state management, and ARIA patterns

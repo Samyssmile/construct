@@ -220,7 +220,7 @@ function initV2Toggle(root) {
 /* ═══════════════════════════════════════════════════════════════ */
 
 export default {
-  title: 'Layout/App Shell V2',
+  title: 'Components/Layout/App Shell V2',
   parameters: {
     layout: 'fullscreen',
     docs: {

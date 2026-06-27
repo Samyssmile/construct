@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Forms/File Upload',
+  title: 'Components/Forms/File Upload',
   parameters: {
     docs: {
       description: {

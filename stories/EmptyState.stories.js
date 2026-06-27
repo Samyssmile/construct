@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Data Display/Empty State',
+  title: 'Components/Data Display/Empty State',
   parameters: {
     docs: {
       description: {

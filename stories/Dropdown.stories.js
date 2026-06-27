@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Navigation/Dropdown',
+  title: 'Components/Navigation/Dropdown',
   parameters: {
     docs: {
       description: {

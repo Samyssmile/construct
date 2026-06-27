@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Forms/Combobox',
+  title: 'Components/Forms/Combobox',
   parameters: {
     docs: {
       description: {

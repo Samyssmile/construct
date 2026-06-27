@@ -94,7 +94,7 @@ function wireToggle(node) {
 const MONTHS = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun'];
 
 export default {
-  title: 'Data Display/Chart',
+  title: 'Components/Data Display/Chart',
   parameters: {
     layout: 'padded',
     docs: {

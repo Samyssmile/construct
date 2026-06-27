@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Accessibility/Skip-Link & Visually-Hidden',
+  title: 'Components/Accessibility/Skip-Link & Visually-Hidden',
   parameters: {
     docs: {
       description: {

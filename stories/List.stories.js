@@ -113,7 +113,7 @@ function avatar(initials, color = 'var(--color-brand-primary)') {
 // ── Story config ──
 
 export default {
-  title: 'Data Display/List',
+  title: 'Components/Data Display/List',
   parameters: {
     docs: {
       description: {

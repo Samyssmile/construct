@@ -1,7 +1,7 @@
 import { expect } from 'storybook/test';
 
 export default {
-  title: 'Data Display/Data Table Simple',
+  title: 'Components/Data Display/Data Table Simple',
   parameters: {
     docs: {
       description: {

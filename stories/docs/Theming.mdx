@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 
-<Meta title="Docs/Theming" tags={['!autodocs']} />
+<Meta title="Foundations/Theming" tags={['!autodocs']} />
+
+<span className="ct-eyebrow">Foundations · Theming</span>
 
 # Theming
 
@@ -15,21 +17,24 @@ All design tokens are emitted as CSS custom properties scoped to `[data-theme]` 
 ```css
 /* Simplified excerpt from tokens.css */
 :root, [data-theme="light"] {
-  --color-bg-canvas: #FFFFFF;
-  --color-text-primary: #0E1720;
-  --color-brand-primary: #174C5D;
+  --color-bg-canvas: #FAFAF8;   /* warm concrete */
+  --color-text-primary: #16130F; /* ink */
+  --color-brand-primary: #16130F;
+  --color-brand-accent: #F4581C; /* safety orange — the datum */
 }
 
 [data-theme="dark"] {
-  --color-bg-canvas: #0E1720;
-  --color-text-primary: #F5F7FA;
-  --color-brand-primary: #4D97AF;
+  --color-bg-canvas: #16130F;
+  --color-text-primary: #FFFFFF;
+  --color-brand-primary: #F1F0EB; /* light steel, so text/links stay legible */
+  --color-brand-accent: #FB6E2E;
 }
 
 [data-theme="high-contrast"] {
-  --color-bg-canvas: #000000;
-  --color-text-primary: #FFFFFF;
-  --color-brand-primary: #78B1C4;
+  --color-bg-canvas: #FFFFFF;
+  --color-text-primary: #16130F;
+  --color-brand-primary: #16130F;
+  --color-brand-accent: #B23C0C;
 }
 ```
 
@@ -199,5 +204,5 @@ When creating custom themes, verify contrast ratios using the [WebAIM Contrast C
 
 ## Related
 
-- **[Design Tokens](?path=/docs/docs-design-tokens--docs)** — full token reference
-- **[Accessibility Guidelines](?path=/docs/docs-accessibility-guidelines--docs)** — WCAG requirements and keyboard patterns
+- **[Design Tokens](?path=/docs/foundations-design-tokens--docs)** — full token reference
+- **[Accessibility](?path=/docs/foundations-accessibility--docs)** — WCAG requirements and keyboard patterns

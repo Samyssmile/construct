@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Navigation/Pagination',
+  title: 'Components/Navigation/Pagination',
   parameters: {
     docs: {
       description: {

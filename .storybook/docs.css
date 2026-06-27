@@ -1,0 +1,441 @@
+/* ============================================================================
+   Construct — Storybook docs design layer
+   ----------------------------------------------------------------------------
+   Scoped to the addon-docs container. Component stories render WITHOUT this
+   wrapper, so the a11y test gate is never affected.
+
+   Runs inside the preview iframe, where tokens.css IS loaded — so everything
+   uses real `--ct-*` tokens and themes correctly.
+
+   Storybook 10 note: addon-docs renders prose with emotion-hashed classes
+   (NOT `sbdocs-h1/p/a`). We therefore style the *elements* under
+   `.sbdocs-content`, using the child combinator (`>`) for block prose so the
+   custom blocks nested below (hero, cards, specs) keep their own styling.
+
+   Signature: "the datum" — one safety-orange line/edge marks what matters.
+   Accessibility: orange as TEXT uses --color-brand-accent-active (orange.700,
+   ~5.7:1). Orange as a non-text EDGE/RULE uses --color-brand-accent (orange.500).
+   ============================================================================ */
+
+/* ---- Canvas & measure ---------------------------------------------------- */
+.sbdocs-wrapper {
+  background: var(--color-bg-canvas);
+  padding-block: clamp(var(--space-9), 6vw, var(--space-13));
+}
+
+.sbdocs.sbdocs-content {
+  max-width: 60rem;
+}
+
+/* ---- Headings (markdown, direct children of content) --------------------- */
+.sbdocs-content > h1 {
+  font-family: var(--font-family-brand);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 1.2rem + 3.2vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-6);
+}
+
+.sbdocs-content > h2 {
+  font-family: var(--font-family-brand);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1rem + 1.1vw, 1.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin: var(--space-12) 0 var(--space-6);
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* the datum tick on every section heading */
+.sbdocs-content > h2::before {
+  content: '';
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-bottom: var(--space-5);
+  background: var(--color-brand-accent);
+  border-radius: 2px;
+}
+
+.sbdocs-content > h3 {
+  font-family: var(--font-family-brand);
+  font-weight: 700;
+  font-size: 1.18rem;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin: var(--space-9) 0 var(--space-4);
+}
+
+/* ---- Body ---------------------------------------------------------------- */
+.sbdocs-content > p {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-width: 68ch;
+  margin: 0 0 var(--space-6);
+}
+
+.sbdocs-content > ul,
+.sbdocs-content > ol {
+  max-width: 68ch;
+  margin: 0 0 var(--space-6);
+}
+
+.sbdocs-content li {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.sbdocs-content a {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  font-weight: 600;
+}
+
+.sbdocs-content a:hover {
+  color: var(--color-brand-accent-active);
+}
+
+.sbdocs-content strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+/* ---- Code ---------------------------------------------------------------- */
+.sbdocs-content code {
+  font-family: var(--font-family-mono);
+  font-size: 0.86em;
+  background: var(--color-bg-muted);
+  color: var(--color-text-primary);
+  padding: 0.12em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+.sbdocs-content pre {
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.sbdocs-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* ---- Callout / blockquote ------------------------------------------------ */
+.sbdocs-content blockquote {
+  border: 1px solid var(--color-border-subtle);
+  border-left: 3px solid var(--color-brand-accent);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-7);
+  margin: var(--space-7) 0;
+  color: var(--color-text-secondary);
+}
+
+.sbdocs-content blockquote p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Tables (content tables only — never the args/controls table) -------- */
+.sbdocs-content table:not(.sb-argstableBlock) {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-xs);
+  margin: var(--space-7) 0;
+}
+
+.sbdocs-content table:not(.sb-argstableBlock) thead th {
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border-default);
+  text-align: left;
+}
+
+.sbdocs-content table:not(.sb-argstableBlock) tbody td {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.sbdocs-content table:not(.sb-argstableBlock) tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.sbdocs-content table:not(.sb-argstableBlock) td code {
+  white-space: nowrap;
+}
+
+.sbdocs-content > hr {
+  border: 0;
+  border-top: 1px solid var(--color-border-subtle);
+  margin: var(--space-11) 0;
+}
+
+/* ============================================================================
+   Custom doc primitives (used by MDX pages). Scoped to `.sbdocs` (present on
+   the wrapper + content), which contains all custom blocks.
+   ============================================================================ */
+
+/* Eyebrow — engineered kicker with a leading datum tick */
+.sbdocs .ct-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-family: var(--font-family-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-brand-accent-active);
+  margin: 0 0 var(--space-6);
+}
+
+.sbdocs .ct-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 3px;
+  background: var(--color-brand-accent);
+  border-radius: 2px;
+}
+
+/* Hero — the front-door thesis block */
+.sbdocs .ct-hero {
+  position: relative;
+  padding: var(--space-9) 0 var(--space-11);
+  margin-bottom: var(--space-9);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.sbdocs .ct-hero__title {
+  font-family: var(--font-family-brand);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 1.1rem + 5.4vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-7);
+  text-wrap: balance;
+}
+
+/* MDX wraps multi-line heading text in an inner <p>; make it transparent */
+.sbdocs .ct-hero__title p {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+/* the datum word — one phrase carries the orange edge.
+   `font: inherit` defeats addon-docs' inline-span font-size reset. */
+.sbdocs .ct-hero__datum {
+  font: inherit;
+  letter-spacing: inherit;
+  position: relative;
+  white-space: nowrap;
+  padding-left: 0.28em;
+  box-shadow: inset 0.16em 0 0 var(--color-brand-accent);
+}
+
+.sbdocs .ct-lead {
+  font-size: clamp(1.12rem, 1rem + 0.5vw, 1.4rem);
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  max-width: 46ch;
+  margin: 0 0 var(--space-8);
+}
+
+/* a quiet horizontal rule with one orange datum segment */
+.sbdocs .ct-rule {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: var(--space-9) 0;
+}
+.sbdocs .ct-rule::before {
+  content: '';
+  width: 56px;
+  height: 2px;
+  background: var(--color-brand-accent);
+}
+.sbdocs .ct-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border-subtle);
+}
+
+/* Spec strip — engineering datasheet, not big gradient numbers */
+.sbdocs .ct-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--color-border-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: var(--space-8) 0;
+}
+.sbdocs .ct-spec {
+  background: var(--color-bg-elevated);
+  padding: var(--space-6) var(--space-7);
+}
+.sbdocs .ct-spec__v {
+  font-family: var(--font-family-brand);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+.sbdocs .ct-spec__k {
+  display: block;
+  margin-top: var(--space-3);
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+/* Card grid — for navigation / feature cards */
+.sbdocs .ct-doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: var(--space-6);
+  margin: var(--space-8) 0;
+}
+
+.sbdocs a.ct-doc-card,
+.sbdocs .ct-doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-xs);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.sbdocs a.ct-doc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--color-brand-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.18s ease;
+}
+
+.sbdocs a.ct-doc-card:hover {
+  border-color: var(--color-border-default);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.sbdocs a.ct-doc-card:hover::before {
+  transform: scaleY(1);
+}
+
+.sbdocs .ct-doc-card__k {
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-brand-accent-active);
+}
+
+.sbdocs .ct-doc-card__t {
+  font-family: var(--font-family-brand);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.sbdocs .ct-doc-card__d {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Swatches — color token chips */
+.sbdocs .ct-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-7) 0;
+}
+.sbdocs .ct-swatch {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+}
+.sbdocs .ct-swatch__chip {
+  height: 64px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.sbdocs .ct-swatch__meta {
+  padding: var(--space-4) var(--space-5);
+}
+.sbdocs .ct-swatch__name {
+  display: block;
+  font-family: var(--font-family-mono);
+  font-size: 0.74rem;
+  color: var(--color-text-primary);
+}
+.sbdocs .ct-swatch__val {
+  display: block;
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* A demo stage to frame live component examples in docs */
+.sbdocs .ct-stage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  align-items: center;
+  padding: var(--space-8);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  margin: var(--space-7) 0;
+}
+
+/* Links rendered as buttons (MDX JSX anchors): adopt the button's own colour
+   token (otherwise addon-docs' default link colour wins and breaks contrast) */
+.sbdocs a.ct-button,
+.sbdocs a.ct-button:hover {
+  color: var(--ct-button-color);
+  text-decoration: none;
+}

@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Feedback/Status & Feedback',
+  title: 'Components/Feedback/Status & Feedback',
   parameters: {
     docs: {
       description: {

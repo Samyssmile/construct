@@ -21,7 +21,7 @@ function crumbItem(label, href, { icon = '', isLast = false } = {}) {
 }
 
 export default {
-  title: 'Navigation/Breadcrumbs',
+  title: 'Components/Navigation/Breadcrumbs',
   parameters: {
     docs: {
       description: {

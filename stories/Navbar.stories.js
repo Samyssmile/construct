@@ -432,7 +432,7 @@ function renderNavbarMobile({
 /* ── Meta ── */
 
 export default {
-  title: 'Navigation/Navbar',
+  title: 'Components/Navigation/Navbar',
   parameters: {
     docs: {
       description: {

@@ -1,7 +1,7 @@
 import { expect, within } from 'storybook/test';
 
 export default {
-  title: 'Data Display/Card & Table',
+  title: 'Components/Data Display/Card & Table',
   parameters: {
     docs: {
       description: {

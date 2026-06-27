@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Get Started/Introduction" tags={['!autodocs']} />
+
+<div className="ct-hero">
+  <span className="ct-eyebrow">Open-source · token-based · framework-agnostic</span>
+  <h1 className="ct-hero__title">
+    Engineered<br />for <span className="ct-hero__datum">everyone</span>.
+  </h1>
+  <p className="ct-lead">
+    Construct is a CSS design system with a point of view. WCAG&nbsp;2.1&nbsp;AA in
+    every component, three first-class themes, and a visual identity you'll
+    actually recognise.
+  </p>
+  <div className="ct-cluster" style={{ gap: 'var(--space-5)' }}>
+    <a className="ct-button ct-button--lg" href="?path=/docs/get-started-installation--docs">Get started</a>
+    <a className="ct-button ct-button--outline ct-button--lg" href="?path=/docs/foundations-design-tokens--docs">Explore the tokens</a>
+  </div>
+</div>
+
+<div className="ct-specs">
+  <div className="ct-spec"><span className="ct-spec__v">40+</span><span className="ct-spec__k">Components</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">3</span><span className="ct-spec__k">Themes</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">AA</span><span className="ct-spec__k">WCAG 2.1</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">0<span style={{ fontSize: '0.9rem' }}>kb</span></span><span className="ct-spec__k">Runtime JS</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">MIT</span><span className="ct-spec__k">License</span></div>
+</div>
+
+## See it before you read it
+
+Construct ships real, accessible components — not a swatch library. Here are a
+few, untouched, in the light theme:
+
+<div className="ct-stage">
+  <button className="ct-button">Save changes</button>
+  <button className="ct-button ct-button--accent">Publish</button>
+  <button className="ct-button ct-button--outline">Cancel</button>
+  <label className="ct-switch">
+    <input className="ct-switch__input" type="checkbox" defaultChecked />
+    <span className="ct-switch__label">High contrast</span>
+  </label>
+  <label className="ct-check">
+    <input className="ct-check__input" type="checkbox" defaultChecked />
+    <span className="ct-check__label">Keyboard ready</span>
+  </label>
+  <span className="ct-chip ct-chip--solid">AA</span>
+  <span className="ct-chip">Design tokens</span>
+</div>
+
+Notice the orange. Every checked, selected, focused, or current state is marked
+by the **same line — the datum.** It is the one decision that makes Construct
+legible and recognisable at once — and it survives light, dark, and
+high-contrast without dropping below WCAG&nbsp;2.1&nbsp;AA. Open any component
+and use the **theme switcher** in the toolbar to watch the contract hold.
+
+<div className="ct-rule" />
+
+## Start here
+
+<div className="ct-doc-grid">
+  <a className="ct-doc-card" href="?path=/docs/get-started-installation--docs">
+    <span className="ct-doc-card__k">Setup</span>
+    <h3 className="ct-doc-card__t">Install &amp; integrate</h3>
+    <p className="ct-doc-card__d">Two stylesheets. No build step, no runtime — works with React, Angular, Svelte, or plain HTML.</p>
+  </a>
+  <a className="ct-doc-card" href="?path=/docs/foundations-design-tokens--docs">
+    <span className="ct-doc-card__k">Foundations</span>
+    <h3 className="ct-doc-card__t">Design tokens</h3>
+    <p className="ct-doc-card__d">The two-tier pipeline behind every colour, space, radius, and type decision.</p>
+  </a>
+  <a className="ct-doc-card" href="?path=/docs/foundations-theming--docs">
+    <span className="ct-doc-card__k">Theming</span>
+    <h3 className="ct-doc-card__t">Three themes</h3>
+    <p className="ct-doc-card__d">Light, dark, and high-contrast — with automatic system-preference fallback.</p>
+  </a>
+  <a className="ct-doc-card" href="?path=/docs/foundations-accessibility--docs">
+    <span className="ct-doc-card__k">Accessibility</span>
+    <h3 className="ct-doc-card__t">The a11y contract</h3>
+    <p className="ct-doc-card__d">Keyboard patterns, ARIA, focus management, and the WCAG 2.1 AA baseline.</p>
+  </a>
+  <a className="ct-doc-card" href="?path=/docs/components-actions-button--docs">
+    <span className="ct-doc-card__k">Components</span>
+    <h3 className="ct-doc-card__t">40+ building blocks</h3>
+    <p className="ct-doc-card__d">From buttons and fields to data tables, modals, and command menus.</p>
+  </a>
+  <a className="ct-doc-card" href="?path=/docs/patterns-component-patterns--docs">
+    <span className="ct-doc-card__k">Patterns</span>
+    <h3 className="ct-doc-card__t">Composition recipes</h3>
+    <p className="ct-doc-card__d">How the pieces fit together into real, accessible product screens.</p>
+  </a>
+</div>
+
+<div className="ct-rule" />
+
+## One idea, all the way down
+
+Construct is built on a single conviction: **accessibility and identity are the
+same job.** The orange datum that marks every active state is also what makes the
+system unmistakably itself — and the warm-concrete neutrals, the ink, and Manrope
+are tuned so that contrast is never the price of character.
+
+Pick a component from the sidebar to see it in every theme, read its markup, and
+run it through the live accessibility checks built into this Storybook.

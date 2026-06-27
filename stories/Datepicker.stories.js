@@ -1,7 +1,7 @@
 import { expect, within, userEvent } from 'storybook/test';
 
 export default {
-  title: 'Forms/Datepicker',
+  title: 'Components/Forms/Datepicker',
   parameters: {
     docs: {
       description: {

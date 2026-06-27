@@ -1,7 +1,7 @@
 import { expect } from 'storybook/test';
 
 export default {
-  title: 'Accessibility/Touch Targets',
+  title: 'Components/Accessibility/Touch Targets',
   parameters: {
     docs: {
       description: {

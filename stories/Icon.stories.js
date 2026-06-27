@@ -1,7 +1,7 @@
 import { expect } from 'storybook/test';
 
 export default {
-  title: 'Foundations/Icon',
+  title: 'Foundations/Iconography',
   parameters: {
     docs: {
       description: {

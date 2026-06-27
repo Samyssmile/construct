@@ -1,7 +1,7 @@
 import { expect, within, userEvent, waitFor } from 'storybook/test';
 
 export default {
-  title: 'Feedback/Banner',
+  title: 'Components/Feedback/Banner',
   parameters: {
     docs: {
       description: {
