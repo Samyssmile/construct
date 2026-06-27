@@ -1,6 +1,7 @@
 import '../foundations.css';
 import '../components/index.css';
 import './docs.css';
+import './fonts.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 

@@ -37,7 +37,7 @@ const config = {
     <link rel="icon" type="image/svg+xml" href="${FAVICON}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" />
     <style>
       /* ---- Construct chrome polish -----------------------------------------
          The base look comes from theme.js (stable). These rules only touch
@@ -60,7 +60,7 @@ const config = {
         color: #66604E !important;
       }
 
-      /* Crisper type rendering for the Manrope chrome. */
+      /* Crisper type rendering for the Lato chrome. */
       body, .sidebar-container {
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;

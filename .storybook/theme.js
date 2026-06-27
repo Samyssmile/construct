@@ -16,7 +16,7 @@ import { create } from 'storybook/theming';
 export default create({
   base: 'light',
 
-  // Brand — the wordmark itself is styled in managerHead CSS (Manrope + datum).
+  // Brand — the wordmark itself is styled in managerHead CSS (Lato + datum).
   brandTitle: 'Construct',
   brandUrl: 'https://samyssmile.github.io/construct',
   brandTarget: '_self',
@@ -50,6 +50,6 @@ export default create({
   inputBorderRadius: 8,
 
   // Type — same superfamily as the system
-  fontBase: '"Manrope", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
+  fontBase: '"Lato", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
   fontCode: '"JetBrains Mono", "SFMono-Regular", Menlo, monospace'
 });
