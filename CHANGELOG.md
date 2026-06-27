@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.3] - 2026-06-28
+
+### Fixed
+
+- **Lato typeface was declared but never loaded.** The 2.0.2 switch updated the font-family
+  tokens to Lato but left the Google Fonts `@import` in `foundations.css` pointing at Manrope,
+  so consumers loaded Manrope (unused) while Lato fell back to a system sans-serif. The
+  `@import` now loads `Lato:wght@400;700;900` (JetBrains Mono unchanged). Documentation
+  (`DesignTokens`, `Accessibility`, `Introduction`) updated from Manrope to Lato.
+
+### Notes
+
+- Lato ships only in 400/700/900 — it has no 500/600/800. The `medium` (500) and `semibold`
+  (600) weight tokens therefore resolve to the nearest available face (400 and 700), and
+  `extrabold` (800) to 900. This is inherent to Lato; `font-synthesis: none` keeps these as
+  real faces (no faux weights).
+
 ## [2.0.2] - 2026-06-28
 
 ### Changed
