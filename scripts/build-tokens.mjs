@@ -169,6 +169,7 @@ const primitiveVarName = (pathParts) => {
   if (group === 'layout' && subgroup === 'container') return `container-${kebabize(key)}`;
   if (group === 'layout' && subgroup === 'gutter') return `gutter-${kebabize(key)}`;
   if (group === 'layout' && subgroup === 'gridGap') return `grid-gap-${kebabize(key)}`;
+  if (group === 'layout' && subgroup === 'navbar') return `navbar-${kebabize(key)}`;
   if (group === 'shadow') return `shadow-${kebabize(subgroup)}`;
   if (group === 'motion' && subgroup === 'duration') return `duration-${kebabize(key)}`;
   if (group === 'motion' && subgroup === 'easing') return `easing-${kebabize(key)}`;
@@ -358,7 +359,7 @@ const cssLines = [
   ...section('Border widths', primitiveCssEntries.filter((entry) => entry.name.startsWith('border-'))),
   ...section('Opacity', primitiveCssEntries.filter((entry) => entry.name.startsWith('opacity-'))),
   ...section('Sizes', primitiveCssEntries.filter((entry) => entry.name.startsWith('control-') || entry.name.startsWith('icon-'))),
-  ...section('Layout', primitiveCssEntries.filter((entry) => entry.name.startsWith('container-') || entry.name.startsWith('gutter-') || entry.name.startsWith('grid-gap-'))),
+  ...section('Layout', primitiveCssEntries.filter((entry) => entry.name.startsWith('container-') || entry.name.startsWith('gutter-') || entry.name.startsWith('grid-gap-') || entry.name.startsWith('navbar-'))),
   ...section('Shadows', primitiveCssEntries.filter((entry) => entry.name.startsWith('shadow-'))),
   ...section('Motion', primitiveCssEntries.filter((entry) => entry.name.startsWith('duration-') || entry.name.startsWith('easing-'))),
   ...section('Z-Index', primitiveCssEntries.filter((entry) => entry.name.startsWith('z-'))),

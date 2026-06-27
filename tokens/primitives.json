@@ -222,6 +222,9 @@
       "sm": 16,
       "md": 24,
       "lg": 32
+    },
+    "navbar": {
+      "height": 56
     }
   },
   "shadow": {
