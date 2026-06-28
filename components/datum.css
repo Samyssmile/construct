@@ -1,0 +1,104 @@
+/* ============================================================
+   Datum — the orange reference-line grammar.
+
+   Construct's signature is one orange reference line ("the datum")
+   that marks what is focused / active / current. These primitives
+   promote that signature from focus rings and the intro page into
+   reusable structural vocabulary every surface can speak.
+
+   Accessibility contract (must hold across light/dark/high-contrast):
+     · orange as TEXT  → --color-brand-accent-active (orange.700, ≥4.5:1)
+     · orange as EDGE/RULE (non-text) → --color-brand-accent (orange.500)
+   ============================================================ */
+
+/* ── Eyebrow ──
+   A mono kicker with a leading datum tick. Sits above a heading to
+   label a section in the engineered "data annotation" voice. */
+.ct-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  /* Text stays a theme-safe neutral (AA on every surface in all three
+     themes); the orange datum lives in the non-text tick below. Orange
+     as small text fails contrast on dark/elevated and high-contrast. */
+  color: var(--color-text-secondary);
+}
+
+.ct-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 3px;
+  border-radius: var(--radius-xs);
+  background: var(--color-brand-accent);
+}
+
+/* ── Datum scale ──
+   A measured reference line: a hairline baseline with hanging ruler
+   ticks (minor every 12px, major every 60px) and an orange "origin"
+   segment marking zero. Decorative — mark it role="presentation". */
+.ct-datum-scale {
+  height: 9px;
+  background:
+    /* orange origin segment — the datum's zero */
+    linear-gradient(var(--color-brand-accent), var(--color-brand-accent)) 0 0 / 48px 2px no-repeat,
+    /* full-width baseline hairline */
+    linear-gradient(var(--color-border-strong), var(--color-border-strong)) 0 0 / 100% 1px no-repeat,
+    /* major ticks */
+    repeating-linear-gradient(90deg, var(--color-border-strong) 0 1px, transparent 1px 60px) 0 0 / 100% 8px no-repeat,
+    /* minor ticks */
+    repeating-linear-gradient(90deg, var(--color-border-default) 0 1px, transparent 1px 12px) 0 0 / 100% 5px no-repeat;
+}
+
+/* ── Spec datasheet ──
+   Engineering datasheet for key figures — hairline-gridded cells
+   instead of free-floating big numbers. Mark the lead cell with
+   `--origin` to carry the datum. */
+.ct-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--border-thin);
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-border-subtle);
+  overflow: hidden;
+}
+
+.ct-spec {
+  position: relative;
+  padding: var(--space-7);
+  background: var(--color-bg-elevated);
+}
+
+.ct-spec--origin {
+  box-shadow: inset 0 var(--border-thick) 0 0 var(--color-brand-accent);
+}
+
+.ct-spec__value {
+  font-family: var(--font-family-brand);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1;
+  color: var(--color-text-primary);
+}
+
+.ct-spec__value small {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.ct-spec__label {
+  display: block;
+  margin-top: var(--space-4);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+}

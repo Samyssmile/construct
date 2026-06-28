@@ -74,3 +74,31 @@
     transition: none;
   }
 }
+
+/* ── Datum ──
+   The reference-line grammar applied to cards. `--datum` adds a corner
+   registration mark (like an engineering drawing); the active/current
+   state carries the same orange leading edge as list and sidebar items.
+   Both are opt-in and additive — they don't change default cards. */
+.ct-card--datum {
+  position: relative;
+}
+
+.ct-card--datum::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--border-thin));
+  left: calc(-1 * var(--border-thin));
+  width: 18px;
+  height: 18px;
+  border-top: var(--border-medium) solid var(--color-brand-accent);
+  border-left: var(--border-medium) solid var(--color-brand-accent);
+  border-top-left-radius: var(--radius-lg);
+}
+
+.ct-card--active,
+.ct-card[data-state='active'] {
+  /* The datum: an orange leading edge marks the active/current card,
+     consistent with .ct-list__item and .ct-sidebar active states. */
+  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent), var(--shadow-sm);
+}
