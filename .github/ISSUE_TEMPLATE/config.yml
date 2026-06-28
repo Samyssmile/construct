@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Live Storybook & Docs
+    url: https://samyssmile.github.io/construct/
+    about: Browse every component, token, and accessibility note interactively.
+  - name: 💬 Discussions
+    url: https://github.com/Samyssmile/construct/discussions
+    about: Ask questions, share ideas, and get help from the community.
+  - name: 🅰️ Angular wrapper (ng-construct)
+    url: https://github.com/Samyssmile/ng-construct
+    about: Using Angular? File component issues for the typed wrapper here.
