@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.4] - 2026-06-28
+
+### Added
+
+- **Datum grammar — the signature, now spoken by components.** The orange "datum"
+  (Construct's reference line for focus / active / current state) was promoted from focus
+  rings and bespoke docs CSS into reusable, opt-in component vocabulary in a new
+  `components/datum.css`:
+  - `.ct-eyebrow` — a mono kicker with a leading datum tick, for labelling sections.
+  - `.ct-datum-scale` — a measured reference line (a ruler with minor/major ticks and an
+    orange "origin" segment) for section headers.
+  - `.ct-specs` / `.ct-spec` (+ `.ct-spec--origin`) — an engineering datasheet for key figures.
+  - Card modifiers in `card.css`: `.ct-card--datum` (a corner registration mark) and an
+    active state (`.ct-card--active` / `[data-state="active"]`) that carries the same orange
+    leading edge as `.ct-list__item` and `.ct-sidebar`, so every active surface reads as one system.
+
+### Accessibility
+
+- Eyebrow and spec labels use `--color-text-secondary` (≥7:1 on every surface across light,
+  dark and high-contrast); orange is reserved for non-text edges/ticks (`--color-brand-accent`,
+  ≥3:1 as a graphic object). Default cards and existing `aria-selected` card behaviour are unchanged.
+
 ## [2.0.3] - 2026-06-28
 
 ### Fixed
