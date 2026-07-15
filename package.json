@@ -1,6 +1,6 @@
 {
   "name": "@neuravision/construct",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Construct Design System - Accessible, token-based design system for modern web applications",
   "license": "MIT",
   "repository": {
@@ -17,19 +17,58 @@
     "components"
   ],
   "type": "module",
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "bin": {
+    "construct-theme": "./scripts/construct-theme.mjs"
+  },
   "scripts": {
-    "build": "node scripts/build-tokens.mjs",
-    "check": "node scripts/build-tokens.mjs --check",
+    "build": "npm run build:tokens && npm run build:standalone",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "build:standalone": "node scripts/build-standalone-components.mjs",
+    "audit": "npm audit --audit-level=high",
+    "tokens:validate": "node scripts/validate-tokens.mjs",
+    "tokens:test": "node scripts/test-token-pipeline.mjs",
+    "check": "npm run check:tokens && npm run check:standalone && npm run check:css && npm run check:exports && npm run check:version",
+    "check:tokens": "node scripts/build-tokens.mjs --check && npm run tokens:validate && npm run tokens:test",
+    "check:standalone": "node scripts/build-standalone-components.mjs --check",
+    "check:css": "node scripts/validate-css-vars.mjs",
+    "check:exports": "node scripts/validate-package-exports.mjs",
+    "check:version": "node scripts/validate-version.mjs",
+    "test": "npm run test:behaviors && npm run test:storybook && npm run test:touch && npm run test:forced-colors",
+    "test:behaviors": "vitest --run --config behaviors/__tests__/vitest.config.js",
+    "test:storybook": "vitest --run",
+    "test:touch": "vitest --run --config vitest.touch.config.js",
+    "test:forced-colors": "vitest --run --config vitest.forced-colors.config.js",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "prepack": "npm run build && npm run check"
   },
   "exports": {
     "./foundations.css": "./foundations.css",
+    "./fonts.css": "./fonts.css",
     "./components/components.css": "./components/components.css",
     "./components/index.css": "./components/index.css",
-    "./components/*.css": "./components/*.css",
+    "./components/core.css": "./standalone/core.css",
+    "./components/_keyframes.css": "./components/_keyframes.css",
+    "./components/_shared.css": "./components/_shared.css",
+    "./components/_shell-shared.css": "./components/_shell-shared.css",
+    "./components/*.css": "./standalone/*.css",
+    "./behaviors": {
+      "types": "./behaviors/index.d.ts",
+      "default": "./behaviors/index.js"
+    },
     "./tokens/tokens.css": "./tokens/tokens.css",
     "./tokens/tokens.json": "./tokens/tokens.json",
+    "./tokens/primitives.json": "./tokens/primitives.json",
+    "./tokens/semantic.light.json": "./tokens/semantic.light.json",
+    "./tokens/semantic.dark.json": "./tokens/semantic.dark.json",
+    "./tokens/semantic.high-contrast.json": "./tokens/semantic.high-contrast.json",
+    "./tokens/components.json": "./tokens/components.json",
     "./tokens/tokens": {
       "types": "./tokens/tokens.ts",
       "default": "./tokens/tokens.js"
@@ -37,31 +76,43 @@
     "./tokens": {
       "types": "./tokens/tokens.ts",
       "default": "./tokens/tokens.js"
-    }
+    },
+    "./schemas/*.json": "./schemas/*.json",
+    "./schemas/examples/*.json": "./schemas/examples/*.json"
   },
   "files": [
     "foundations.css",
-    "tokens/tokens.css",
-    "tokens/tokens.json",
-    "tokens/tokens.js",
-    "tokens/tokens.ts",
+    "fonts.css",
+    "tokens/*.css",
+    "tokens/*.json",
+    "tokens/*.js",
+    "tokens/*.ts",
     "tokens/README.md",
-    "docs/guidelines.md",
+    "schemas/**/*.json",
     "components/*.css",
     "components/README.md",
+    "standalone/*.css",
+    "behaviors/*.js",
+    "behaviors/*.d.ts",
+    "behaviors/internal/*.js",
+    "scripts/build-tokens.mjs",
+    "scripts/construct-theme.mjs",
+    "scripts/validate-tokens.mjs",
+    "docs/*.md",
+    "examples/react/*",
+    "CHANGELOG.md",
     "README.md"
   ],
   "devDependencies": {
-    "@storybook/addon-a11y": "^10.2.3",
-    "@storybook/addon-docs": "^10.2.3",
-    "@storybook/addon-themes": "^10.2.3",
-    "@storybook/addon-vitest": "^10.2.3",
-    "@storybook/html-vite": "^10.2.3",
-    "@vitest/browser-playwright": "^4.0.18",
-    "@vitest/coverage-v8": "^4.0.18",
-    "playwright": "^1.58.1",
+    "@storybook/addon-a11y": "^10.5.0",
+    "@storybook/addon-docs": "^10.5.0",
+    "@storybook/addon-themes": "^10.5.0",
+    "@storybook/addon-vitest": "^10.5.0",
+    "@storybook/html-vite": "^10.5.0",
+    "@vitest/browser-playwright": "^4.1.10",
+    "playwright": "^1.61.1",
     "remark-gfm": "^4.0.1",
-    "storybook": "^10.2.3",
-    "vitest": "^4.0.18"
+    "storybook": "^10.5.0",
+    "vitest": "^4.1.10"
   }
 }

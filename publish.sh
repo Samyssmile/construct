@@ -1,20 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(pwd)"
-trap 'cd "$ROOT_DIR"' EXIT
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+START_DIR="$(pwd)"
+AUTH_DIR=""
+AUTH_CONFIG=""
+PUBLISH_TOKEN="${NPM_TOKEN:-}"
+unset NPM_TOKEN
+
+cleanup() {
+  local status=$?
+
+  if [[ -n "$AUTH_CONFIG" ]]; then
+    rm -f -- "$AUTH_CONFIG"
+  fi
+  if [[ -n "$AUTH_DIR" ]]; then
+    rmdir -- "$AUTH_DIR" 2>/dev/null || true
+  fi
+
+  cd -- "$START_DIR" || true
+  return "$status"
+}
+
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' HUP TERM
+
+cd -- "$ROOT_DIR"
 
 # --- Pre-flight checks ---
 echo "🔍 Running pre-flight checks..."
 
-echo "  → Building tokens..."
+echo "  → Auditing dependency vulnerabilities..."
+npm run audit
+
+echo "  → Building generated outputs..."
 npm run build
 
+echo "  → Verifying package contracts..."
+npm run check
+
 echo "  → Running tests..."
-npx vitest --run
+npm test
 
 echo "  → Building Storybook..."
 npm run storybook:build
+
+echo "  → Verifying packed contents..."
+npm pack --dry-run --ignore-scripts
 
 echo "✅ All checks passed."
 
@@ -25,41 +58,34 @@ echo
 echo "📦 Publishing: $NAME@$VERSION"
 
 # --- Auth ---
-USE_TOKEN=false
-if [[ -n "${NPM_TOKEN:-}" ]]; then
-  USE_TOKEN=true
-  npm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}" >/dev/null
+if [[ -n "$PUBLISH_TOKEN" ]]; then
+  AUTH_DIR="$(mktemp -d "${TMPDIR:-/tmp}/construct-npm-auth.XXXXXX")"
+  AUTH_CONFIG="$AUTH_DIR/npmrc"
+  chmod 700 "$AUTH_DIR"
+  (umask 077 && printf '//registry.npmjs.org/:_authToken=%s\n' "$PUBLISH_TOKEN" > "$AUTH_CONFIG")
+  PUBLISH_TOKEN=""
+  chmod 600 "$AUTH_CONFIG"
+  export NPM_CONFIG_USERCONFIG="$AUTH_CONFIG"
   echo "🔐 Using NPM_TOKEN for publish (no OTP required)."
+  npm publish --access public
+else
+  OTP=""
+
+  prompt_otp() {
+    printf 'Enter your npm OTP: '
+    read -r OTP
+    OTP="${OTP//[[:space:]]/}"
+  }
+
+  prompt_otp
+  while ! npm publish --access public --otp="$OTP"; do
+    printf '⚠️ Publish failed. New OTP (Enter = retry): '
+    read -r NEW_OTP
+    NEW_OTP="${NEW_OTP//[[:space:]]/}"
+    [[ -n "$NEW_OTP" ]] && OTP="$NEW_OTP"
+  done
 fi
-
-OTP=""
-
-prompt_otp() {
-  echo -n "Enter your npm OTP: "
-  read -r OTP
-  OTP="${OTP//[[:space:]]/}"
-}
-
-# --- Publish ---
-if $USE_TOKEN; then
-  npm publish --access public && { echo "✅ $NAME@$VERSION published"; exit 0; }
-  echo "⚠️ Token-based publish failed. Falling back to OTP..."
-  USE_TOKEN=false
-fi
-
-[[ -n "${OTP:-}" ]] || prompt_otp
-while true; do
-  set +e
-  npm publish --access public --otp="$OTP"
-  status=$?
-  set -e
-  [[ $status -eq 0 ]] && { echo "✅ $NAME@$VERSION published"; break; }
-  echo -n "⚠️ Failed (exit $status). New OTP (Enter = retry): "
-  read -r NEW_OTP
-  NEW_OTP="${NEW_OTP//[[:space:]]/}"
-  [[ -n "$NEW_OTP" ]] && OTP="$NEW_OTP"
-  sleep 2
-done
 
 echo
+echo "✅ $NAME@$VERSION published"
 echo "🎉 Done."

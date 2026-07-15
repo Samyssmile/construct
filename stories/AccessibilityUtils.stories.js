@@ -6,7 +6,7 @@ export default {
     docs: {
       description: {
         component:
-          'Essential accessibility utilities: skip-link for keyboard navigation bypass and visually-hidden for screen-reader-only content. Both are WCAG 2.1 AA requirements.',
+          'Accessibility utilities: a skip link supports keyboard bypass of repeated navigation, while visually-hidden content can provide necessary screen-reader context without changing the visual layout.',
       },
     },
   },

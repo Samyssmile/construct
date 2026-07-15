@@ -340,7 +340,7 @@
   outline-offset: 2px;
 }
 
-/* ── Touch-target minimums (WCAG 2.5.8: 44×44px) ──────────── */
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ─── */
 
 @media (pointer: coarse) {
   .ct-chip {

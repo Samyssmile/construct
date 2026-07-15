@@ -12,7 +12,7 @@
     "text": {
       "primary": "{color.stone.0}",
       "secondary": "{color.stone.200}",
-      "muted": "{color.stone.400}",
+      "muted": "{color.stone.300}",
       "inverse": "{color.stone.0}",
       "onPrimary": "{color.stone.950}"
     },
@@ -24,7 +24,7 @@
     },
     "border": {
       "subtle": "{color.stone.700}",
-      "default": "{color.stone.600}",
+      "default": "{color.stone.400}",
       "strong": "{color.stone.500}"
     },
     "state": {

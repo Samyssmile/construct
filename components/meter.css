@@ -1,0 +1,182 @@
+/* ── Segmented Meter / Stacked Progress ────────────────────────── */
+
+.ct-meter {
+  --ct-meter-height: var(--component-meter-height);
+  --ct-meter-radius: var(--component-meter-radius);
+  --ct-meter-track: var(--component-meter-track);
+  --ct-meter-gap: var(--space-3);
+
+  display: grid;
+  gap: var(--ct-meter-gap);
+  width: 100%;
+}
+
+.ct-meter__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.ct-meter__label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.ct-meter__summary {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.ct-meter__track {
+  display: flex;
+  width: 100%;
+  height: var(--ct-meter-height);
+  overflow: hidden;
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--ct-meter-radius);
+  background: var(--ct-meter-track);
+}
+
+.ct-meter__segment {
+  --ct-meter-segment-color: var(--color-brand-primary);
+
+  flex: 0 0 var(--ct-meter-segment-size, auto);
+  min-width: 0;
+  height: 100%;
+  background: var(--ct-meter-segment-color);
+  transition: flex-basis var(--duration-normal) var(--easing-standard);
+}
+
+.ct-meter__segment[data-variant='accent'] {
+  --ct-meter-segment-color: var(--color-brand-accent);
+}
+
+.ct-meter__segment[data-variant='info'] {
+  --ct-meter-segment-color: var(--color-state-info);
+}
+
+.ct-meter__segment[data-variant='success'] {
+  --ct-meter-segment-color: var(--color-state-success);
+}
+
+.ct-meter__segment[data-variant='warning'] {
+  --ct-meter-segment-color: var(--color-state-warning);
+}
+
+.ct-meter__segment[data-variant='danger'] {
+  --ct-meter-segment-color: var(--color-state-danger);
+}
+
+.ct-meter__segment[data-variant='muted'] {
+  --ct-meter-segment-color: var(--color-border-strong);
+}
+
+.ct-meter__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  list-style: none;
+}
+
+.ct-meter__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.ct-meter__marker {
+  --ct-meter-segment-color: var(--color-brand-primary);
+
+  width: var(--space-3);
+  height: var(--space-3);
+  flex: none;
+  border: var(--border-thin) solid currentColor;
+  border-radius: var(--radius-xs);
+  background: var(--ct-meter-segment-color);
+  color: var(--ct-meter-segment-color);
+}
+
+.ct-meter__marker[data-variant='accent'] {
+  --ct-meter-segment-color: var(--color-brand-accent);
+}
+
+.ct-meter__marker[data-variant='info'] {
+  --ct-meter-segment-color: var(--color-state-info);
+}
+
+.ct-meter__marker[data-variant='success'] {
+  --ct-meter-segment-color: var(--color-state-success);
+}
+
+.ct-meter__marker[data-variant='warning'] {
+  --ct-meter-segment-color: var(--color-state-warning);
+}
+
+.ct-meter__marker[data-variant='danger'] {
+  --ct-meter-segment-color: var(--color-state-danger);
+}
+
+.ct-meter__marker[data-variant='muted'] {
+  --ct-meter-segment-color: var(--color-border-strong);
+}
+
+.ct-meter__legend-value {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.ct-meter__message {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.ct-meter:is([aria-busy='true'], [data-state='loading']) {
+  cursor: wait;
+}
+
+.ct-meter:is([aria-disabled='true'], [data-state='disabled']) {
+  opacity: var(--opacity-disabled);
+}
+
+.ct-meter[data-state='error'] .ct-meter__track {
+  border-color: var(--color-state-danger-border);
+}
+
+.ct-meter[data-state='error'] .ct-meter__message {
+  color: var(--color-state-danger-text);
+}
+
+.ct-meter--sm {
+  --ct-meter-height: var(--space-2);
+}
+
+.ct-meter--lg {
+  --ct-meter-height: var(--space-5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-meter__segment {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-meter__track,
+  .ct-meter__marker {
+    border-color: currentColor;
+  }
+
+  .ct-meter__segment + .ct-meter__segment {
+    border-inline-start: var(--border-medium) solid currentColor;
+  }
+}

@@ -1,6 +1,8 @@
 /* ─── Datepicker ────────────────────────────────────────────────── */
 
 .ct-datepicker {
+  --ct-datepicker-selected-surface: color-mix(in srgb, var(--color-brand-primary) 12%, transparent);
+
   position: relative;
   display: inline-block;
 }
@@ -150,7 +152,7 @@
 /* ── Range selection ────────────────────────────────────────────── */
 
 .ct-datepicker__day[data-in-range] {
-  background: var(--color-brand-primary-surface, color-mix(in srgb, var(--color-brand-primary) 12%, transparent));
+  background: var(--ct-datepicker-selected-surface);
   border-radius: 0;
 }
 

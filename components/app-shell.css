@@ -1,23 +1,32 @@
-/* ── App Shell ─────────────────────────────────────────────────── */
+/* ── App Shell (compatibility layout) ─────────────────────────── */
 /* CSS Grid layout shell that orchestrates Navbar, Sidebar,       */
 /* Main content, optional Panel, and optional Footer.             */
+/* New applications should prefer App Shell V2. `.ct-app-shell`   */
+/* remains supported as the non-floating compatibility contract.  */
 /*                                                                */
-/* Shell breakpoints (component-specific, differ from --bp-*):    */
-/*   Mobile:  <768px                                              */
-/*   Tablet:  768–1199px                                          */
+/* Shell breakpoints (from the public primitive scale):           */
+/*   Compact: <900px  (< md)                                      */
+/*   Tablet:  900–1199px                                          */
 /*   Desktop: 1200–1439px                                         */
 /*   Wide:    >=1440px                                             */
 /* ────────────────────────────────────────────────────────────── */
 
 .ct-app-shell {
-  /* ── Public Tokens ── */
-  --ct-sidebar-width: 260px;
-  --ct-sidebar-rail-width: 56px;
-  --ct-panel-width: 320px;
+  /* ── Shared Public Tokens ── */
+  --ct-shell-sidebar-width: 260px;
+  --ct-shell-sidebar-rail-width: 56px;
+  --ct-shell-panel-width: 320px;
+  --ct-shell-motion-duration: 200ms;
+  --ct-shell-motion-easing: ease-out;
+
+  /* Legacy aliases remain public for backward compatibility. */
+  --ct-sidebar-width: var(--ct-shell-sidebar-width);
+  --ct-sidebar-rail-width: var(--ct-shell-sidebar-rail-width);
+  --ct-panel-width: var(--ct-shell-panel-width);
   --ct-header-height: auto;
   --ct-footer-height: auto;
-  --ct-shell-transition-duration: 200ms;
-  --ct-shell-transition-easing: ease-out;
+  --ct-shell-transition-duration: var(--ct-shell-motion-duration);
+  --ct-shell-transition-easing: var(--ct-shell-motion-easing);
 
   /* ── Internal Variables ── */
   --_sidebar-width: var(--ct-sidebar-width);
@@ -249,7 +258,7 @@
 
 /* Collapsing: delay grid shrink so labels fade out first */
 .ct-app-shell[data-sidebar-state='collapsed'] {
-  transition-delay: 120ms;
+  transition-delay: var(--ct-shell-motion-duration);
 }
 
 
@@ -260,7 +269,7 @@
 }
 
 
-/* ── Responsive: Tablet (768–1199px) ── */
+/* ── Responsive: Tablet (900–1199px) ── */
 
 @media (max-width: 1199px) { /* < lg breakpoint (1200px) */
   /* Auto-collapse sidebar to rail when no explicit state is set */
@@ -286,9 +295,9 @@
 }
 
 
-/* ── Responsive: Mobile (<768px) ── */
+/* ── Responsive: Compact (< md breakpoint, 900px) ── */
 
-@media (max-width: 767px) { /* < tablet breakpoint (768px) */
+@media (max-width: 899px) { /* < md breakpoint (900px) */
   /* Auto-hide sidebar when no explicit state is set */
   .ct-app-shell:not([data-sidebar-state]) {
     --_sidebar-width: 0px;

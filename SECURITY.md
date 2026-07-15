@@ -23,10 +23,13 @@ We will acknowledge your report as soon as possible and keep you updated on the 
 
 ## Scope
 
-Construct ships as CSS and design tokens with no runtime JavaScript, so the attack surface is small.
+Construct ships CSS and design tokens plus opt-in, dependency-free headless behavior modules. Importing
+the behavior entry has no side effect; consumers explicitly attach controllers to caller-owned DOM.
 Reports we are especially interested in:
 
 - CSS that could enable content injection or clickjacking in consuming apps
+- Focus, event, or overlay behavior that can expose or activate unintended UI
+- Custom-theme compiler inputs that escape their declared selector or output boundary
 - Supply-chain concerns in the published package contents
 - Accessibility regressions that create a safety/usability risk
 

@@ -256,10 +256,9 @@ export const WithBadgesAndIcons = {
 const moreIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>`;
 const plusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
 
-/* Action buttons live inside the focusable treeitem; they must be removed
-   from the global Tab order so the tree exposes a single Tab stop, per
-   the WAI-ARIA Tree View pattern. Reach them via mouse or via a row-level
-   action hotkey provided by the consuming framework. */
+/* Action buttons stay out of the global Tab order so the tree exposes one
+   Tab stop. The reference controller moves focus into them with F2, lets
+   arrow keys traverse the action set, and returns to the row with Escape. */
 const actionButtons = `
   <button class="ct-button ct-button--ghost ct-button--sm ct-button--icon" type="button" tabindex="-1" aria-label="Add sub-organisation">
     <span class="ct-icon ct-icon--sm">${plusIcon}</span>
@@ -289,9 +288,26 @@ export const WithRowActions = {
     docs: {
       description: {
         story:
-          'Row-action buttons live in the `.ct-tree__actions` slot. They become visible on row hover or focus to reduce visual noise in long trees.',
+          'Row-action buttons live in the `.ct-tree__actions` slot. They become visible on row hover or focus. With a row focused, F2 enters its actions; Arrow keys move between them and Escape returns to the row.',
       },
     },
+  },
+  play: async ({ canvasElement }) => {
+    const row = canvasElement.querySelector('.ct-tree__node');
+    const actions = row.querySelectorAll(
+      ':scope > .ct-tree__row > .ct-tree__actions button',
+    );
+    expect(actions).toHaveLength(2);
+
+    row.focus();
+    await userEvent.keyboard('{F2}');
+    expect(actions[0]).toHaveFocus();
+
+    await userEvent.keyboard('{ArrowRight}');
+    expect(actions[1]).toHaveFocus();
+
+    await userEvent.keyboard('{Escape}');
+    expect(row).toHaveFocus();
   },
 };
 

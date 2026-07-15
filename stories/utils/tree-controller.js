@@ -51,6 +51,14 @@ export function attachTree(root, options = {}) {
     return node.querySelector(':scope > .ct-tree__row');
   }
 
+  function actionsOf(node) {
+    return Array.from(
+      node.querySelectorAll(
+        ':scope > .ct-tree__row > .ct-tree__actions button:not(:disabled):not([aria-disabled="true"])',
+      ),
+    );
+  }
+
   function isExpandable(node) {
     return node.hasAttribute('aria-expanded');
   }
@@ -202,6 +210,29 @@ export function attachTree(root, options = {}) {
     const node = e.target.closest('.ct-tree__node');
     if (!node || !root.contains(node)) return;
 
+    const action = e.target.closest('.ct-tree__actions button');
+    if (action) {
+      const actions = actionsOf(node);
+      const actionIndex = actions.indexOf(action);
+      if (e.key === 'Escape' || e.key === 'F2') {
+        e.preventDefault();
+        focusNode(node);
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        actions[Math.min(actions.length - 1, actionIndex + 1)]?.focus();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        actions[Math.max(0, actionIndex - 1)]?.focus();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        actions[0]?.focus();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        actions.at(-1)?.focus();
+      }
+      return;
+    }
+
     const nodes = visibleNodes();
     const idx = nodes.indexOf(node);
 
@@ -262,6 +293,14 @@ export function attachTree(root, options = {}) {
         e.preventDefault();
         expandClosedSiblings(node);
         break;
+      case 'F2': {
+        const actions = actionsOf(node);
+        if (actions.length && !isDisabled(node)) {
+          e.preventDefault();
+          actions[0].focus();
+        }
+        break;
+      }
       default:
         if (e.key.length === 1 && /\S/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
           typeahead(e.key);

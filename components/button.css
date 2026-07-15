@@ -1,14 +1,19 @@
 .ct-button {
-  --ct-button-bg: var(--color-brand-primary);
-  --ct-button-bg-hover: var(--color-brand-primary-hover);
-  --ct-button-bg-active: var(--color-brand-primary-active);
-  --ct-button-border: transparent;
-  --ct-button-color: var(--color-text-on-primary);
-  --ct-button-height: var(--control-height-md);
-  --ct-button-padding-x: var(--space-6);
-  --ct-button-font-size: var(--font-size-sm);
-  --ct-button-line-height: var(--line-height-sm);
+  --ct-button-bg: var(--component-button-background);
+  --ct-button-bg-hover: var(--component-button-background-hover);
+  --ct-button-bg-active: var(--component-button-background-active);
+  --ct-button-border: var(--component-button-border);
+  --ct-button-color: var(--component-button-color);
+  --ct-button-height: var(--component-button-height);
+  --ct-button-padding-x: var(--component-button-padding-x);
+  --ct-button-font-size: var(--component-button-font-size);
+  --ct-button-line-height: var(--component-button-line-height);
+  --ct-button-font-weight: var(--component-button-font-weight);
+  --ct-button-radius: var(--component-button-radius);
+  --ct-button-gap: var(--component-button-gap);
+  --ct-button-loading-spinner-size: var(--component-button-loading-spinner-size);
 
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -32,12 +37,12 @@
 }
 
 @media (hover: hover) {
-  .ct-button:hover {
+  .ct-button:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):not([data-loading='true']):hover {
     background: var(--ct-button-bg-hover);
   }
 }
 
-.ct-button:active {
+.ct-button:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):not([data-loading='true']):active {
   background: var(--ct-button-bg-active);
   transform: translateY(1px);
 }
@@ -52,6 +57,56 @@
   opacity: var(--opacity-disabled);
   transform: none;
   cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Loading contract:
+   - set `aria-busy="true"` and `data-loading="true"`;
+   - native buttons must also use `disabled` to block keyboard activation;
+   - wrap the stable accessible label in `.ct-button__content`;
+   - keep `.ct-button__loader` decorative (`aria-hidden="true"`). */
+.ct-button__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: inherit;
+  opacity: 1;
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.ct-button__loader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.ct-button__loader::before {
+  content: '';
+  width: var(--ct-button-loading-spinner-size);
+  height: var(--ct-button-loading-spinner-size);
+  border: var(--border-medium) solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: var(--radius-round);
+  animation: ct-spin var(--ct-spinner-duration) linear infinite;
+}
+
+.ct-button:is([aria-busy='true'], [data-loading='true']) {
+  opacity: 1;
+  transform: none;
+  cursor: wait;
+  pointer-events: none;
+}
+
+.ct-button:is([aria-busy='true'], [data-loading='true']) .ct-button__content {
+  opacity: 0;
+}
+
+.ct-button:is([aria-busy='true'], [data-loading='true']) .ct-button__loader {
+  opacity: 1;
 }
 
 .ct-button--secondary {
@@ -88,8 +143,8 @@
 
 .ct-button--danger {
   --ct-button-bg: var(--color-state-danger);
-  --ct-button-bg-hover: color-mix(in srgb, var(--color-state-danger) 85%, black);
-  --ct-button-bg-active: color-mix(in srgb, var(--color-state-danger) 70%, black);
+  --ct-button-bg-hover: color-mix(in srgb, var(--color-state-danger) 85%, var(--color-state-danger-text));
+  --ct-button-bg-active: color-mix(in srgb, var(--color-state-danger) 70%, var(--color-state-danger-text));
   --ct-button-border: transparent;
   --ct-button-color: var(--color-state-on-solid);
 }
@@ -138,8 +193,41 @@
   justify-content: center;
 }
 
+@media (pointer: coarse) {
+  .ct-button {
+    min-width: var(--control-height-sm);
+    min-height: var(--control-height-sm);
+  }
+
+  .ct-button--link {
+    min-height: var(--control-height-sm);
+    padding-inline: var(--space-2);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ct-button:active {
+  .ct-button,
+  .ct-button__content,
+  .ct-button__loader {
+    transition: none;
+  }
+
+  .ct-button:not(:disabled):not([aria-disabled='true']):not([aria-busy='true']):not([data-loading='true']):active {
     transform: none;
+  }
+
+  .ct-button__loader::before {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-button {
+    border-color: currentColor;
+  }
+
+  .ct-button__loader::before {
+    border-color: currentColor;
+    border-inline-end-color: transparent;
   }
 }

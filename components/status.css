@@ -1,0 +1,107 @@
+/* ── Live / Connection Status ──────────────────────────────────── */
+
+.ct-status {
+  --ct-status-gap: var(--component-status-gap);
+  --ct-status-font-size: var(--component-status-font-size);
+  --ct-status-icon-size: var(--component-status-icon-size);
+  --ct-status-color: var(--color-text-secondary);
+  --ct-status-indicator-color: var(--color-border-strong);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ct-status-gap);
+  color: var(--ct-status-color);
+  font-size: var(--ct-status-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-sm);
+}
+
+.ct-status__indicator,
+.ct-status__icon {
+  width: var(--ct-status-icon-size);
+  height: var(--ct-status-icon-size);
+  flex: none;
+}
+
+.ct-status__indicator {
+  border: var(--border-thin) solid currentColor;
+  border-radius: var(--radius-round);
+  background: var(--ct-status-indicator-color);
+  color: var(--ct-status-indicator-color);
+}
+
+.ct-status__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ct-status-indicator-color);
+}
+
+.ct-status__label {
+  min-width: 0;
+}
+
+.ct-status__detail {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+}
+
+/* Labels use surface-safe neutral text because status can appear on any
+   surface. Semantic colour is reserved for the non-text indicator, while
+   the required visible wording carries meaning without colour. */
+
+.ct-status:is([data-status='online'], [data-status='success']) {
+  --ct-status-color: var(--color-text-primary);
+  --ct-status-indicator-color: var(--color-state-success);
+}
+
+.ct-status:is([data-status='connecting'], [data-status='info'], [data-state='loading']) {
+  --ct-status-color: var(--color-text-primary);
+  --ct-status-indicator-color: var(--color-state-info);
+}
+
+.ct-status:is([data-status='degraded'], [data-status='warning']) {
+  --ct-status-color: var(--color-text-primary);
+  --ct-status-indicator-color: var(--color-state-warning);
+}
+
+.ct-status:is([data-status='offline'], [data-status='neutral']) {
+  --ct-status-color: var(--color-text-secondary);
+  --ct-status-indicator-color: var(--color-border-strong);
+}
+
+.ct-status:is([data-status='error'], [data-status='danger'], [data-state='error']) {
+  --ct-status-color: var(--color-text-primary);
+  --ct-status-indicator-color: var(--color-state-danger);
+}
+
+.ct-status:is([aria-busy='true'], [data-status='connecting'], [data-state='loading']) {
+  cursor: wait;
+}
+
+.ct-status:is([aria-busy='true'], [data-status='connecting'], [data-state='loading']) .ct-status__indicator {
+  background: transparent;
+  border: var(--border-medium) solid currentColor;
+  border-inline-end-color: transparent;
+  animation: ct-spin var(--ct-spinner-duration) linear infinite;
+}
+
+.ct-status:is([aria-disabled='true'], [data-state='disabled']) {
+  opacity: var(--opacity-disabled);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-status__indicator {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-status__indicator {
+    border: var(--border-medium) solid currentColor;
+  }
+
+  .ct-status:is([aria-busy='true'], [data-status='connecting'], [data-state='loading']) .ct-status__indicator {
+    border-inline-end-style: dotted;
+  }
+}

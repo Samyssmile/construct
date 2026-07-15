@@ -8,7 +8,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
     Engineered for <span className="ct-hero__datum">everyone</span>.
   </h1>
   <p className="ct-lead">
-    Construct is a CSS design system with a point of view. WCAG&nbsp;2.1&nbsp;AA in
+    Construct is a CSS-first design system with a point of view. WCAG&nbsp;2.2&nbsp;AA targets in
     every component, three first-class themes, and a visual identity you'll
     actually recognise.
   </p>
@@ -19,10 +19,10 @@ import { Meta } from '@storybook/addon-docs/blocks';
 </div>
 
 <div className="ct-specs">
-  <div className="ct-spec"><span className="ct-spec__v">40+</span><span className="ct-spec__k">Components</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">49</span><span className="ct-spec__k">Style entries</span></div>
   <div className="ct-spec"><span className="ct-spec__v">3</span><span className="ct-spec__k">Themes</span></div>
-  <div className="ct-spec"><span className="ct-spec__v">AA</span><span className="ct-spec__k">WCAG 2.1</span></div>
-  <div className="ct-spec"><span className="ct-spec__v">0<span style={{ fontSize: '0.9rem' }}>kb</span></span><span className="ct-spec__k">Runtime JS</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">AA</span><span className="ct-spec__k">WCAG 2.2 target</span></div>
+  <div className="ct-spec"><span className="ct-spec__v">9</span><span className="ct-spec__k">Headless controllers</span></div>
   <div className="ct-spec"><span className="ct-spec__v">MIT</span><span className="ct-spec__k">License</span></div>
 </div>
 
@@ -32,9 +32,9 @@ Construct ships real, accessible components — not a swatch library. Here are a
 few, untouched, in the light theme:
 
 <div className="ct-stage">
-  <button className="ct-button">Save changes</button>
-  <button className="ct-button ct-button--accent">Publish</button>
-  <button className="ct-button ct-button--outline">Cancel</button>
+  <button className="ct-button" type="button">Save changes</button>
+  <button className="ct-button ct-button--accent" type="button">Publish</button>
+  <button className="ct-button ct-button--outline" type="button">Cancel</button>
   <label className="ct-switch">
     <input className="ct-switch__input" type="checkbox" defaultChecked />
     <span className="ct-switch__label">High contrast</span>
@@ -47,11 +47,10 @@ few, untouched, in the light theme:
   <span className="ct-chip">Design tokens</span>
 </div>
 
-Notice the orange. Every checked, selected, focused, or current state is marked
-by the **same line — the datum.** It is the one decision that makes Construct
-legible and recognisable at once — and it survives light, dark, and
-high-contrast without dropping below WCAG&nbsp;2.1&nbsp;AA. Open any component
-and use the **theme switcher** in the toolbar to watch the contract hold.
+Notice the orange. The **datum** recurs across checked, selected, focused, and current states as a
+line, ring, fill, or accent. This shared motif makes Construct legible and recognisable while its
+tested color uses remain inside the WCAG&nbsp;2.2 contrast contract in light, dark, and
+high-contrast themes. Open any component and use the **theme switcher** in the toolbar to inspect it.
 
 <div className="ct-rule" />
 
@@ -61,12 +60,12 @@ and use the **theme switcher** in the toolbar to watch the contract hold.
   <a className="ct-doc-card" href="?path=/docs/get-started-installation--docs">
     <span className="ct-doc-card__k">Setup</span>
     <h3 className="ct-doc-card__t">Install &amp; integrate</h3>
-    <p className="ct-doc-card__d">Two stylesheets. No build step, no runtime — works with React, Angular, Svelte, or plain HTML.</p>
+    <p className="ct-doc-card__d">Portable CSS with optional typed behavior — works with React, Angular, Svelte, or plain HTML.</p>
   </a>
   <a className="ct-doc-card" href="?path=/docs/foundations-design-tokens--docs">
     <span className="ct-doc-card__k">Foundations</span>
     <h3 className="ct-doc-card__t">Design tokens</h3>
-    <p className="ct-doc-card__d">The two-tier pipeline behind every colour, space, radius, and type decision.</p>
+    <p className="ct-doc-card__d">Primitive, semantic, and component layers behind every reusable design decision.</p>
   </a>
   <a className="ct-doc-card" href="?path=/docs/foundations-theming--docs">
     <span className="ct-doc-card__k">Theming</span>
@@ -76,11 +75,11 @@ and use the **theme switcher** in the toolbar to watch the contract hold.
   <a className="ct-doc-card" href="?path=/docs/foundations-accessibility--docs">
     <span className="ct-doc-card__k">Accessibility</span>
     <h3 className="ct-doc-card__t">The a11y contract</h3>
-    <p className="ct-doc-card__d">Keyboard patterns, ARIA, focus management, and the WCAG 2.1 AA baseline.</p>
+    <p className="ct-doc-card__d">Keyboard controllers, ARIA, focus management, forced colors, and WCAG 2.2 AA targets.</p>
   </a>
   <a className="ct-doc-card" href="?path=/docs/components-actions-button--docs">
     <span className="ct-doc-card__k">Components</span>
-    <h3 className="ct-doc-card__t">40+ building blocks</h3>
+    <h3 className="ct-doc-card__t">49 style entries</h3>
     <p className="ct-doc-card__d">From buttons and fields to data tables, modals, and command menus.</p>
   </a>
   <a className="ct-doc-card" href="?path=/docs/patterns-component-patterns--docs">
@@ -95,9 +94,9 @@ and use the **theme switcher** in the toolbar to watch the contract hold.
 ## One idea, all the way down
 
 Construct is built on a single conviction: **accessibility and identity are the
-same job.** The orange datum that marks every active state is also what makes the
-system unmistakably itself — and the warm-concrete neutrals, the ink, and Lato
-are tuned so that contrast is never the price of character.
+same job.** The orange datum reinforces interaction state across the system while making it
+unmistakably itself — and the warm-concrete neutrals, the ink, and Lato are tuned to preserve the
+tested contrast contract without giving up character.
 
 Pick a component from the sidebar to see it in every theme, read its markup, and
 run it through the live accessibility checks built into this Storybook.

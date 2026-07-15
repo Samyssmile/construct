@@ -15,7 +15,7 @@ A consistent, accessible, professional design system for modern web applications
 - Maintain clear state logic (hover, focus, active, disabled, error)
 - Use consistent sizes (sm, md, lg) for form controls and buttons
 - Establish clear hierarchies (Primary vs. Secondary actions)
-- Test all components with keyboard navigation (Tab, Shift+Tab, Enter, Space)
+- Test all interactive functionality with keyboard navigation (Tab, Shift+Tab, Enter, Space)
 
 ### Don't
 
@@ -29,17 +29,23 @@ A consistent, accessible, professional design system for modern web applications
 
 - **Visible Focus**: All interactive elements must have visible focus indication
 - **Labels**: Every form input must have a label (explicit `<label>` or `aria-label`)
-- **Keyboard Navigation**: Full support for dropdowns, tabs, modals, tooltips, datepickers
+- **Keyboard Navigation**: Use the tested headless controller for supported composite widgets; framework adapters must implement the documented pattern for others such as Datepicker and Tree
 - **ARIA**: Use ARIA attributes only where semantic HTML isn't sufficient
 - **Links**: Links must be distinguishable without color alone (e.g., underline)
-- **Contrast**: Text, icons, and focus rings must meet WCAG AA standards
+- **Contrast**: Text, icons, component boundaries, and focus rings must meet applicable WCAG 2.2 AA requirements
 - **Themes**: Support light, dark, and high-contrast modes; respect user preferences
 - **Disabled States**: Must be recognizable, but content should remain readable
 - **Motion**: Respect `prefers-reduced-motion` for animations
-- **Live Regions**: Use `aria-live` for toasts and status messages
+- **Live Regions**: Use a polite live region only when a dynamic update must be announced; do not make static status labels noisy
 - **Modal**: Requires `aria-modal`, `role="dialog"`, and focus trap
+- **Targets**: Covered compact controls follow Construct's 44×44 CSS-pixel coarse-pointer policy; custom controls require their own checks
+- **Forced colors**: Essential focus, boundary, selected, and status meaning must remain perceivable
 
 ## Keyboard Patterns for Composite Components
+
+Construct provides typed controllers for Modal, Drawer, Tabs, Toggle Group, Dropdown, Select Menu,
+Combobox, Tooltip, and Popover through `@neuravision/construct/behaviors`. Use those controllers or a
+framework adapter with equivalent tested semantics; CSS state selectors alone do not implement behavior.
 
 ### Tabs
 - **Arrow keys**: Move focus between tabs
@@ -47,15 +53,17 @@ A consistent, accessible, professional design system for modern web applications
 - **Enter/Space**: Activate tab
 - **Implementation**: Use roving tabindex (active tab `tabindex="0"`, others `tabindex="-1"`)
 
-### Dropdown (Action-List)
+### Generic disclosure / action list (Popover)
+- **Use for**: Ordinary links, buttons, form controls, or mixed content that should retain native semantics
 - **Trigger**: Uses `aria-expanded` and `aria-controls`
-- **Open**: Focus moves to first item
-- **Esc**: Closes and returns focus to trigger
-- **Items**: Normal buttons/links in tab order
+- **Focus**: Content remains in its natural Tab order; optional focus entry and focus return depend on the product flow
+- **Behavior**: Use `createPopoverController` or an equivalent adapter for Escape, outside dismissal, and state synchronization
+- **Roles**: Do not add `menu` / `menuitem` roles to generic disclosure content
 
-### Dropdown (Role=menu)
-- **Only use if implementing**: Arrow-key navigation, Home/End, typeahead, and roving tabindex
-- Most dropdowns should use Action-List pattern instead
+### Dropdown action menu (`role="menu"`)
+- **Use for**: A menu button whose popup contains application commands
+- **Behavior**: Use `createDropdownController` for first/last focus, Arrow keys, Home/End, typeahead, roving tabindex, Tab dismissal, Escape, and focus return
+- **Naming**: Give the menu an accessible name with `aria-label` or `aria-labelledby`
 
 ### Datepicker
 - **Arrow keys**: Move by day in calendar grid
@@ -93,7 +101,7 @@ Hierarchical disclosure following the [WAI-ARIA Tree View pattern](https://www.w
 - Expandable nodes carry `aria-expanded="true|false"`. Leaf nodes omit the attribute.
 
 **Indent**
-Set `--ct-level` inline on each `.ct-tree__row` (matches the node's `aria-level`). The bundled JS controller used in Storybook fills it in automatically; framework wrappers should generate it during render.
+Set `--ct-level` inline on each `.ct-tree__row` (matches the node's `aria-level`). The Storybook reference implementation fills it in automatically; framework wrappers should generate it during render.
 
 **Keyboard**
 - `↑` / `↓`: focus previous / next visible row
@@ -103,6 +111,7 @@ Set `--ct-level` inline on each `.ct-tree__row` (matches the node's `aria-level`
 - `Enter`: activate (consumer-defined; emit `ct-tree:activate`)
 - `Space`: toggle selection (multi/single) or activate (no selection)
 - `*`: expand all siblings on the same level
+- `F2`: move focus into the current row's action buttons; Arrow keys move between actions and `Escape` returns to the treeitem
 - Type-ahead (`A`–`Z`): focus next row whose label starts with the typed prefix; buffer resets after 500 ms
 
 **Roving tabindex**
@@ -112,24 +121,24 @@ Exactly one `<li role="treeitem">` carries `tabindex="0"`. All others carry `tab
 The `.ct-tree__toggle` is a non-focusable `<span aria-hidden="true">`. Expand/collapse is reachable via keyboard through `←`/`→` on the row and via mouse through clicking the chevron. We deliberately avoid making the toggle a `<button>`: a focusable button inside a focusable row violates `aria-hidden-focus` / `nested-interactive`, and the row already provides the keyboard affordance.
 
 **Row actions**
-Buttons in the `.ct-tree__actions` slot live inside the focusable treeitem. Give them `tabindex="-1"` so the tree exposes a single Tab stop, as required by the WAI-ARIA Tree View pattern. Reach them via mouse, or expose a row-level action hotkey from the consuming framework.
+Buttons in the `.ct-tree__actions` slot live inside the focusable treeitem. Give them `tabindex="-1"` so the tree exposes a single Tab stop, as required by the WAI-ARIA Tree View pattern. Storybook's reference controller uses `F2` to focus the first enabled action, Arrow keys to traverse the action set, and `Escape` to restore focus to the treeitem. Consumer implementations that expose row actions must provide the same reachable keyboard path or an explicitly documented equivalent.
 
 **Selection**
 - `aria-selected="true|false"` on the `<li role="treeitem">` (only when selection is active).
-- For multi-selection, the container needs `aria-multiselectable="true"`. The Storybook controller (`attachTree`) sets and tears this down automatically when invoked with `selection: 'multi'`.
+- For multi-selection, the container needs `aria-multiselectable="true"`. Storybook's `attachTree` reference implementation sets and tears this down when invoked with `selection: 'multi'`; it is not exported from `@neuravision/construct/behaviors`.
 - Construct only styles selection — the consumer decides whether to clear other rows (`single`) or keep them (`multi`).
 
 **Async children**
 Set `aria-busy="true"` on the `<li role="treeitem">` while its children are loading. The chevron switches to a spinner via the existing `ct-spin` keyframe and the toggle becomes non-interactive while busy.
 
 **Disabled nodes**
-Use `aria-disabled="true"` on the `<li>`. Do **not** use the HTML `disabled` attribute — `treeitem` is not a form control. The Storybook controller skips activation, selection and toggle for disabled nodes; arrow-key navigation still passes through them so screen readers can announce them.
+Use `aria-disabled="true"` on the `<li>`. Do **not** use the HTML `disabled` attribute — `treeitem` is not a form control. Storybook's reference implementation skips activation, selection and toggle for disabled nodes; arrow-key navigation still passes through them so screen readers can announce them.
 
 **Orphan state**
 For sub-nodes whose parent reference is missing in the data set, render them on the root level with the `.ct-tree__node--orphan` modifier. They get a warning-tinted surface and a dashed border so the data inconsistency is visible without breaking the tree.
 
-**Custom events**
-The Storybook controller emits four bubbling `CustomEvent`s on the focused treeitem so consumers can wire up application logic without re-implementing the keyboard model:
+**Reference events**
+Storybook's non-public `attachTree` reference implementation emits four bubbling `CustomEvent`s on the focused treeitem. Consumer wrappers may adopt the same event shape, but these events and `attachTree` are examples rather than a published behavior API:
 
 | Event | Detail | Fires on |
 |---|---|---|
@@ -150,6 +159,10 @@ Use these attributes for state management:
 - **selected**: `aria-selected="true"`
 - **current**: `aria-current="page"`
 - **expanded**: `aria-expanded="true|false"`
+- **loading**: `aria-busy="true"`; loading buttons also use `data-loading="true"` and native `disabled`
+
+Never use `aria-disabled="true"` alone to block a native button: it announces state but does not suppress
+activation. Use the native `disabled` attribute whenever the HTML element supports it.
 
 ## Breakpoints & Media Queries
 
@@ -181,19 +194,25 @@ CSS custom properties cannot be used inside `@media` queries. Use the raw pixel 
 - Always use `max-width: <token - 1>px` to target viewports *below* a breakpoint
 - Always add a reference comment noting the breakpoint name and token value
 - Only use values derived from the token system — never arbitrary pixel values
-- Current components use two breakpoints: `< sm` (599px) and `< md` (899px)
+- Current components use the `sm`, `md`, and `lg` contracts (599px, 899px, and 1199px maximums). App Shell V1 and V2 use `< md` for compact overlay navigation and `< lg` for rail/panel behavior.
 
 ## Fonts
 
-- **Default**: Fonts are loaded via Google Fonts in `foundations.css` (Manrope for display + body, JetBrains Mono for code/data)
-- **Self-hosting**: For CSP or privacy requirements, replace Google Fonts import with local `@font-face` rules
-- **Weights**: Ensure 400, 500, 600, 700, and 800 are available
+- **Default**: `foundations.css` makes no network request and uses resilient local/system fallback stacks.
+- **Hosted opt-in**: Import `fonts.css` before foundations only when Google-hosted requests satisfy product privacy and CSP policy.
+- **Self-hosting**: Host licensed files in the application; Construct intentionally does not publish third-party binaries.
+- **Lato weights**: Provide 400, 700, and 900. JetBrains Mono uses 400, 500, 600, and 700.
+
+See [Fonts](fonts.md) for complete hosted, self-hosted, and product-family examples.
 
 ## Governance
 
-- **New components require**: Design tokens, state definitions, accessibility notes, Storybook story
-- **Before merge**: Visual QA + keyboard testing + contrast check
+- **New components require**: owning token layer, state definitions, accessibility notes, Storybook coverage, and public import verification
+- **Interactive changes require**: keyboard/focus lifecycle tests and complete controller cleanup
+- **Before merge**: `npm run check`, `npm test`, Storybook build, visual/keyboard/screen-reader review
 - **Review process**: At least one accessibility review for new interactive components
+
+The normative checklist is [Governance and Definition of Done](governance.md).
 
 ---
 

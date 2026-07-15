@@ -5,8 +5,8 @@
       "primaryHover": "{color.stone.800}",
       "primaryActive": "{color.stone.900}",
       "accent": "{color.orange.500}",
-      "accentHover": "{color.orange.600}",
-      "accentActive": "{color.orange.700}",
+      "accentHover": "{color.orange.400}",
+      "accentActive": "{color.orange.300}",
       "onAccent": "{color.stone.950}"
     },
     "text": {
@@ -20,17 +20,19 @@
       "canvas": "{color.stone.50}",
       "surface": "{color.stone.100}",
       "elevated": "{color.stone.0}",
-      "muted": "{color.stone.200}"
+      "muted": "{color.stone.200}",
+      "subtle": "{color.background.surface}"
     },
     "border": {
       "subtle": "{color.stone.200}",
-      "default": "{color.stone.300}",
-      "strong": "{color.stone.500}"
+      "default": "{color.stone.500}",
+      "strong": "{color.stone.500}",
+      "muted": "{color.border.subtle}"
     },
     "state": {
       "info": "{color.ocean.600}",
-      "success": "{color.green.500}",
-      "warning": "{color.amber.400}",
+      "success": "{color.green.700}",
+      "warning": "{color.amber.700}",
       "danger": "{color.red.500}",
       "onSolid": "{color.stone.0}"
     },

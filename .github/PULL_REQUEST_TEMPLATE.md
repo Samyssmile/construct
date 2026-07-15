@@ -17,9 +17,11 @@
 
 - [ ] Follows the `ct-` naming & BEM conventions
 - [ ] Source tokens edited (not generated files); `npm run build` run if tokens changed
-- [ ] `npm run check` passes (token outputs in sync)
-- [ ] Stories added/updated and `npx vitest --run` passes
-- [ ] Accessibility verified (keyboard, ARIA, WCAG 2.1 AA in light/dark/high-contrast)
+- [ ] `npm run check` passes (generated outputs, schemas, contrast, CSS variables, exports, version)
+- [ ] Stories and behavior tests added/updated and `npm test` passes
+- [ ] Applicable WCAG 2.2 AA criteria verified (keyboard, ARIA, light/dark/high-contrast/forced-colors)
+- [ ] Coarse-pointer targets meet Construct's 44×44 policy where applicable
+- [ ] Public API, migration notes, and changelog are updated
 - [ ] Conventional Commit message(s) used
 
 ## Screenshots / Storybook

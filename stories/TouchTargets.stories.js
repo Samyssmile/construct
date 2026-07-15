@@ -6,11 +6,12 @@ export default {
     docs: {
       description: {
         component:
-          'WCAG 2.5.8 requires interactive elements to have at least 44×44px touch targets. ' +
-          'On touch devices (`pointer: coarse`), Construct automatically enlarges targets via ' +
-          'token overrides (`--control-height-sm`, `--control-height-calendar-day`) and invisible ' +
-          'hit-area expansion (`::after`/`::before` pseudo-elements). ' +
-          'On pointer devices, visual sizes remain unchanged.',
+          'Construct applies a 44×44px policy to covered compact controls when ' +
+          '`pointer: coarse` matches. This exceeds the WCAG 2.2 AA size threshold in SC 2.5.8; ' +
+          'SC 2.5.5 is the AAA enhanced target criterion. The checks cover default and small ' +
+          'buttons, checkbox and radio inputs, default and small switches, sliders, pagination ' +
+          'links, and interactive chips. Construct uses control tokens and invisible pseudo-element ' +
+          'hit areas so fine-pointer visual sizes remain unchanged.',
       },
     },
   },
@@ -21,8 +22,8 @@ export const Overview = {
     docs: {
       description: {
         story:
-          'All previously affected components side-by-side. On touch devices ' +
-          '(`@media (pointer: coarse)`), each element meets the 44×44px minimum.',
+          'The controls covered by Construct\'s automated target contract, side-by-side. When ' +
+          '`@media (pointer: coarse)` matches, every listed interaction area measures at least 44×44px.',
       },
     },
   },
@@ -70,8 +71,10 @@ export const Overview = {
     </section>
 
     <section>
-      <h3 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin: 0 0 var(--space-3);">Button (small)</h3>
+      <h3 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin: 0 0 var(--space-3);">Button (default and small)</h3>
       <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+        <button class="ct-button">Default primary</button>
+        <button class="ct-button ct-button--secondary">Default secondary</button>
         <button class="ct-button ct-button--sm">Small primary</button>
         <button class="ct-button ct-button--secondary ct-button--sm">Small secondary</button>
       </div>
@@ -106,6 +109,18 @@ export const Overview = {
     </section>
   </div>`,
   play: async ({ canvasElement }) => {
+    const effectiveTargetSize = (element, pseudo = null) => {
+      const rect = element.getBoundingClientRect();
+      if (!pseudo) return { width: rect.width, height: rect.height };
+
+      const style = getComputedStyle(element, pseudo);
+      const inset = side => Number.parseFloat(style[side]) || 0;
+      return {
+        width: rect.width - inset('left') - inset('right'),
+        height: rect.height - inset('top') - inset('bottom'),
+      };
+    };
+
     // Verify all interactive elements exist
     const checkbox = canvasElement.querySelector('.ct-check__input');
     expect(checkbox).toBeInTheDocument();
@@ -122,6 +137,9 @@ export const Overview = {
     const smallButtons = canvasElement.querySelectorAll('.ct-button--sm');
     expect(smallButtons).toHaveLength(2);
 
+    const defaultButtons = [...canvasElement.querySelectorAll('.ct-button:not(.ct-button--sm)')];
+    expect(defaultButtons).toHaveLength(2);
+
     const paginationLinks = canvasElement.querySelectorAll('.ct-pagination__link');
     expect(paginationLinks.length).toBeGreaterThanOrEqual(5);
 
@@ -137,6 +155,29 @@ export const Overview = {
     // Switch has position: relative (needed for ::before touch area)
     for (const sw of switches) {
       expect(getComputedStyle(sw).position).toBe('relative');
+    }
+
+    // The dedicated Playwright touch project activates this branch with
+    // `hasTouch: true`; fine-pointer Storybook runs still verify structure.
+    if (matchMedia('(pointer: coarse)').matches) {
+      const targets = [
+        ...defaultButtons.map(element => ({ element })),
+        ...[...smallButtons].map(element => ({ element })),
+        ...[...paginationLinks].map(element => ({ element })),
+        ...[...chips].map(element => ({ element })),
+        { element: slider },
+        { element: checkbox, pseudo: '::after' },
+        ...[...radios].map(element => ({ element, pseudo: '::after' })),
+        ...[...switches].map(element => ({ element, pseudo: '::before' })),
+      ];
+
+      for (const target of targets) {
+        const size = effectiveTargetSize(target.element, target.pseudo);
+        expect(size.width).toBeGreaterThanOrEqual(44);
+        expect(size.height).toBeGreaterThanOrEqual(44);
+      }
+
+      canvasElement.dataset.coarseTargetsVerified = 'true';
     }
   },
 };

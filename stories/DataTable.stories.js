@@ -267,7 +267,7 @@ export const DataTable = {
 
 export const DataTableSimple = {
   render: () => `
-  <div class="ct-data-table ct-data-table--simple" style="max-width: 900px;">
+  <div class="ct-data-table" style="max-width: 900px;">
     <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
       <table class="ct-table ct-table--striped ct-table--compact">
         <thead>

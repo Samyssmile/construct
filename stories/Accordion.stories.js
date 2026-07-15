@@ -85,7 +85,7 @@ export const Default = {
         ${chevron}
       </summary>
       <div class="ct-accordion__content">
-        <p>Yes. All components use semantic HTML, full keyboard navigation, proper ARIA attributes, and WCAG 2.1 AA contrast.</p>
+        <p>Construct targets applicable WCAG 2.2 AA criteria with semantic markup, tested behavior, and contrast gates. Product accessibility still depends on content and integration.</p>
       </div>
     </details>
   </div>
@@ -168,7 +168,7 @@ export const Exclusive = {
         ${chevron}
       </summary>
       <div class="ct-accordion__content">
-        <p>Yes. All components use semantic HTML, full keyboard navigation, proper ARIA attributes, and WCAG 2.1 AA contrast.</p>
+        <p>Construct targets applicable WCAG 2.2 AA criteria with semantic markup, tested behavior, and contrast gates. Product accessibility still depends on content and integration.</p>
       </div>
     </details>
   </div>
@@ -272,9 +272,9 @@ export const WithRichContent = {
         ${chevron}
       </summary>
       <div class="ct-accordion__content">
-        <p><strong>v2.1.0</strong> — Added Accordion component</p>
-        <p><strong>v2.0.0</strong> — Token pipeline redesign</p>
-        <p><strong>v1.5.0</strong> — Dark mode and high-contrast themes</p>
+        <p><strong>v2.1.0</strong> — Added validated product themes and headless behaviors</p>
+        <p><strong>v2.0.0</strong> — Introduced the datum identity and warm neutral palette</p>
+        <p><strong>v1.3.0</strong> — Added chart styling and accessible data fallbacks</p>
       </div>
     </details>
     <details class="ct-accordion__item">

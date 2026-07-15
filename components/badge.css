@@ -38,6 +38,21 @@
   background: var(--ct-badge-accent);
 }
 
+/* Explicit neutral alias for generated/conditional variant class lists. */
+.ct-badge--neutral {
+  --ct-badge-bg: var(--color-bg-muted);
+  --ct-badge-border: var(--color-border-subtle);
+  --ct-badge-color: var(--color-text-secondary);
+  --ct-badge-accent: var(--ct-badge-color);
+}
+
+.ct-badge--sm {
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-xs);
+}
+
 .ct-badge--info {
   --ct-badge-bg: var(--color-state-info-surface);
   --ct-badge-border: var(--color-state-info-border);

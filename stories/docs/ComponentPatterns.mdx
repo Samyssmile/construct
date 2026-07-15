@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Component Patterns
 
-This page documents the conventions that all Construct components follow: BEM naming, state management through data attributes and ARIA, sizing, and composition.
+This page documents Construct's shared conventions: BEM naming, native/ARIA and documented data-state hooks, sizing, and composition.
 
 ---
 
@@ -25,7 +25,7 @@ ct-{block}--{modifier}
 A block is a standalone component. It carries the `ct-` prefix:
 
 ```html
-<button class="ct-button">Save</button>
+<button class="ct-button" type="button">Save</button>
 <div class="ct-card">...</div>
 <div class="ct-modal">...</div>
 ```
@@ -50,13 +50,13 @@ A modifier changes appearance or behaviour, separated by double dashes (`--`):
 
 ```html
 <!-- Variant modifiers -->
-<button class="ct-button ct-button--secondary">Cancel</button>
-<button class="ct-button ct-button--danger">Delete</button>
-<button class="ct-button ct-button--ghost">Skip</button>
+<button class="ct-button ct-button--secondary" type="button">Cancel</button>
+<button class="ct-button ct-button--danger" type="button">Delete</button>
+<button class="ct-button ct-button--ghost" type="button">Skip</button>
 
 <!-- Size modifiers -->
-<button class="ct-button ct-button--sm">Small</button>
-<button class="ct-button ct-button--lg">Large</button>
+<button class="ct-button ct-button--sm" type="button">Small</button>
+<button class="ct-button ct-button--lg" type="button">Large</button>
 ```
 
 The base class is always required alongside the modifier.
@@ -65,45 +65,57 @@ The base class is always required alongside the modifier.
 
 ## Sizing
 
-Components support three sizes via modifier classes:
+Size-capable action and form controls use a shared three-tier scale. Size modifiers are
+component-specific; layout and data-display components do not automatically expose all three:
 
 | Modifier | Size | Usage |
 |----------|------|-------|
 | `--sm` | Small | Dense UIs, inline actions |
 | *(default)* | Medium | Standard use |
-| `--lg` | Large | Primary actions, touch targets |
+| `--lg` | Large | Prominent actions and spacious layouts |
 
 Sizing is consistent across related components — a `ct-button--sm` aligns visually with a `ct-input--sm` in the same form row.
+
+For coarse pointers, covered compact controls expose a minimum 44×44 CSS-pixel interaction area without inflating their fine-pointer visual size. The automated contract currently covers default and small buttons, checkbox and radio inputs, default and small switches, sliders, pagination links, and interactive chips. This is Construct's enhanced target policy (WCAG 2.2 SC 2.5.5 is AAA); products must still test spacing and any custom controls they add.
 
 ---
 
 ## State Management
 
-Construct uses **HTML attributes** — not CSS classes — for all interactive state. This makes state queryable, accessible, and framework-independent.
+Construct prefers native HTML and ARIA attributes for semantic state, then documented `data-*` attributes for visual or structural state that HTML and ARIA do not express. Modifier classes remain the public API for visual variants and sizes. This keeps each state queryable and framework-independent without pretending that a CSS hook alone supplies behavior or accessibility semantics.
 
 ### Data attributes
 
+The table shows common values, not a global enum. Each component's usage documentation is the
+authoritative contract; do not copy a value to another component merely because both use the same
+attribute name.
+
 | Attribute | Values | Components |
 |-----------|--------|------------|
-| `data-state` | `"open"`, `"closed"` | Modal, dropdown, tooltip, sidebar, datepicker |
-| `data-variant` | `"info"`, `"success"`, `"warning"`, `"danger"` | Toast, alert, badge, confirmation |
-| `data-status` | `"success"`, `"error"` | File upload items |
-| `data-side` | `"top"`, `"bottom"`, `"left"`, `"right"` | Tooltip, dropdown |
-| `data-align` | `"start"`, `"end"` | Dropdown |
+| `data-state` | Component-specific examples: `"open"` / `"closed"`, `"active"` / `"inactive"`, `"on"` / `"off"`, `"loading"`, `"error"`, `"disabled"`, `"dragover"` | Overlays, tabs, toggle groups, file upload, status, metric, meter |
+| `data-variant` | Semantic values plus component-specific `"neutral"`, `"accent"`, or `"muted"` | Toast, alert, banner, confirmation, meter |
+| `data-status` | Connection, presence, or semantic values such as `"online"`, `"busy"`, `"away"`, `"success"`, or `"error"` | Status, avatar, file upload items, metric |
+| `data-loading` | `"true"` | Loading button, paired with `aria-busy="true"` and native `disabled` |
+| `data-side` | `"top"`, `"bottom"`, `"left"`, `"right"` | Tooltip, dropdown, popover |
+| `data-align` | `"start"`, `"center"`, `"end"` where supported | Tooltip, popover; dropdown supports start/end |
 | `data-today` | `"true"` | Datepicker day |
 | `data-outside` | `"true"` | Datepicker day (other month) |
 
 ```html
 <!-- Closed dropdown -->
-<div class="ct-dropdown">
-  <button aria-expanded="false">Options</button>
-  <ul class="ct-dropdown__menu" data-state="closed">...</ul>
+<div class="ct-dropdown" data-state="closed">
+  <button type="button" id="closed-trigger" aria-haspopup="menu"
+          aria-expanded="false" aria-controls="closed-menu">Options</button>
+  <ul class="ct-dropdown__menu" id="closed-menu" role="menu"
+      aria-labelledby="closed-trigger" hidden>...</ul>
 </div>
 
 <!-- Open dropdown -->
-<div class="ct-dropdown">
-  <button aria-expanded="true">Options</button>
-  <ul class="ct-dropdown__menu" data-state="open">...</ul>
+<div class="ct-dropdown" data-state="open">
+  <button type="button" id="open-trigger" aria-haspopup="menu"
+          aria-expanded="true" aria-controls="open-menu">Options</button>
+  <ul class="ct-dropdown__menu" id="open-menu" role="menu"
+      aria-labelledby="open-trigger">...</ul>
 </div>
 ```
 
@@ -117,8 +129,9 @@ These standard ARIA attributes double as CSS selectors:
 | `aria-selected` | Selected tab, option, or day | `[aria-selected="true"]` |
 | `aria-invalid` | Form validation error | `[aria-invalid="true"]` |
 | `aria-pressed` | Toggle button state | `[aria-pressed="true"]` |
-| `aria-disabled` | Disabled but still focusable | `[aria-disabled="true"]` |
+| `aria-disabled` | Disabled semantics for a non-native control; focusability depends on its widget pattern | `[aria-disabled="true"]` |
 | `aria-current` | Current page in navigation | `[aria-current="page"]` |
+| `aria-busy` | Region or control is updating | `[aria-busy="true"]` |
 
 ```css
 /* Construct styles state via ARIA selectors */
@@ -133,9 +146,9 @@ These standard ARIA attributes double as CSS selectors:
 
 ### Why attributes over classes?
 
-- **Accessible by default** — screen readers already understand `aria-expanded`. A `.is-open` class would require separate ARIA wiring
+- **Semantic where possible** — screen readers understand `aria-expanded`; a `.is-open` class would require separate ARIA wiring
 - **Queryable** — `element.getAttribute('aria-expanded')` works in any framework
-- **Single source of truth** — the attribute is both the style hook and the accessibility signal
+- **Single state owner** — the controller keeps semantic and visual attributes synchronized instead of maintaining parallel flags
 
 ---
 
@@ -148,53 +161,57 @@ Roving tabindex with arrow-key navigation. The active tab has `tabindex="0"`, al
 ```html
 <div class="ct-tabs">
   <div class="ct-tabs__list" role="tablist">
-    <button class="ct-tabs__trigger" role="tab"
+    <button class="ct-tabs__trigger" type="button" role="tab" id="tab-1"
             aria-selected="true" tabindex="0"
             aria-controls="panel-1">Tab 1</button>
-    <button class="ct-tabs__trigger" role="tab"
+    <button class="ct-tabs__trigger" type="button" role="tab" id="tab-2"
             aria-selected="false" tabindex="-1"
             aria-controls="panel-2">Tab 2</button>
   </div>
-  <div class="ct-tabs__panel" role="tabpanel" id="panel-1">Content 1</div>
-  <div class="ct-tabs__panel" role="tabpanel" id="panel-2" hidden>Content 2</div>
+  <div class="ct-tabs__panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">Content 1</div>
+  <div class="ct-tabs__panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>Content 2</div>
 </div>
 ```
+
+Use `createTabsController` from `@neuravision/construct/behaviors` when the application does not already own this keyboard and selection state machine.
 
 ### Modal
 
 Focus is trapped inside. Focus returns to the trigger on close.
 
 ```html
-<div class="ct-modal" data-state="open">
+<div class="ct-modal" data-state="closed" hidden>
   <div class="ct-modal__dialog" role="dialog"
        aria-modal="true" aria-labelledby="modal-title">
     <div class="ct-modal__header">
       <h2 id="modal-title">Confirm</h2>
-      <button class="ct-button ct-button--ghost ct-button--icon"
-              aria-label="Close">...</button>
+      <button class="ct-button ct-button--ghost ct-button--icon" type="button"
+              aria-label="Close" data-ct-dismiss>...</button>
     </div>
     <div class="ct-modal__body">Are you sure?</div>
     <div class="ct-modal__footer">
-      <button class="ct-button ct-button--secondary">Cancel</button>
-      <button class="ct-button">Confirm</button>
+      <button class="ct-button ct-button--secondary" type="button" data-ct-dismiss>Cancel</button>
+      <button class="ct-button" type="button">Confirm</button>
     </div>
   </div>
 </div>
 ```
 
+`createModalController` owns `hidden`, `data-state`, focus trapping, topmost-overlay Escape/backdrop dismissal, scroll locking, and focus return. The application still owns the dialog's accessible name and the confirmed action.
+
 ### Dropdown
 
-Trigger toggles `aria-expanded`. Menu uses `role="menu"` with `role="menuitem"` on items. Arrow keys navigate between items, Escape closes. The closed state uses `visibility: hidden` to remove the menu from the accessibility tree.
+Trigger toggles `aria-expanded`. Menu uses `role="menu"` with `role="menuitem"` on items. Arrow keys navigate between items; Escape and focus leaving the widget close it. `createDropdownController` synchronizes this behavior, `data-state`, and `hidden` when the application does not already own the state machine.
 
 ```html
-<div class="ct-dropdown">
-  <button aria-haspopup="true" aria-expanded="false"
+<div class="ct-dropdown" data-state="closed">
+  <button type="button" aria-haspopup="menu" aria-expanded="false"
           aria-controls="menu-1" id="dd-trigger">Options</button>
-  <div class="ct-dropdown__menu" id="menu-1"
+  <div class="ct-dropdown__menu" id="menu-1" hidden
        role="menu" aria-labelledby="dd-trigger">
-    <button class="ct-dropdown__item" role="menuitem">Edit</button>
+    <button class="ct-dropdown__item" type="button" role="menuitem">Edit</button>
     <div class="ct-dropdown__separator" role="separator"></div>
-    <button class="ct-dropdown__item" role="menuitem">Delete</button>
+    <button class="ct-dropdown__item" type="button" role="menuitem">Delete</button>
   </div>
 </div>
 
@@ -263,8 +280,8 @@ Components are designed to nest naturally:
   </div>
   <div class="ct-card__footer">
     <div class="ct-cluster">
-      <button class="ct-button ct-button--secondary">Cancel</button>
-      <button class="ct-button">Save</button>
+      <button class="ct-button ct-button--secondary" type="button">Cancel</button>
+      <button class="ct-button" type="button">Save</button>
     </div>
   </div>
 </div>
@@ -275,7 +292,7 @@ Components are designed to nest naturally:
 | Class | Purpose |
 |-------|---------|
 | `ct-stack` | Vertical spacing between children (set `--ct-stack-space`) |
-| `ct-cluster` | Horizontal wrapping layout (set `--ct-cluster-space`) |
+| `ct-cluster` | Horizontal wrapping layout (set `--ct-cluster-gap`) |
 | `ct-sr-only` | Visually hidden, accessible to screen readers |
 | `ct-truncate` | Single-line text truncation with ellipsis |
 | `ct-muted` | Muted text colour |

@@ -5,6 +5,41 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-07-15
+
+### Added
+
+- A validated three-layer token contract (primitive → semantic → component) with 40 component tokens, published JSON Schemas, typed JS/TS exports, and complete nested theme scopes.
+- The `construct-theme` CLI for external theme inputs, including unknown-path, reference, shape, selector, and contrast validation. Built-in themes now verify 57 contrast pairs each.
+- Optional, dependency-free, typed headless controllers for modal, drawer, tabs, toggle group, dropdown, select menu, combobox, tooltip, and popover.
+- Generic live/connection status, metric, and segmented meter contracts; loading-button behavior; a compact responsive navbar; and shared App Shell sizing/motion hooks.
+- Generated standalone package entry points for all 49 component styles plus a public component core entry.
+- Automated CSS-variable closure, package-export, version, token negative-case, real coarse-pointer, and forced-colors contracts.
+- Architecture, behavior, font/self-hosting, governance/Definition-of-Done documentation and a React lifecycle example.
+
+### Changed
+
+- `foundations.css` is network-free. Hosted Lato and JetBrains Mono loading moved to the explicit opt-in `fonts.css` entry.
+- Explicit light, dark, high-contrast, and custom theme scopes emit complete semantic and component contracts, making arbitrary nested container themes deterministic.
+- Light accent interaction colors, light solid success/warning colors, dark muted text, and high-contrast active accent were adjusted to satisfy the expanded contrast matrix.
+- App Shell V2 is the recommended shell; V1 remains supported through compatibility aliases instead of a divergent public token vocabulary.
+- The verified development baseline is Node.js 22.12+ (or 24+) with Storybook 10.5, Vitest 4.1, and Playwright 1.61; the unused coverage package and vulnerable legacy test-tool chain were removed, and CI/publish preflights now reject high or critical dependency advisories.
+
+### Fixed
+
+- Added the missing `--font-size-2xs`, `--color-bg-subtle`, and `--color-border-muted` contracts and removed the Datepicker's undeclared global pseudo-token.
+- Prevented light component aliases and inherited semantic values from leaking into nested dark, high-contrast, light, or custom theme containers.
+- Expanded the small Switch coarse-pointer hit area on both axes and enforced the 44×44 Construct target policy for default/small actions and compact controls.
+- Preserved meaningful borders, state indicators, and focus visibility in forced-colors mode.
+- Raised the default light/dark boundary colors and added compiler gates for control borders against canvas, surface, elevated, and control backgrounds.
+- Rejected negative component dimensions, radii, font metrics, and shadow blur radii while preserving valid negative letter spacing, shadow offsets, and spread values.
+- Preserved the existing `_keyframes.css`, `_shared.css`, and `_shell-shared.css` package subpaths while public component imports move to generated standalone adapters.
+
+### Accessibility
+
+- Composite-widget behavior now has tested keyboard, focus, dismissal, typeahead, nested-overlay, cleanup, and ARIA synchronization contracts instead of relying on CSS documentation alone.
+- Status meaning is conveyed with visible text plus a non-text indicator; semantic state color is no longer used as small text on an unrelated surface.
+
 
 ## [2.0.4] - 2026-06-28
 
@@ -210,6 +245,9 @@ A new visual identity — *"engineered for everyone."* Construct moves from a ge
 - GitHub Actions workflow for Storybook deployment to GitHub Pages
 - Token build script with `--check` mode for CI validation
 
+[2.1.0]: https://github.com/Samyssmile/construct/compare/v2.0.4...v2.1.0
+[2.0.4]: https://github.com/Samyssmile/construct/compare/v2.0.3...v2.0.4
+[2.0.3]: https://github.com/Samyssmile/construct/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/Samyssmile/construct/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/Samyssmile/construct/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Samyssmile/construct/compare/v1.4.0...v2.0.0

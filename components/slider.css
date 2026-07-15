@@ -269,7 +269,8 @@
   opacity: 1;
 }
 
-/* Touch-target minimums (WCAG 2.5.8: 44×44px minimum) */
+/* Construct 44×44 target policy: meets the size in WCAG 2.2 SC 2.5.5
+   (AAA) and exceeds the AA minimum in SC 2.5.8. */
 
 @media (pointer: coarse) {
   .ct-slider {

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neuravision.dev/construct/schemas/components.schema.json",
+  "title": "Construct component token contract",
+  "type": "object",
+  "required": ["button", "control", "card", "status", "metric", "meter"],
+  "additionalProperties": false,
+  "properties": {
+    "button": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "backgroundHover", "backgroundActive", "border", "color", "height", "paddingX", "fontSize", "lineHeight", "fontWeight", "radius", "gap", "loadingSpinnerSize"],
+      "properties": {
+        "background": { "$ref": "#/$defs/token" },
+        "backgroundHover": { "$ref": "#/$defs/token" },
+        "backgroundActive": { "$ref": "#/$defs/token" },
+        "border": { "$ref": "#/$defs/token" },
+        "color": { "$ref": "#/$defs/token" },
+        "height": { "$ref": "#/$defs/token" },
+        "paddingX": { "$ref": "#/$defs/token" },
+        "fontSize": { "$ref": "#/$defs/token" },
+        "lineHeight": { "$ref": "#/$defs/token" },
+        "fontWeight": { "$ref": "#/$defs/token" },
+        "radius": { "$ref": "#/$defs/token" },
+        "gap": { "$ref": "#/$defs/token" },
+        "loadingSpinnerSize": { "$ref": "#/$defs/token" }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "backgroundHover", "backgroundDisabled", "border", "borderHover", "borderFocus", "text", "placeholder", "radius"],
+      "properties": {
+        "background": { "$ref": "#/$defs/token" },
+        "backgroundHover": { "$ref": "#/$defs/token" },
+        "backgroundDisabled": { "$ref": "#/$defs/token" },
+        "border": { "$ref": "#/$defs/token" },
+        "borderHover": { "$ref": "#/$defs/token" },
+        "borderFocus": { "$ref": "#/$defs/token" },
+        "text": { "$ref": "#/$defs/token" },
+        "placeholder": { "$ref": "#/$defs/token" },
+        "radius": { "$ref": "#/$defs/token" }
+      }
+    },
+    "card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "border", "radius", "padding", "shadow", "shadowHover"],
+      "properties": {
+        "background": { "$ref": "#/$defs/token" },
+        "border": { "$ref": "#/$defs/token" },
+        "radius": { "$ref": "#/$defs/token" },
+        "padding": { "$ref": "#/$defs/token" },
+        "shadow": { "$ref": "#/$defs/token" },
+        "shadowHover": { "$ref": "#/$defs/token" }
+      }
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gap", "fontSize", "iconSize"],
+      "properties": {
+        "gap": { "$ref": "#/$defs/token" },
+        "fontSize": { "$ref": "#/$defs/token" },
+        "iconSize": { "$ref": "#/$defs/token" }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "border", "radius", "padding", "valueFontSize", "labelFontSize"],
+      "properties": {
+        "background": { "$ref": "#/$defs/token" },
+        "border": { "$ref": "#/$defs/token" },
+        "radius": { "$ref": "#/$defs/token" },
+        "padding": { "$ref": "#/$defs/token" },
+        "valueFontSize": { "$ref": "#/$defs/token" },
+        "labelFontSize": { "$ref": "#/$defs/token" }
+      }
+    },
+    "meter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["height", "radius", "track"],
+      "properties": {
+        "height": { "$ref": "#/$defs/token" },
+        "radius": { "$ref": "#/$defs/token" },
+        "track": { "$ref": "#/$defs/token" }
+      }
+    }
+  },
+  "$defs": {
+    "token": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^\\{[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)+\\}$"
+        },
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:/\\*|\\*/|[;{}]|!\\s*important|\\b(?:url|var)\\s*\\())[^\\u0000-\\u001F\\u007F]+$"
+        }
+      ]
+    }
+  }
+}

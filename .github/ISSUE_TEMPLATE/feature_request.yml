@@ -1,5 +1,5 @@
 name: ✨ Feature Request
-description: Suggest a new component, token, or improvement
+description: Suggest a component, behavior, token, theme, package API, or other improvement
 title: "feat: "
 labels: ["enhancement"]
 body:
@@ -14,7 +14,7 @@ body:
     id: proposal
     attributes:
       label: Proposed Solution
-      description: Describe the component, token, or API you'd like to see.
+      description: Describe the component, behavior, token, theme, package API, or other contract you'd like to see.
     validations:
       required: true
   - type: dropdown
@@ -23,9 +23,10 @@ body:
       label: Type
       options:
         - New component
+        - Headless behavior / API
         - New / changed design token
         - Accessibility improvement
-        - Theming
+        - Theme compiler / custom theme
         - Documentation
         - Other
     validations:

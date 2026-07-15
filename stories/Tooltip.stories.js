@@ -133,6 +133,7 @@ export const Positions = {
       const wrapper = tooltip.closest('.ct-tooltip');
       expect(wrapper).toHaveAttribute('data-side', sides[i]);
       expect(getComputedStyle(tooltip).visibility).toBe('visible');
+      expect(getComputedStyle(tooltip).pointerEvents).toBe('auto');
     }
   },
 };

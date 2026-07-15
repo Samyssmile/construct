@@ -1,4 +1,4 @@
-import { expect, within } from 'storybook/test';
+import { expect, within, userEvent } from 'storybook/test';
 
 /* ── Shared SVG Icons ── */
 
@@ -107,7 +107,7 @@ function renderToolbar() {
           <span class="ct-icon ct-icon--sm">${icons.search}</span>
         </button>
         <button class="ct-button ct-button--secondary ct-button--sm" type="button">Export</button>
-        <button class="ct-button ct-button--primary ct-button--sm" type="button">Create New</button>
+        <button class="ct-button ct-button--sm" type="button">Create New</button>
       </div>
     </div>`;
 }
@@ -176,7 +176,7 @@ function renderPanel() {
 function renderFooter() {
   return `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); font-size: var(--font-size-xs); color: var(--color-text-muted);">
-      <span>Construct v1.1.2</span>
+      <span>Construct v2.1.0</span>
       <span>Floating Canvas Shell</span>
     </div>`;
 }
@@ -189,13 +189,23 @@ function initV2Toggle(root) {
   const panelToggle = root.querySelector('[data-v2-toggle="panel"]');
   const shell = root.querySelector('.ct-app-shell-v2');
   const backdrop = root.querySelector('.ct-app-shell-v2__backdrop');
+  const panelClose = root.querySelector('.ct-app-shell-v2__panel [aria-label="Close panel"]');
+
+  const setSidebarState = (state) => {
+    shell.setAttribute('data-sidebar-state', state);
+    sidebarToggle?.setAttribute('aria-expanded', String(state === 'expanded'));
+  };
+
+  const setPanelState = (state) => {
+    shell.setAttribute('data-panel-state', state);
+    panelToggle?.setAttribute('aria-expanded', String(state === 'open'));
+  };
 
   if (sidebarToggle && shell) {
     sidebarToggle.addEventListener('click', () => {
       const current = shell.getAttribute('data-sidebar-state');
       const next = current === 'expanded' ? 'collapsed' : 'expanded';
-      shell.setAttribute('data-sidebar-state', next);
-      sidebarToggle.setAttribute('aria-expanded', String(next === 'expanded'));
+      setSidebarState(next);
     });
   }
 
@@ -203,13 +213,20 @@ function initV2Toggle(root) {
     panelToggle.addEventListener('click', () => {
       const current = shell.getAttribute('data-panel-state');
       const next = current === 'open' ? 'closed' : 'open';
-      shell.setAttribute('data-panel-state', next);
+      setPanelState(next);
+    });
+  }
+
+  if (panelClose && shell) {
+    panelClose.addEventListener('click', () => {
+      setPanelState('closed');
+      panelToggle?.focus();
     });
   }
 
   if (backdrop && shell) {
     backdrop.addEventListener('click', () => {
-      shell.setAttribute('data-sidebar-state', 'hidden');
+      setSidebarState('hidden');
     });
   }
 }
@@ -676,11 +693,12 @@ export const InteractiveToggle = {
               </nav>
             </div>
             <div style="display: flex; gap: var(--space-3);">
-              <button class="ct-button ct-button--ghost ct-button--sm" type="button" data-v2-toggle="panel">
+              <button class="ct-button ct-button--ghost ct-button--sm" type="button"
+                aria-expanded="false" aria-controls="v2-panel" data-v2-toggle="panel">
                 <span class="ct-icon ct-icon--sm">${icons.panel}</span>
                 Toggle Panel
               </button>
-              <button class="ct-button ct-button--primary ct-button--sm" type="button">Create New</button>
+              <button class="ct-button ct-button--sm" type="button">Create New</button>
             </div>
           </div>
 
@@ -695,7 +713,7 @@ export const InteractiveToggle = {
           </div>
         </main>
 
-        <aside class="ct-app-shell-v2__panel" aria-label="Inspector">
+        <aside class="ct-app-shell-v2__panel" id="v2-panel" aria-label="Inspector">
           ${renderPanel()}
         </aside>
       </div>
@@ -719,6 +737,28 @@ export const InteractiveToggle = {
 
     const panelToggle = canvasElement.querySelector('[data-v2-toggle="panel"]');
     expect(panelToggle).toBeInTheDocument();
+    expect(panelToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(panelToggle).toHaveAttribute('aria-controls', 'v2-panel');
+
+    await userEvent.click(toggleBtn);
+    expect(shell).toHaveAttribute('data-sidebar-state', 'collapsed');
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(panelToggle);
+    expect(shell).toHaveAttribute('data-panel-state', 'open');
+    expect(panelToggle).toHaveAttribute('aria-expanded', 'true');
+
+    const panelClose = canvasElement.querySelector('#v2-panel [aria-label="Close panel"]');
+    await userEvent.click(panelClose);
+    expect(shell).toHaveAttribute('data-panel-state', 'closed');
+    expect(panelToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(panelToggle).toHaveFocus();
+
+    shell.setAttribute('data-sidebar-state', 'expanded');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    canvasElement.querySelector('.ct-app-shell-v2__backdrop').click();
+    expect(shell).toHaveAttribute('data-sidebar-state', 'hidden');
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
   },
 };
 
@@ -834,5 +874,14 @@ export const V1vsV2Comparison = {
     const v2 = canvasElement.querySelector('.ct-app-shell-v2');
     expect(v1).toBeInTheDocument();
     expect(v2).toBeInTheDocument();
+
+    const v1Style = getComputedStyle(v1);
+    const v2Style = getComputedStyle(v2);
+    expect(v1Style.getPropertyValue('--ct-shell-sidebar-width').trim()).toBeTruthy();
+    expect(v2Style.getPropertyValue('--ct-shell-sidebar-width').trim()).toBeTruthy();
+    expect(v1Style.getPropertyValue('--ct-sidebar-width').trim())
+      .toBe(v1Style.getPropertyValue('--ct-shell-sidebar-width').trim());
+    expect(v2Style.getPropertyValue('--ct-v2-sidebar-width').trim())
+      .toBe(v2Style.getPropertyValue('--ct-shell-sidebar-width').trim());
   },
 };

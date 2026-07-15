@@ -1,7 +1,7 @@
+import '../fonts.css';
 import '../foundations.css';
 import '../components/index.css';
 import './docs.css';
-import './fonts.css';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 
@@ -51,13 +51,13 @@ export const parameters = {
     options: {
       ...MINIMAL_VIEWPORTS,
       xs: {
-        name: 'Breakpoint xs (480px)',
-        styles: { width: '480px', height: '800px' },
+        name: 'Breakpoint xs (360px)',
+        styles: { width: '360px', height: '800px' },
         type: 'mobile',
       },
       sm: {
-        name: 'Breakpoint sm (640px)',
-        styles: { width: '640px', height: '900px' },
+        name: 'Breakpoint sm (600px)',
+        styles: { width: '600px', height: '900px' },
         type: 'mobile',
       },
     },

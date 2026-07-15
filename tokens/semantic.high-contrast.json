@@ -6,7 +6,7 @@
       "primaryActive": "{color.stone.800}",
       "accent": "{color.orange.700}",
       "accentHover": "{color.orange.800}",
-      "accentActive": "{color.orange.600}",
+      "accentActive": "{color.orange.900}",
       "onAccent": "{color.stone.0}"
     },
     "text": {

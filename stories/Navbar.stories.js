@@ -62,9 +62,16 @@ function initNavbarKeyboard(navEl) {
         if (hasMenu) {
           e.preventDefault();
           openMenu(currentItem);
-          const firstMenuItem = currentItem.querySelector('.ct-navbar__menu-item');
+          const menuItems = [
+            ...currentItem.querySelectorAll(
+              '.ct-navbar__menu-item:not([aria-disabled="true"])',
+            ),
+          ];
+          menuItems.forEach((item, itemIndex) => {
+            item.setAttribute('tabindex', itemIndex === 0 ? '0' : '-1');
+          });
+          const [firstMenuItem] = menuItems;
           if (firstMenuItem) {
-            firstMenuItem.setAttribute('tabindex', '0');
             firstMenuItem.focus();
           }
           return;
@@ -138,6 +145,10 @@ function initNavbarKeyboard(navEl) {
         items[items.length - 1].focus();
         break;
       }
+      case 'Tab':
+        // Let the browser move focus out of the composite, then dismiss it.
+        closeAllMenus(navEl);
+        break;
     }
   });
 }
@@ -154,6 +165,9 @@ function closeMenu(item) {
   item.setAttribute('data-state', 'closed');
   const trigger = item.querySelector('.ct-navbar__link');
   if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  item.querySelectorAll('.ct-navbar__menu-item').forEach((menuItem) => {
+    menuItem.setAttribute('tabindex', '-1');
+  });
 }
 
 /** Close all open menus in a navbar. */
@@ -178,7 +192,7 @@ function initMobileToggle(navEl) {
     } else {
       mobileMenu.setAttribute('data-state', 'open');
       toggle.setAttribute('aria-expanded', 'true');
-      // Focus trap: focus first link
+      // Move focus into the disclosed navigation; this is not a modal focus trap.
       const firstLink = mobileMenu.querySelector('.ct-navbar__link');
       if (firstLink) firstLink.focus();
     }
@@ -205,6 +219,7 @@ function renderNavbar({
   showDropdown = false,
   showMobileToggle = false,
   showSearch = false,
+  menubar = false,
   tag = 'header',
 } = {}) {
   const items = [
@@ -214,11 +229,15 @@ function renderNavbar({
     { label: 'Settings', icon: icons.settings },
   ];
 
-  const navLinks = items.map(item => {
+  const navLinks = items.map((item, index) => {
     const isActive = item.label === activeItem;
     const aria = isActive ? ' aria-current="page"' : '';
-    return `<li class="ct-navbar__item" role="none">
-        <a class="ct-navbar__link" href="#" role="menuitem"${aria}>
+    const itemRole = menubar ? ' role="none"' : '';
+    const linkRole = menubar
+      ? ` role="menuitem" tabindex="${index === 0 ? '0' : '-1'}"`
+      : '';
+    return `<li class="ct-navbar__item"${itemRole}>
+        <a class="ct-navbar__link" href="#"${linkRole}${aria}>
           <span class="ct-icon ct-icon--sm">${item.icon}</span>
           ${item.label}
         </a>
@@ -243,7 +262,7 @@ function renderNavbar({
     : '';
 
   const searchSlot = showSearch
-    ? `<button class="ct-button ct-button--ghost ct-button--icon" type="button" aria-label="Search">
+    ? `<button class="ct-button ct-button--ghost ct-button--icon" type="button" aria-label="Search" data-priority="secondary">
         <span class="ct-icon">${icons.search}</span>
       </button>`
     : '';
@@ -251,7 +270,7 @@ function renderNavbar({
   const actions = showActions
     ? `<div class="ct-navbar__actions">
       ${searchSlot}
-      <button class="ct-button ct-button--ghost ct-button--icon" type="button" aria-label="Notifications">
+      <button class="ct-button ct-button--ghost ct-button--icon" type="button" aria-label="Notifications" data-priority="secondary">
         <span class="ct-icon">${icons.bell}</span>
       </button>
       <button class="ct-button ct-button--ghost ct-button--icon" type="button" aria-label="Profile menu">
@@ -265,7 +284,7 @@ function renderNavbar({
     ${brand}
     ${mobileToggle}
     <nav aria-label="${ariaLabel}">
-      <ul class="ct-navbar__nav" role="menubar">
+      <ul class="ct-navbar__nav"${menubar ? ' role="menubar"' : ''}>
         ${navLinks}
       </ul>
     </nav>
@@ -281,35 +300,45 @@ function renderNavbarWithDropdowns({
   ariaLabel = 'Main navigation',
   activeItem = 'Dashboard',
   openMenu: openMenuId = null,
+  menubar = false,
 } = {}) {
+  const topItemRole = menubar ? ' role="none"' : '';
+  const firstTopLinkRole = menubar ? ' role="menuitem" tabindex="0"' : '';
+  const topLinkRole = menubar ? ' role="menuitem" tabindex="-1"' : '';
+  const popupTriggerRole = menubar
+    ? ' role="menuitem" tabindex="-1" aria-haspopup="menu"'
+    : '';
+  const popupRole = menubar ? ' role="menu"' : '';
+  const popupItemRole = menubar ? ' role="menuitem" tabindex="-1"' : '';
+  const separatorRole = menubar ? ' role="separator"' : ' aria-hidden="true"';
   const productsMenu = `
-    <div class="ct-navbar__menu" role="menu" aria-label="Products" id="menu-products">
-      <a class="ct-navbar__menu-item" href="#" role="menuitem">
+    <div class="ct-navbar__menu"${popupRole}${menubar ? ' aria-label="Products"' : ''} id="menu-products">
+      <a class="ct-navbar__menu-item" href="#"${popupItemRole}>
         <span class="ct-navbar__menu-item-icon">${icons.code}</span>
         <span class="ct-navbar__menu-item-label">API Platform</span>
       </a>
-      <a class="ct-navbar__menu-item" href="#" role="menuitem">
+      <a class="ct-navbar__menu-item" href="#"${popupItemRole}>
         <span class="ct-navbar__menu-item-icon">${icons.shield}</span>
         <span class="ct-navbar__menu-item-label">Security Suite</span>
       </a>
-      <a class="ct-navbar__menu-item" href="#" role="menuitem">
+      <a class="ct-navbar__menu-item" href="#"${popupItemRole}>
         <span class="ct-navbar__menu-item-icon">${icons.dashboard}</span>
         <span class="ct-navbar__menu-item-label">Analytics</span>
       </a>
     </div>`;
 
   const resourcesMenu = `
-    <div class="ct-navbar__menu" role="menu" aria-label="Resources" id="menu-resources">
-      <a class="ct-navbar__menu-item" href="#" role="menuitem">
+    <div class="ct-navbar__menu"${popupRole}${menubar ? ' aria-label="Resources"' : ''} id="menu-resources">
+      <a class="ct-navbar__menu-item" href="#"${popupItemRole}>
         <span class="ct-navbar__menu-item-icon">${icons.book}</span>
         <span class="ct-navbar__menu-item-label">Documentation</span>
       </a>
-      <a class="ct-navbar__menu-item" href="#" role="menuitem">
+      <a class="ct-navbar__menu-item" href="#"${popupItemRole}>
         <span class="ct-navbar__menu-item-icon">${icons.users}</span>
         <span class="ct-navbar__menu-item-label">Community</span>
       </a>
-      <div class="ct-navbar__menu-separator" role="separator"></div>
-      <a class="ct-navbar__menu-item" href="#" role="menuitem">
+      <div class="ct-navbar__menu-separator"${separatorRole}></div>
+      <a class="ct-navbar__menu-item" href="#"${popupItemRole}>
         <span class="ct-navbar__menu-item-icon">${icons.support}</span>
         <span class="ct-navbar__menu-item-label">Support Center</span>
       </a>
@@ -325,38 +354,38 @@ function renderNavbarWithDropdowns({
       <span class="ct-navbar__title">Construct</span>
     </a>
     <nav aria-label="${ariaLabel}">
-      <ul class="ct-navbar__nav" role="menubar">
-        <li class="ct-navbar__item" role="none">
-          <a class="ct-navbar__link" href="#" role="menuitem" aria-current="page">
+      <ul class="ct-navbar__nav"${menubar ? ' role="menubar"' : ''}>
+        <li class="ct-navbar__item"${topItemRole}>
+          <a class="ct-navbar__link" href="#"${firstTopLinkRole} aria-current="page">
             <span class="ct-icon ct-icon--sm">${icons.dashboard}</span>
             Dashboard
           </a>
         </li>
-        <li class="ct-navbar__item" role="none" data-state="${productsState}">
-          <button class="ct-navbar__link" type="button" role="menuitem"
-            aria-haspopup="true" aria-expanded="${productsState === 'open'}" aria-controls="menu-products">
+        <li class="ct-navbar__item"${topItemRole} data-state="${productsState}">
+          <button class="ct-navbar__link" type="button"${popupTriggerRole}
+            aria-expanded="${productsState === 'open'}" aria-controls="menu-products">
             Products
             <span class="ct-navbar__link-chevron">${icons.chevronDown}</span>
           </button>
           ${productsMenu}
         </li>
-        <li class="ct-navbar__item" role="none" data-state="${resourcesState}">
-          <button class="ct-navbar__link" type="button" role="menuitem"
-            aria-haspopup="true" aria-expanded="${resourcesState === 'open'}" aria-controls="menu-resources">
+        <li class="ct-navbar__item"${topItemRole} data-state="${resourcesState}">
+          <button class="ct-navbar__link" type="button"${popupTriggerRole}
+            aria-expanded="${resourcesState === 'open'}" aria-controls="menu-resources">
             Resources
             <span class="ct-navbar__link-chevron">${icons.chevronDown}</span>
           </button>
           ${resourcesMenu}
         </li>
-        <li class="ct-navbar__item" role="none">
-          <a class="ct-navbar__link" href="#" role="menuitem">Pricing</a>
+        <li class="ct-navbar__item"${topItemRole}>
+          <a class="ct-navbar__link" href="#"${topLinkRole}>Pricing</a>
         </li>
       </ul>
     </nav>
     <div class="ct-navbar__spacer"></div>
     <div class="ct-navbar__actions">
       <button class="ct-button ct-button--ghost ct-button--sm" type="button">Sign In</button>
-      <button class="ct-button ct-button--primary ct-button--sm" type="button">Get Started</button>
+      <button class="ct-button ct-button--sm" type="button">Get Started</button>
     </div>
   </header>`;
 }
@@ -379,7 +408,7 @@ function renderNavbarMobile({
   const mobileLinks = items.map(item => {
     const isActive = item.label === activeItem;
     const aria = isActive ? ' aria-current="page"' : '';
-    return `<a class="ct-navbar__link" href="#" role="menuitem"${aria}>
+    return `<a class="ct-navbar__link" href="#"${aria}>
         <span class="ct-icon ct-icon--sm">${item.icon}</span>
         ${item.label}
       </a>`;
@@ -401,12 +430,12 @@ function renderNavbarMobile({
       </span>
     </button>
     <nav aria-label="${ariaLabel}">
-      <ul class="ct-navbar__nav" role="menubar">
+      <ul class="ct-navbar__nav">
         ${items.map(item => {
           const isActive = item.label === activeItem;
           const aria = isActive ? ' aria-current="page"' : '';
-          return `<li class="ct-navbar__item" role="none">
-            <a class="ct-navbar__link" href="#" role="menuitem"${aria}>
+          return `<li class="ct-navbar__item">
+            <a class="ct-navbar__link" href="#"${aria}>
               <span class="ct-icon ct-icon--sm">${item.icon}</span>
               ${item.label}
             </a>
@@ -420,12 +449,12 @@ function renderNavbarMobile({
         <span class="ct-icon">${icons.profile}</span>
       </button>
     </div>
-    <div class="ct-navbar__mobile-menu" id="mobile-menu"
-      data-state="${mobileOpen ? 'open' : 'closed'}" role="menu" aria-label="Mobile navigation">
+    <nav class="ct-navbar__mobile-menu" id="mobile-menu"
+      data-state="${mobileOpen ? 'open' : 'closed'}" aria-label="Mobile navigation">
       ${mobileLinks}
-      <div class="ct-navbar__mobile-separator" role="separator"></div>
-      <a class="ct-navbar__link" href="#" role="menuitem">Sign In</a>
-    </div>
+      <div class="ct-navbar__mobile-separator" aria-hidden="true"></div>
+      <a class="ct-navbar__link" href="#">Sign In</a>
+    </nav>
   </header>`;
 }
 
@@ -437,7 +466,7 @@ export default {
     docs: {
       description: {
         component:
-          'Application navigation bar / app header. Provides brand, navigation links, dropdown menus, actions, and a responsive mobile menu. Supports WAI-ARIA Menubar keyboard pattern (roving tabindex, ArrowLeft/Right between items, ArrowDown opens submenus, Escape closes), size variants (sm/md/lg), positioning (sticky/fixed), visual variants (transparent, dark, elevated, bordered, center), and animated mobile hamburger toggle with focus trap. All values are tokenized.',
+          'Application navigation bar / app header. Native site-navigation links are the default. Dedicated examples show the optional WAI-ARIA Menubar keyboard pattern (roving tabindex, ArrowLeft/Right, ArrowDown, Escape) when an application truly needs it. The responsive disclosure moves focus into the opened links and returns it on Escape; it is not a modal focus trap. Supports size, position, and visual variants with Construct tokens.',
       },
     },
   },
@@ -470,15 +499,14 @@ export const Default = {
     const nav = canvas.getByRole('navigation', { name: 'Main navigation' });
     expect(nav).toBeInTheDocument();
 
-    const menubar = canvas.getByRole('menubar');
-    expect(menubar).toBeInTheDocument();
+    expect(canvas.queryByRole('menubar')).not.toBeInTheDocument();
 
-    const activeLink = canvas.getByRole('menuitem', { name: /Dashboard/ });
+    const activeLink = canvas.getByRole('link', { name: /Dashboard/ });
     expect(activeLink).toHaveAttribute('aria-current', 'page');
 
-    expect(canvas.getByRole('menuitem', { name: /Documents/ })).not.toHaveAttribute('aria-current');
-    expect(canvas.getByRole('menuitem', { name: /Support/ })).toBeInTheDocument();
-    expect(canvas.getByRole('menuitem', { name: /Settings/ })).toBeInTheDocument();
+    expect(canvas.getByRole('link', { name: /Documents/ })).not.toHaveAttribute('aria-current');
+    expect(canvas.getByRole('link', { name: /Support/ })).toBeInTheDocument();
+    expect(canvas.getByRole('link', { name: /Settings/ })).toBeInTheDocument();
 
     // Header landmark
     const header = canvasElement.querySelector('header');
@@ -566,6 +594,41 @@ export const SizeComparison = {
   },
 };
 
+/* ── Compact Product Header ── */
+
+export const CompactProductHeader = {
+  name: 'Compact Product Header',
+  parameters: {
+    viewport: { defaultViewport: 'xs' },
+    docs: {
+      description: {
+        story:
+          'The compact modifier reduces chrome without shrinking touch targets. Secondary actions opt into responsive hiding with `data-priority="secondary"`; the profile action and menu toggle remain available.',
+      },
+    },
+  },
+  render: () => renderNavbarMobile({
+    modifier: 'ct-navbar--compact',
+    ariaLabel: 'Compact product navigation',
+  }).replace(
+    '<span class="ct-navbar__title">Construct</span>',
+    '<span class="ct-navbar__title">Construct Workspace</span>',
+  ),
+  play: async ({ canvasElement }) => {
+    const navbar = canvasElement.querySelector('.ct-navbar--compact');
+    expect(navbar).toBeInTheDocument();
+    expect(navbar.scrollWidth).toBeLessThanOrEqual(navbar.clientWidth);
+
+    const toggle = navbar.querySelector('.ct-navbar__toggle');
+    expect(toggle).toHaveAttribute('aria-controls', 'mobile-menu');
+    expect(toggle.getBoundingClientRect().width).toBeGreaterThanOrEqual(44);
+    expect(toggle.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+
+    const mobileMenu = navbar.querySelector('.ct-navbar__mobile-menu');
+    expect(mobileMenu).toBeInTheDocument();
+  },
+};
+
 /* ── Dropdown Menus ── */
 
 export const WithDropdowns = {
@@ -577,16 +640,16 @@ export const WithDropdowns = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Menubar present
-    expect(canvas.getByRole('menubar')).toBeInTheDocument();
+    // Disclosure navigation keeps native link/button semantics by default.
+    expect(canvas.queryByRole('menubar')).not.toBeInTheDocument();
 
     // Dropdown triggers
-    const productsBtn = canvas.getByRole('menuitem', { name: /Products/ });
-    expect(productsBtn).toHaveAttribute('aria-haspopup', 'true');
+    const productsBtn = canvas.getByRole('button', { name: /Products/ });
+    expect(productsBtn).toHaveAttribute('aria-controls', 'menu-products');
     expect(productsBtn).toHaveAttribute('aria-expanded', 'true');
 
-    const resourcesBtn = canvas.getByRole('menuitem', { name: /Resources/ });
-    expect(resourcesBtn).toHaveAttribute('aria-haspopup', 'true');
+    const resourcesBtn = canvas.getByRole('button', { name: /Resources/ });
+    expect(resourcesBtn).toHaveAttribute('aria-controls', 'menu-resources');
     expect(resourcesBtn).toHaveAttribute('aria-expanded', 'false');
 
     // Products menu is open
@@ -603,7 +666,7 @@ export const WithDropdowns = {
 
 export const DropdownsInteractive = {
   name: 'Dropdown Menus (Interactive)',
-  render: () => renderNavbarWithDropdowns(),
+  render: () => renderNavbarWithDropdowns({ menubar: true }),
   play: async ({ canvasElement }) => {
     const navbar = canvasElement.querySelector('.ct-navbar');
 
@@ -808,7 +871,7 @@ export const MobileMenuInteractive = {
 
 export const KeyboardNavigation = {
   name: 'WAI-ARIA Menubar (Keyboard)',
-  render: () => renderNavbar(),
+  render: () => renderNavbar({ menubar: true }),
   play: async ({ canvasElement }) => {
     const navbar = canvasElement.querySelector('.ct-navbar');
     initNavbarKeyboard(navbar);
@@ -852,7 +915,7 @@ export const KeyboardNavigation = {
 
 export const KeyboardWithDropdowns = {
   name: 'Keyboard: Dropdown Menus',
-  render: () => renderNavbarWithDropdowns(),
+  render: () => renderNavbarWithDropdowns({ menubar: true }),
   play: async ({ canvasElement }) => {
     const navbar = canvasElement.querySelector('.ct-navbar');
 
@@ -888,6 +951,16 @@ export const KeyboardWithDropdowns = {
     // ArrowDown navigates in menu
     await userEvent.keyboard('{ArrowDown}');
     expect(document.activeElement).toBe(menuItems[1]);
+
+    // Tab leaves the composite normally and dismisses the popup.
+    await userEvent.keyboard('{Tab}');
+    expect(productsItem).toHaveAttribute('data-state', 'closed');
+    expect(links[1]).toHaveAttribute('aria-expanded', 'false');
+
+    // Reopen to verify Escape dismissal and trigger focus return.
+    links[1].focus();
+    await userEvent.keyboard('{ArrowDown}');
+    expect(document.activeElement).toBe(menuItems[0]);
 
     // Escape closes menu, focus returns to trigger
     await userEvent.keyboard('{Escape}');
@@ -942,7 +1015,7 @@ export const Minimal = {
     </a>
     <div class="ct-navbar__spacer"></div>
     <div class="ct-navbar__actions">
-      <button class="ct-button ct-button--sm">Sign In</button>
+      <button class="ct-button ct-button--sm" type="button">Sign In</button>
     </div>
   </header>`,
   play: async ({ canvasElement }) => {
@@ -976,12 +1049,12 @@ export const WithBadge = {
       <span class="ct-navbar__title">Construct</span>
     </a>
     <nav aria-label="Main navigation">
-      <ul class="ct-navbar__nav" role="menubar">
-        <li class="ct-navbar__item" role="none">
-          <a class="ct-navbar__link" href="#" role="menuitem" aria-current="page">Dashboard</a>
+      <ul class="ct-navbar__nav">
+        <li class="ct-navbar__item">
+          <a class="ct-navbar__link" href="#" aria-current="page">Dashboard</a>
         </li>
-        <li class="ct-navbar__item" role="none">
-          <a class="ct-navbar__link" href="#" role="menuitem" style="position: relative;">
+        <li class="ct-navbar__item">
+          <a class="ct-navbar__link" href="#" style="position: relative;">
             Support
             <span class="ct-badge ct-badge--sm ct-badge--danger" style="position: absolute; top: 0; inset-inline-end: 0; transform: translate(50%, -25%);">3</span>
           </a>

@@ -1,10 +1,16 @@
 .ct-card {
-  --ct-card-padding: var(--space-6);
-  background: var(--color-bg-elevated);
-  border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
+  --ct-card-bg: var(--component-card-background);
+  --ct-card-border: var(--component-card-border);
+  --ct-card-radius: var(--component-card-radius);
+  --ct-card-padding: var(--component-card-padding);
+  --ct-card-shadow: var(--component-card-shadow);
+  --ct-card-shadow-hover: var(--component-card-shadow-hover);
+
+  background: var(--ct-card-bg);
+  border: var(--border-thin) solid var(--ct-card-border);
+  border-radius: var(--ct-card-radius);
   padding: var(--ct-card-padding);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--ct-card-shadow);
 }
 
 .ct-card--sm {
@@ -47,7 +53,7 @@
 @media (hover: hover) {
   :is(a, button, [role='button'], [role='link']).ct-card--interactive:hover {
     border-color: var(--color-border-strong);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--ct-card-shadow-hover);
   }
 }
 
@@ -55,7 +61,7 @@
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
   border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--ct-card-shadow-hover);
 }
 
 .ct-card--interactive[aria-selected='true'] {
@@ -64,9 +70,20 @@
 }
 
 .ct-card--interactive[aria-disabled='true'],
-.ct-card--interactive:disabled {
+.ct-card--interactive:disabled,
+.ct-card--interactive[data-state='disabled'] {
   opacity: var(--opacity-disabled);
   cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ct-card[aria-busy='true'],
+.ct-card[data-state='loading'] {
+  cursor: wait;
+}
+
+.ct-card[data-state='error'] {
+  border-color: var(--color-state-danger-border);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -100,5 +117,5 @@
 .ct-card[data-state='active'] {
   /* The datum: an orange leading edge marks the active/current card,
      consistent with .ct-list__item and .ct-sidebar active states. */
-  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent), var(--shadow-sm);
+  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent), var(--ct-card-shadow);
 }

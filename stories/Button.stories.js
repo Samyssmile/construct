@@ -125,3 +125,80 @@ export const WithIcons = {
     expect(iconBtn).toHaveFocus();
   },
 };
+
+export const Loading = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A loading button keeps its label in layout for stable width and retains that label as its accessible name. Use `aria-busy="true"`, `data-loading="true"`, and native `disabled` together. The loader is decorative.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-cluster">
+    <button class="ct-button" type="button">
+      <span class="ct-button__content">Save changes</span>
+    </button>
+    <button class="ct-button" type="button" aria-busy="true" data-loading="true" disabled>
+      <span class="ct-button__content">Save changes</span>
+      <span class="ct-button__loader" aria-hidden="true"></span>
+    </button>
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [readyButton, loadingButton] = canvas.getAllByRole('button', { name: 'Save changes' });
+
+    expect(loadingButton).toHaveAttribute('aria-busy', 'true');
+    expect(loadingButton).toHaveAttribute('data-loading', 'true');
+    expect(loadingButton).toBeDisabled();
+    expect(loadingButton.querySelector('.ct-button__loader')).toHaveAttribute('aria-hidden', 'true');
+    expect(getComputedStyle(loadingButton.querySelector('.ct-button__content')).opacity).toBe('0');
+    expect(getComputedStyle(loadingButton.querySelector('.ct-button__loader')).opacity).toBe('1');
+    expect(Math.abs(loadingButton.getBoundingClientRect().width - readyButton.getBoundingClientRect().width)).toBeLessThan(1);
+
+    let activations = 0;
+    loadingButton.addEventListener('click', () => { activations += 1; });
+    loadingButton.click();
+    expect(activations).toBe(0);
+  },
+};
+
+export const StateThemeMatrix = {
+  name: 'States Across Themes',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Ready, busy, disabled, and danger states rendered against every built-in theme.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-stack" style="--ct-stack-space: var(--space-4);">
+    ${['light', 'dark', 'high-contrast'].map(theme => `
+      <section data-theme="${theme}" style="padding: var(--space-5); background: var(--color-bg-canvas); color: var(--color-text-primary); border: var(--border-thin) solid var(--color-border-default); border-radius: var(--radius-md);">
+        <h3 style="margin: 0 0 var(--space-4); font-size: var(--font-size-sm);">${theme}</h3>
+        <div class="ct-cluster">
+          <button class="ct-button" type="button">Ready</button>
+          <button class="ct-button" type="button" aria-busy="true" data-loading="true" disabled>
+            <span class="ct-button__content">Saving</span>
+            <span class="ct-button__loader" aria-hidden="true"></span>
+          </button>
+          <button class="ct-button ct-button--secondary" type="button" disabled>Disabled</button>
+          <button class="ct-button ct-button--danger" type="button">Danger</button>
+        </div>
+      </section>`).join('')}
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const themedSections = canvasElement.querySelectorAll('[data-theme]');
+    expect(themedSections).toHaveLength(3);
+
+    for (const section of themedSections) {
+      const buttons = section.querySelectorAll('.ct-button');
+      expect(buttons).toHaveLength(4);
+      expect(getComputedStyle(buttons[0]).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+      expect(buttons[1]).toHaveAttribute('aria-busy', 'true');
+      expect(buttons[2]).toBeDisabled();
+    }
+  },
+};

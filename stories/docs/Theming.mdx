@@ -12,7 +12,7 @@ Construct ships three built-in colour themes — **light**, **dark**, and **high
 
 ## How It Works
 
-All design tokens are emitted as CSS custom properties scoped to `[data-theme]` attribute selectors. Switching the attribute value on any element (or on `<html>`) swaps every token in that subtree simultaneously.
+Primitive tokens live at `:root`. Every explicit `[data-theme]` scope emits the complete semantic and component contract, so nested light, dark, high-contrast, and product themes do not leak inherited parent values.
 
 ```css
 /* Simplified excerpt from tokens.css */
@@ -134,71 +134,67 @@ In this Storybook, use the **Themes** toolbar at the top of the page to switch b
 
 ---
 
-## Customising Themes
+## Validated Product Themes
 
-### Override tokens for a custom brand
+A product theme extends one built-in theme and supplies only the semantic/component paths it changes:
 
-You can override any token after importing `tokens.css`:
-
-```css
-@import '@neuravision/construct/tokens/tokens.css';
-
-/* Override brand colours for your product */
-:root, [data-theme="light"] {
-  --color-brand-primary: #7C3AED;
-  --color-brand-accent:  #0EA5E9;
-}
-
-[data-theme="dark"] {
-  --color-brand-primary: #A78BFA;
-  --color-brand-accent:  #38BDF8;
-}
-```
-
-### Add a custom theme
-
-Define a new `data-theme` value with a full set of semantic token overrides:
-
-```css
-[data-theme="custom"] {
-  --color-bg-canvas:    #FDF4FF;
-  --color-bg-surface:   #FAE8FF;
-  --color-text-primary: #3B0764;
-  --color-brand-primary: #7C3AED;
-  /* ... define all semantic tokens ... */
+```json
+{
+  "$schema": "./node_modules/@neuravision/construct/schemas/theme.schema.json",
+  "name": "product",
+  "extends": "light",
+  "semantic": {
+    "color": {
+      "brand": {
+        "primary": "{color.ocean.700}",
+        "primaryHover": "{color.ocean.800}",
+        "primaryActive": "{color.ocean.900}"
+      }
+    }
+  },
+  "components": {
+    "button": { "radius": "{radius.pill}" }
+  }
 }
 ```
+
+```bash
+npx construct-theme --theme ./product.theme.json --out-dir ./src/generated/construct
+```
+
+Import the generated `tokens.css` after all Construct foundations and component entries. Those
+entries include the built-in token sheet, and the product theme must come last so its
+equal-specificity theme declarations win the cascade:
+
+```css
+@import '@neuravision/construct/foundations.css';
+@import '@neuravision/construct/components/components.css';
+@import './generated/construct/tokens.css';
+```
+
+The compiler rejects invalid schemas, unknown paths, incomplete resolved shapes, bad references,
+duplicate selectors, and failing contrast pairs. Hand-written CSS overrides remain possible as a local
+escape hatch, but they bypass those contracts and should not be the source of a reusable product theme.
 
 ---
 
 ## Reduced Motion
 
-Construct respects `prefers-reduced-motion` throughout its animation tokens. Components using `--motion-duration-*` and `--motion-easing-*` tokens automatically receive shortened or disabled transitions when this preference is active:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
-Do not hard-code animation durations in component styles — always use the motion tokens.
+Construct components use motion tokens and explicit `prefers-reduced-motion: reduce` paths. Do not add a
+global `*` override: it can break necessary browser/application behavior. Disable or simplify each
+component's non-essential transition at the owning layer.
 
 ---
 
 ## Contrast Compliance
 
-All three built-in themes meet **WCAG 2.1 AA** contrast requirements:
+The build verifies 53 standard pairs for every built-in and custom theme: text across common surfaces,
+brand interaction states, focus rings, semantic states, avatars, charts, and button states. Thresholds
+follow the applicable WCAG text or non-text requirement; this is a test contract, not a blanket product
+certification.
 
-| Theme | Text on canvas | Brand on canvas |
-|-------|----------------|-----------------|
-| Light | ≥ 7:1 | ≥ 4.5:1 |
-| Dark | ≥ 7:1 | ≥ 4.5:1 |
-| High Contrast | ≥ 10:1 | ≥ 7:1 |
-
-When creating custom themes, verify contrast ratios using the [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) or a similar tool.
+Custom inputs can add product-specific pairs with `foreground`, `background`, and `minRatio`. Run
+`npx construct-theme --theme ./product.theme.json --validate-only --report-contrast` in CI.
 
 ---
 

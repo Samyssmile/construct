@@ -1,5 +1,5 @@
 name: 🐛 Bug Report
-description: Report a problem with a component, token, or style
+description: Report a problem with a public Construct contract or package surface
 title: "fix: "
 labels: ["bug"]
 body:
@@ -9,9 +9,24 @@ body:
   - type: input
     id: component
     attributes:
-      label: Component / Area
-      description: Which component or token is affected?
-      placeholder: e.g. ct-button, datepicker, color tokens
+      label: Affected Contract / Area
+      description: Which component, behavior, token, theme, font, or package API is affected?
+      placeholder: e.g. ct-button, createModalController, color tokens, construct-theme
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Package Area
+      description: Which public contract owns the problem?
+      options:
+        - Component styles / standalone CSS
+        - Headless behavior controller
+        - Design token / generated output
+        - Theme compiler / custom theme
+        - Foundations / fonts
+        - Documentation / Storybook
+        - Build / package export
     validations:
       required: true
   - type: textarea
@@ -25,7 +40,7 @@ body:
     id: reproduction
     attributes:
       label: Steps to Reproduce
-      description: Minimal HTML/CSS or a link (CodeSandbox/StackBlitz) that reproduces the issue.
+      description: Minimal HTML/CSS/JS or theme JSON, or a link (CodeSandbox/StackBlitz) that reproduces the issue.
       placeholder: |
         1. Use markup '...'
         2. Apply theme '...'
@@ -48,6 +63,8 @@ body:
         - light
         - dark
         - high-contrast
+        - custom theme
+        - system preference (no explicit theme)
         - all themes
     validations:
       required: false
@@ -55,7 +72,7 @@ body:
     id: version
     attributes:
       label: Package Version
-      placeholder: "@neuravision/construct@2.0.4"
+      placeholder: "@neuravision/construct@2.1.0"
     validations:
       required: true
   - type: input
@@ -65,9 +82,31 @@ body:
       placeholder: "Chrome 130 on Windows 11"
     validations:
       required: false
+  - type: dropdown
+    id: input_method
+    attributes:
+      label: Input Method
+      description: Which input method reproduces the issue?
+      options:
+        - Keyboard
+        - Mouse / fine pointer
+        - Touch / coarse pointer
+        - Voice input
+        - Not input-specific
+    validations:
+      required: false
+  - type: input
+    id: assistive_technology
+    attributes:
+      label: Assistive Technology
+      description: Include product and version when applicable.
+      placeholder: "NVDA 2026.1 with Firefox, or none"
+    validations:
+      required: false
   - type: checkboxes
     id: a11y
     attributes:
       label: Accessibility
       options:
         - label: This bug affects accessibility (keyboard, screen reader, contrast)
+        - label: This bug reproduces with forced-colors active

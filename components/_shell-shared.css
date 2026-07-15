@@ -3,6 +3,20 @@
 /* Crosses component boundary: shells orchestrate child layout.    */
 /* ─────────────────────────────────────────────────────────────── */
 
+/* Both layouts expose the canonical `--ct-shell-*` sizing and motion
+   controls. Their historical variable names are compatibility aliases. */
+
+:is(.ct-app-shell, .ct-app-shell-v2) {
+  min-width: 0;
+}
+
+:is(.ct-app-shell__main, .ct-app-shell-v2__main),
+:is(.ct-app-shell__sidebar, .ct-app-shell-v2__sidebar),
+:is(.ct-app-shell__panel, .ct-app-shell-v2__panel) {
+  min-width: 0;
+  min-height: 0;
+}
+
 
 /* ── Collapsed: Hide Labels & Badges ── */
 
@@ -16,8 +30,8 @@
   white-space: nowrap;
   /* Collapsing: labels fade out first, then width snaps */
   transition:
-    opacity 120ms ease-in-out,
-    width 0ms linear 120ms;
+    opacity var(--ct-shell-motion-duration) var(--ct-shell-motion-easing),
+    width 0ms linear var(--ct-shell-motion-duration);
 }
 
 
@@ -30,7 +44,9 @@
   opacity: 1;
   width: auto;
   /* Expanding: labels fade in after sidebar width finishes growing */
-  transition: opacity 120ms ease-in-out 250ms;
+  transition:
+    opacity var(--ct-shell-motion-duration) var(--ct-shell-motion-easing)
+    var(--ct-shell-motion-duration);
 }
 
 
@@ -44,7 +60,7 @@
 
 /* ── Tablet: Auto-Collapse to Rail ── */
 
-@media (max-width: 1199px) {
+@media (max-width: 1199px) { /* < lg breakpoint (1200px) */
   :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-nav-item__label,
   :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-nav-item__badge,
   :is(.ct-app-shell, .ct-app-shell-v2):not([data-sidebar-state]) .ct-sidebar__header span,

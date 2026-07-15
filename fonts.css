@@ -1,0 +1,10 @@
+/*
+ * Optional Construct web-font preset.
+ *
+ * Foundations never make a network request. Import this file before
+ * foundations.css only when Google-hosted fonts fit the product's privacy,
+ * CSP, and offline requirements. Self-hosted applications can omit it and
+ * provide @font-face rules for "Lato" and "JetBrains Mono" themselves, or
+ * override the generated --font-family-* custom properties.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');

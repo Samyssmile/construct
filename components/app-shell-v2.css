@@ -17,24 +17,31 @@
 /*   │  ╰────────╯ ╰───────────────────┴──────────────╯    │       */
 /*   ╰─────────────────────────────────────────────────────╯       */
 /*                                                                 */
-/* Shell breakpoints:                                              */
-/*   Mobile:  <768px                                               */
-/*   Tablet:  768–1199px                                           */
+/* Shell breakpoints (from the public primitive scale):            */
+/*   Compact: <900px  (< md)                                       */
+/*   Tablet:  900–1199px                                           */
 /*   Desktop: >=1200px                                             */
 /* ─────────────────────────────────────────────────────────────── */
 
 .ct-app-shell-v2 {
-  /* ── Public Tokens ── */
-  --ct-v2-sidebar-width: 260px;
-  --ct-v2-sidebar-rail-width: 64px;
-  --ct-v2-panel-width: 340px;
+  /* ── Shared Public Tokens ── */
+  --ct-shell-sidebar-width: 260px;
+  --ct-shell-sidebar-rail-width: 64px;
+  --ct-shell-panel-width: 340px;
+  --ct-shell-motion-duration: 250ms;
+  --ct-shell-motion-easing: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* V2 aliases remain public for backward compatibility. */
+  --ct-v2-sidebar-width: var(--ct-shell-sidebar-width);
+  --ct-v2-sidebar-rail-width: var(--ct-shell-sidebar-rail-width);
+  --ct-v2-panel-width: var(--ct-shell-panel-width);
   --ct-v2-gap: var(--space-4);
   --ct-v2-radius: var(--radius-lg);
   --ct-v2-canvas-bg: var(--color-bg-muted);
   --ct-v2-surface-bg: var(--color-bg-canvas);
   --ct-v2-surface-shadow: var(--shadow-xs);
-  --ct-v2-transition-duration: 250ms;
-  --ct-v2-transition-easing: cubic-bezier(0.32, 0.72, 0, 1);
+  --ct-v2-transition-duration: var(--ct-shell-motion-duration);
+  --ct-v2-transition-easing: var(--ct-shell-motion-easing);
 
   /* ── Internal ── */
   --_v2-sidebar-w: var(--ct-v2-sidebar-width);
@@ -362,13 +369,13 @@
 
 /* Delay grid shrink on collapse so labels fade out first */
 .ct-app-shell-v2[data-sidebar-state='collapsed'] {
-  transition-delay: 120ms;
+  transition-delay: var(--ct-shell-motion-duration);
 }
 
 
-/* ── Responsive: Tablet (768–1199px) ── */
+/* ── Responsive: Tablet (900–1199px) ── */
 
-@media (max-width: 1199px) {
+@media (max-width: 1199px) { /* < lg breakpoint (1200px) */
   /* Auto-collapse sidebar to rail when no explicit state */
   .ct-app-shell-v2:not([data-sidebar-state]) {
     --_v2-sidebar-w: var(--ct-v2-sidebar-rail-width);
@@ -390,9 +397,9 @@
 }
 
 
-/* ── Responsive: Mobile (<768px) ── */
+/* ── Responsive: Compact (< md breakpoint, 900px) ── */
 
-@media (max-width: 767px) {
+@media (max-width: 899px) { /* < md breakpoint (900px) */
   .ct-app-shell-v2 {
     --ct-v2-gap: var(--space-3);
   }

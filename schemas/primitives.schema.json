@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neuravision.dev/construct/schemas/primitives.schema.json",
+  "title": "Construct primitive tokens",
+  "type": "object",
+  "required": [
+    "color",
+    "font",
+    "space",
+    "radius",
+    "border",
+    "opacity",
+    "size",
+    "layout",
+    "shadow",
+    "motion",
+    "zIndex",
+    "breakpoint"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "color": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "patternProperties": {
+          "^(0|[1-9][0-9]*)$": { "$ref": "#/$defs/color" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "font": {
+      "type": "object",
+      "required": ["family", "weight", "size", "lineHeight", "letterSpacing"],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "type": "object",
+          "required": ["brand", "text", "mono"],
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        },
+        "weight": { "$ref": "#/$defs/numberScale" },
+        "size": { "$ref": "#/$defs/nonNegativeScale" },
+        "lineHeight": { "$ref": "#/$defs/nonNegativeScale" },
+        "letterSpacing": { "$ref": "#/$defs/numberScale" }
+      }
+    },
+    "space": { "$ref": "#/$defs/nonNegativeScale" },
+    "radius": { "$ref": "#/$defs/nonNegativeScale" },
+    "border": {
+      "type": "object",
+      "required": ["width"],
+      "additionalProperties": false,
+      "properties": {
+        "width": { "$ref": "#/$defs/nonNegativeScale" }
+      }
+    },
+    "opacity": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "size": {
+      "type": "object",
+      "required": ["controlHeight", "icon"],
+      "additionalProperties": false,
+      "properties": {
+        "controlHeight": { "$ref": "#/$defs/nonNegativeScale" },
+        "icon": { "$ref": "#/$defs/nonNegativeScale" }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": ["container", "gutter", "gridGap", "navbar"],
+      "additionalProperties": false,
+      "properties": {
+        "container": { "$ref": "#/$defs/nonNegativeScale" },
+        "gutter": { "$ref": "#/$defs/nonNegativeScale" },
+        "gridGap": { "$ref": "#/$defs/nonNegativeScale" },
+        "navbar": { "$ref": "#/$defs/nonNegativeScale" }
+      }
+    },
+    "shadow": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "motion": {
+      "type": "object",
+      "required": ["duration", "easing"],
+      "additionalProperties": false,
+      "properties": {
+        "duration": { "$ref": "#/$defs/nonNegativeScale" },
+        "easing": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "zIndex": { "$ref": "#/$defs/numberScale" },
+    "breakpoint": { "$ref": "#/$defs/nonNegativeScale" }
+  },
+  "$defs": {
+    "color": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+    },
+    "numberScale": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9_-]*$": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "nonNegativeScale": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9_-]*$": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

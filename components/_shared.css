@@ -1,13 +1,13 @@
 :root {
-  --ct-control-bg: var(--color-bg-elevated);
-  --ct-control-bg-hover: var(--color-bg-surface);
-  --ct-control-bg-disabled: var(--color-bg-muted);
-  --ct-control-border: var(--color-border-default);
-  --ct-control-border-hover: var(--color-border-strong);
-  --ct-control-border-focus: var(--color-focus-ring);
-  --ct-control-text: var(--color-text-primary);
-  --ct-control-placeholder: var(--color-text-muted);
-  --ct-control-radius: var(--radius-control);
+  --ct-control-bg: var(--component-control-background);
+  --ct-control-bg-hover: var(--component-control-background-hover);
+  --ct-control-bg-disabled: var(--component-control-background-disabled);
+  --ct-control-border: var(--component-control-border);
+  --ct-control-border-hover: var(--component-control-border-hover);
+  --ct-control-border-focus: var(--component-control-border-focus);
+  --ct-control-text: var(--component-control-text);
+  --ct-control-placeholder: var(--component-control-placeholder);
+  --ct-control-radius: var(--component-control-radius);
   --ct-control-transition: border-color var(--duration-fast) var(--easing-standard),
     box-shadow var(--duration-fast) var(--easing-standard),
     background var(--duration-fast) var(--easing-standard),
@@ -106,11 +106,12 @@
   outline-color: var(--color-state-danger);
 }
 
-/* ── Touch-target minimums (WCAG 2.5.8: 44×44px) ────────────────── */
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ─── */
 
 @media (pointer: coarse) {
   :root {
     --control-height-sm: 44px;
+    --control-height-md: 44px;
     --control-height-calendar-day: 44px;
   }
 }

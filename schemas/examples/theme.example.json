@@ -1,0 +1,27 @@
+{
+  "$schema": "../theme.schema.json",
+  "name": "example-theme",
+  "extends": "light",
+  "semantic": {
+    "color": {
+      "brand": {
+        "primary": "{color.ocean.700}",
+        "primaryHover": "{color.ocean.800}",
+        "primaryActive": "{color.ocean.900}"
+      }
+    }
+  },
+  "components": {
+    "button": {
+      "radius": "{radius.pill}"
+    }
+  },
+  "contrast": [
+    {
+      "name": "button label",
+      "foreground": "components.button.color",
+      "background": "components.button.background",
+      "minRatio": 4.5
+    }
+  ]
+}

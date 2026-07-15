@@ -35,7 +35,7 @@ export const Playground = {
       ? `<td class="ct-table__cell--checkbox"><input class="ct-check__input" type="checkbox" aria-label="Select ${name}" /></td>`
       : '';
     return `
-    <div class="ct-data-table ct-data-table--simple" style="max-width: 600px;">
+    <div class="ct-data-table" style="max-width: 600px;">
       <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
         <table class="ct-table${stripeClass}${compactClass}">${captionHtml}
           <thead>
@@ -57,7 +57,7 @@ export const Playground = {
 
 export const DataTableSimple = {
   render: () => `
-  <div class="ct-data-table ct-data-table--simple" style="max-width: 960px;">
+  <div class="ct-data-table" style="max-width: 960px;">
     <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
       <table class="ct-table ct-table--striped ct-table--compact">
         <thead>

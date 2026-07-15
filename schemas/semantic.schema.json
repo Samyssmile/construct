@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neuravision.dev/construct/schemas/semantic.schema.json",
+  "title": "Construct semantic token contract",
+  "type": "object",
+  "required": ["color", "theme", "font", "typography", "radius", "shadow"],
+  "additionalProperties": false,
+  "properties": {
+    "color": {
+      "type": "object",
+      "required": [
+        "brand",
+        "text",
+        "background",
+        "border",
+        "state",
+        "stateSurface",
+        "stateBorder",
+        "stateText",
+        "overlay",
+        "focus",
+        "avatarSeed",
+        "chartSeries"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "brand": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primary", "primaryHover", "primaryActive", "accent", "accentHover", "accentActive", "onAccent"],
+          "properties": {
+            "primary": { "$ref": "#/$defs/token" },
+            "primaryHover": { "$ref": "#/$defs/token" },
+            "primaryActive": { "$ref": "#/$defs/token" },
+            "accent": { "$ref": "#/$defs/token" },
+            "accentHover": { "$ref": "#/$defs/token" },
+            "accentActive": { "$ref": "#/$defs/token" },
+            "onAccent": { "$ref": "#/$defs/token" }
+          }
+        },
+        "text": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primary", "secondary", "muted", "inverse", "onPrimary"],
+          "properties": {
+            "primary": { "$ref": "#/$defs/token" },
+            "secondary": { "$ref": "#/$defs/token" },
+            "muted": { "$ref": "#/$defs/token" },
+            "inverse": { "$ref": "#/$defs/token" },
+            "onPrimary": { "$ref": "#/$defs/token" }
+          }
+        },
+        "background": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["canvas", "surface", "elevated", "muted", "subtle"],
+          "properties": {
+            "canvas": { "$ref": "#/$defs/token" },
+            "surface": { "$ref": "#/$defs/token" },
+            "elevated": { "$ref": "#/$defs/token" },
+            "muted": { "$ref": "#/$defs/token" },
+            "subtle": { "$ref": "#/$defs/token" }
+          }
+        },
+        "border": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["subtle", "default", "strong", "muted"],
+          "properties": {
+            "subtle": { "$ref": "#/$defs/token" },
+            "default": { "$ref": "#/$defs/token" },
+            "strong": { "$ref": "#/$defs/token" },
+            "muted": { "$ref": "#/$defs/token" }
+          }
+        },
+        "state": { "$ref": "#/$defs/stateGroupWithSolid" },
+        "stateSurface": { "$ref": "#/$defs/stateGroup" },
+        "stateBorder": { "$ref": "#/$defs/stateGroup" },
+        "stateText": { "$ref": "#/$defs/stateGroup" },
+        "overlay": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scrim"],
+          "properties": { "scrim": { "$ref": "#/$defs/token" } }
+        },
+        "focus": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ring"],
+          "properties": { "ring": { "$ref": "#/$defs/token" } }
+        },
+        "avatarSeed": {
+          "type": "object",
+          "minProperties": 16,
+          "patternProperties": {
+            "^[1-8](Bg|Fg)$": { "$ref": "#/$defs/token" }
+          },
+          "additionalProperties": false
+        },
+        "chartSeries": {
+          "type": "object",
+          "minProperties": 8,
+          "patternProperties": {
+            "^[1-8]$": { "$ref": "#/$defs/token" }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "required": ["colorScheme"],
+      "additionalProperties": false,
+      "properties": {
+        "colorScheme": { "enum": ["light", "dark", "light dark", "dark light"] }
+      }
+    },
+    "font": {
+      "type": "object",
+      "required": ["family"],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["heading", "body", "code"],
+          "properties": {
+            "heading": { "$ref": "#/$defs/token" },
+            "body": { "$ref": "#/$defs/token" },
+            "code": { "$ref": "#/$defs/token" }
+          }
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["display", "h1", "h2", "h3", "h4", "body", "bodySm", "label", "caption"],
+      "additionalProperties": false,
+      "properties": {
+        "display": { "$ref": "#/$defs/typeStyle" },
+        "h1": { "$ref": "#/$defs/typeStyle" },
+        "h2": { "$ref": "#/$defs/typeStyle" },
+        "h3": { "$ref": "#/$defs/typeStyle" },
+        "h4": { "$ref": "#/$defs/typeStyle" },
+        "body": { "$ref": "#/$defs/typeStyle" },
+        "bodySm": { "$ref": "#/$defs/typeStyle" },
+        "label": { "$ref": "#/$defs/typeStyle" },
+        "caption": { "$ref": "#/$defs/typeStyle" }
+      }
+    },
+    "radius": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control", "card", "modal", "pill"],
+      "properties": {
+        "control": { "$ref": "#/$defs/token" },
+        "card": { "$ref": "#/$defs/token" },
+        "modal": { "$ref": "#/$defs/token" },
+        "pill": { "$ref": "#/$defs/token" }
+      }
+    },
+    "shadow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["card", "dropdown", "modal"],
+      "properties": {
+        "card": { "$ref": "#/$defs/token" },
+        "dropdown": { "$ref": "#/$defs/token" },
+        "modal": { "$ref": "#/$defs/token" }
+      }
+    }
+  },
+  "$defs": {
+    "token": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^\\{[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)+\\}$"
+        },
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:/\\*|\\*/|[;{}]|!\\s*important|\\b(?:url|var)\\s*\\())[^\\u0000-\\u001F\\u007F]+$"
+        }
+      ]
+    },
+    "stateGroup": {
+      "type": "object",
+      "required": ["info", "success", "warning", "danger"],
+      "additionalProperties": false,
+      "properties": {
+        "info": { "$ref": "#/$defs/token" },
+        "success": { "$ref": "#/$defs/token" },
+        "warning": { "$ref": "#/$defs/token" },
+        "danger": { "$ref": "#/$defs/token" }
+      }
+    },
+    "stateGroupWithSolid": {
+      "type": "object",
+      "required": ["info", "success", "warning", "danger", "onSolid"],
+      "additionalProperties": false,
+      "properties": {
+        "info": { "$ref": "#/$defs/token" },
+        "success": { "$ref": "#/$defs/token" },
+        "warning": { "$ref": "#/$defs/token" },
+        "danger": { "$ref": "#/$defs/token" },
+        "onSolid": { "$ref": "#/$defs/token" }
+      }
+    },
+    "typeStyle": {
+      "type": "object",
+      "required": ["fontFamily", "fontSize", "lineHeight", "fontWeight", "letterSpacing"],
+      "additionalProperties": false,
+      "properties": {
+        "fontFamily": { "$ref": "#/$defs/token" },
+        "fontSize": { "$ref": "#/$defs/token" },
+        "lineHeight": { "$ref": "#/$defs/token" },
+        "fontWeight": { "$ref": "#/$defs/token" },
+        "letterSpacing": { "$ref": "#/$defs/token" }
+      }
+    }
+  }
+}

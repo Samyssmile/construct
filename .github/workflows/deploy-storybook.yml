@@ -1,25 +1,17 @@
-name: Deploy Storybook to GitHub Pages
+name: Construct quality gate and Storybook deploy
 
 on:
   push:
     branches: [main]
-    paths:
-      - 'components/**'
-      - 'tokens/**'
-      - 'stories/**'
-      - 'foundations.css'
-      - '.storybook/**'
-      - '.github/workflows/deploy-storybook.yml'
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -38,21 +30,41 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build tokens
+      - name: Audit dependency vulnerabilities
+        run: npm run audit
+
+      - name: Build generated outputs
         run: npm run build
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify package contracts
+        run: npm run check
+
+      - name: Run browser tests
+        run: npm test
 
       - name: Build Storybook
         run: npm run storybook:build
 
+      - name: Verify packed contents
+        run: npm pack --dry-run --ignore-scripts
+
       - name: Upload artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: storybook-static
 
   deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

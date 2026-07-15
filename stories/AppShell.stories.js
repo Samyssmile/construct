@@ -1,4 +1,4 @@
-import { expect, within } from 'storybook/test';
+import { expect, within, userEvent } from 'storybook/test';
 
 /* ── Shared SVG Icons ── */
 
@@ -100,7 +100,7 @@ function renderMainContent(options = {}) {
       </div>
       <div style="display: flex; gap: var(--space-3);">
         <button class="ct-button ct-button--secondary ct-button--sm" type="button">Export</button>
-        <button class="ct-button ct-button--primary ct-button--sm" type="button">Create New</button>
+        <button class="ct-button ct-button--sm" type="button">Create New</button>
       </div>
     </div>` : '';
 
@@ -159,7 +159,7 @@ function renderPanel() {
 function renderFooter() {
   return `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); font-size: var(--font-size-xs); color: var(--color-text-muted);">
-      <span>Construct Design System v1.1.2</span>
+      <span>Construct Design System v2.1.0</span>
       <span>Built with accessibility in mind</span>
     </div>`;
 }
@@ -172,13 +172,23 @@ function initShellToggle(root) {
   const panelToggle = root.querySelector('[data-shell-toggle="panel"]');
   const shell = root.querySelector('.ct-app-shell');
   const backdrop = root.querySelector('.ct-app-shell__backdrop');
+  const panelClose = root.querySelector('.ct-app-shell__panel [aria-label="Close panel"]');
+
+  const setSidebarState = (state) => {
+    shell.setAttribute('data-sidebar-state', state);
+    sidebarToggle?.setAttribute('aria-expanded', String(state === 'expanded'));
+  };
+
+  const setPanelState = (state) => {
+    shell.setAttribute('data-panel-state', state);
+    panelToggle?.setAttribute('aria-expanded', String(state === 'open'));
+  };
 
   if (sidebarToggle && shell) {
     sidebarToggle.addEventListener('click', () => {
       const current = shell.getAttribute('data-sidebar-state');
       const next = current === 'expanded' ? 'collapsed' : 'expanded';
-      shell.setAttribute('data-sidebar-state', next);
-      sidebarToggle.setAttribute('aria-expanded', String(next === 'expanded'));
+      setSidebarState(next);
     });
   }
 
@@ -186,13 +196,20 @@ function initShellToggle(root) {
     panelToggle.addEventListener('click', () => {
       const current = shell.getAttribute('data-panel-state');
       const next = current === 'open' ? 'closed' : 'open';
-      shell.setAttribute('data-panel-state', next);
+      setPanelState(next);
+    });
+  }
+
+  if (panelClose && shell) {
+    panelClose.addEventListener('click', () => {
+      setPanelState('closed');
+      panelToggle?.focus();
     });
   }
 
   if (backdrop && shell) {
     backdrop.addEventListener('click', () => {
-      shell.setAttribute('data-sidebar-state', 'hidden');
+      setSidebarState('hidden');
     });
   }
 }
@@ -609,12 +626,12 @@ export const ResponsiveBehavior = {
             <h1 style="margin: 0; font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold);">Responsive Demo</h1>
             <p style="margin: var(--space-2) 0 0; font-size: var(--font-size-sm); color: var(--color-text-secondary);">
               Resize the browser to see the responsive cascade:
-              Desktop (&ge;1200px) &rarr; Tablet (768&ndash;1199px) &rarr; Mobile (&lt;768px)
+              Desktop (&ge;1200px) &rarr; Tablet (900&ndash;1199px) &rarr; Compact (&lt;900px)
             </p>
           </div>
         </div>
         <div style="padding: var(--space-6);">
-          <div class="ct-alert ct-alert--info" role="alert" style="margin-bottom: var(--space-5);">
+          <div class="ct-alert" role="alert" style="margin-bottom: var(--space-5);">
             <p style="margin: 0; font-size: var(--font-size-sm);">
               <strong>No explicit data-sidebar-state is set.</strong> The sidebar responds automatically to viewport width:
               Expanded on Desktop, Collapsed/Rail on Tablet, Hidden on Mobile.
@@ -672,9 +689,9 @@ export const BottomNav = {
 
       <main class="ct-app-shell__main" id="main-content" tabindex="0">
         <div style="padding: var(--space-6);">
-          <div class="ct-alert ct-alert--info" role="alert" style="margin-bottom: var(--space-5);">
+          <div class="ct-alert" role="alert" style="margin-bottom: var(--space-5);">
             <p style="margin: 0; font-size: var(--font-size-sm);">
-              <strong>Bottom Navigation variant.</strong> On mobile viewports (&lt;768px), the bottom nav bar replaces the sidebar.
+              <strong>Bottom Navigation variant.</strong> On compact viewports (&lt;900px), the bottom nav bar replaces the sidebar.
               Resize the browser to a mobile width to see the bottom nav.
             </p>
           </div>
@@ -745,7 +762,8 @@ export const InteractiveToggle = {
             </div>
           </div>
           <div class="ct-navbar__actions">
-            <button class="ct-button ct-button--ghost ct-button--sm" type="button" data-shell-toggle="panel">
+            <button class="ct-button ct-button--ghost ct-button--sm" type="button"
+              aria-expanded="false" aria-controls="app-panel" data-shell-toggle="panel">
               <span class="ct-icon ct-icon--sm">${icons.panel}</span>
               Toggle Panel
             </button>
@@ -761,7 +779,7 @@ export const InteractiveToggle = {
         ${renderMainContent()}
       </main>
 
-      <aside class="ct-app-shell__panel" aria-label="Inspector">
+      <aside class="ct-app-shell__panel" id="app-panel" aria-label="Inspector">
         ${renderPanel()}
       </aside>
 
@@ -791,6 +809,28 @@ export const InteractiveToggle = {
     // Panel toggle exists
     const panelToggle = canvasElement.querySelector('[data-shell-toggle="panel"]');
     expect(panelToggle).toBeInTheDocument();
+    expect(panelToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(panelToggle).toHaveAttribute('aria-controls', 'app-panel');
+
+    await userEvent.click(toggleBtn);
+    expect(shell).toHaveAttribute('data-sidebar-state', 'collapsed');
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(panelToggle);
+    expect(shell).toHaveAttribute('data-panel-state', 'open');
+    expect(panelToggle).toHaveAttribute('aria-expanded', 'true');
+
+    const panelClose = canvasElement.querySelector('#app-panel [aria-label="Close panel"]');
+    await userEvent.click(panelClose);
+    expect(shell).toHaveAttribute('data-panel-state', 'closed');
+    expect(panelToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(panelToggle).toHaveFocus();
+
+    shell.setAttribute('data-sidebar-state', 'expanded');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    canvasElement.querySelector('.ct-app-shell__backdrop').click();
+    expect(shell).toHaveAttribute('data-sidebar-state', 'hidden');
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
   },
 };
 

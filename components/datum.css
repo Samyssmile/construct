@@ -59,46 +59,146 @@
    Engineering datasheet for key figures — hairline-gridded cells
    instead of free-floating big numbers. Mark the lead cell with
    `--origin` to carry the datum. */
-.ct-specs {
+:is(.ct-metrics, .ct-specs) {
+  --ct-metric-bg: var(--component-metric-background);
+  --ct-metric-border: var(--component-metric-border);
+  --ct-metric-radius: var(--component-metric-radius);
+  --ct-metric-padding: var(--component-metric-padding);
+  --ct-metric-value-font-size: var(--component-metric-value-font-size);
+  --ct-metric-label-font-size: var(--component-metric-label-font-size);
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--border-thin);
-  border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  background: var(--color-border-subtle);
+  border: var(--border-thin) solid var(--ct-metric-border);
+  border-radius: var(--ct-metric-radius);
+  background: var(--ct-metric-border);
   overflow: hidden;
 }
 
-.ct-spec {
+/* Compatibility profile: retain the original datasheet scale while the
+   canonical metric pattern uses the denser component-token defaults. */
+.ct-specs {
+  --ct-metric-radius: var(--radius-lg);
+  --ct-metric-padding: var(--space-7);
+  --ct-metric-value-font-size: var(--font-size-4xl);
+  --ct-metric-label-font-size: var(--font-size-xs);
+}
+
+:is(.ct-metric, .ct-spec) {
+  --ct-metric-accent: transparent;
+  --ct-metric-status-color: var(--color-text-secondary);
+
   position: relative;
-  padding: var(--space-7);
-  background: var(--color-bg-elevated);
+  min-width: 0;
+  margin: 0;
+  padding: var(--ct-metric-padding);
+  background: var(--ct-metric-bg);
 }
 
-.ct-spec--origin {
-  box-shadow: inset 0 var(--border-thick) 0 0 var(--color-brand-accent);
+.ct-metric {
+  display: grid;
 }
 
-.ct-spec__value {
+:is(.ct-metric--active, .ct-metric[data-state='active'], .ct-spec--origin) {
+  --ct-metric-accent: var(--color-brand-accent);
+
+  box-shadow: inset 0 var(--border-thick) 0 0 var(--ct-metric-accent);
+}
+
+:is(.ct-metric__value, .ct-spec__value) {
+  margin: 0;
   font-family: var(--font-family-brand);
-  font-size: var(--font-size-4xl);
+  font-size: var(--ct-metric-value-font-size);
   font-weight: var(--font-weight-extrabold);
   line-height: 1;
   color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.ct-spec__value small {
+.ct-metric__value {
+  order: 1;
+}
+
+:is(.ct-metric__value, .ct-spec__value) small {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
 }
 
-.ct-spec__label {
+:is(.ct-metric__label, .ct-spec__label) {
   display: block;
   margin-top: var(--space-4);
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
+  font-size: var(--ct-metric-label-font-size);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--color-text-secondary);
+}
+
+.ct-metric__label {
+  order: 2;
+}
+
+.ct-metric__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-xs);
+  text-transform: none;
+  letter-spacing: normal;
+  order: 3;
+}
+
+.ct-metric__status {
+  color: var(--ct-metric-status-color);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Status wording stays neutral and AA-safe on every metric surface;
+   semantic colour is carried by the non-text datum edge. */
+
+.ct-metric[data-status='success'] {
+  --ct-metric-accent: var(--color-state-success);
+  --ct-metric-status-color: var(--color-text-primary);
+}
+
+.ct-metric[data-status='info'] {
+  --ct-metric-accent: var(--color-state-info);
+  --ct-metric-status-color: var(--color-text-primary);
+}
+
+.ct-metric[data-status='warning'] {
+  --ct-metric-accent: var(--color-state-warning);
+  --ct-metric-status-color: var(--color-text-primary);
+}
+
+.ct-metric:is([data-status='danger'], [data-status='error'], [data-state='error']) {
+  --ct-metric-accent: var(--color-state-danger);
+  --ct-metric-status-color: var(--color-text-primary);
+}
+
+.ct-metric[data-status],
+.ct-metric[data-state='error'] {
+  box-shadow: inset var(--border-thick) 0 0 0 var(--ct-metric-accent);
+}
+
+.ct-metric:is([aria-busy='true'], [data-state='loading']) {
+  cursor: wait;
+}
+
+.ct-metric:is([aria-disabled='true'], [data-state='disabled']) {
+  opacity: var(--opacity-disabled);
+}
+
+@media (forced-colors: active) {
+  :is(.ct-metric--active, .ct-metric[data-state='active'], .ct-metric[data-status], .ct-metric[data-state='error'], .ct-spec--origin) {
+    border-block-start: var(--border-medium) solid currentColor;
+  }
 }

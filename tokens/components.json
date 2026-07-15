@@ -1,0 +1,54 @@
+{
+  "button": {
+    "background": "{color.brand.primary}",
+    "backgroundHover": "{color.brand.primaryHover}",
+    "backgroundActive": "{color.brand.primaryActive}",
+    "border": "{color.brand.primary}",
+    "color": "{color.text.onPrimary}",
+    "height": "{size.controlHeight.md}",
+    "paddingX": "{space.6}",
+    "fontSize": "{font.size.sm}",
+    "lineHeight": "{font.lineHeight.sm}",
+    "fontWeight": "{font.weight.semibold}",
+    "radius": "{radius.control}",
+    "gap": "{space.3}",
+    "loadingSpinnerSize": "{size.icon.md}"
+  },
+  "control": {
+    "background": "{color.background.elevated}",
+    "backgroundHover": "{color.background.surface}",
+    "backgroundDisabled": "{color.background.muted}",
+    "border": "{color.border.default}",
+    "borderHover": "{color.border.strong}",
+    "borderFocus": "{color.focus.ring}",
+    "text": "{color.text.primary}",
+    "placeholder": "{color.text.muted}",
+    "radius": "{radius.control}"
+  },
+  "card": {
+    "background": "{color.background.elevated}",
+    "border": "{color.border.subtle}",
+    "radius": "{radius.card}",
+    "padding": "{space.6}",
+    "shadow": "{shadow.card}",
+    "shadowHover": "{shadow.dropdown}"
+  },
+  "status": {
+    "gap": "{space.2}",
+    "fontSize": "{font.size.sm}",
+    "iconSize": "{size.icon.sm}"
+  },
+  "metric": {
+    "background": "{color.background.elevated}",
+    "border": "{color.border.subtle}",
+    "radius": "{radius.card}",
+    "padding": "{space.6}",
+    "valueFontSize": "{font.size.2xl}",
+    "labelFontSize": "{font.size.sm}"
+  },
+  "meter": {
+    "height": "{space.3}",
+    "radius": "{radius.pill}",
+    "track": "{color.background.muted}"
+  }
+}

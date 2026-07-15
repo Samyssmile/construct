@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neuravision.dev/construct/schemas/theme.schema.json",
+  "title": "Construct custom theme input",
+  "type": "object",
+  "required": ["name"],
+  "anyOf": [
+    { "required": ["semantic"] },
+    { "required": ["components"] }
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "extends": {
+      "enum": ["light", "dark", "high-contrast"]
+    },
+    "selector": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?::root|(?:[A-Za-z][A-Za-z0-9-]*)?(?:(?:\\.[A-Za-z_][A-Za-z0-9_-]*)|(?:#[A-Za-z_][A-Za-z0-9_-]*)|(?:\\[data-[a-z0-9_-]+(?:=(?:\\\"[A-Za-z0-9_-]+\\\"|'[A-Za-z0-9_-]+'|[A-Za-z0-9_-]+))?\\]))+)$"
+    },
+    "semantic": { "$ref": "#/$defs/tokenTree" },
+    "components": { "$ref": "#/$defs/tokenTree" },
+    "contrast": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["foreground", "background", "minRatio"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "foreground": { "type": "string", "minLength": 1 },
+          "background": { "type": "string", "minLength": 1 },
+          "minRatio": { "type": "number", "minimum": 1, "maximum": 21 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "tokenTree": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^\\{[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)+\\}$"
+        },
+        {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:/\\*|\\*/|[;{}]|!\\s*important|\\b(?:url|var)\\s*\\())[^\\u0000-\\u001F\\u007F]+$"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/tokenTree" }
+        }
+      ]
+    }
+  }
+}

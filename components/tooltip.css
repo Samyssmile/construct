@@ -41,16 +41,20 @@
   --_tt-open: 1;
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transition: opacity var(--duration-fast) var(--easing-standard),
     transform var(--duration-fast) var(--easing-standard),
     visibility 0s linear 0s;
 }
 
 @media (hover: hover) {
+  .ct-tooltip[data-state='open'] .ct-tooltip__content,
+  .ct-tooltip:focus-within .ct-tooltip__content,
   .ct-tooltip:hover .ct-tooltip__content {
     --_tt-open: 1;
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
     transition: opacity var(--duration-fast) var(--easing-standard),
       transform var(--duration-fast) var(--easing-standard),
       visibility 0s linear 0s;

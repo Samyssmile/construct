@@ -6,29 +6,31 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Design Tokens
 
-Design tokens are the single source of truth for every visual decision in Construct. They encode colors, typography, spacing, radii, shadows, and motion into named, reusable values that stay consistent across every component and theme.
+Design tokens are the source of truth for reusable visual decisions in Construct. They encode colors, typography, spacing, radii, shadows, and motion into named values that stay consistent across components and themes, while component-local structural geometry remains with its owning stylesheet.
 
 ---
 
-## Two-Tier Token Pipeline
+## Three-Layer Token Pipeline
 
-Construct uses a **two-tier** system: primitives define raw values, and semantic tokens map those values to purpose-driven names.
+Construct separates raw values, theme-aware intent, and stable component decisions. References flow primitive → semantic → component.
 
 ```
 tokens/primitives.json
 tokens/semantic.light.json
 tokens/semantic.dark.json
 tokens/semantic.high-contrast.json
+tokens/components.json
         │
-        ▼  npm run build
+        ▼  schema + reference + contrast validation
 tokens/tokens.css   ← CSS custom properties
 tokens/tokens.json  ← Resolved JSON (for tooling)
-tokens/tokens.ts    ← TypeScript exports
+tokens/tokens.js    ← JavaScript ESM exports
+tokens/tokens.ts    ← Typed literal exports
 ```
 
 > **Never hand-edit the generated files.** Edit the source JSON files and run `npm run build`.
 
-### Tier 1 — Primitives
+### Layer 1 — Primitives
 
 Raw design values that form the palette. They rarely change.
 
@@ -43,7 +45,7 @@ Raw design values that form the palette. They rarely change.
 }
 ```
 
-### Tier 2 — Semantic
+### Layer 2 — Semantic
 
 Contextual aliases that reference primitives by role. Swapping a theme means remapping semantic tokens — primitives stay untouched.
 
@@ -56,6 +58,24 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
 }
 ```
 
+### Layer 3 — Component
+
+Component decisions reference semantic or primitive intent. They provide stable customization points without moving component anatomy into the global semantic layer.
+
+```json
+{
+  "button": {
+    "height": "{size.controlHeight.md}",
+    "radius": "{radius.control}"
+  },
+  "control": {
+    "borderFocus": "{color.focus.ring}"
+  }
+}
+```
+
+Source contracts and custom-theme inputs are defined by the published JSON Schemas in `schemas/`.
+
 ---
 
 ## Color Tokens
@@ -67,8 +87,8 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
 | `color.brand.primary` | `--color-brand-primary` | `#16130F` | Ink — solid buttons, active text & links |
 | `color.brand.primaryHover` | `--color-brand-primary-hover` | `#353128` | Ink hover |
 | `color.brand.accent` | `--color-brand-accent` | `#F4581C` | Safety orange — **the datum** (non-text indicators) |
-| `color.brand.accentHover` | `--color-brand-accent-hover` | `#DD4A0F` | Accent hover |
-| `color.brand.accentActive` | `--color-brand-accent-active` | `#B23C0C` | Accent as text (AA-safe ~5.7:1) |
+| `color.brand.accentHover` | `--color-brand-accent-hover` | `#FB6E2E` | Accent hover |
+| `color.brand.accentActive` | `--color-brand-accent-active` | `#FF9462` | Accent active |
 
 <div className="ct-swatches">
   <div className="ct-swatch">
@@ -81,11 +101,11 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
   </div>
   <div className="ct-swatch">
     <div className="ct-swatch__chip" style={{ background: 'var(--color-brand-accent-hover)' }} />
-    <div className="ct-swatch__meta"><span className="ct-swatch__name">accent.hover</span><span className="ct-swatch__val">#DD4A0F</span></div>
+    <div className="ct-swatch__meta"><span className="ct-swatch__name">accent.hover</span><span className="ct-swatch__val">#FB6E2E</span></div>
   </div>
   <div className="ct-swatch">
     <div className="ct-swatch__chip" style={{ background: 'var(--color-brand-accent-active)' }} />
-    <div className="ct-swatch__meta"><span className="ct-swatch__name">accent.active</span><span className="ct-swatch__val">#B23C0C · on text</span></div>
+    <div className="ct-swatch__meta"><span className="ct-swatch__name">accent.active</span><span className="ct-swatch__val">#FF9462</span></div>
   </div>
 </div>
 
@@ -106,6 +126,7 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
 | `color.background.surface` | `--color-bg-surface` | Cards, panels |
 | `color.background.elevated` | `--color-bg-elevated` | Dropdowns, popovers |
 | `color.background.muted` | `--color-bg-muted` | Subtle fills |
+| `color.background.subtle` | `--color-bg-subtle` | Lowest-emphasis surface |
 
 ### Borders
 
@@ -114,6 +135,7 @@ Contextual aliases that reference primitives by role. Swapping a theme means rem
 | `color.border.subtle` | `--color-border-subtle` | Dividers |
 | `color.border.default` | `--color-border-default` | Input borders |
 | `color.border.strong` | `--color-border-strong` | Emphasis borders |
+| `color.border.muted` | `--color-border-muted` | Muted separators |
 
 ### States
 
@@ -171,12 +193,13 @@ Spacing uses a numeric scale where each step maps to a pixel value. Use `var(--s
 | `--font-family-text` | Lato (body) |
 | `--font-family-mono` | JetBrains Mono (code & data) |
 
-Lato is a humanist sans-serif — warm, highly legible, with classic proportions — paired with JetBrains Mono for code and data. The aliases `--font-family-heading`, `--font-family-body`, and `--font-family-code` resolve to brand, text, and mono respectively. Lato ships in 400, 700, and 900; the `medium` (500) and `semibold` (600) weight tokens resolve to the nearest available face (400 and 700).
+Lato is a humanist sans-serif paired with JetBrains Mono for code and data. The aliases `--font-family-heading`, `--font-family-body`, and `--font-family-code` resolve to brand, text, and mono respectively. Foundations make no font request; use the optional `fonts.css` entry or self-host the documented weights.
 
 ### Font Sizes
 
 | Token | CSS Variable | Value |
 |-------|-------------|-------|
+| `font.size.2xs` | `--font-size-2xs` | 10px |
 | `font.size.xs` | `--font-size-xs` | 12px |
 | `font.size.sm` | `--font-size-sm` | 14px |
 | `font.size.md` | `--font-size-md` | 16px |
@@ -248,7 +271,7 @@ Semantic aliases for components:
 ## Using Tokens in TypeScript
 
 ```ts
-import { tokens, cssVars } from '@neuravision/construct/tokens/tokens';
+import { components, componentThemes, tokens, cssVars } from '@neuravision/construct/tokens';
 
 // Resolved hex value
 const brand = tokens.semantic.color.brand.primary; // '#16130F'
@@ -258,6 +281,11 @@ const brandVar = cssVars.semantic.color.brand.primary; // 'var(--color-brand-pri
 
 // Access theme-specific overrides
 const darkBg = tokens.semanticThemes.dark.color.background.canvas;
+
+// Component layer and its theme-resolved values
+const buttonHeight = components.button.height;
+const darkMetricBg = componentThemes.dark.metric.background;
+const buttonHeightVar = cssVars.components.button.height;
 ```
 
 ---
@@ -270,8 +298,10 @@ After editing any source JSON file, regenerate the outputs:
 npm run build
 ```
 
-To verify outputs are up-to-date in CI:
+The build validates schemas, references, complete theme scopes, and contrast before writing. To verify all generated and package contracts in CI:
 
 ```bash
 npm run check
 ```
+
+Compile product themes with `npx construct-theme --theme ./brand.theme.json`. See the package Token Reference for the schema, partial override, and declared contrast contract.

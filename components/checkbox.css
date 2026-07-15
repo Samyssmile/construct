@@ -13,7 +13,7 @@
   appearance: none;
   width: var(--space-6);
   height: var(--space-6);
-  border: var(--border-thin) solid var(--color-border-default);
+  border: var(--border-thin) solid var(--ct-control-border);
   background: var(--color-bg-elevated);
   cursor: pointer;
   display: grid;
@@ -24,7 +24,8 @@
     transform var(--duration-fast) var(--easing-standard);
 }
 
-/* Invisible touch-target expansion (WCAG 2.5.8: 44×44px minimum) */
+/* Construct 44×44 target policy: meets the size in WCAG 2.2 SC 2.5.5
+   (AAA) and exceeds the AA minimum in SC 2.5.8. */
 @media (pointer: coarse) {
   .ct-check__input::after,
   .ct-radio__input::after {
