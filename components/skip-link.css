@@ -12,7 +12,8 @@
   z-index: var(--z-tooltip);
   padding: var(--space-4) var(--space-6);
   background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  /* on-primary, not inverse: inverse is near-invisible on the light primary of the dark theme */
+  color: var(--color-text-on-primary);
   font-family: var(--font-family-body);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -27,7 +28,10 @@
 .ct-skip-link:focus,
 .ct-skip-link:focus-visible {
   transform: translateY(0);
-  outline: 2px solid var(--color-focus-ring);
+  /* on-primary, not the focus ring: the inset outline draws on the primary
+     background, and on-primary is the pairing validated against it in every
+     theme (the orange ring fails 3:1 on the dark theme's light primary). */
+  outline: 2px solid var(--color-text-on-primary);
   outline-offset: -2px;
 }
 

@@ -98,6 +98,9 @@
   background: var(--color-bg-muted);
   border-color: var(--color-border-subtle);
   cursor: not-allowed;
+  /* Disabled is fully colour-encoded above; cancel foundations' global
+     :disabled opacity so the control is not double-dimmed. */
+  opacity: 1;
 }
 
 .ct-check__input:focus-visible,
@@ -118,4 +121,33 @@
   border-block-start: 2px solid var(--color-brand-on-accent);
   border-inline-end: 0;
   transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-check__input,
+  .ct-radio__input,
+  .ct-check__input::before,
+  .ct-radio__input::before {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-check__input:checked,
+  .ct-check__input:indeterminate,
+  .ct-radio__input:checked {
+    border-color: ButtonText;
+  }
+
+  /* The tick and indeterminate dash are border-drawn and survive on their
+     own; the radio dot is background-drawn and would be forced to Canvas. */
+  .ct-radio__input:checked::before {
+    background: SelectedItem;
+    forced-color-adjust: none;
+  }
+
+  .ct-check__input:disabled,
+  .ct-radio__input:disabled {
+    border-color: GrayText;
+  }
 }

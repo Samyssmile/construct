@@ -40,6 +40,8 @@
   box-shadow: var(--shadow-lg);
   /* LTR: slide in from the left */
   translate: -100% 0;
+  /* keep off-canvas content out of tab order and the accessibility tree */
+  visibility: hidden;
 }
 
 /* RTL: overlay sidebar starts at inline-start (right edge) — slide in from the right */
@@ -49,6 +51,7 @@
 
 .ct-sidebar--over[data-state='open'] {
   translate: 0 0;
+  visibility: visible;
 }
 
 /* Push variant: slides off-screen and collapses flex space via negative margin */
@@ -129,7 +132,8 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   transition: background var(--duration-fast) var(--easing-standard),
-    color var(--duration-fast) var(--easing-standard);
+    color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
   cursor: pointer;
 }
 
@@ -151,7 +155,7 @@
   color: var(--color-brand-primary);
   font-weight: var(--font-weight-semibold);
   /* The datum: an orange leading edge marks the current location. */
-  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent);
+  box-shadow: inset var(--component-datum-edge-width) 0 0 0 var(--color-brand-accent);
 }
 
 .ct-nav-item__icon {
@@ -182,4 +186,13 @@
 .ct-nav-item[aria-current='page'] .ct-nav-item__badge {
   background: var(--color-brand-accent);
   color: var(--color-brand-on-accent);
+}
+
+@media (forced-colors: active) {
+  /* The datum edge is an inset box-shadow, which forced colors drops —
+     re-encode it as a border. */
+  .ct-nav-item--active,
+  .ct-nav-item[aria-current='page'] {
+    border-inline-start: var(--component-datum-edge-width) solid SelectedItem;
+  }
 }

@@ -10,9 +10,12 @@ import {
   dispatch,
   ensureId,
   focusElement,
+  focusIntoView,
   getFocusableElements,
+  isComposingEvent,
   isElement,
   isDisabled,
+  warnAccessibility,
 } from './dom.js';
 import {
   closeOwnedOverlays,
@@ -101,10 +104,13 @@ export function createDialogController(options, registry, defaults) {
   const trapFocus = options.trapFocus !== false;
   const returnFocus = options.returnFocus !== false;
   const lockScroll = options.lockScroll !== false;
+  const inertBackground = options.inertBackground === true;
   let open = options.open ?? container.getAttribute('data-state') === 'open';
   let previouslyFocused = null;
   let releaseBodyLock = null;
   let removeFromStack = null;
+  let inertedElements = null;
+  let warnedMissingName = false;
 
   const dialogId = ensureId(dialog, `${defaults.idPrefix}-dialog`, attributes);
   attributes.set(dialog, 'role', dialog.getAttribute('role') ?? 'dialog');
@@ -125,6 +131,42 @@ export function createDialogController(options, registry, defaults) {
     removeFromStack = null;
     releaseBodyLock?.();
     releaseBodyLock = null;
+    releaseBackgroundInert();
+  }
+
+  /* aria-modal hides background content from modern AT, but legacy virtual
+     cursors can still wander behind the dialog. Opt-in `inertBackground`
+     additionally inerts the container's DOM siblings up to <body>. Nodes
+     appended after opening (e.g. portaled popups) are unaffected. */
+  function applyBackgroundInert() {
+    if (!inertBackground || inertedElements) return;
+    inertedElements = [];
+    for (let node = container; node.parentElement && node !== document.body; node = node.parentElement) {
+      for (const sibling of node.parentElement.children) {
+        if (sibling === node || sibling.inert) continue;
+        const tag = sibling.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK' || tag === 'TEMPLATE') continue;
+        sibling.inert = true;
+        inertedElements.push(sibling);
+      }
+    }
+  }
+
+  function releaseBackgroundInert() {
+    if (!inertedElements) return;
+    for (const element of inertedElements) element.inert = false;
+    inertedElements = null;
+  }
+
+  function warnWhenUnnamed() {
+    if (warnedMissingName) return;
+    warnedMissingName = true;
+    if (!dialog.hasAttribute('aria-label') && !dialog.hasAttribute('aria-labelledby')) {
+      warnAccessibility(
+        `${defaults.name}: the dialog element has neither aria-labelledby nor aria-label. ` +
+          'Dialogs must expose an accessible name (WCAG 4.1.2).',
+      );
+    }
   }
 
   function registerDialogOverlay() {
@@ -140,7 +182,7 @@ export function createDialogController(options, registry, defaults) {
   function focusInside(checkpoint = lifecycle.assertAlive) {
     const target = resolveInitialFocus(options.initialFocus, dialog);
     checkpoint();
-    if (target && focusElement(target)) {
+    if (target && focusIntoView(target)) {
       checkpoint();
       return;
     }
@@ -151,8 +193,8 @@ export function createDialogController(options, registry, defaults) {
   }
 
   function restoreDialogFocus(target) {
-    if (focusElement(target)) return true;
-    if (target !== trigger && focusElement(trigger)) return true;
+    if (focusIntoView(target)) return true;
+    if (target !== trigger && focusIntoView(trigger)) return true;
 
     const active = document.activeElement;
     if (isElement(active) && dialog.contains(active) && typeof active.blur === 'function') {
@@ -173,8 +215,10 @@ export function createDialogController(options, registry, defaults) {
       previouslyFocused = isElement(document.activeElement) ? document.activeElement : null;
       open = true;
       syncState();
+      warnWhenUnnamed();
       removeFromStack = registerDialogOverlay();
       if (lockScroll) releaseBodyLock = lockBodyScroll(document);
+      applyBackgroundInert();
       try {
         focusInside(checkpoint);
         options.onOpen?.(detail);
@@ -232,6 +276,9 @@ export function createDialogController(options, registry, defaults) {
 
   function onDocumentKeyDown(event) {
     if (!open) return;
+    /* Never treat keys as dialog shortcuts while an IME composition is
+       active — Escape/Tab are cancelling or committing composed text. */
+    if (isComposingEvent(event)) return;
 
     if (
       event.key === 'Escape' &&
@@ -283,15 +330,28 @@ export function createDialogController(options, registry, defaults) {
   });
 
   if (backdrop) {
-    disposables.listen(backdrop, 'click', (event) => {
-      if (
+    /* Close only when the pointer both went down AND came up on the backdrop
+       itself. A plain click listener also fires when a drag (e.g. selecting
+       text in a form field) starts inside the dialog and is released over
+       the backdrop — the click retargets to their common ancestor, which is
+       the backdrop — and would discard the user's in-progress work. Routing
+       the pointerdown through the overlay stack also keeps a single gesture
+       from dismissing a popup and this dialog together. */
+    let pointerDownOnBackdrop = false;
+    disposables.listen(backdrop, 'pointerdown', (event) => {
+      pointerDownOnBackdrop =
         open &&
         closeOnBackdrop &&
         event.target === backdrop &&
-        consumeTopOverlayEvent(event, document, token)
-      ) {
-        closeDialog('backdrop');
-      }
+        consumeTopOverlayEvent(event, document, token);
+    });
+    disposables.listen(backdrop, 'pointercancel', () => {
+      pointerDownOnBackdrop = false;
+    });
+    disposables.listen(backdrop, 'pointerup', (event) => {
+      const shouldClose = pointerDownOnBackdrop && event.target === backdrop;
+      pointerDownOnBackdrop = false;
+      if (shouldClose && open) closeDialog('backdrop');
     });
   }
 
@@ -320,6 +380,14 @@ export function createDialogController(options, registry, defaults) {
       if (!lifecycle.destroy()) return;
       if (open) {
         open = false;
+        /* Frameworks often unmount an open dialog without closing it first;
+           without a hand-off the browser drops focus to <body> and silently
+           teleports keyboard/AT users to the top of the page. */
+        const active = document.activeElement;
+        if (isElement(active) && dialog.contains(active)) {
+          restoreDialogFocus(previouslyFocused?.isConnected ? previouslyFocused : trigger);
+        }
+        previouslyFocused = null;
         releaseOpenResources();
       }
       disposables.dispose();
@@ -332,8 +400,10 @@ export function createDialogController(options, registry, defaults) {
   syncState();
   if (open) {
     previouslyFocused = isElement(document.activeElement) ? document.activeElement : null;
+    warnWhenUnnamed();
     removeFromStack = registerDialogOverlay();
     if (lockScroll) releaseBodyLock = lockBodyScroll(document);
+    applyBackgroundInert();
     try {
       focusInside();
     } catch (error) {

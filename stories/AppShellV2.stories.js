@@ -176,7 +176,7 @@ function renderPanel() {
 function renderFooter() {
   return `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); font-size: var(--font-size-xs); color: var(--color-text-muted);">
-      <span>Construct v2.1.1</span>
+      <span>Construct v2.1.2</span>
       <span>Floating Canvas Shell</span>
     </div>`;
 }
@@ -418,11 +418,11 @@ export const SidebarStates = {
           ${label}
         </p>
         <div class="ct-app-shell-v2" data-sidebar-state="${state}" style="height: 320px; border-radius: var(--radius-lg); position: relative;">
-          <div class="ct-app-shell-v2__sidebar" aria-label="Navigation (${state})">
+          <div class="ct-app-shell-v2__sidebar">
             ${renderSidebar(`Sidebar (${state})`)}
           </div>
           <div class="ct-app-shell-v2__body">
-            <div class="ct-app-shell-v2__main" tabindex="0">
+            <div class="ct-app-shell-v2__main">
               <div style="padding: var(--space-6);">
                 <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">
                   Sidebar state: <code style="background: var(--color-bg-muted); padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm);">${state}</code>
@@ -837,10 +837,10 @@ export const V1vsV2Comparison = {
               </div>
             </nav>
           </div>
-          <div class="ct-app-shell__sidebar" aria-label="V1 sidebar">
+          <div class="ct-app-shell__sidebar">
             ${renderSidebar('V1 Nav')}
           </div>
-          <div class="ct-app-shell__main" tabindex="0">
+          <div class="ct-app-shell__main">
             <div style="padding: var(--space-5); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
               Borders separate regions. Content goes edge-to-edge.
             </div>
@@ -854,11 +854,11 @@ export const V1vsV2Comparison = {
           V2 \u2014 Floating Canvas
         </p>
         <div class="ct-app-shell-v2 ct-app-shell-v2--sidebar-branded" data-sidebar-state="expanded" style="height: calc(100% - 32px);">
-          <div class="ct-app-shell-v2__sidebar" aria-label="V2 sidebar">
+          <div class="ct-app-shell-v2__sidebar">
             ${renderSidebar('V2 Nav')}
           </div>
           <div class="ct-app-shell-v2__body">
-            <div class="ct-app-shell-v2__main" tabindex="0">
+            <div class="ct-app-shell-v2__main">
               <div style="padding: var(--space-5); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
                 Floating surfaces on canvas. Space separates regions. Rounded corners + shadow.
               </div>

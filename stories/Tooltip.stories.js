@@ -9,7 +9,11 @@ export default {
           'Accessible tooltip that appears on hover (pointer devices only) and focus. ' +
           'Uses `@media (hover: hover)` to prevent sticky hover on touch devices. ' +
           'On touch devices, tooltips are accessible via focus/tap on the trigger element. ' +
-          'Trigger must use `aria-describedby` pointing to the tooltip `id`, content uses `role="tooltip"`.',
+          'Trigger must use `aria-describedby` pointing to the tooltip `id`, content uses `role="tooltip"`. ' +
+          '**Important:** the CSS-only pattern shown here is a visual demo only — it cannot be dismissed with ' +
+          'Escape and does not keep the tooltip open while the pointer moves over it, so on its own it does not ' +
+          'satisfy WCAG 1.4.13 (Content on Hover or Focus). Production tooltips must use `createTooltipController` ' +
+          'from `@neuravision/construct/behaviors` (or an equivalent adapter) to get Escape dismissal and hover persistence.',
       },
     },
   },
@@ -55,7 +59,9 @@ export const FocusActivation = {
         story:
           'Tooltip opens via `:focus-within` — the universal activation mechanism. ' +
           'Works on all devices including touch (via tap-to-focus). ' +
-          'On hover-capable devices, `:hover` is an additional trigger via `@media (hover: hover)`.',
+          'On hover-capable devices, `:hover` is an additional trigger via `@media (hover: hover)`. ' +
+          'Note: this CSS-only demo lacks Escape dismissal (WCAG 1.4.13) — production tooltips must use ' +
+          '`createTooltipController` from the behaviors entry or an equivalent adapter.',
       },
       story: { inline: true, height: 200 },
     },
@@ -180,7 +186,9 @@ export const TouchAccessibility = {
           'Demonstrates touch-device accessibility. Hover activation is guarded by ' +
           '`@media (hover: hover)` — on touch devices, only focus/tap activates the tooltip. ' +
           'No sticky hover states remain after touch interaction. ' +
-          'Resize viewport to mobile size to simulate touch behavior.',
+          'Resize viewport to mobile size to simulate touch behavior. ' +
+          'Note: this CSS-only demo lacks Escape dismissal (WCAG 1.4.13) — production tooltips must use ' +
+          '`createTooltipController` from the behaviors entry or an equivalent adapter.',
       },
       story: { inline: true, height: 280 },
     },

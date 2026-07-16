@@ -31,7 +31,8 @@
   gap: var(--ct-navbar-gap);
   width: 100%;
   min-width: 0;
-  height: var(--ct-navbar-height);
+  /* min-height, not height: the bar must grow with text scaling. */
+  min-height: var(--ct-navbar-height);
   padding: var(--ct-navbar-padding-y) var(--ct-navbar-padding-x);
   background: var(--ct-navbar-bg);
   border-bottom: var(--border-thin) solid var(--ct-navbar-border-color);
@@ -462,6 +463,8 @@
 
 /* ── Sticky ────────────────────────────────────────────────────── */
 
+/* Consumers: set --ct-scroll-offset-top on :root (see foundations.css) so
+   scrolled-to content is not obscured behind the bar (WCAG 2.4.11). */
 .ct-navbar--sticky {
   position: sticky;
   inset-block-start: 0;
@@ -469,6 +472,8 @@
 
 /* ── Fixed ─────────────────────────────────────────────────────── */
 
+/* Consumers: set --ct-scroll-offset-top on :root (see foundations.css) so
+   scrolled-to content is not obscured behind the bar (WCAG 2.4.11). */
 .ct-navbar--fixed {
   position: fixed;
   inset-block-start: 0;
@@ -670,6 +675,14 @@
 
   .ct-navbar__mobile-menu {
     padding: var(--space-3);
+  }
+}
+
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ──── */
+
+@media (pointer: coarse) {
+  .ct-navbar__link {
+    min-height: 44px;
   }
 }
 

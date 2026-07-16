@@ -27,7 +27,12 @@ export const Playground = {
   render: ({ striped, compact, caption, selectable }) => {
     const stripeClass = striped ? ' ct-table--striped' : '';
     const compactClass = compact ? ' ct-table--compact' : '';
-    const captionHtml = caption ? `\n          <caption>${caption}</caption>` : '';
+    /* Tables always get a caption (visually hidden when the demo has none)
+       and the scroll region a content-specific name. */
+    const captionHtml = caption
+      ? `\n          <caption>${caption}</caption>`
+      : '\n          <caption class="ct-visually-hidden">Projects</caption>';
+    const regionLabel = caption ? `${caption} table` : 'Projects table';
     const selectAllHeader = selectable
       ? '\n              <th scope="col" class="ct-table__cell--checkbox"><input class="ct-check__input" type="checkbox" aria-label="Select all rows" /></th>'
       : '';
@@ -36,7 +41,7 @@ export const Playground = {
       : '';
     return `
     <div class="ct-data-table" style="max-width: 600px;">
-      <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
+      <div class="ct-data-table__table" tabindex="0" role="region" aria-label="${regionLabel}">
         <table class="ct-table${stripeClass}${compactClass}">${captionHtml}
           <thead>
             <tr>${selectAllHeader}
@@ -58,8 +63,9 @@ export const Playground = {
 export const DataTableSimple = {
   render: () => `
   <div class="ct-data-table" style="max-width: 960px;">
-    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
+    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Projects table">
       <table class="ct-table ct-table--striped ct-table--compact">
+        <caption class="ct-visually-hidden">Projects</caption>
         <thead>
           <tr>
             <th scope="col" class="ct-table__cell--checkbox">

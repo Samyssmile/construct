@@ -79,8 +79,20 @@
   justify-items: center;
 }
 
+/* Rows keep grid placement on the shared 7-column grid. display: contents
+   once dropped element semantics in older engines; current Chromium/Firefox/
+   Safari expose role="row" on display: contents elements correctly. */
 .ct-datepicker__row {
   display: contents;
+}
+
+/* Optional gridcell wrapper (APG date-picker dialog markup): the cell is the
+   grid item and carries role="gridcell" + aria-selected; the day button
+   inside keeps its native button role. */
+.ct-datepicker__cell {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 .ct-datepicker__weekday {
@@ -115,9 +127,10 @@
   outline-offset: 2px;
 }
 
-.ct-datepicker__day[aria-selected='true'] {
+.ct-datepicker__day[aria-selected='true'],
+.ct-datepicker__cell[aria-selected='true'] .ct-datepicker__day {
   background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  color: var(--color-text-on-primary);
 }
 
 .ct-datepicker__day[data-outside='true'] {
@@ -158,18 +171,50 @@
 
 .ct-datepicker__day[data-range-start] {
   background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  color: var(--color-text-on-primary);
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
 .ct-datepicker__day[data-range-end] {
   background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  color: var(--color-text-on-primary);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 .ct-datepicker__day[data-range-start][data-range-end] {
   border-radius: var(--radius-sm);
+}
+
+/* ── Coarse pointers ────────────────────────────────────────────── */
+
+@media (pointer: coarse) {
+  /* Day cells may compress inside the min(90vw, …) popover; tap size
+     wins over the shared column width (44×44 policy). */
+  .ct-datepicker__day {
+    min-width: var(--control-height-calendar-day);
+    min-height: var(--control-height-calendar-day);
+  }
+}
+
+/* ── Forced colors ──────────────────────────────────────────────── */
+
+@media (forced-colors: active) {
+  /* Selection fills are background-only and would be stripped to Canvas —
+     re-encode with system selection colors (data-today's border and the
+     highlight outline survive on their own). */
+  .ct-datepicker__day[aria-selected='true'],
+  .ct-datepicker__cell[aria-selected='true'] .ct-datepicker__day,
+  .ct-datepicker__cell[aria-selected='true'] .ct-datepicker__month,
+  .ct-datepicker__cell[aria-selected='true'] .ct-datepicker__year,
+  .ct-datepicker__month[aria-selected='true'],
+  .ct-datepicker__year[aria-selected='true'],
+  .ct-datepicker__day[data-in-range],
+  .ct-datepicker__day[data-range-start],
+  .ct-datepicker__day[data-range-end] {
+    background: SelectedItem;
+    color: SelectedItemText;
+    forced-color-adjust: none;
+  }
 }
 
 /* ── Month grid (3×4) ───────────────────────────────────────────── */
@@ -205,9 +250,10 @@
   outline-offset: 2px;
 }
 
-.ct-datepicker__month[aria-selected='true'] {
+.ct-datepicker__month[aria-selected='true'],
+.ct-datepicker__cell[aria-selected='true'] .ct-datepicker__month {
   background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  color: var(--color-text-on-primary);
 }
 
 .ct-datepicker__month[data-highlighted] {
@@ -254,9 +300,10 @@
   outline-offset: 2px;
 }
 
-.ct-datepicker__year[aria-selected='true'] {
+.ct-datepicker__year[aria-selected='true'],
+.ct-datepicker__cell[aria-selected='true'] .ct-datepicker__year {
   background: var(--color-brand-primary);
-  color: var(--color-text-inverse);
+  color: var(--color-text-on-primary);
 }
 
 .ct-datepicker__year[data-highlighted] {

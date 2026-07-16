@@ -165,15 +165,15 @@ export const Playground = {
            ${side === 'top' ? 'data-side="top"' : ''}>
         ${triggerButton('pg-menu', open)}
         <div class="ct-dropdown__menu" role="menu" id="pg-menu" aria-label="Actions">
-          <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+          <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+E">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${EDIT_SVG}</span>
             <span class="ct-dropdown__item-label">Edit</span>
-            <kbd class="ct-dropdown__item-shortcut">Ctrl+E</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+E</kbd>
           </button>
-          <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+          <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+D">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${COPY_SVG}</span>
             <span class="ct-dropdown__item-label">Duplicate</span>
-            <kbd class="ct-dropdown__item-shortcut">Ctrl+D</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+D</kbd>
           </button>
           <div class="ct-dropdown__separator" role="none"></div>
           <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
@@ -185,10 +185,10 @@ export const Playground = {
             <span class="ct-dropdown__item-label">Archive</span>
           </button>
           <div class="ct-dropdown__separator" role="none"></div>
-          <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1">
+          <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1" aria-keyshortcuts="Delete">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${TRASH_SVG}</span>
             <span class="ct-dropdown__item-label">Delete</span>
-            <kbd class="ct-dropdown__item-shortcut">Del</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Del</kbd>
           </button>
         </div>
       </div>
@@ -237,20 +237,20 @@ export const IconLabelShortcut = {
       <div class="ct-dropdown" data-state="open">
         ${triggerButton('ils-menu')}
         <div class="ct-dropdown__menu" role="menu" id="ils-menu" aria-label="File actions">
-          <button class="ct-dropdown__item" role="menuitem" tabindex="0">
+          <button class="ct-dropdown__item" role="menuitem" tabindex="0" aria-keyshortcuts="Control+E">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${EDIT_SVG}</span>
             <span class="ct-dropdown__item-label">Edit</span>
-            <kbd class="ct-dropdown__item-shortcut">Ctrl+E</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+E</kbd>
           </button>
-          <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+          <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+D">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${COPY_SVG}</span>
             <span class="ct-dropdown__item-label">Duplicate</span>
-            <kbd class="ct-dropdown__item-shortcut">Ctrl+D</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+D</kbd>
           </button>
-          <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+          <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+S">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${DOWNLOAD_SVG}</span>
             <span class="ct-dropdown__item-label">Download</span>
-            <kbd class="ct-dropdown__item-shortcut">Ctrl+S</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+S</kbd>
           </button>
           <div class="ct-dropdown__separator" role="none"></div>
           <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
@@ -258,10 +258,10 @@ export const IconLabelShortcut = {
             <span class="ct-dropdown__item-label">Add to favorites</span>
           </button>
           <div class="ct-dropdown__separator" role="none"></div>
-          <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1">
+          <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1" aria-keyshortcuts="Delete">
             <span class="ct-dropdown__item-icon" aria-hidden="true">${TRASH_SVG}</span>
             <span class="ct-dropdown__item-label">Delete</span>
-            <kbd class="ct-dropdown__item-shortcut">Del</kbd>
+            <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Del</kbd>
           </button>
         </div>
       </div>
@@ -695,10 +695,10 @@ export const Sizes = {
   },
   render: () => {
     const menuItems = (prefix) => `
-      <button class="ct-dropdown__item" role="menuitem" tabindex="0">
+      <button class="ct-dropdown__item" role="menuitem" tabindex="0" aria-keyshortcuts="Control+E">
         <span class="ct-dropdown__item-icon" aria-hidden="true">${EDIT_SVG}</span>
         <span class="ct-dropdown__item-label">Edit</span>
-        <kbd class="ct-dropdown__item-shortcut">Ctrl+E</kbd>
+        <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+E</kbd>
       </button>
       <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
         <span class="ct-dropdown__item-icon" aria-hidden="true">${COPY_SVG}</span>
@@ -822,15 +822,15 @@ export const MixedItemTypes = {
              style="min-width: 240px;">
           <div class="ct-dropdown__group" role="group" aria-labelledby="mixed-actions-label">
             <div class="ct-dropdown__group-label" id="mixed-actions-label">Actions</div>
-            <button class="ct-dropdown__item" role="menuitem" tabindex="0">
+            <button class="ct-dropdown__item" role="menuitem" tabindex="0" aria-keyshortcuts="Control+E">
               <span class="ct-dropdown__item-icon" aria-hidden="true">${EDIT_SVG}</span>
               <span class="ct-dropdown__item-label">Edit file</span>
-              <kbd class="ct-dropdown__item-shortcut">Ctrl+E</kbd>
+              <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+E</kbd>
             </button>
-            <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+            <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+S">
               <span class="ct-dropdown__item-icon" aria-hidden="true">${DOWNLOAD_SVG}</span>
               <span class="ct-dropdown__item-label">Download</span>
-              <kbd class="ct-dropdown__item-shortcut">Ctrl+S</kbd>
+              <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+S</kbd>
             </button>
           </div>
           <div class="ct-dropdown__group" role="group" aria-labelledby="mixed-view-label">
@@ -1057,21 +1057,21 @@ export const ContextMenuPattern = {
               <span class="ct-dropdown__item-icon" aria-hidden="true">${EDIT_SVG}</span>
               <span class="ct-dropdown__item-label">Edit</span>
             </button>
-            <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+            <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+C">
               <span class="ct-dropdown__item-icon" aria-hidden="true">${COPY_SVG}</span>
               <span class="ct-dropdown__item-label">Copy</span>
-              <kbd class="ct-dropdown__item-shortcut">Ctrl+C</kbd>
+              <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+C</kbd>
             </button>
-            <button class="ct-dropdown__item" role="menuitem" tabindex="-1">
+            <button class="ct-dropdown__item" role="menuitem" tabindex="-1" aria-keyshortcuts="Control+V">
               <span class="ct-dropdown__item-icon" aria-hidden="true">${DOWNLOAD_SVG}</span>
               <span class="ct-dropdown__item-label">Paste</span>
-              <kbd class="ct-dropdown__item-shortcut">Ctrl+V</kbd>
+              <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Ctrl+V</kbd>
             </button>
             <div class="ct-dropdown__separator" role="none"></div>
-            <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1">
+            <button class="ct-dropdown__item ct-dropdown__item--danger" role="menuitem" tabindex="-1" aria-keyshortcuts="Delete">
               <span class="ct-dropdown__item-icon" aria-hidden="true">${TRASH_SVG}</span>
               <span class="ct-dropdown__item-label">Delete</span>
-              <kbd class="ct-dropdown__item-shortcut">Del</kbd>
+              <kbd class="ct-dropdown__item-shortcut" aria-hidden="true">Del</kbd>
             </button>
           </div>
         </div>

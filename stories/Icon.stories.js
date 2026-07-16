@@ -56,28 +56,28 @@ export const Sizes = {
   <div class="ct-cluster" style="--ct-cluster-gap: var(--space-6); align-items: flex-end;">
     <div style="text-align: center;">
       <span class="ct-icon ct-icon--sm">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
       </span>
       <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">sm (16px)</div>
     </div>
 
     <div style="text-align: center;">
       <span class="ct-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
       </span>
       <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">md (20px)</div>
     </div>
 
     <div style="text-align: center;">
       <span class="ct-icon ct-icon--lg">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
       </span>
       <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">lg (24px)</div>
     </div>
 
     <div style="text-align: center;">
       <span class="ct-icon ct-icon--xl">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
       </span>
       <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-top: var(--space-2);">xl (32px)</div>
     </div>
@@ -99,6 +99,39 @@ export const Sizes = {
     expect(icons[1].classList.contains('ct-icon--xl')).toBe(false);
     expect(icons[2].classList.contains('ct-icon--lg')).toBe(true);
     expect(icons[3].classList.contains('ct-icon--xl')).toBe(true);
+  },
+};
+
+export const MeaningfulIcon = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Decorative vs. meaningful icons: an icon that only repeats adjacent text is decorative — ' +
+          'hide it with `aria-hidden="true"`. An icon that is the sole carrier of information is meaningful — ' +
+          'give the wrapper `role="img"` and an `aria-label` naming what it conveys, and keep the inner ' +
+          '`<svg>` `aria-hidden="true"` so only the label is announced.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-cluster" style="--ct-cluster-gap: var(--space-6); align-items: center;">
+    <span class="ct-icon" role="img" aria-label="Warning" style="color: var(--color-state-warning);">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${iconPaths.alert}</svg>
+    </span>
+    <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+      Standalone status icon — announced as "Warning"
+    </span>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    // Meaningful icon: wrapper exposes role="img" with an accessible name
+    const icon = canvasElement.querySelector('.ct-icon');
+    expect(icon).toHaveAttribute('role', 'img');
+    expect(icon).toHaveAttribute('aria-label', 'Warning');
+
+    // The inner SVG stays hidden so only the label is announced
+    expect(icon.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
   },
 };
 

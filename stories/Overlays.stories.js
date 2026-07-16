@@ -74,8 +74,10 @@ function initModalKeyboard(modalEl, triggerEl) {
     if (e.target === modalEl) closeModal();
   });
 
-  // Close button
-  const closeBtn = dialog.querySelector('[aria-label="Close"]');
+  // Close button (accessible name comes from its visible "Close" text)
+  const closeBtn = [...dialog.querySelectorAll('button')].find(
+    (btn) => btn.textContent.trim() === 'Close'
+  );
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
   return { openModal, closeModal };
@@ -90,11 +92,11 @@ export const Playground = {
     description: 'Send an invite to a new team member.',
   },
   render: ({ title, description }) => `
-  <div class="ct-modal" data-state="open" role="dialog" aria-modal="true" aria-labelledby="pg-modal-title">
-    <div class="ct-modal__dialog">
+  <div class="ct-modal" data-state="open">
+    <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="pg-modal-title">
       <div class="ct-modal__header">
         <h2 id="pg-modal-title">${title}</h2>
-        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+        <button class="ct-button ct-button--ghost">Close</button>
       </div>
       <div class="ct-modal__body">
         <p>${description}</p>
@@ -120,11 +122,11 @@ export const Modal = {
     layout: 'fullscreen',
   },
   render: () => `
-  <div class="ct-modal" data-state="open" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="ct-modal__dialog">
+  <div class="ct-modal" data-state="open">
+    <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="ct-modal__header">
         <h2 id="modal-title">Invite team</h2>
-        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+        <button class="ct-button ct-button--ghost">Close</button>
       </div>
       <div class="ct-modal__body">
         <p>Send an invite to a new team member.</p>
@@ -190,11 +192,11 @@ export const ModalKeyboard = {
   render: () => `
   <div style="padding: var(--space-6);">
     <button class="ct-button" id="modal-trigger">Open Modal</button>
-    <div class="ct-modal" id="kb-modal" data-state="closed" role="dialog" aria-modal="true" aria-labelledby="kb-modal-title">
-      <div class="ct-modal__dialog">
+    <div class="ct-modal" id="kb-modal" data-state="closed">
+      <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="kb-modal-title">
         <div class="ct-modal__header">
           <h2 id="kb-modal-title">Keyboard Test</h2>
-          <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+          <button class="ct-button ct-button--ghost">Close</button>
         </div>
         <div class="ct-modal__body">
           <div class="ct-field">
@@ -217,7 +219,9 @@ export const ModalKeyboard = {
     const cancelBtn = canvasElement.querySelector('#kb-cancel');
     const confirmBtn = canvasElement.querySelector('#kb-confirm');
     const nameInput = canvasElement.querySelector('#kb-input');
-    const closeBtn = modalEl.querySelector('[aria-label="Close"]');
+    const closeBtn = [...modalEl.querySelectorAll('button')].find(
+      (btn) => btn.textContent.trim() === 'Close'
+    );
 
     const { openModal, closeModal } = initModalKeyboard(modalEl, triggerBtn);
 
@@ -274,11 +278,11 @@ export const ModalSizes = {
   <div class="ct-stack" style="--ct-stack-space: var(--space-8); padding: var(--space-6);">
     <div>
       <p class="ct-muted" style="margin-bottom: var(--space-2);">Small (480px)</p>
-      <div class="ct-modal ct-modal--sm" data-state="open" role="dialog" aria-modal="true" aria-labelledby="size-sm-title" style="position: relative; min-height: 200px;">
-        <div class="ct-modal__dialog">
+      <div class="ct-modal ct-modal--sm" data-state="open" style="position: relative; min-height: 200px;">
+        <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="size-sm-title">
           <div class="ct-modal__header">
             <h2 id="size-sm-title">Small Modal</h2>
-            <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+            <button class="ct-button ct-button--ghost">Close</button>
           </div>
           <div class="ct-modal__body"><p>Compact dialog for simple confirmations.</p></div>
           <div class="ct-modal__footer">
@@ -291,11 +295,11 @@ export const ModalSizes = {
 
     <div>
       <p class="ct-muted" style="margin-bottom: var(--space-2);">Default (640px)</p>
-      <div class="ct-modal" data-state="open" role="dialog" aria-modal="true" aria-labelledby="size-md-title" style="position: relative; min-height: 200px;">
-        <div class="ct-modal__dialog">
+      <div class="ct-modal" data-state="open" style="position: relative; min-height: 200px;">
+        <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="size-md-title">
           <div class="ct-modal__header">
             <h2 id="size-md-title">Default Modal</h2>
-            <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+            <button class="ct-button ct-button--ghost">Close</button>
           </div>
           <div class="ct-modal__body"><p>Standard dialog for most use cases.</p></div>
           <div class="ct-modal__footer">
@@ -308,11 +312,11 @@ export const ModalSizes = {
 
     <div>
       <p class="ct-muted" style="margin-bottom: var(--space-2);">Large (800px)</p>
-      <div class="ct-modal ct-modal--lg" data-state="open" role="dialog" aria-modal="true" aria-labelledby="size-lg-title" style="position: relative; min-height: 200px;">
-        <div class="ct-modal__dialog">
+      <div class="ct-modal ct-modal--lg" data-state="open" style="position: relative; min-height: 200px;">
+        <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="size-lg-title">
           <div class="ct-modal__header">
             <h2 id="size-lg-title">Large Modal</h2>
-            <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+            <button class="ct-button ct-button--ghost">Close</button>
           </div>
           <div class="ct-modal__body"><p>Wide dialog for forms and complex content.</p></div>
           <div class="ct-modal__footer">
@@ -350,8 +354,8 @@ export const ConfirmationDialog = {
     layout: 'fullscreen',
   },
   render: () => `
-  <div class="ct-modal ct-modal--confirmation" data-state="open" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-description">
-    <div class="ct-modal__dialog">
+  <div class="ct-modal ct-modal--confirmation" data-state="open">
+    <div class="ct-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-description">
       <div class="ct-modal__body">
         <div class="ct-confirmation" data-variant="danger">
           <div class="ct-confirmation__icon" aria-hidden="true">!</div>
@@ -423,8 +427,11 @@ export const Toast = {
   <div style="min-height: 320px; padding: 24px; display: flex; align-items: flex-start;">
     <div class="ct-toast-region" aria-live="polite" role="status">
       <div class="ct-toast" data-variant="success" data-state="open">
-        <div class="ct-toast__title">Saved</div>
-        <div class="ct-toast__description">Your changes were saved.</div>
+        <span class="ct-toast__icon" aria-hidden="true" style="color: var(--ct-toast-accent); font-weight: var(--font-weight-bold);">✓</span>
+        <div>
+          <div class="ct-toast__title">Saved</div>
+          <div class="ct-toast__description">Your changes were saved.</div>
+        </div>
         <button class="ct-button ct-button--ghost" aria-label="Undo save">Undo</button>
       </div>
     </div>
@@ -441,6 +448,12 @@ export const Toast = {
     // Toast content is visible
     expect(canvas.getByText('Saved')).toBeInTheDocument();
     expect(canvas.getByText('Your changes were saved.')).toBeInTheDocument();
+
+    // Variant is signalled by a leading icon, not by color/wording alone;
+    // the icon itself is decorative for AT
+    const icon = canvasElement.querySelector('.ct-toast__icon');
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveAttribute('aria-hidden', 'true');
 
     // Undo button has a descriptive aria-label (not just "Undo")
     const undoBtn = canvas.getByRole('button', { name: /Undo/ });

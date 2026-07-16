@@ -116,12 +116,14 @@ export function getFocusableElements(container) {
   if (container.matches(FOCUSABLE_SELECTOR)) candidates.push(container);
   candidates.push(...container.querySelectorAll(FOCUSABLE_SELECTOR));
 
-  return candidates.filter(
-    (element) =>
-      !isDisabled(element) &&
-      element.getAttribute('aria-hidden') !== 'true' &&
-      isRendered(element),
-  );
+  return candidates.filter((element) => {
+    if (isDisabled(element) || element.getAttribute('aria-hidden') === 'true') return false;
+    /* The selector only excludes tabindex="-1"; any other negative value
+       (e.g. "-2") is equally removed from the tab order. */
+    const tabindex = element.getAttribute('tabindex');
+    if (tabindex !== null && Number.parseInt(tabindex, 10) < 0) return false;
+    return isRendered(element);
+  });
 }
 
 export function focusElement(element) {
@@ -131,6 +133,24 @@ export function focusElement(element) {
 
   element.focus({ preventScroll: true });
   return element.ownerDocument.activeElement === element;
+}
+
+/**
+ * Focuses an element and scrolls it minimally into view. focusElement uses
+ * preventScroll to avoid browser-default jump scrolling, so controller-driven
+ * focus moves (trap wraparound, roving focus, highlight) must restore
+ * visibility themselves or the focus indicator can leave the viewport
+ * (WCAG 2.4.11 Focus Not Obscured).
+ */
+export function focusIntoView(element) {
+  const focused = focusElement(element);
+  if (focused) element.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+  return focused;
+}
+
+/** Emits a non-fatal accessibility authoring warning. */
+export function warnAccessibility(message) {
+  if (typeof console !== 'undefined') console.warn(`[construct] ${message}`);
 }
 
 export function createAttributeStore() {
@@ -266,6 +286,17 @@ export function orientationDelta(key, orientation, element) {
   return 0;
 }
 
+/**
+ * Detects keydown events fired while an IME composition is in progress.
+ * Such events must never trigger widget shortcuts (Enter/Escape/arrows):
+ * the user is committing or cancelling composed text, not operating the
+ * widget. keyCode 229 covers Chromium, which reports real key values
+ * during composition; `isComposing` covers the standards path.
+ */
+export function isComposingEvent(event) {
+  return event.isComposing === true || event.keyCode === 229;
+}
+
 export function createTypeahead({ timeout = 500 } = {}) {
   if (!Number.isFinite(timeout) || timeout < 0) {
     throw new RangeError('Typeahead timeout must be a non-negative finite number.');
@@ -287,7 +318,7 @@ export function createTypeahead({ timeout = 500 } = {}) {
         event.altKey ||
         event.ctrlKey ||
         event.metaKey ||
-        event.isComposing
+        isComposingEvent(event)
       ) {
         return -1;
       }

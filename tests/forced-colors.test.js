@@ -37,6 +37,22 @@ describe('forced-colors contract', () => {
         <nav class="ct-navbar" aria-label="Primary">
           <a class="ct-navbar__link" href="#overview" aria-current="page">Overview</a>
         </nav>
+
+        <label class="ct-switch">
+          <input class="ct-switch__input" type="checkbox" role="switch" />
+          Notifications
+        </label>
+
+        <label class="ct-radio">
+          <input class="ct-radio__input" type="radio" name="fc-radio" checked />
+          Radio
+        </label>
+
+        <div class="ct-tabs">
+          <div class="ct-tabs__list" role="tablist">
+            <button class="ct-tabs__trigger" role="tab" aria-selected="true" type="button">Overview</button>
+          </div>
+        </div>
       </main>
     `;
 
@@ -67,5 +83,27 @@ describe('forced-colors contract', () => {
     const style = getComputedStyle(button);
     expect(style.outlineStyle).not.toBe('none');
     expect(Number.parseFloat(style.outlineWidth)).toBeGreaterThanOrEqual(2);
+  });
+
+  it('keeps the switch track visible without shadows', () => {
+    const input = document.querySelector('.ct-switch__input');
+    expectVisibleBorder(input);
+
+    const thumb = getComputedStyle(input, '::after');
+    expect(thumb.borderTopStyle).not.toBe('none');
+    expect(Number.parseFloat(thumb.borderTopWidth)).toBeGreaterThanOrEqual(1);
+  });
+
+  it('keeps the checked radio dot visible', () => {
+    const dot = getComputedStyle(document.querySelector('.ct-radio__input'), '::before');
+    expect(dot.forcedColorAdjust).toBe('none');
+    expect(dot.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  });
+
+  it('keeps the active tab indicator visible', () => {
+    const trigger = document.querySelector('.ct-tabs__trigger[aria-selected="true"]');
+    const indicator = getComputedStyle(trigger, '::after');
+    expect(indicator.forcedColorAdjust).toBe('none');
+    expect(indicator.backgroundColor).not.toBe(getComputedStyle(document.body).backgroundColor);
   });
 });

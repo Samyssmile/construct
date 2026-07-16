@@ -5,6 +5,52 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2026-07-16
+
+### Added
+
+- Datum grammar, extended from signature to system-wide vocabulary:
+  - `component.datum.*` tokens (edge width, tick, origin, mark, scale steps) — the grammar's
+    dimensions are now part of the published token contract and themable per product.
+  - `ct-eyebrow--numbered` (+ `ct-eyebrow-set` scope): auto-incremented, zero-padded sheet
+    numbers in the eyebrow, like an engineering drawing set.
+  - `ct-datum-scale--progress`: the scale's origin segment becomes meaning-bearing and reports
+    progress via `--ct-datum-scale-progress`; fill uses `brand-accent-strong` (≥3:1 per theme).
+  - `ct-datum-frame`: the corner registration mark generalised beyond cards for figures, code
+    samples, and media exhibits.
+  - Chart datum reference line (`ct-chart__datum-line` + `ct-chart__datum-label`) for threshold,
+    target, and "today" markers — dashed so the reference is shape-encoded, with a forced-colors
+    `CanvasText` fallback.
+  - Tables speak the grammar: `tr[aria-current]`/`[aria-selected]`/`[data-state="selected"]` rows
+    carry the orange leading edge (with forced-colors border fallback), and the actively sorted
+    column header (`aria-sort`) carries the datum underline.
+  - A "The Datum" section in `docs/guidelines.md` documenting the dosage rule (one datum per
+    surface), the text/edge/fill color contract, and the motion rule.
+
+### Changed
+
+- The datum now enters instead of popping: tab indicators draw in from their origin
+  (`transform`-based), and active leading edges on list items, sidebar nav items, and cards
+  slide in via a `box-shadow` transition (`--duration-fast`, disabled by
+  `prefers-reduced-motion`). The active card's shadow list is reordered
+  (`ambient, inset edge`) so it interpolates; consumers overriding `box-shadow` on active
+  states should re-check their overrides.
+- The datum scale's origin now anchors to the inline start in RTL writing modes.
+- Table rows using `aria-selected`/`aria-current` markup, previously unstyled, now receive the
+  selected-row treatment (muted background + leading edge).
+
+- Preset themes: a new `themes/` package entry for validated, opt-in brand skins that compile
+  through the `construct-theme` CLI instead of being baked into `tokens.css`. First preset:
+  `walnut` — a warm ivory light theme with walnut-brown brand color, AAA body-text contrast
+  (≥ 7:1) enforced by `contrast` gates, validated in `npm run check` via `themes:validate`.
+
+### Fixed
+
+- Tabs: anchor-based triggers (router-driven tabs rendering `<a class="ct-tabs__trigger">`)
+  no longer inherit the global link underline and link `:active` color from `foundations.css`.
+  The trigger label showed a text underline stacked above the orange active indicator; the
+  indicator is the only active-tab signal now.
+
 ## [2.1.1] - 2026-07-16
 
 ### Changed

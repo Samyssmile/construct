@@ -116,6 +116,14 @@
   padding: 0 var(--space-4) var(--space-4);
 }
 
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ── */
+
+@media (pointer: coarse) {
+  .ct-accordion__trigger {
+    min-block-size: 44px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ct-accordion__icon,
   .ct-accordion__item::details-content {

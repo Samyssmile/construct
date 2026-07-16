@@ -97,14 +97,18 @@
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'%3E%3Cpath d='M4 5L0 0h8z'/%3E%3C/svg%3E");
 }
 
-th[aria-sort='ascending'] .ct-table__sort-indicator::before {
+th[aria-sort='ascending'] .ct-table__sort-indicator::before,
+th[aria-sort='descending'] .ct-table__sort-indicator::after {
   background-color: var(--color-text-secondary);
   opacity: 1;
 }
 
-th[aria-sort='descending'] .ct-table__sort-indicator::after {
-  background-color: var(--color-text-secondary);
-  opacity: 1;
+/* Direction is shape-encoded: the unsorted state keeps the dimmed
+   both-ways glyph, while a sorted column shows only its own arrow so the
+   state never relies on colour or opacity alone. */
+th[aria-sort='ascending'] .ct-table__sort-indicator::after,
+th[aria-sort='descending'] .ct-table__sort-indicator::before {
+  display: none;
 }
 
 .ct-table__cell--numeric .ct-table__sort {
@@ -136,4 +140,49 @@ th[aria-sort='descending'] .ct-table__sort-indicator::after {
   margin-top: var(--space-1);
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
+}
+
+/* ── Selected / current rows ──
+   The datum: an orange leading edge marks the selected or current row,
+   consistent with list, sidebar, and card active states. The edge sits
+   on the row's first cell — box-shadow on <tr> is unreliable with
+   collapsed borders. Row text stays neutral; only the edge is orange. */
+.ct-table tbody tr > :first-child {
+  transition: box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+.ct-table tbody tr:is([aria-selected='true'], [aria-current='true'], [data-state='selected']) {
+  background: var(--color-bg-muted);
+}
+
+.ct-table tbody tr:is([aria-selected='true'], [aria-current='true'], [data-state='selected']) > :first-child {
+  box-shadow: inset var(--component-datum-edge-width) 0 0 0 var(--color-brand-accent);
+}
+
+/* ── Sorted column ──
+   The datum underlines the actively sorted column header, like the tab
+   indicator. Direction stays shape-encoded via the arrow glyphs. */
+.ct-table thead th:is([aria-sort='ascending'], [aria-sort='descending']) {
+  box-shadow: inset 0 calc(-1 * var(--component-datum-edge-width)) 0 0 var(--color-brand-accent);
+}
+
+@media (forced-colors: active) {
+  /* Mask-drawn arrows paint via background-color; the sorted selectors
+     match the specificity of the full-strength rules above. */
+  .ct-table__sort-indicator::before,
+  .ct-table__sort-indicator::after,
+  th[aria-sort='ascending'] .ct-table__sort-indicator::before,
+  th[aria-sort='descending'] .ct-table__sort-indicator::after {
+    background-color: CanvasText;
+  }
+
+  /* The datum edges are inset box-shadows, which forced colors drops —
+     re-encode them as borders. */
+  .ct-table tbody tr:is([aria-selected='true'], [aria-current='true'], [data-state='selected']) > :first-child {
+    border-inline-start: var(--component-datum-edge-width) solid SelectedItem;
+  }
+
+  .ct-table thead th:is([aria-sort='ascending'], [aria-sort='descending']) {
+    border-block-end: var(--component-datum-edge-width) solid SelectedItem;
+  }
 }

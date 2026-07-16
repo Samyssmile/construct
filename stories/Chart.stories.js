@@ -143,7 +143,7 @@ export const LineArea = {
           .join('')}
       </g>`;
 
-    return `<div class="ct-chart" style="max-width: 440px;">
+    return `<div class="ct-chart" lang="de" style="max-width: 440px;">
       <figure class="ct-chart__figure">
         ${tableToggle('la-table')}
         <svg class="ct-chart__svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="la-title" aria-describedby="la-desc">
@@ -188,6 +188,78 @@ export const LineArea = {
 };
 
 /* ──────────────────────────────────────────────────────────────────────────
+ * Datum reference line — the signature applied to data
+ * ────────────────────────────────────────────────────────────────────────── */
+export const DatumLine = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Die Datum-Referenzlinie (`ct-chart__datum-line` + `ct-chart__datum-label`) markiert Ziel-, Schwellen- oder Heute-Werte. ' +
+          'Der Wert steht als Text im Label, in der Beschreibung und in der Datentabelle — die gestrichelte Linie bleibt ergänzend und unterscheidet sich formal (nicht nur farblich) von Datenserien.',
+      },
+    },
+  },
+  render: () => {
+    const W = 360;
+    const H = 200;
+    const PAD = { l: 38, r: 14, t: 14, b: 30 };
+    const latency = [240, 210, 250, 190, 170, 150];
+    const target = 180;
+    const ticks = [0, 100, 200, 300];
+    const { x, y, baseY } = makeScales({ width: W, height: H, pad: PAD, count: MONTHS.length, max: 300 });
+
+    const grid = ticks
+      .map((t) => `<line class="ct-chart__grid-line" x1="${f(PAD.l)}" y1="${f(y(t))}" x2="${f(W - PAD.r)}" y2="${f(y(t))}" />`)
+      .join('');
+    const yLabels = ticks
+      .map((t) => `<text class="ct-chart__tick-label" x="${f(PAD.l - 6)}" y="${f(y(t) + 3)}" text-anchor="end">${t}</text>`)
+      .join('');
+    const xLabels = MONTHS.map(
+      (m, i) => `<text class="ct-chart__tick-label" x="${f(x(i))}" y="${f(H - PAD.b + 16)}" text-anchor="middle">${m}</text>`
+    ).join('');
+    const axes = `<line class="ct-chart__axis-line" x1="${f(PAD.l)}" y1="${f(PAD.t)}" x2="${f(PAD.l)}" y2="${f(baseY)}" />
+      <line class="ct-chart__axis-line" x1="${f(PAD.l)}" y1="${f(baseY)}" x2="${f(W - PAD.r)}" y2="${f(baseY)}" />`;
+    const datum = `<line class="ct-chart__datum-line" x1="${f(PAD.l)}" y1="${f(y(target))}" x2="${f(W - PAD.r)}" y2="${f(y(target))}" />
+      <text class="ct-chart__datum-label" x="${f(W - PAD.r)}" y="${f(y(target) - 6)}" text-anchor="end">Ziel 180 ms</text>`;
+
+    return `<div class="ct-chart" lang="de" style="max-width: 440px;">
+      <figure class="ct-chart__figure">
+        ${tableToggle('dl-table')}
+        <svg class="ct-chart__svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="dl-title" aria-describedby="dl-desc">
+          <title id="dl-title">P95-Latenz je Monat mit Ziellinie bei 180 Millisekunden</title>
+          <desc id="dl-desc">Liniendiagramm über sechs Monate; die Latenz fällt von 240 auf 150 Millisekunden und unterschreitet das Ziel von 180 Millisekunden ab Mai.</desc>
+          ${grid}${axes}${yLabels}${xLabels}
+          ${datum}
+          <g class="ct-chart__series--1">
+            <path class="ct-chart__line" d="${linePath(latency, x, y)}" />
+            ${latency.map((v, i) => `<circle class="ct-chart__dot" cx="${f(x(i))}" cy="${f(y(v))}" r="3" />`).join('')}
+          </g>
+        </svg>
+        ${legend([{ series: 1, label: 'P95-Latenz (ms)', line: true }])}
+        ${dataTable(
+          'dl-table',
+          'P95-Latenz je Monat (Ziel: 180 ms)',
+          ['Monat', 'Latenz (ms)'],
+          MONTHS.map((m, i) => [m, latency[i]])
+        )}
+      </figure>
+    </div>`;
+  },
+  play: async ({ canvasElement }) => {
+    const line = canvasElement.querySelector('.ct-chart__datum-line');
+    const label = canvasElement.querySelector('.ct-chart__datum-label');
+    expect(line).toBeInTheDocument();
+    expect(label).toBeInTheDocument();
+    // The reference is shape-encoded (dashed), not colour-only.
+    expect(getComputedStyle(line).strokeDasharray).not.toBe('none');
+    // The threshold value is available as text, not only as a line.
+    expect(label.textContent).toContain('180');
+    expect(canvasElement.querySelector('#dl-table caption').textContent).toContain('180');
+  },
+};
+
+/* ──────────────────────────────────────────────────────────────────────────
  * Bars — single series
  * ────────────────────────────────────────────────────────────────────────── */
 export const Bars = {
@@ -217,7 +289,7 @@ export const Bars = {
       })
       .join('');
 
-    return `<div class="ct-chart" style="max-width: 440px;">
+    return `<div class="ct-chart" lang="de" style="max-width: 440px;">
       <figure class="ct-chart__figure">
         ${tableToggle('bar-table')}
         <svg class="ct-chart__svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="bar-title">
@@ -260,7 +332,7 @@ export const Donut = {
       })
       .join('');
 
-    return `<div class="ct-chart" style="max-width: 320px;">
+    return `<div class="ct-chart" lang="de" style="max-width: 320px;">
       <figure class="ct-chart__figure">
         ${tableToggle('donut-table')}
         <svg class="ct-chart__svg" viewBox="0 0 180 180" role="img" aria-labelledby="donut-title">
@@ -294,7 +366,7 @@ export const Gauge = {
     const r = 88;
     const pct = 72;
     const arc = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`;
-    return `<div class="ct-chart" style="max-width: 280px;">
+    return `<div class="ct-chart" lang="de" style="max-width: 280px;">
       <figure class="ct-chart__figure">
         <svg class="ct-chart__svg" viewBox="0 0 220 130" role="img" aria-labelledby="gauge-title">
           <title id="gauge-title">Speicher genutzt: 72 Prozent</title>
@@ -325,7 +397,7 @@ export const Sparkline = {
     const H = 32;
     const PAD = { l: 2, r: 2, t: 4, b: 4 };
     const { x, y, baseY } = makeScales({ width: W, height: H, pad: PAD, count: data.length, max: 14 });
-    return `<div style="display: flex; align-items: center; gap: var(--space-4);">
+    return `<div lang="de" style="display: flex; align-items: center; gap: var(--space-4);">
       <span style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold);">€13k</span>
       <span class="ct-chart ct-chart--sparkline">
         <svg class="ct-chart__svg ct-chart__series--3" viewBox="0 0 ${W} ${H}" role="img" aria-label="Umsatztrend der letzten 9 Wochen, steigend von 4k auf 13k">
@@ -347,7 +419,7 @@ export const Sparkline = {
  * Empty state
  * ────────────────────────────────────────────────────────────────────────── */
 export const EmptyState = {
-  render: () => `<div style="display: flex; flex-direction: column; gap: var(--space-6); max-width: 440px;">
+  render: () => `<div lang="de" style="display: flex; flex-direction: column; gap: var(--space-6); max-width: 440px;">
       <div class="ct-chart">
         <figure class="ct-chart__figure">
           <div class="ct-chart__empty">Keine Daten für den ausgewählten Zeitraum.</div>
@@ -355,7 +427,7 @@ export const EmptyState = {
       </div>
       <div style="display: flex; align-items: center; gap: var(--space-4);">
         <span style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">Inline-Sparkline ohne Daten:</span>
-        <span class="ct-chart ct-chart--sparkline"><span class="ct-chart__empty" aria-label="Keine Daten">—</span></span>
+        <span class="ct-chart ct-chart--sparkline"><span class="ct-chart__empty" role="img" aria-label="Keine Daten">—</span></span>
       </div>
     </div>`,
   play: async ({ canvasElement }) => {
@@ -392,7 +464,7 @@ export const DataTableToggle = {
       .join('');
 
     return wireToggle(
-      fromHTML(`<div class="ct-chart" style="max-width: 440px;">
+      fromHTML(`<div class="ct-chart" lang="de" style="max-width: 440px;">
         <figure class="ct-chart__figure">
           ${tableToggle('dt-table')}
           <svg class="ct-chart__svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="dt-title">
@@ -436,7 +508,7 @@ export const DataTableToggle = {
  * ────────────────────────────────────────────────────────────────────────── */
 export const VisibleDataTable = {
   render: () =>
-    `<div class="ct-chart ct-chart--show-table" style="max-width: 440px;">
+    `<div class="ct-chart ct-chart--show-table" lang="de" style="max-width: 440px;">
       <figure class="ct-chart__figure">
         ${dataTable('vt-table', 'Bestellungen je Monat', ['Monat', 'Bestellungen'], MONTHS.map((m, i) => [m, [24, 32, 28, 40, 52, 48][i]]))}
       </figure>
@@ -479,7 +551,7 @@ export const KeyboardFocusableBars = {
       })
       .join('');
 
-    return `<div class="ct-chart" style="max-width: 440px;">
+    return `<div class="ct-chart" lang="de" style="max-width: 440px;">
       <figure class="ct-chart__figure">
         <svg class="ct-chart__svg" viewBox="0 0 ${W} ${H}" aria-label="Bestellungen je Monat, interaktiv — mit Pfeil-/Tab-Tasten navigierbar">
           <line class="ct-chart__axis-line" x1="${f(PAD.l)}" y1="${f(baseY)}" x2="${f(W - PAD.r)}" y2="${f(baseY)}" />

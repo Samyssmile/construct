@@ -55,6 +55,28 @@ describe('coarse-pointer target contract', () => {
           <span class="ct-slider__label">Volume</span>
           <input class="ct-slider__input" type="range" min="0" max="100" value="50" />
         </label>
+
+        <div class="ct-dropdown" data-state="open">
+          <button class="ct-button" type="button">Menu</button>
+          <div class="ct-dropdown__menu" role="menu">
+            <button class="ct-dropdown__item" role="menuitem" type="button">Duplicate</button>
+          </div>
+        </div>
+
+        <div class="ct-tabs">
+          <div class="ct-tabs__list" role="tablist">
+            <button class="ct-tabs__trigger" role="tab" aria-selected="true" type="button">Overview</button>
+          </div>
+        </div>
+
+        <nav class="ct-pagination ct-pagination--sm" aria-label="Compact pages">
+          <a class="ct-pagination__link" href="#page-2">2</a>
+        </nav>
+
+        <span class="ct-chip">
+          Filter
+          <button class="ct-chip__remove" type="button" aria-label="Remove filter">&times;</button>
+        </span>
       </main>
     `;
 
@@ -80,6 +102,24 @@ describe('coarse-pointer target contract', () => {
       expect(element).not.toBeNull();
       expectMinimumSize(element.getBoundingClientRect());
     }
+  });
+
+  it('keeps menu items, tab triggers, and small pagination links at least 44 by 44 CSS pixels', () => {
+    for (const selector of [
+      '.ct-dropdown__item',
+      '.ct-tabs__trigger',
+      '.ct-pagination--sm .ct-pagination__link',
+    ]) {
+      const element = document.querySelector(selector);
+      expect(element).not.toBeNull();
+      expectMinimumSize(element.getBoundingClientRect());
+    }
+  });
+
+  it('expands the chip remove button hit area to at least 44 by 44 CSS pixels', () => {
+    const remove = document.querySelector('.ct-chip__remove');
+    expect(remove).not.toBeNull();
+    expectMinimumSize(expandedPseudoSize(remove, '::before'));
   });
 
   it('expands compact control hit areas to at least 44 by 44 CSS pixels', () => {

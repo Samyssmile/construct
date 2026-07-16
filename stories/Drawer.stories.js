@@ -26,7 +26,7 @@ export const Playground = {
     <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="pg-drawer-title">
       <div class="ct-drawer__header">
         <h2 id="pg-drawer-title">${title}</h2>
-        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+        <button class="ct-button ct-button--ghost">Close</button>
       </div>
       <div class="ct-drawer__body">
         <p>${description}</p>
@@ -53,7 +53,7 @@ export const Drawer = {
     <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
       <div class="ct-drawer__header">
         <h2 id="drawer-title">Edit profile</h2>
-        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+        <button class="ct-button ct-button--ghost">Close</button>
       </div>
       <div class="ct-drawer__body">
         <p>Update your personal information.</p>
@@ -138,7 +138,7 @@ export const Sides = {
           <div class="ct-drawer__header">
             <h3>Right (default)</h3>
           </div>
-          <div class="ct-drawer__body" tabindex="0"><p>Slides from the right edge.</p></div>
+          <div class="ct-drawer__body"><p>Slides from the right edge.</p></div>
         </div>
       </div>
     </div>
@@ -149,7 +149,7 @@ export const Sides = {
           <div class="ct-drawer__header">
             <h3>Left</h3>
           </div>
-          <div class="ct-drawer__body" tabindex="0"><p>Slides from the left edge.</p></div>
+          <div class="ct-drawer__body"><p>Slides from the left edge.</p></div>
         </div>
       </div>
     </div>
@@ -160,7 +160,7 @@ export const Sides = {
           <div class="ct-drawer__header">
             <h3>Bottom</h3>
           </div>
-          <div class="ct-drawer__body" tabindex="0"><p>Slides from the bottom edge.</p></div>
+          <div class="ct-drawer__body"><p>Slides from the bottom edge.</p></div>
         </div>
       </div>
     </div>
@@ -171,7 +171,7 @@ export const Sides = {
           <div class="ct-drawer__header">
             <h3>Top</h3>
           </div>
-          <div class="ct-drawer__body" tabindex="0"><p>Slides from the top edge.</p></div>
+          <div class="ct-drawer__body"><p>Slides from the top edge.</p></div>
         </div>
       </div>
     </div>
@@ -223,7 +223,7 @@ export const Sizes = {
       <div class="ct-drawer ct-drawer--sm" data-state="open" style="position: absolute; z-index: auto;">
         <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-label="Small drawer">
           <div class="ct-drawer__header"><h3>Small (320px)</h3></div>
-          <div class="ct-drawer__body" tabindex="0"><p>ct-drawer--sm</p></div>
+          <div class="ct-drawer__body"><p>ct-drawer--sm</p></div>
         </div>
       </div>
     </div>
@@ -232,7 +232,7 @@ export const Sizes = {
       <div class="ct-drawer" data-state="open" style="position: absolute; z-index: auto;">
         <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-label="Medium drawer">
           <div class="ct-drawer__header"><h3>Medium (400px, default)</h3></div>
-          <div class="ct-drawer__body" tabindex="0"><p>No size modifier</p></div>
+          <div class="ct-drawer__body"><p>No size modifier</p></div>
         </div>
       </div>
     </div>
@@ -241,7 +241,7 @@ export const Sizes = {
       <div class="ct-drawer ct-drawer--lg" data-state="open" style="position: absolute; z-index: auto;">
         <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-label="Large drawer">
           <div class="ct-drawer__header"><h3>Large (560px)</h3></div>
-          <div class="ct-drawer__body" tabindex="0"><p>ct-drawer--lg</p></div>
+          <div class="ct-drawer__body"><p>ct-drawer--lg</p></div>
         </div>
       </div>
     </div>
@@ -250,7 +250,7 @@ export const Sizes = {
       <div class="ct-drawer ct-drawer--full" data-state="open" style="position: absolute; z-index: auto;">
         <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-label="Full drawer">
           <div class="ct-drawer__header"><h3>Full width</h3></div>
-          <div class="ct-drawer__body" tabindex="0"><p>ct-drawer--full</p></div>
+          <div class="ct-drawer__body"><p>ct-drawer--full</p></div>
         </div>
       </div>
     </div>
@@ -351,7 +351,7 @@ export const BottomSheet = {
     <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
       <div class="ct-drawer__header">
         <h2 id="sheet-title">Share document</h2>
-        <button class="ct-button ct-button--ghost" aria-label="Close">Close</button>
+        <button class="ct-button ct-button--ghost">Close</button>
       </div>
       <div class="ct-drawer__body">
         <div class="ct-field">
@@ -408,7 +408,7 @@ export const FocusTrap = {
     <div class="ct-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="ft-title">
       <div class="ct-drawer__header">
         <h2 id="ft-title">Focus trap demo</h2>
-        <button class="ct-button ct-button--ghost" aria-label="Close" data-close>Close</button>
+        <button class="ct-button ct-button--ghost" data-close>Close</button>
       </div>
       <div class="ct-drawer__body">
         <div class="ct-field">

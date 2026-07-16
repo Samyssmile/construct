@@ -49,6 +49,11 @@ const sizeClass = (size) => {
 
 const fruits = ['Apple', 'Banana', 'Cherry', 'Dragon Fruit', 'Elderberry', 'Fig', 'Grape'];
 
+/* Single source of truth: drives aria-selected, data-highlighted, and
+   aria-activedescendant so the announced option can never drift from
+   the visually highlighted one. */
+const PG_HIGHLIGHTED_INDEX = 2;
+
 /**
  * Interactive playground with all controls.
  */
@@ -76,7 +81,7 @@ export const Playground = {
                    aria-expanded="${open && !disabled}"
                    aria-controls="pg-combo-listbox"
                    aria-autocomplete="list"
-                   aria-activedescendant="${open && !disabled ? 'pg-combo-opt-3' : ''}"
+                   aria-activedescendant="${open && !disabled ? `pg-combo-opt-${PG_HIGHLIGHTED_INDEX}` : ''}"
                    ${invalid ? 'aria-invalid="true"' : ''}
                    ${disabled ? 'disabled' : ''}
                    placeholder="Search fruits..." />
@@ -97,8 +102,8 @@ export const Playground = {
               <li class="ct-combobox__option"
                   id="pg-combo-opt-${i}"
                   role="option"
-                  aria-selected="${i === 2 ? 'true' : 'false'}"
-                  ${i === 2 ? 'data-highlighted' : ''}>
+                  aria-selected="${i === PG_HIGHLIGHTED_INDEX ? 'true' : 'false'}"
+                  ${i === PG_HIGHLIGHTED_INDEX ? 'data-highlighted' : ''}>
                 <span class="ct-combobox__option-check" aria-hidden="true">${CHECK_SVG}</span>
                 <span class="ct-combobox__option-label">${fruit}</span>
               </li>`).join('')}
@@ -118,7 +123,8 @@ export const Playground = {
     expect(input).toHaveAttribute('aria-expanded', 'true');
     expect(input).toHaveAttribute('aria-controls', 'pg-combo-listbox');
     expect(input).toHaveAttribute('aria-autocomplete', 'list');
-    expect(input).toHaveAttribute('aria-activedescendant', 'pg-combo-opt-3');
+    const highlighted = canvasElement.querySelector('[data-highlighted]');
+    expect(input).toHaveAttribute('aria-activedescendant', highlighted.id);
 
     const listbox = canvasElement.querySelector('[role="listbox"]');
     expect(listbox).toBeInTheDocument();

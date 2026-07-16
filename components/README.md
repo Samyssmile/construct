@@ -24,7 +24,9 @@ Example:
 - `data-loading="true"` as the button's visual loading hook; native buttons also require `disabled`
 - `aria-invalid="true"` for form errors
 - `aria-current="page"` for current pagination page
+- `aria-current="true"` for the current table row; `aria-selected="true"`/`data-state="selected"` for selected rows in grid contexts
 - `aria-selected="true"` for active tabs and selected datepicker days
+- `aria-sort="ascending|descending"` on the actively sorted column header
 - `aria-disabled="true"` when disabled but not using native `disabled`
 
 ARIA communicates state but does not block events. Prefer native `disabled` for form controls. For links and custom controls, suppress pointer and keyboard activation in application code when `aria-disabled="true"` is set. Add live-region attributes only to content that changes dynamically; static status labels do not need `aria-live`.
@@ -212,6 +214,37 @@ Content card with header, body, and footer:
 </section>
 ```
 
+### Datum Primitives
+
+The reference-line grammar from `components/datum.css` — Construct's orange signature as reusable
+structural vocabulary. All dimensions are component tokens (`--component-datum-*`).
+
+```html
+<div class="ct-eyebrow-set">
+  <p class="ct-eyebrow ct-eyebrow--numbered">Foundations</p>
+</div>
+
+<div class="ct-datum-scale" role="presentation"></div>
+
+<div class="ct-datum-scale ct-datum-scale--progress" role="progressbar"
+  aria-label="Upload" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+  style="--ct-datum-scale-progress: 60%;"></div>
+
+<figure class="ct-datum-frame">…</figure>
+```
+
+- `ct-eyebrow` - Mono kicker with a leading datum tick; `--numbered` adds drawing-set sheet numbers
+  (scope with `ct-eyebrow-set`)
+- `ct-datum-scale` - Measured ruler line; decorative, mark it `role="presentation"`
+- `ct-datum-scale--progress` - The origin segment reports progress via `--ct-datum-scale-progress`;
+  pair with `role="progressbar"` and `aria-value*`
+- `ct-datum-frame` - Corner registration mark for figures, code samples, and media
+- `ct-card--datum`, active leading edges, the tab indicator, sorted table columns, and
+  `ct-chart__datum-line` speak the same grammar
+
+Orange is never text; edges use `brand-accent`, meaning-bearing fills use `brand-accent-strong`.
+One datum per surface — see `docs/guidelines.md`.
+
 ### Table
 
 Basic data table with variants:
@@ -247,6 +280,13 @@ Variants:
 - `ct-table--compact` - Reduced padding
 
 Rows receive a visual hover affordance automatically on hover-capable pointers; no hover modifier exists.
+
+States (the datum grammar):
+- `tr[aria-current="true"]`, `tr[aria-selected="true"]`, or `tr[data-state="selected"]` marks the
+  current/selected row with a muted background and the orange leading edge. Use `aria-current` on
+  native tables; `aria-selected` is only valid on rows inside `role="grid"`/`role="treegrid"`.
+- `th[aria-sort="ascending|descending"]` underlines the actively sorted column header with the datum;
+  sort direction stays shape-encoded via the `ct-table__sort-indicator` arrows.
 
 ### Data Table
 

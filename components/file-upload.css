@@ -106,7 +106,7 @@
 }
 
 .ct-file-upload__error {
-  color: var(--color-state-danger);
+  color: var(--color-state-danger-text);
   font-size: var(--font-size-sm);
 }
 

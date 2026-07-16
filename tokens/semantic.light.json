@@ -7,6 +7,7 @@
       "accent": "{color.orange.500}",
       "accentHover": "{color.orange.400}",
       "accentActive": "{color.orange.300}",
+      "accentStrong": "{color.orange.600}",
       "onAccent": "{color.stone.950}"
     },
     "text": {
@@ -26,7 +27,7 @@
     "border": {
       "subtle": "{color.stone.200}",
       "default": "{color.stone.500}",
-      "strong": "{color.stone.500}",
+      "strong": "{color.stone.600}",
       "muted": "{color.border.subtle}"
     },
     "state": {

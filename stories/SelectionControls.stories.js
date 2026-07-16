@@ -59,26 +59,33 @@ export const Playground = {
 
 export const Checkbox = {
   render: () => `
-  <div class="ct-stack" style="--ct-stack-space: var(--space-3);">
-    <label class="ct-check">
-      <input class="ct-check__input" type="checkbox" checked />
-      <span class="ct-check__label">Remember me</span>
-    </label>
-    <label class="ct-check">
-      <input class="ct-check__input" type="checkbox" />
-      <span class="ct-check__label">Send weekly reports</span>
-    </label>
-    <label class="ct-check">
-      <input class="ct-check__input" type="checkbox" disabled />
-      <span class="ct-check__label">Disabled</span>
-    </label>
-  </div>
+  <fieldset class="ct-field" style="border: 0; padding: 0; margin: 0;">
+    <legend class="ct-field__label" style="padding: 0;">Account preferences</legend>
+    <div class="ct-stack" style="--ct-stack-space: var(--space-3);">
+      <label class="ct-check">
+        <input class="ct-check__input" type="checkbox" checked />
+        <span class="ct-check__label">Remember me</span>
+      </label>
+      <label class="ct-check">
+        <input class="ct-check__input" type="checkbox" />
+        <span class="ct-check__label">Send weekly reports</span>
+      </label>
+      <label class="ct-check">
+        <input class="ct-check__input" type="checkbox" disabled />
+        <span class="ct-check__label">Disabled</span>
+      </label>
+    </div>
+  </fieldset>
 `,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkboxes = canvas.getAllByRole('checkbox');
 
     expect(checkboxes).toHaveLength(3);
+
+    // Related checkboxes are grouped in a fieldset whose legend names the group
+    const group = canvas.getByRole('group', { name: 'Account preferences' });
+    expect(group).toBeInTheDocument();
     expect(checkboxes[0]).toBeChecked();
     expect(checkboxes[1]).not.toBeChecked();
     expect(checkboxes[2]).toBeDisabled();
@@ -100,22 +107,29 @@ export const Checkbox = {
 
 export const Radio = {
   render: () => `
-  <div class="ct-stack" style="--ct-stack-space: var(--space-3);">
-    <label class="ct-radio">
-      <input class="ct-radio__input" type="radio" name="plan" checked />
-      <span class="ct-radio__label">Standard</span>
-    </label>
-    <label class="ct-radio">
-      <input class="ct-radio__input" type="radio" name="plan" />
-      <span class="ct-radio__label">Premium</span>
-    </label>
-  </div>
+  <fieldset class="ct-field" style="border: 0; padding: 0; margin: 0;">
+    <legend class="ct-field__label" style="padding: 0;">Plan</legend>
+    <div class="ct-stack" style="--ct-stack-space: var(--space-3);">
+      <label class="ct-radio">
+        <input class="ct-radio__input" type="radio" name="plan" checked />
+        <span class="ct-radio__label">Standard</span>
+      </label>
+      <label class="ct-radio">
+        <input class="ct-radio__input" type="radio" name="plan" />
+        <span class="ct-radio__label">Premium</span>
+      </label>
+    </div>
+  </fieldset>
 `,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const radios = canvas.getAllByRole('radio');
 
     expect(radios).toHaveLength(2);
+
+    // The radio group gets its accessible name from the fieldset legend
+    const group = canvas.getByRole('group', { name: 'Plan' });
+    expect(group).toBeInTheDocument();
     expect(canvas.getByLabelText('Standard')).toBeChecked();
     expect(canvas.getByLabelText('Premium')).not.toBeChecked();
 

@@ -110,6 +110,15 @@
   --ct-pagination-line-height: var(--line-height-md);
 }
 
+/* Construct 44×44 target policy: --control-height-xs is not coarse-remapped
+   in _shared.css, so the small variant is bumped explicitly. */
+@media (pointer: coarse) {
+  .ct-pagination--sm {
+    --ct-pagination-height: 44px;
+    --ct-pagination-min-width: 44px;
+  }
+}
+
 /* ── Pagination: Responsive ───────────────────────────────── */
 
 @media (max-width: 599px) { /* < sm breakpoint (600px) */
@@ -127,5 +136,14 @@
 @media (prefers-reduced-motion: reduce) {
   .ct-pagination__link {
     transition: none;
+  }
+}
+
+/* ── Pagination: Forced Colors ────────────────────────────── */
+
+@media (forced-colors: active) {
+  .ct-pagination__link[aria-current='page'] {
+    outline: var(--border-medium) solid currentColor;
+    outline-offset: calc(-1 * var(--border-medium));
   }
 }

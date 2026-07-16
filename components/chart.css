@@ -86,6 +86,27 @@
   fill: var(--color-text-secondary);
 }
 
+/* ── Datum reference line ──
+   Construct's signature applied to data: an orange reference line marks
+   a threshold, target, or "today". The dash pattern separates the
+   reference from data series without relying on hue, and the value it
+   encodes must also appear as text — in the label and in the chart's
+   data-table fallback — so the line itself stays supplementary. */
+.ct-chart__datum-line {
+  stroke: var(--color-brand-accent-strong);
+  stroke-width: var(--ct-chart-line-width);
+  stroke-dasharray: 6 4;
+}
+
+.ct-chart__datum-label {
+  fill: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* ── Line & area ── */
 .ct-chart__line {
   fill: none;
@@ -365,5 +386,10 @@
   .ct-chart__grid-line,
   .ct-chart__axis-line {
     stroke: GrayText;
+  }
+
+  /* The datum reference line stays distinct from the dimmed chrome. */
+  .ct-chart__datum-line {
+    stroke: CanvasText;
   }
 }

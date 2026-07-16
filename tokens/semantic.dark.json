@@ -7,6 +7,7 @@
       "accent": "{color.orange.400}",
       "accentHover": "{color.orange.300}",
       "accentActive": "{color.orange.500}",
+      "accentStrong": "{color.orange.400}",
       "onAccent": "{color.stone.950}"
     },
     "text": {
@@ -23,9 +24,9 @@
       "muted": "{color.stone.900}"
     },
     "border": {
-      "subtle": "{color.stone.700}",
+      "subtle": "{color.stone.600}",
       "default": "{color.stone.400}",
-      "strong": "{color.stone.500}"
+      "strong": "{color.stone.300}"
     },
     "state": {
       "info": "{color.ocean.300}",
@@ -50,7 +51,7 @@
       "info": "{color.ocean.200}",
       "success": "{color.green.200}",
       "warning": "{color.amber.200}",
-      "danger": "{color.red.200}"
+      "danger": "{color.red.100}"
     },
     "overlay": {
       "scrim": "rgba(8, 6, 4, 0.72)"

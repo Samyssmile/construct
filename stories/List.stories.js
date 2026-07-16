@@ -531,16 +531,16 @@ export const NavigationList = {
   render: () => `
   <nav aria-label="Main navigation">
     <ul class="ct-list ct-list--nav">
-      <li class="ct-list__item" aria-current="page">
-        <a href="#home" style="display: contents; text-decoration: none; color: inherit;">
+      <li>
+        <a class="ct-list__item" href="#home" aria-current="page">
           <span class="ct-list__item-leading">${homeSvg}</span>
           <span class="ct-list__item-content">
             <span class="ct-list__item-title">Home</span>
           </span>
         </a>
       </li>
-      <li class="ct-list__item">
-        <a href="#messages" style="display: contents; text-decoration: none; color: inherit;">
+      <li>
+        <a class="ct-list__item" href="#messages">
           <span class="ct-list__item-leading">${mailSvg}</span>
           <span class="ct-list__item-content">
             <span class="ct-list__item-title">Messages</span>
@@ -550,16 +550,16 @@ export const NavigationList = {
           </span>
         </a>
       </li>
-      <li class="ct-list__item">
-        <a href="#notifications" style="display: contents; text-decoration: none; color: inherit;">
+      <li>
+        <a class="ct-list__item" href="#notifications">
           <span class="ct-list__item-leading">${bellSvg}</span>
           <span class="ct-list__item-content">
             <span class="ct-list__item-title">Notifications</span>
           </span>
         </a>
       </li>
-      <li class="ct-list__item">
-        <a href="#settings" style="display: contents; text-decoration: none; color: inherit;">
+      <li>
+        <a class="ct-list__item" href="#settings">
           <span class="ct-list__item-leading">${settingsSvg}</span>
           <span class="ct-list__item-content">
             <span class="ct-list__item-title">Settings</span>
@@ -575,16 +575,16 @@ export const NavigationList = {
     const list = nav.querySelector('.ct-list--nav');
     expect(list).not.toBeNull();
 
+    // The link itself is the styled row, so focus outline and hit area cover the full row
     const items = list.querySelectorAll('.ct-list__item');
     expect(items).toHaveLength(4);
-
-    // Current page
-    expect(items[0]).toHaveAttribute('aria-current', 'page');
-
-    // Links
     for (const item of items) {
-      expect(item.querySelector('a')).not.toBeNull();
+      expect(item.tagName).toBe('A');
+      expect(item).toHaveAttribute('href');
     }
+
+    // Current page is marked on the link
+    expect(items[0]).toHaveAttribute('aria-current', 'page');
   },
 };
 

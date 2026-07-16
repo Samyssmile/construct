@@ -55,8 +55,8 @@ export const Playground = {
 export const DragDrop = {
   render: () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-4); max-width: 640px;">
-    <label class="ct-file-upload__dropzone" data-state="dragover" for="story-files">
-      <input class="ct-file-upload__input" id="story-files" type="file" multiple />
+    <label class="ct-file-upload__dropzone" data-state="dragover" aria-invalid="true" for="story-files">
+      <input class="ct-file-upload__input" id="story-files" type="file" multiple aria-invalid="true" aria-describedby="story-files-error" />
       <div class="ct-file-upload__title">Drop files here or browse</div>
       <div class="ct-file-upload__hint">PDF, DOCX up to 10MB</div>
       <span class="ct-button ct-button--secondary ct-button--sm">Browse files</span>
@@ -70,7 +70,7 @@ export const DragDrop = {
         </div>
         <div class="ct-file-upload__actions">
           <span class="ct-badge ct-badge--success">Uploaded</span>
-          <button class="ct-button ct-button--ghost ct-button--sm" type="button">Remove</button>
+          <button class="ct-button ct-button--ghost ct-button--sm" type="button" aria-label="Remove report.pdf">Remove</button>
         </div>
       </li>
       <li class="ct-file-upload__item" data-status="error">
@@ -80,12 +80,12 @@ export const DragDrop = {
         </div>
         <div class="ct-file-upload__actions">
           <span class="ct-badge ct-badge--danger">Failed</span>
-          <button class="ct-button ct-button--ghost ct-button--sm" type="button">Retry</button>
+          <button class="ct-button ct-button--ghost ct-button--sm" type="button" aria-label="Retry upload of large-archive.zip">Retry</button>
         </div>
       </li>
     </ul>
 
-    <div class="ct-file-upload__error">File size exceeds 10MB limit.</div>
+    <div class="ct-file-upload__error" id="story-files-error">File size exceeds 10MB limit.</div>
   </div>
 `,
   play: async ({ canvasElement }) => {
@@ -113,27 +113,28 @@ export const DragDrop = {
     expect(successItem).toBeInTheDocument();
     expect(within(successItem).getByText('report.pdf')).toBeInTheDocument();
     expect(within(successItem).getByText('820 KB')).toBeInTheDocument();
-    const removeBtn = within(successItem).getByRole('button', { name: 'Remove' });
+    const removeBtn = within(successItem).getByRole('button', { name: 'Remove report.pdf' });
     expect(removeBtn).toBeEnabled();
 
     // File list: failed upload
     const errorItem = canvasElement.querySelector('[data-status="error"]');
     expect(errorItem).toBeInTheDocument();
     expect(within(errorItem).getByText('large-archive.zip')).toBeInTheDocument();
-    const retryBtn = within(errorItem).getByRole('button', { name: 'Retry' });
+    const retryBtn = within(errorItem).getByRole('button', { name: 'Retry upload of large-archive.zip' });
     expect(retryBtn).toBeEnabled();
 
     // Error message is visible
     const errorMsg = canvas.getByText('File size exceeds 10MB limit.');
     expect(errorMsg).toBeInTheDocument();
 
-    // Bug check: error message should be linked to the input via aria-describedby
-    // so screen readers announce the error when the input is focused
-    const describedBy = fileInput.getAttribute('aria-describedby');
+    // Invalid state is exposed on both the dropzone and the native input,
+    // and the error message is linked to the input via aria-describedby
+    // so screen readers announce it when the input is focused
+    expect(dropzone).toHaveAttribute('aria-invalid', 'true');
+    expect(fileInput).toHaveAttribute('aria-invalid', 'true');
     const errorEl = canvasElement.querySelector('.ct-file-upload__error');
-    if (describedBy && errorEl.id) {
-      expect(describedBy).toContain(errorEl.id);
-    }
+    expect(errorEl).toHaveAttribute('id', 'story-files-error');
+    expect(fileInput.getAttribute('aria-describedby')).toContain(errorEl.id);
 
     // Action buttons are focusable and clickable
     await userEvent.click(removeBtn);

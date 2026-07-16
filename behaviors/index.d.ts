@@ -36,6 +36,8 @@ export interface DialogControllerOptions {
   trapFocus?: boolean;
   returnFocus?: boolean;
   lockScroll?: boolean;
+  /** Additionally set `inert` on the container's DOM siblings while open. */
+  inertBackground?: boolean;
   onOpen?(detail: OpenCloseDetail<DialogController>): void;
   onClose?(detail: OpenCloseDetail<DialogController>): void;
 }

@@ -15,7 +15,8 @@
   display: flex;
   align-items: center;
   gap: var(--ct-toolbar-gap);
-  height: var(--ct-toolbar-height);
+  /* min-height, not height: the bar must grow with text scaling. */
+  min-height: var(--ct-toolbar-height);
   padding: 0 var(--ct-toolbar-padding-x);
   background: var(--color-bg-elevated);
   border-bottom: var(--border-thin) solid var(--color-border-subtle);
@@ -153,8 +154,15 @@
   --ct-toolbar-actions-gap: var(--space-2);
 }
 
+/* WCAG 2.2 SC 2.5.8: dense padding alone cannot guarantee 24px links. */
+.ct-toolbar--dense .ct-toolbar__nav-link {
+  min-height: 24px;
+}
+
 /* ── Sticky ── */
 
+/* Consumers: set --ct-scroll-offset-top on :root (see foundations.css) so
+   scrolled-to content is not obscured behind the bar (WCAG 2.4.11). */
 .ct-toolbar--sticky {
   position: sticky;
   inset-block-start: 0;
@@ -210,6 +218,14 @@
     gap: var(--space-2);
     z-index: var(--z-dropdown);
     box-shadow: var(--shadow-md);
+  }
+}
+
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ── */
+
+@media (pointer: coarse) {
+  .ct-toolbar__nav-link {
+    min-height: 44px;
   }
 }
 

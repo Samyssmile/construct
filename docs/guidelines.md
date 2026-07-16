@@ -20,6 +20,7 @@ A consistent, accessible, professional design system for modern web applications
 ### Don't
 
 - Don't rely on color alone for status information without text or icons
+- Don't rely on hue alone to distinguish chart series — use direct labels, ordered legends, and the always-present data-table fallback; several series pairs are near-identical in luminance for color-blind users
 - Don't create custom controls without ARIA roles and keyboard support
 - Don't use fixed pixel layouts for content that can grow
 - Don't use low-contrast text or disabled states that are unreadable
@@ -28,7 +29,12 @@ A consistent, accessible, professional design system for modern web applications
 ## Accessibility Rules (Minimum)
 
 - **Visible Focus**: All interactive elements must have visible focus indication
-- **Labels**: Every form input must have a label (explicit `<label>` or `aria-label`)
+- **Labels**: Every form input must have a label. Prefer a visible `<label>`; use `aria-label` only when a visible label is impossible, and never let it differ from visible text (2.5.3 Label in Name — note that `aria-label` overrides an associated `<label>` when both are present)
+- **Headings**: Keep `h1`–`h6` in order without skipping levels, including inside cards, modals, and shells
+- **Landmarks**: Wrap navigation lists in `<nav>` (also inside `<aside>` sidebars), label repeated landmarks (`aria-label`), and provide a skip link to `main` (see `skip-link.css`)
+- **Truncation**: `nowrap` + ellipsis on essential text (titles, values, labels) needs a way to reach the full text — a tooltip, a wrapping variant, or full text elsewhere on the page
+- **Status colors**: Semantic color (toast, banner, alert, badge) must be paired with an icon or explicit wording; the tinted border alone is decorative and intentionally not contrast-gated
+- **Sticky chrome**: Products using `--sticky`/`--fixed` navbar, toolbar, or banner variants must set `--ct-scroll-offset-top`/`--ct-scroll-offset-bottom` on `:root` so focused elements are never scrolled underneath (2.4.11); the app shells set their own scroll padding automatically
 - **Keyboard Navigation**: Use the tested headless controller for supported composite widgets; framework adapters must implement the documented pattern for others such as Datepicker and Tree
 - **ARIA**: Use ARIA attributes only where semantic HTML isn't sufficient
 - **Links**: Links must be distinguishable without color alone (e.g., underline)
@@ -86,9 +92,10 @@ framework adapter with equivalent tested semantics; CSS state selectors alone do
 - **Backdrop**: Click closes drawer
 
 ### Tooltip
-- **Open**: On hover and focus
+- **Open**: On hover and keyboard focus (the trigger must be focusable)
 - **Close**: On blur and Esc
 - **Role**: `role="tooltip"` with `aria-describedby`
+- **Implementation**: The CSS `:hover`/`:focus-within` styles alone do not satisfy WCAG 1.4.13 — Esc dismissal and hover persistence require `createTooltipController` or an equivalent adapter
 
 ### Tree (`ct-tree`)
 
@@ -163,6 +170,27 @@ Use these attributes for state management:
 
 Never use `aria-disabled="true"` alone to block a native button: it announces state but does not suppress
 activation. Use the native `disabled` attribute whenever the HTML element supports it.
+
+## The Datum
+
+Construct's signature is one orange reference line — "the datum" — that marks what is focused, active,
+current, or the reference value. The grammar lives in `components/datum.css` (eyebrow, scale, frame,
+metrics), in active leading edges (list, sidebar, card, table rows), in the tab indicator and sorted
+column, and in the chart reference line. Its dimensions are component tokens (`--component-datum-*`).
+
+Rules that keep the signature strong and accessible:
+
+- **One datum per surface.** Orange marks exactly one thing per view region — the current, active, or
+  reference element. Never let two orange edges compete; if everything is highlighted, nothing is.
+- **Orange is never text.** Labels and values stay on `--color-text-*` neutrals; orange is carried by
+  non-text ticks, edges, rules, and lines.
+- **Edges are `--color-brand-accent`; meaning-bearing fills are `--color-brand-accent-strong`**
+  (validated ≥3:1 against muted/canvas/surface tracks per theme). A decorative rule may use plain
+  accent; anything that encodes a value (progress, chart reference) uses strong.
+- **The datum enters, it never pops.** State changes draw the edge in from its origin
+  (`--duration-fast` / `--easing-standard`); `prefers-reduced-motion` disables this globally.
+- **Forced colors re-encode edges as borders.** Inset box-shadow edges are dropped by forced colors —
+  every new edge needs a `SelectedItem` border fallback.
 
 ## Breakpoints & Media Queries
 

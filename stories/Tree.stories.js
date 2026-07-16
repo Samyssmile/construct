@@ -26,8 +26,10 @@ function renderNode(node, posinset, setsize) {
     ? `<span class="ct-tree__toggle" aria-hidden="true">${chevron}</span>`
     : '<span class="ct-tree__spacer" aria-hidden="true"></span>';
   const icon = node.icon || '';
+  /* Badge counts stay visible to assistive tech so they join the
+     treeitem's accessible name (e.g. "Acme · Whitelabel 2 sub"). */
   const badge = node.badge
-    ? `<span class="ct-badge ct-badge--neutral ct-badge--sm" aria-hidden="true">${node.badge}</span>`
+    ? `<span class="ct-badge ct-badge--neutral ct-badge--sm">${node.badge}</span>`
     : '';
   const actions = node.actions
     ? `<span class="ct-tree__actions">${node.actions}</span>`
@@ -246,6 +248,14 @@ export const WithBadgesAndIcons = {
   play: async ({ canvasElement }) => {
     const badges = canvasElement.querySelectorAll('.ct-badge');
     expect(badges.length).toBeGreaterThan(0);
+
+    // Badge counts contribute to the treeitem's accessible name
+    for (const badge of badges) {
+      expect(badge).not.toHaveAttribute('aria-hidden');
+    }
+    const badgedNode = badges[0].closest('[role="treeitem"]');
+    expect(badgedNode.textContent).toContain('2 sub');
+
     const icons = canvasElement.querySelectorAll('.ct-tree__content > svg');
     expect(icons.length).toBeGreaterThan(0);
   },

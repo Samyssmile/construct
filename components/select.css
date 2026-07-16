@@ -28,3 +28,11 @@
   appearance: none;
   padding-inline-end: calc(var(--space-4) + 0.75em + var(--space-4));
 }
+
+@media (forced-colors: active) {
+  /* The native arrow is removed via appearance: none, so the mask-drawn
+     chevron must be repainted with system ink. */
+  .ct-select-wrap::after {
+    background-color: ButtonText;
+  }
+}

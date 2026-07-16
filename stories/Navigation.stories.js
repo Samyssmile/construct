@@ -112,7 +112,7 @@ export const Playground = {
     }).join('\n    ');
     return `
     <div class="ct-tabs" style="max-width: 560px;">
-      <div class="ct-tabs__list" role="tablist">
+      <div class="ct-tabs__list" role="tablist" aria-label="Project sections">
         ${tabItems}
       </div>
       ${panels}
@@ -131,7 +131,7 @@ export const Playground = {
 export const Tabs = {
   render: () => `
   <div class="ct-tabs" style="max-width: 560px;">
-    <div class="ct-tabs__list" role="tablist">
+    <div class="ct-tabs__list" role="tablist" aria-label="Project sections">
       <button class="ct-tabs__trigger" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" tabindex="0">Overview</button>
       <button class="ct-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">Settings</button>
       <button class="ct-tabs__trigger" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">Members</button>

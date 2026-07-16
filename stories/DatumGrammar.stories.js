@@ -6,7 +6,7 @@ export default {
     docs: {
       description: {
         component:
-          'The "datum" reference-line grammar — the orange signature promoted from focus rings and the intro page into reusable structural vocabulary: eyebrow kickers, the measured datum scale, the card registration mark and active leading edge, and the spec datasheet. Orange-as-text uses brand-accent-active (≥4.5:1); orange-as-edge uses brand-accent.',
+          'The "datum" reference-line grammar — the orange signature promoted from focus rings and the intro page into reusable structural vocabulary: eyebrow kickers (plain and numbered), the measured datum scale (decorative and progress-bearing), the registration mark (cards and generic frames), the active leading edge, and the spec datasheet. All dimensions are component tokens (`--component-datum-*`). Orange is never text; orange-as-edge uses brand-accent, meaning-bearing fills use brand-accent-strong.',
       },
     },
   },
@@ -18,6 +18,142 @@ export const Eyebrow = {
   play: async ({ canvasElement }) => {
     const eyebrow = canvasElement.querySelector('.ct-eyebrow');
     expect(eyebrow).toBeInTheDocument();
+  },
+};
+
+export const NumberedEyebrows = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`--numbered` prefixes the eyebrow with an auto-incremented sheet number, like a drawing set. Scope numbering with a `.ct-eyebrow-set` ancestor.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-eyebrow-set" style="display: grid; gap: var(--space-7); max-width: 640px;">
+    <div>
+      <p class="ct-eyebrow ct-eyebrow--numbered" style="margin-bottom: var(--space-3);">Foundations</p>
+      <h3 style="margin: 0;">Design Tokens</h3>
+    </div>
+    <div>
+      <p class="ct-eyebrow ct-eyebrow--numbered" style="margin-bottom: var(--space-3);">Components</p>
+      <h3 style="margin: 0;">Portable CSS</h3>
+    </div>
+    <div>
+      <p class="ct-eyebrow ct-eyebrow--numbered" style="margin-bottom: var(--space-3);">Behaviors</p>
+      <h3 style="margin: 0;">Headless Controllers</h3>
+    </div>
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const numbered = canvasElement.querySelectorAll('.ct-eyebrow--numbered');
+    expect(numbered).toHaveLength(3);
+    expect(getComputedStyle(numbered[2], '::after').content).toContain('counter');
+  },
+};
+
+export const ScaleProgress = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`--progress` makes the origin segment meaning-bearing: its length reports progress via `--ct-datum-scale-progress`. The element carries `role="progressbar"` with matching `aria-value*`; the fill uses brand-accent-strong (≥3:1 per theme).',
+      },
+    },
+  },
+  render: () => `
+  <div style="display: grid; gap: var(--space-8); max-width: 480px;">
+    <div>
+      <p class="ct-eyebrow" style="margin-bottom: var(--space-4);">Einrichtung · Schritt 3 von 5</p>
+      <div class="ct-datum-scale ct-datum-scale--progress" role="progressbar"
+        aria-label="Einrichtung: Schritt 3 von 5"
+        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+        style="--ct-datum-scale-progress: 60%;"></div>
+    </div>
+    <div>
+      <p class="ct-eyebrow" style="margin-bottom: var(--space-4);">Upload · 82 %</p>
+      <div class="ct-datum-scale ct-datum-scale--progress" role="progressbar"
+        aria-label="Upload-Fortschritt"
+        aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"
+        style="--ct-datum-scale-progress: 82%;"></div>
+    </div>
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const bars = canvasElement.querySelectorAll('.ct-datum-scale--progress');
+    expect(bars).toHaveLength(2);
+    for (const bar of bars) {
+      expect(bar).toHaveAttribute('role', 'progressbar');
+      expect(bar).toHaveAttribute('aria-valuenow');
+    }
+  },
+};
+
+export const DatumFrame = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`ct-datum-frame` generalises the corner registration mark beyond cards — an opt-in "exhibit" treatment for figures, code samples, and media.',
+      },
+    },
+  },
+  render: () => `
+  <figure class="ct-datum-frame" style="max-width: 440px; margin: 0; padding: var(--space-6); background: var(--color-bg-surface); border-radius: var(--radius-lg);">
+    <pre style="margin: 0; overflow-x: auto;"><code style="font-family: var(--font-family-mono); font-size: var(--font-size-sm);">--component-datum-edge-width: 3px;
+--component-datum-origin-length: 48px;</code></pre>
+    <figcaption class="ct-muted" style="margin-top: var(--space-4); font-size: var(--font-size-sm);">Fig. 01 — Die Kante ist tokenisiert.</figcaption>
+  </figure>`,
+  play: async ({ canvasElement }) => {
+    expect(canvasElement.querySelector('.ct-datum-frame')).toBeInTheDocument();
+  },
+};
+
+export const TableDatum = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tables speak the grammar: `aria-current` (or `aria-selected`/`data-state="selected"` in grid contexts) marks the current row with the leading edge, and the actively sorted column carries the datum underline via `aria-sort`.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-table-wrap" style="max-width: 640px;">
+    <table class="ct-table" aria-label="Dienste">
+      <thead>
+        <tr>
+          <th scope="col">Dienst</th>
+          <th scope="col" aria-sort="descending">
+            <button type="button" class="ct-table__sort">Requests <span class="ct-table__sort-indicator" aria-hidden="true"></span></button>
+          </th>
+          <th scope="col" class="ct-table__cell--numeric">P95 (ms)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gateway</td>
+          <td>18.240</td>
+          <td class="ct-table__cell--numeric">122</td>
+        </tr>
+        <tr aria-current="true">
+          <td>Auth</td>
+          <td>12.480</td>
+          <td class="ct-table__cell--numeric">98</td>
+        </tr>
+        <tr>
+          <td>Billing</td>
+          <td>4.310</td>
+          <td class="ct-table__cell--numeric">210</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>`,
+  play: async ({ canvasElement }) => {
+    const current = canvasElement.querySelector('tr[aria-current="true"]');
+    expect(current).toBeInTheDocument();
+    expect(getComputedStyle(current.firstElementChild).boxShadow).toContain('inset');
+    const sorted = canvasElement.querySelector('th[aria-sort="descending"]');
+    expect(getComputedStyle(sorted).boxShadow).toContain('inset');
   },
 };
 

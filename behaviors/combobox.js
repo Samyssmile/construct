@@ -14,8 +14,10 @@ import {
   ensureId,
   focusElement,
   getTextLabel,
+  isComposingEvent,
   isDisabled,
   nextEnabledIndex,
+  warnAccessibility,
 } from './internal/dom.js';
 import { createPopupLayer } from './internal/popup-layer.js';
 
@@ -94,6 +96,13 @@ export function createComboboxController(options) {
 
   const status = options.status == null ? null : assertElement(options.status, 'options.status');
   if (status) assertSameDocument([status], input.ownerDocument, 'options.status');
+  if (!status) {
+    warnAccessibility(
+      'Combobox: no options.status element was provided, so filter results are never ' +
+        'announced to screen readers (WCAG 4.1.3). Pass a visually hidden live-region ' +
+        'element via options.status.',
+    );
+  }
   const originalStatusText = status?.textContent;
   const originalInputValue = input.value;
   const filter = options.filter === true
@@ -198,6 +207,12 @@ export function createComboboxController(options) {
     return result === false ? availableOptions() : result;
   }
 
+  /* Which option receives the visual highlight when the listbox opens:
+     'default' = selected option or first available, 'last' = last available
+     (ArrowUp open per APG), 'none' = open without moving visual focus
+     (Alt+ArrowDown per APG). */
+  let pendingOpenFocus = 'default';
+
   const layer = createPopupLayer({
     additionalControls: toggleButton ? [toggleButton] : [],
     attributes,
@@ -216,10 +231,16 @@ export function createComboboxController(options) {
     trigger: input,
     onOpen(detail, checkpoint) {
       const available = applyFilterRaw();
-      const selected = selectedIndex >= 0 && isAvailable(optionElements[selectedIndex])
-        ? selectedIndex
-        : optionElements.indexOf(available[0]);
-      if (selected >= 0) setActive(selected);
+      let initial = -1;
+      if (pendingOpenFocus === 'last') {
+        initial = optionElements.indexOf(available.at(-1));
+      } else if (pendingOpenFocus === 'default') {
+        initial = selectedIndex >= 0 && isAvailable(optionElements[selectedIndex])
+          ? selectedIndex
+          : optionElements.indexOf(available[0]);
+      }
+      pendingOpenFocus = 'default';
+      if (initial >= 0) setActive(initial);
       focusElement(input);
       checkpoint();
       options.onOpen?.(detail);
@@ -330,9 +351,27 @@ export function createComboboxController(options) {
 
   function onInputKeyDown(event) {
     if (!isInteractive()) return;
+    /* IME composition: Enter commits composed text and arrows navigate
+       candidates — the widget must not hijack them. */
+    if (isComposingEvent(event)) return;
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
+      /* APG: Alt+ArrowDown opens without moving visual focus,
+         Alt+ArrowUp closes and keeps the current value. */
+      if (event.altKey) {
+        if (event.key === 'ArrowDown') {
+          if (!layer.isOpen) {
+            pendingOpenFocus = 'none';
+            open('keyboard');
+          }
+        } else if (layer.isOpen) {
+          close('keyboard', { restoreFocus: false });
+        }
+        return;
+      }
       if (!layer.isOpen) {
+        /* APG: ArrowUp opens with visual focus on the last option. */
+        pendingOpenFocus = event.key === 'ArrowUp' ? 'last' : 'default';
         open('keyboard');
         return;
       }

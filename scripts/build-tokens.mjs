@@ -13,6 +13,7 @@ const sourcePaths = {
   semanticLight: path.join(tokensDir, 'semantic.light.json'),
   semanticDark: path.join(tokensDir, 'semantic.dark.json'),
   semanticHighContrast: path.join(tokensDir, 'semantic.high-contrast.json'),
+  semanticHighContrastDark: path.join(tokensDir, 'semantic.high-contrast-dark.json'),
   components: path.join(tokensDir, 'components.json'),
 };
 
@@ -23,7 +24,7 @@ const schemaPaths = {
   theme: path.join(schemasDir, 'theme.schema.json'),
 };
 
-const builtInThemeNames = new Set(['light', 'dark', 'high-contrast']);
+const builtInThemeNames = new Set(['light', 'dark', 'high-contrast', 'high-contrast-dark']);
 
 const defaultContrastPairs = [
   ...['primary', 'secondary', 'muted'].flatMap((text) =>
@@ -57,6 +58,40 @@ const defaultContrastPairs = [
     foreground: `semantic.color.stateText.${state}`,
     background: `semantic.color.stateSurface.${state}`,
     minRatio: 4.5,
+  })),
+  ...['info', 'success', 'warning', 'danger'].flatMap((state) =>
+    ['canvas', 'surface', 'elevated'].map((background) => ({
+      name: `${state} text on ${background}`,
+      foreground: `semantic.color.stateText.${state}`,
+      background: `semantic.color.background.${background}`,
+      minRatio: 4.5,
+    }))
+  ),
+  ...['primary', 'secondary'].flatMap((text) =>
+    ['info', 'success', 'warning', 'danger'].map((state) => ({
+      name: `${text} text on ${state} surface`,
+      foreground: `semantic.color.text.${text}`,
+      background: `semantic.color.stateSurface.${state}`,
+      minRatio: 4.5,
+    }))
+  ),
+  ...['info', 'success', 'warning', 'danger'].map((state) => ({
+    name: `${state} fill on muted track`,
+    foreground: `semantic.color.state.${state}`,
+    background: 'semantic.color.background.muted',
+    minRatio: 3,
+  })),
+  ...['canvas', 'surface', 'muted'].map((background) => ({
+    name: `strong accent on ${background}`,
+    foreground: 'semantic.color.brand.accentStrong',
+    background: `semantic.color.background.${background}`,
+    minRatio: 3,
+  })),
+  ...['canvas', 'surface', 'elevated'].map((background) => ({
+    name: `strong border on ${background}`,
+    foreground: 'semantic.color.border.strong',
+    background: `semantic.color.background.${background}`,
+    minRatio: 3,
   })),
   ...['info', 'success', 'warning', 'danger'].map((state) => ({
     name: `text on solid ${state}`,
@@ -95,6 +130,12 @@ const defaultContrastPairs = [
     foreground: 'components.control.border',
     background: 'components.control.background',
     minRatio: 3,
+  },
+  {
+    name: 'placeholder on control background',
+    foreground: 'components.control.placeholder',
+    background: 'components.control.background',
+    minRatio: 4.5,
   },
 ];
 
@@ -533,9 +574,10 @@ const componentVarName = (tokenPath) =>
 const inferPrimitiveUnit = (tokenPath) => {
   const [group, subgroup] = tokenPath;
   if (group === 'font') {
-    if (subgroup === 'size' || subgroup === 'lineHeight' || subgroup === 'letterSpacing') {
-      return 'px';
-    }
+    /* Type scale in rem so user browser font-size preferences are honored
+       (1.4.4); source values stay authored in px and are divided by 16. */
+    if (subgroup === 'size' || subgroup === 'lineHeight') return 'rem';
+    if (subgroup === 'letterSpacing') return 'px';
     return '';
   }
   if (['space', 'radius', 'border', 'size', 'layout', 'breakpoint'].includes(group)) {
@@ -548,6 +590,7 @@ const inferPrimitiveUnit = (tokenPath) => {
 const formatPrimitiveValue = (tokenPath, value) => {
   if (typeof value === 'number') {
     const unit = inferPrimitiveUnit(tokenPath);
+    if (unit === 'rem') return `${Number((value / 16).toFixed(4))}rem`;
     return unit ? `${value}${unit}` : String(value);
   }
   if (tokenPath[0] === 'font' && tokenPath[1] === 'family') {
@@ -1035,6 +1078,7 @@ const buildTokens = (options) => {
   const semanticLightRaw = readJson(sourcePaths.semanticLight);
   const semanticDarkOverride = readJson(sourcePaths.semanticDark);
   const semanticHighContrastOverride = readJson(sourcePaths.semanticHighContrast);
+  const semanticHighContrastDarkOverride = readJson(sourcePaths.semanticHighContrastDark);
   const componentsRaw = readJson(sourcePaths.components);
 
   const schemas = Object.fromEntries(
@@ -1055,11 +1099,17 @@ const buildTokens = (options) => {
     semanticLightRaw,
     'tokens/semantic.high-contrast.json'
   );
+  assertKnownOverride(
+    semanticHighContrastDarkOverride,
+    semanticLightRaw,
+    'tokens/semantic.high-contrast-dark.json'
+  );
 
   const semanticBuiltInRaw = {
     light: semanticLightRaw,
     dark: mergeDeep(semanticLightRaw, semanticDarkOverride),
     'high-contrast': mergeDeep(semanticLightRaw, semanticHighContrastOverride),
+    'high-contrast-dark': mergeDeep(semanticLightRaw, semanticHighContrastDarkOverride),
   };
 
   for (const [name, semanticRaw] of Object.entries(semanticBuiltInRaw)) {
@@ -1111,6 +1161,17 @@ const buildTokens = (options) => {
       semanticRaw: semanticBuiltInRaw['high-contrast'],
       componentRaw: componentsRaw,
       ...buildThemeLayers('high-contrast', semanticBuiltInRaw['high-contrast'], componentsRaw),
+    },
+    'high-contrast-dark': {
+      name: 'high-contrast-dark',
+      selector: '[data-theme="high-contrast-dark"]',
+      semanticRaw: semanticBuiltInRaw['high-contrast-dark'],
+      componentRaw: componentsRaw,
+      ...buildThemeLayers(
+        'high-contrast-dark',
+        semanticBuiltInRaw['high-contrast-dark'],
+        componentsRaw
+      ),
     },
   };
 
@@ -1178,6 +1239,10 @@ const buildTokens = (options) => {
   const highContrastSemanticEntries =
     builtInThemes['high-contrast'].semanticLayer.cssEntries;
   const highContrastComponentEntries = builtInThemes['high-contrast'].componentLayer.cssEntries;
+  const highContrastDarkSemanticEntries =
+    builtInThemes['high-contrast-dark'].semanticLayer.cssEntries;
+  const highContrastDarkComponentEntries =
+    builtInThemes['high-contrast-dark'].componentLayer.cssEntries;
 
   const primitiveEntries = primitiveLayer.cssEntries;
   const semanticEntries = lightTheme.semanticLayer.cssEntries;
@@ -1287,6 +1352,12 @@ const buildTokens = (options) => {
       highContrastSemanticEntries,
       highContrastComponentEntries
     ),
+    ...themeBlock(
+      builtInThemes['high-contrast-dark'].selector,
+      'high-contrast-dark',
+      highContrastDarkSemanticEntries,
+      highContrastDarkComponentEntries
+    ),
     ...customThemeBlocks,
     ...mediaBlock(
       '(prefers-color-scheme: dark)',
@@ -1302,12 +1373,23 @@ const buildTokens = (options) => {
       highContrastSemanticEntries,
       highContrastComponentEntries
     ),
+    /* Emitted after the light high-contrast block so it wins the cascade
+       when both prefers-contrast: more and a dark color scheme match —
+       dark-mode users asking for more contrast keep a dark UI. */
+    ...mediaBlock(
+      '(prefers-contrast: more) and (prefers-color-scheme: dark)',
+      ':root:not([data-theme])',
+      'high-contrast-dark (system)',
+      highContrastDarkSemanticEntries,
+      highContrastDarkComponentEntries
+    ),
   ];
 
   const semanticThemes = {};
   const componentThemes = {};
   for (const theme of allThemes) {
-    const exportName = theme.name === 'high-contrast' ? 'highContrast' : theme.name;
+    const exportNames = { 'high-contrast': 'highContrast', 'high-contrast-dark': 'highContrastDark' };
+    const exportName = exportNames[theme.name] ?? theme.name;
     semanticThemes[exportName] = theme.semanticLayer.resolved;
     componentThemes[exportName] = theme.componentLayer.resolved;
   }

@@ -32,8 +32,9 @@ export const Playground = {
           <h3>${title}</h3>
         </div>
       </div>
-      <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
+      <div class="ct-data-table__table" tabindex="0" role="region" aria-label="${title} table">
         <table class="ct-table${stripeClass}${compactClass}">
+          <caption class="ct-visually-hidden">${title}</caption>
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -55,6 +56,14 @@ export const Playground = {
     expect(table).toBeInTheDocument();
     const headers = canvasElement.querySelectorAll('th[scope="col"]');
     expect(headers.length).toBeGreaterThan(0);
+
+    // Table has a (visually hidden) caption naming its content
+    const caption = table.querySelector('caption');
+    expect(caption).toHaveTextContent('Projects');
+
+    // Scroll region label is content-specific
+    const region = canvasElement.querySelector('[role="region"]');
+    expect(region).toHaveAttribute('aria-label', 'Projects table');
   },
 };
 
@@ -96,8 +105,9 @@ export const DataTable = {
         <button class="ct-button ct-button--secondary ct-button--sm">Filters</button>
       </div>
     </div>
-    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
+    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Projects table">
       <table class="ct-table ct-table--striped ct-table--compact">
+        <caption class="ct-visually-hidden">Projects</caption>
         <thead>
           <tr>
             <th scope="col" class="ct-table__cell--checkbox">
@@ -196,6 +206,10 @@ export const DataTable = {
     const headers = canvasElement.querySelectorAll('th[scope="col"]');
     expect(headers.length).toBeGreaterThanOrEqual(7);
 
+    // Table caption and content-specific scroll-region label
+    expect(canvasElement.querySelector('.ct-table caption')).toHaveTextContent('Projects');
+    expect(canvasElement.querySelector('[role="region"]')).toHaveAttribute('aria-label', 'Projects table');
+
     // "Select all" checkbox has accessible label
     const selectAll = canvas.getByRole('checkbox', { name: 'Select all rows' });
     expect(selectAll).toBeInTheDocument();
@@ -268,8 +282,9 @@ export const DataTable = {
 export const DataTableSimple = {
   render: () => `
   <div class="ct-data-table" style="max-width: 900px;">
-    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Data table">
+    <div class="ct-data-table__table" tabindex="0" role="region" aria-label="Sortable projects table">
       <table class="ct-table ct-table--striped ct-table--compact">
+        <caption class="ct-visually-hidden">Sortable projects</caption>
         <thead>
           <tr>
             <th scope="col" class="ct-table__cell--checkbox">

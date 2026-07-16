@@ -3,7 +3,7 @@
   "$id": "https://neuravision.dev/construct/schemas/components.schema.json",
   "title": "Construct component token contract",
   "type": "object",
-  "required": ["button", "control", "card", "status", "metric", "meter"],
+  "required": ["button", "control", "card", "status", "metric", "meter", "datum"],
   "additionalProperties": false,
   "properties": {
     "button": {
@@ -86,6 +86,21 @@
         "height": { "$ref": "#/$defs/token" },
         "radius": { "$ref": "#/$defs/token" },
         "track": { "$ref": "#/$defs/token" }
+      }
+    },
+    "datum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edgeWidth", "tickWidth", "tickHeight", "originLength", "markSize", "scaleHeight", "scaleMinorStep", "scaleMajorStep"],
+      "properties": {
+        "edgeWidth": { "$ref": "#/$defs/token" },
+        "tickWidth": { "$ref": "#/$defs/token" },
+        "tickHeight": { "$ref": "#/$defs/token" },
+        "originLength": { "$ref": "#/$defs/token" },
+        "markSize": { "$ref": "#/$defs/token" },
+        "scaleHeight": { "$ref": "#/$defs/token" },
+        "scaleMinorStep": { "$ref": "#/$defs/token" },
+        "scaleMajorStep": { "$ref": "#/$defs/token" }
       }
     }
   },

@@ -1,0 +1,106 @@
+{
+  "$schema": "../schemas/theme.schema.json",
+  "name": "walnut",
+  "extends": "light",
+  "semantic": {
+    "color": {
+      "brand": {
+        "primary": "#6D4E33",
+        "primaryHover": "#5C4128",
+        "primaryActive": "#4C351F",
+        "accent": "#B0835E",
+        "accentHover": "#C2996F",
+        "accentActive": "#CBA57E",
+        "accentStrong": "#9F5210",
+        "onAccent": "#2A2014"
+      },
+      "text": {
+        "primary": "#2A2014",
+        "secondary": "#55432C",
+        "muted": "#6B573C",
+        "inverse": "#FFFFFF",
+        "onPrimary": "#FFFFFF"
+      },
+      "background": {
+        "canvas": "#FAF6ED",
+        "surface": "#F2EBDC",
+        "elevated": "#FFFFFF",
+        "muted": "#E9E0CC",
+        "subtle": "#F2EBDC"
+      },
+      "border": {
+        "subtle": "#E2D8C2",
+        "default": "#8A7256",
+        "strong": "#6D4E33",
+        "muted": "#E2D8C2"
+      },
+      "overlay": {
+        "scrim": "rgba(42, 32, 20, 0.55)"
+      },
+      "focus": {
+        "ring": "#9F5210"
+      }
+    },
+    "radius": {
+      "control": "7px",
+      "card": "10px",
+      "modal": "12px",
+      "pill": "999px"
+    },
+    "shadow": {
+      "card": "0 1px 2px rgba(58, 45, 26, 0.05), 0 2px 6px rgba(58, 45, 26, 0.06)",
+      "dropdown": "0 2px 6px rgba(58, 45, 26, 0.08), 0 8px 20px rgba(58, 45, 26, 0.12)",
+      "modal": "0 6px 16px rgba(58, 45, 26, 0.1), 0 24px 48px rgba(58, 45, 26, 0.18)"
+    }
+  },
+  "contrast": [
+    {
+      "name": "AAA: body text on canvas",
+      "foreground": "semantic.color.text.primary",
+      "background": "semantic.color.background.canvas",
+      "minRatio": 7
+    },
+    {
+      "name": "AAA: body text on surface",
+      "foreground": "semantic.color.text.primary",
+      "background": "semantic.color.background.surface",
+      "minRatio": 7
+    },
+    {
+      "name": "AAA: body text on elevated",
+      "foreground": "semantic.color.text.primary",
+      "background": "semantic.color.background.elevated",
+      "minRatio": 7
+    },
+    {
+      "name": "AAA: secondary text on canvas",
+      "foreground": "semantic.color.text.secondary",
+      "background": "semantic.color.background.canvas",
+      "minRatio": 7
+    },
+    {
+      "name": "brand primary used as text on canvas",
+      "foreground": "semantic.color.brand.primary",
+      "background": "semantic.color.background.canvas",
+      "minRatio": 4.5
+    },
+    {
+      "name": "brand primary used as text on surface",
+      "foreground": "semantic.color.brand.primary",
+      "background": "semantic.color.background.surface",
+      "minRatio": 4.5
+    },
+    {
+      "name": "brand primary used as text on elevated",
+      "foreground": "semantic.color.brand.primary",
+      "background": "semantic.color.background.elevated",
+      "minRatio": 4.5
+    },
+    {
+      "name": "accent used as boundary on canvas",
+      "foreground": "semantic.color.brand.accent",
+      "background": "semantic.color.background.canvas",
+      "minRatio": 3
+    }
+  ]
+}

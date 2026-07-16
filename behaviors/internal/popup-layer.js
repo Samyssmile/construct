@@ -4,6 +4,7 @@ import {
   ensureId,
   eventTargetsOutside,
   focusElement,
+  isComposingEvent,
   isElement,
 } from './dom.js';
 import { consumeTopOverlayEvent, pushOverlay } from './overlay.js';
@@ -134,6 +135,7 @@ export function createPopupLayer({
       !open ||
       !closeOnEscape ||
       event.key !== 'Escape' ||
+      isComposingEvent(event) ||
       !consumeTopOverlayEvent(event, document, token)
     ) return;
     event.preventDefault();

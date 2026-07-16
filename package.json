@@ -1,6 +1,6 @@
 {
   "name": "@neuravision/construct",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Construct Design System - Accessible, token-based design system for modern web applications",
   "license": "MIT",
   "repository": {
@@ -33,8 +33,9 @@
     "audit": "npm audit --audit-level=high",
     "tokens:validate": "node scripts/validate-tokens.mjs",
     "tokens:test": "node scripts/test-token-pipeline.mjs",
+    "themes:validate": "node scripts/construct-theme.mjs --theme themes/walnut.theme.json --validate-only",
     "check": "npm run check:tokens && npm run check:standalone && npm run check:css && npm run check:exports && npm run check:version",
-    "check:tokens": "node scripts/build-tokens.mjs --check && npm run tokens:validate && npm run tokens:test",
+    "check:tokens": "node scripts/build-tokens.mjs --check && npm run tokens:validate && npm run tokens:test && npm run themes:validate",
     "check:standalone": "node scripts/build-standalone-components.mjs --check",
     "check:css": "node scripts/validate-css-vars.mjs",
     "check:exports": "node scripts/validate-package-exports.mjs",
@@ -78,7 +79,8 @@
       "default": "./tokens/tokens.js"
     },
     "./schemas/*.json": "./schemas/*.json",
-    "./schemas/examples/*.json": "./schemas/examples/*.json"
+    "./schemas/examples/*.json": "./schemas/examples/*.json",
+    "./themes/*.json": "./themes/*.json"
   },
   "files": [
     "foundations.css",
@@ -89,6 +91,8 @@
     "tokens/*.ts",
     "tokens/README.md",
     "schemas/**/*.json",
+    "themes/*.json",
+    "themes/README.md",
     "components/*.css",
     "components/README.md",
     "standalone/*.css",

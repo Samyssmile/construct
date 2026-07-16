@@ -54,6 +54,9 @@
 .ct-switch__input:disabled {
   background: var(--color-border-subtle);
   cursor: not-allowed;
+  /* disabled is encoded via the muted track color; opting out of the global
+     :disabled opacity avoids double dimming (same pattern as the slider) */
+  opacity: 1;
 }
 
 .ct-switch__input:focus-visible {
@@ -61,12 +64,19 @@
   outline-offset: 2px;
 }
 
+/* WCAG 2.2 SC 2.5.8: the small track is only 20px tall, so every pointer
+   context gets at least a 24px-tall hit area. */
+.ct-switch__input::before {
+  content: '';
+  position: absolute;
+  inset-block: calc((var(--ct-switch-height) - 24px) / 2);
+  inset-inline: 0;
+}
+
 /* Construct 44×44 target policy: meets the size in WCAG 2.2 SC 2.5.5
    (AAA) and exceeds the AA minimum in SC 2.5.8. */
 @media (pointer: coarse) {
   .ct-switch__input::before {
-    content: '';
-    position: absolute;
     inset-block: calc((var(--ct-switch-height) - 44px) / 2);
     inset-inline: calc((var(--ct-switch-width) - 44px) / 2);
   }
@@ -80,4 +90,54 @@
 .ct-switch--lg .ct-switch__input {
   --ct-switch-width: 52px;
   --ct-switch-height: 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-switch__input,
+  .ct-switch__input::after {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  /* Track and thumb are shadow/background-drawn; redraw both with
+     system-palette borders so on/off state survives without shadows. */
+  .ct-switch__input {
+    border: 1px solid ButtonText;
+    background: Canvas;
+  }
+
+  .ct-switch__input::after {
+    border: 1px solid ButtonText;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  /* The checked fill must survive forced backgrounds; the extra hover
+     selector matches the specificity of the base hover rule. */
+  .ct-switch__input:checked,
+  .ct-switch__input:checked:not(:disabled):hover {
+    background: SelectedItem;
+    border-color: ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .ct-switch__input:checked::after {
+    background: SelectedItemText;
+    border-color: SelectedItemText;
+  }
+
+  .ct-switch__input:disabled,
+  .ct-switch__input:disabled::after {
+    border-color: GrayText;
+  }
+
+  .ct-switch__input:checked:disabled {
+    background: GrayText;
+  }
+
+  .ct-switch__input:checked:disabled::after {
+    background: Canvas;
+    border-color: GrayText;
+  }
 }

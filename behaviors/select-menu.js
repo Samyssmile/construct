@@ -204,14 +204,18 @@ export function createSelectMenuController(options) {
 
   function onTriggerKeyDown(event) {
     if (isDisabled(trigger)) {
-      if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', ' '].includes(event.key)) {
+      if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'PageUp', 'PageDown', 'Enter', ' '].includes(event.key)) {
         event.preventDefault();
       }
       return;
     }
 
     if (event.key === 'Tab' && layer.isOpen) {
-      close('tab', { restoreFocus: false });
+      /* APG select-only combobox: Tab commits the visually focused option
+         before the browser moves focus on — otherwise keyboard users
+         silently keep the old value where mouse users' click commits. */
+      if (activeIndex >= 0 && activeIndex !== selectedIndex) select(activeIndex, 'keyboard');
+      if (layer.isOpen) close('tab', { restoreFocus: false });
       return;
     }
 
@@ -237,6 +241,20 @@ export function createSelectMenuController(options) {
       event.preventDefault();
       if (!layer.isOpen) open('keyboard');
       setActive(boundaryEnabledIndex(optionElements, event.key === 'End'));
+      return;
+    }
+
+    if (event.key === 'PageUp' || event.key === 'PageDown') {
+      event.preventDefault();
+      if (!layer.isOpen) open('keyboard');
+      const direction = event.key === 'PageDown' ? 1 : -1;
+      let index = activeIndex >= 0 ? activeIndex : selectedIndex;
+      for (let step = 0; step < 10; step += 1) {
+        const next = nextEnabledIndex(optionElements, index, direction, false);
+        if (next < 0) break;
+        index = next;
+      }
+      if (index >= 0) setActive(index);
       return;
     }
 

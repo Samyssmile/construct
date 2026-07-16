@@ -118,6 +118,19 @@ Load the generated token stylesheet after all Construct style entries, because f
 
 Application-specific overrides may follow it. Keeping the generated theme last among Construct imports ensures its root and scoped values win deterministically.
 
+### Preset themes
+
+The package ships validated preset themes in [`themes/`](themes/README.md) — brand skins that
+compile through the same CLI instead of being baked into `tokens.css`:
+
+```bash
+npx construct-theme --theme node_modules/@neuravision/construct/themes/walnut.theme.json --out-dir ./src/generated/construct
+```
+
+| Preset | Character |
+|--------|-----------|
+| `walnut` | Warm ivory light theme with walnut-brown brand color; AAA body-text contrast enforced by built-in gates |
+
 ## 🧩 Components
 
 49 standalone component style entries, documented and accessibility-tested in [Storybook](https://samyssmile.github.io/construct/).

@@ -176,7 +176,10 @@ export function createPopoverController(options) {
   function toggle(reason = 'programmatic') {
     return lifecycle.run('toggle', (checkpoint) => {
       if (isDisabled(trigger)) return false;
-      pendingFocus = Boolean(options.focusOnOpen);
+      /* Same focus-entry default as open(): configuring initialFocus means
+         trigger activation must move focus in too, or keyboard users may
+         never reach popover content rendered elsewhere in the DOM. */
+      pendingFocus = Boolean(options.initialFocus || options.focusOnOpen);
       try {
         const changed = layer.toggle(reason);
         checkpoint();
@@ -216,17 +219,23 @@ export function createPopoverController(options) {
   }
 
   if (options.openOnHover) {
-    disposables.listen(root, 'pointerenter', (event) => {
-      if (event.pointerType !== 'touch') {
-        hovered = true;
-        scheduleOpen('hover');
-      }
-    });
-    disposables.listen(root, 'pointerleave', (event) => {
-      if (event.pointerType !== 'touch') {
-        hovered = false;
-        scheduleClose('hover');
-      }
+    /* When no wrapper root exists, root falls back to the (hidden) popover,
+       which can never receive pointerenter — hover must then be driven by
+       the trigger as well. */
+    const hoverTargets = root.contains(trigger) ? [root] : [root, trigger];
+    hoverTargets.forEach((target) => {
+      disposables.listen(target, 'pointerenter', (event) => {
+        if (event.pointerType !== 'touch') {
+          hovered = true;
+          scheduleOpen('hover');
+        }
+      });
+      disposables.listen(target, 'pointerleave', (event) => {
+        if (event.pointerType !== 'touch') {
+          hovered = false;
+          scheduleClose('hover');
+        }
+      });
     });
   }
 

@@ -15,17 +15,36 @@ Every factory validates its DOM contract, returns the existing controller when i
 
 | Factory | Behavior contract |
 | --- | --- |
-| `createModalController` | Dialog semantics, initial focus, focus trap, Escape/backdrop dismissal, nested overlay ordering, scroll lock, focus return |
+| `createModalController` | Dialog semantics, initial focus, focus trap, Escape/backdrop dismissal, nested overlay ordering, scroll lock, focus return, optional `inertBackground` |
 | `createDrawerController` | Modal drawer behavior with the same focus/dismissal invariants and toggle trigger support |
 | `createTabsController` | Roving tabindex, horizontal/vertical arrows, Home/End, automatic or manual activation |
-| `createToggleGroupController` | Single/multiple pressed state, roving tabindex, orientation-aware arrows, controlled programmatic value |
-| `createDropdownController` | ARIA menu button, first/last focus, arrows, Home/End, typeahead, outside/Escape dismissal, menu item selection |
-| `createSelectMenuController` | Button/listbox selection, active option, typeahead, keyboard opening and dismissal, value synchronization |
-| `createComboboxController` | Editable combobox, virtual listbox focus, optional local filtering, active descendant, announcements, selection |
+| `createToggleGroupController` | Single/multiple pressed state (`aria-pressed`, or `aria-checked` radio semantics for single groups authored with `role="radiogroup"`/`role="radio"`), roving tabindex, orientation-aware arrows, controlled programmatic value |
+| `createDropdownController` | ARIA menu button, first/last focus, arrows, Home/End, typeahead (open and closed), outside/Escape dismissal, menu item selection |
+| `createSelectMenuController` | Button/listbox selection, active option, typeahead, PageUp/PageDown, Tab commits the active option, keyboard opening and dismissal, value synchronization |
+| `createComboboxController` | Editable combobox, virtual listbox focus, optional local filtering, active descendant, Alt+Arrow open/close, IME-safe key handling, announcements, selection |
 | `createTooltipController` | Focus and hover timing, touch toggle, Escape/outside dismissal, described-by wiring |
 | `createPopoverController` | Non-modal popup disclosure, optional focus entry, hover/focus modes, outside/Escape dismissal, focus return |
 
 The package includes TypeScript declarations for options, callbacks, controller methods, and event-detail types.
+
+### What the caller still owns (accessible names and live regions)
+
+Controllers wire state attributes, but accessible names and announcement targets come from your markup. Missing ones are reported as console warnings in the browser:
+
+| Controller | You must provide |
+| --- | --- |
+| Modal / Drawer | `aria-labelledby` or `aria-label` on the dialog element |
+| Dropdown | `aria-label` or `aria-labelledby` on the `role="menu"` element |
+| Toggle group | `aria-label` or `aria-labelledby` on the group/radiogroup/toolbar root |
+| Select menu | A visible label or `aria-labelledby` for the trigger, and labels on options |
+| Combobox | A `<label>` for the input, an `aria-label` on the listbox, and a visually hidden live-region element passed as `options.status` — without it filter results are never announced |
+| Tooltip | A keyboard-focusable trigger (natively focusable or `tabindex="0"`) and text content in the tooltip element |
+| Popover | An accessible name when using `role="dialog"` content |
+
+### Documented deviations from APG
+
+- Select menu and dropdown arrow navigation wraps at the ends (APG select-only combobox specifies no wrap); wrapping matches Construct's menu behavior and is intentional.
+- Typing on a closed select menu commits the matching value immediately, mirroring native `<select>` on Windows, instead of opening the listbox first.
 
 ## Modal example
 
@@ -63,6 +82,8 @@ controller.destroy();
 ```
 
 Buttons with `data-ct-dismiss` are discovered automatically. The caller still owns the accessible name through `aria-labelledby` or `aria-label` and owns the action performed after confirmation.
+
+Pass `inertBackground: true` to additionally set `inert` on the container's DOM siblings while the dialog is open — a belt-and-suspenders layer on top of `aria-modal` for legacy screen-reader virtual cursors. Content portaled into the DOM after opening (for example popup layers) is unaffected.
 
 ## Tabs example
 

@@ -170,6 +170,13 @@
   background: var(--ct-v2-surface-bg);
 }
 
+/* The shell owns its scroll container, so it can satisfy WCAG 2.4.11
+   itself: scrolled-to content clears the sticky toolbar. Override
+   --ct-shell-scroll-offset when the toolbar height is customized. */
+.ct-app-shell-v2__main:has(.ct-app-shell-v2__toolbar--sticky) {
+  scroll-padding-block-start: var(--ct-shell-scroll-offset, 64px);
+}
+
 
 /* ── Sidebar States ── */
 

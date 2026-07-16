@@ -208,7 +208,9 @@ export const Disabled = {
         <p>Active project with 3 open tasks.</p>
       </div>
     </a>
-    <a href="#beta" class="ct-card ct-card--interactive" aria-disabled="true" aria-labelledby="disabled-beta" style="max-width: 280px; text-decoration: none; color: inherit;">
+    <!-- Disabled links must drop their href: an <a href> always navigates, even with
+         aria-disabled. role="link" keeps the semantics announced while nothing activates. -->
+    <a class="ct-card ct-card--interactive" role="link" aria-disabled="true" aria-labelledby="disabled-beta" style="max-width: 280px; text-decoration: none; color: inherit;">
       <div class="ct-card__header">
         <h3 id="disabled-beta">Beta</h3>
       </div>
@@ -224,9 +226,11 @@ export const Disabled = {
 
     // First card is enabled
     expect(cards[0]).not.toHaveAttribute('aria-disabled');
+    expect(cards[0]).toHaveAttribute('href');
 
-    // Second card is disabled
+    // Second card is disabled: no href (so it cannot navigate), semantics kept via role
     expect(cards[1]).toHaveAttribute('aria-disabled', 'true');
+    expect(cards[1]).not.toHaveAttribute('href');
 
     // Disabled card receives reduced opacity
     const disabledStyle = getComputedStyle(cards[1]);

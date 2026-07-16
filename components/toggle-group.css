@@ -24,11 +24,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.ct-toggle-group::-webkit-scrollbar {
-  display: none;
+  scrollbar-width: thin;
 }
 
 /* ── Item ── */
@@ -192,5 +188,20 @@
 @media (prefers-reduced-motion: reduce) {
   .ct-toggle-group__item {
     transition: none;
+  }
+}
+
+/* ── Forced colors ── */
+
+@media (forced-colors: active) {
+  /* The pressed fill must survive forced backgrounds; the outlined
+     selectors match the specificity of that variant's override. */
+  .ct-toggle-group__item[aria-pressed='true'],
+  .ct-toggle-group__item[aria-checked='true'],
+  .ct-toggle-group--outlined .ct-toggle-group__item[aria-pressed='true'],
+  .ct-toggle-group--outlined .ct-toggle-group__item[aria-checked='true'] {
+    background: SelectedItem;
+    color: SelectedItemText;
+    forced-color-adjust: none;
   }
 }

@@ -374,6 +374,27 @@
   border-color: transparent;
 }
 
+/* Replacement indicator for the removed input outline (mirrors the --multi pattern) */
+.ct-combobox--inline:focus-within {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ── */
+
+@media (pointer: coarse) {
+  .ct-combobox__option {
+    min-block-size: 44px;
+  }
+
+  /* Hit area extends past the visual 24px trigger, mirroring checkbox.css. */
+  .ct-combobox__trigger::before {
+    content: '';
+    position: absolute;
+    inset: calc((var(--icon-lg) - 44px) / 2);
+  }
+}
+
 /* ── Reduced motion ──────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

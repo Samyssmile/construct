@@ -118,8 +118,23 @@
   border-radius: var(--ct-tree-toggle-radius);
   color: var(--ct-tree-toggle-color);
   cursor: pointer;
+  position: relative;
   transition: color var(--duration-fast) var(--easing-standard),
     background var(--duration-fast) var(--easing-standard);
+}
+
+/* WCAG 2.2 SC 2.5.8: the visual chevron stays 1rem; the pointer target
+   does not. The hit area overlaps the row, mirroring checkbox.css. */
+.ct-tree__toggle::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--ct-tree-toggle-size) - 24px) / 2);
+}
+
+@media (pointer: coarse) {
+  .ct-tree__toggle::before {
+    inset: calc((var(--ct-tree-toggle-size) - 44px) / 2);
+  }
 }
 
 @media (hover: hover) {
@@ -192,6 +207,13 @@
 .ct-tree__node:focus-visible > .ct-tree__row .ct-tree__actions,
 .ct-tree__row:focus-within .ct-tree__actions {
   --ct-tree-actions-opacity: 1;
+}
+
+/* Touch surfaces have no hover to reveal row actions — keep them visible. */
+@media (hover: none) {
+  .ct-tree {
+    --ct-tree-actions-opacity: 1;
+  }
 }
 
 /* ── Selection ── */
@@ -275,6 +297,14 @@
   border-radius: var(--radius-md);
   padding: var(--space-2);
   background: var(--color-bg-elevated);
+}
+
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ── */
+
+@media (pointer: coarse) {
+  .ct-tree__row {
+    min-height: 44px;
+  }
 }
 
 /* ── Reduced motion ── */

@@ -13,9 +13,11 @@ import {
   dispatch,
   ensureId,
   focusElement,
+  focusIntoView,
   isDisabled,
   nextEnabledIndex,
   orientationDelta,
+  warnAccessibility,
 } from './internal/dom.js';
 
 const controllers = new WeakMap();
@@ -31,7 +33,15 @@ function resolvePanels(tablist, tabs, suppliedPanels) {
   if (controlledPanels.every(Boolean)) return controlledPanels;
 
   const scope = tablist.parentElement ?? tablist;
-  return [...scope.querySelectorAll('[role="tabpanel"], [data-ct-tab-panel]')];
+  const positional = [...scope.querySelectorAll('[role="tabpanel"], [data-ct-tab-panel]')];
+  if (positional.length > 1) {
+    warnAccessibility(
+      'Tabs: panels were paired with tabs by DOM position. If panel order differs from ' +
+        'tab order, tabs announce the wrong panels — set aria-controls on each tab or ' +
+        'pass options.panels explicitly.',
+    );
+  }
+  return positional;
 }
 
 /**
@@ -161,7 +171,8 @@ export function createTabsController(options) {
     sync();
     movingFocus = true;
     try {
-      focusElement(tabs[index]);
+      /* Overflowing tablists scroll; keep the roving focus visible. */
+      focusIntoView(tabs[index]);
     } finally {
       movingFocus = false;
     }

@@ -257,6 +257,14 @@
   --ct-select-menu-option-padding-y: var(--space-4);
 }
 
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ───── */
+
+@media (pointer: coarse) {
+  .ct-select-menu__option {
+    min-block-size: 44px;
+  }
+}
+
 /* ── Reduced motion ─────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

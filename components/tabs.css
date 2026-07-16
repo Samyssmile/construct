@@ -30,9 +30,21 @@
   font-size: var(--ct-tabs-trigger-font-size);
   line-height: var(--ct-tabs-trigger-line-height);
   font-weight: var(--font-weight-medium);
+  text-decoration: none;
   cursor: pointer;
   transition: color var(--duration-fast) var(--easing-standard),
     background var(--duration-fast) var(--easing-standard);
+}
+
+/* Triggers may be rendered as <a> for router-driven tabs. Neutralize the
+   global link styling (underline + link colors) so anchor triggers read
+   identically to buttons — the active-tab signal is the indicator, never
+   an underline. Deliberately excludes :hover so the shared trigger hover
+   rule above keeps winning. */
+a.ct-tabs__trigger,
+a.ct-tabs__trigger:active {
+  color: var(--color-text-secondary);
+  text-decoration: none;
 }
 
 .ct-tabs__trigger::after {
@@ -41,8 +53,16 @@
   inset-inline: 0;
   inset-block-end: 0;
   height: var(--ct-tabs-indicator-size);
-  background: transparent;
-  transition: background var(--duration-fast) var(--easing-standard);
+  background: var(--ct-tabs-indicator-color);
+  /* The datum draws itself: the indicator grows from its origin on
+     activation instead of popping in. Collapsed to zero at rest. */
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.ct-tabs__trigger:is(:dir(rtl))::after {
+  transform-origin: 100% 50%;
 }
 
 @media (hover: hover) {
@@ -65,7 +85,7 @@
 
 .ct-tabs__trigger[aria-selected='true']::after,
 .ct-tabs__trigger[data-state='active']::after {
-  background: var(--ct-tabs-indicator-color);
+  transform: scale(1);
 }
 
 .ct-tabs__trigger:disabled,
@@ -114,6 +134,13 @@
   inset-block: 0;
   width: var(--ct-tabs-indicator-size);
   height: auto;
+  /* Vertical tabs draw the indicator from the block start. */
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+}
+
+.ct-tabs--vertical .ct-tabs__trigger:is([aria-selected='true'], [data-state='active'])::after {
+  transform: scale(1);
 }
 
 /* Pill variant */
@@ -139,9 +166,34 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) */
+
+@media (pointer: coarse) {
+  .ct-tabs__trigger {
+    min-block-size: 44px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ct-tabs__trigger,
   .ct-tabs__trigger::after {
     transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  /* The active indicator is background-drawn and must survive forced
+     backgrounds. */
+  .ct-tabs__trigger[aria-selected='true']::after,
+  .ct-tabs__trigger[data-state='active']::after {
+    background: SelectedItem;
+    forced-color-adjust: none;
+  }
+
+  .ct-tabs--pill .ct-tabs__trigger[aria-selected='true'],
+  .ct-tabs--pill .ct-tabs__trigger[data-state='active'] {
+    background: SelectedItem;
+    color: SelectedItemText;
+    forced-color-adjust: none;
   }
 }

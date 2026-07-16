@@ -4,12 +4,16 @@
   --ct-progress-height: 8px;
   --ct-progress-radius: var(--radius-pill);
   --ct-progress-bg: var(--color-bg-muted);
-  --ct-progress-fill: var(--color-brand-accent);
+  /* accent-strong, not accent: the fill must hold 3:1 against the muted
+     track (1.4.11) — validated as "strong accent on muted" per theme. */
+  --ct-progress-fill: var(--color-brand-accent-strong);
 
   width: 100%;
   height: var(--ct-progress-height);
   border-radius: var(--ct-progress-radius);
   background: var(--ct-progress-bg);
+  /* the track boundary, so the component is identifiable on any surface */
+  border: var(--border-thin) solid var(--color-border-default);
   overflow: hidden;
 }
 
@@ -52,5 +56,22 @@
 @media (prefers-reduced-motion: reduce) {
   .ct-progress-bar--indeterminate .ct-progress-bar__track {
     animation: none;
+    /* A frozen 30% sweep reads as determinate-and-stuck; a full-width
+       dimmed fill reads as "busy, extent unknown". */
+    width: 100%;
+    opacity: 0.4;
+  }
+}
+
+@media (forced-colors: active) {
+  /* Backgrounds are forced to Canvas — without these the whole bar
+     disappears (mirrors the meter's forced-colors strategy). */
+  .ct-progress-bar {
+    border: 1px solid ButtonText;
+  }
+
+  .ct-progress-bar__track {
+    background: SelectedItem;
+    forced-color-adjust: none;
   }
 }

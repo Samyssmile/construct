@@ -23,6 +23,9 @@
   appearance: none;
   width: 100%;
   height: var(--ct-slider-thumb-size);
+  /* WCAG 2.2 SC 2.5.8: small thumbs shrink the strip below 24px — keep
+     the pointer target at least that tall in fine-pointer contexts. */
+  min-height: 24px;
   background: transparent;
   cursor: pointer;
   margin: 0;
@@ -199,6 +202,8 @@
   position: relative;
   flex: 1;
   height: var(--ct-slider-thumb-size);
+  /* Same 24px pointer-target floor as the single-thumb input strip. */
+  min-height: 24px;
 }
 
 .ct-slider--range .ct-slider__track::after {

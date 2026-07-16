@@ -26,7 +26,8 @@
   font-size: var(--font-size-sm);
   line-height: var(--line-height-sm);
   transition: opacity var(--duration-normal) var(--easing-standard),
-    transform var(--duration-normal) var(--easing-standard);
+    transform var(--duration-normal) var(--easing-standard),
+    visibility 0s linear 0s;
 }
 
 /* ---- Sub-elements ---- */
@@ -159,6 +160,8 @@
 
 /* ---- Positions ---- */
 
+/* Consumers: set --ct-scroll-offset-top on :root (see foundations.css) so
+   scrolled-to content is not obscured behind the banner (WCAG 2.4.11). */
 .ct-banner--fixed-top {
   position: fixed;
   inset-block-start: 0;
@@ -167,6 +170,8 @@
   border-radius: 0;
 }
 
+/* Consumers: set --ct-scroll-offset-bottom on :root (see foundations.css) so
+   scrolled-to content is not obscured behind the banner (WCAG 2.4.11). */
 .ct-banner--fixed-bottom {
   position: fixed;
   inset-block-end: 0;
@@ -175,6 +180,8 @@
   border-radius: 0;
 }
 
+/* Consumers: set --ct-scroll-offset-top on :root (see foundations.css) so
+   scrolled-to content is not obscured behind the banner (WCAG 2.4.11). */
 .ct-banner--sticky {
   position: sticky;
   inset-block-start: 0;
@@ -211,9 +218,16 @@
 
 /* ---- State ---- */
 
+/* Delayed visibility (drawer.css pattern) removes the faded-out banner
+   from the accessibility tree and tab order once the fade completes;
+   reopening restores it instantly via the base transition. */
 .ct-banner[data-state='closed'] {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+  transition: opacity var(--duration-normal) var(--easing-standard),
+    transform var(--duration-normal) var(--easing-standard),
+    visibility 0s linear var(--duration-normal);
 }
 
 .ct-banner--fixed-top[data-state='closed'],
@@ -234,6 +248,23 @@
 
   .ct-banner__actions {
     flex-basis: 100%;
+  }
+}
+
+/* ---- Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ---- */
+
+@media (pointer: coarse) {
+  /* The default close is --control-height-sm, which _shared.css remaps to
+     44px; only the fixed 24px compact close needs the checkbox.css-style
+     hit area. */
+  .ct-banner--compact .ct-banner__close {
+    position: relative;
+  }
+
+  .ct-banner--compact .ct-banner__close::before {
+    content: '';
+    position: absolute;
+    inset: calc((var(--icon-lg) - 44px) / 2);
   }
 }
 

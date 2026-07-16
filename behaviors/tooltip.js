@@ -7,6 +7,8 @@ import {
   dispatch,
   ensureId,
   eventTargetsOutside,
+  isComposingEvent,
+  warnAccessibility,
 } from './internal/dom.js';
 import { consumeTopOverlayEvent, pushOverlay } from './internal/overlay.js';
 
@@ -51,6 +53,14 @@ export function createTooltipController(options) {
   let triggerHovered = false;
   let focused = false;
   let touchOpened = false;
+
+  if (trigger.tabIndex < 0) {
+    warnAccessibility(
+      'Tooltip: the trigger is not keyboard-focusable, so keyboard and screen-reader ' +
+        'users can never open this tooltip (WCAG 2.1.1). Use a natively focusable ' +
+        'element or add tabindex="0".',
+    );
+  }
 
   const tooltipId = ensureId(tooltip, 'ct-tooltip', attributes);
   const describedBy = new Set((trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean));
@@ -165,7 +175,16 @@ export function createTooltipController(options) {
   });
   disposables.listen(trigger, 'focus', () => {
     focused = true;
-    scheduleOpen('focus', 0);
+    /* Open instantly for keyboard focus; pointer-driven focus (mouse click
+       on the trigger) is already covered by the hover path and would only
+       add noise. Engines without :focus-visible fall back to opening. */
+    let keyboardFocus = true;
+    try {
+      keyboardFocus = trigger.matches(':focus-visible');
+    } catch {
+      keyboardFocus = true;
+    }
+    if (keyboardFocus) scheduleOpen('focus', 0);
   });
   disposables.listen(trigger, 'blur', () => {
     focused = false;
@@ -182,7 +201,12 @@ export function createTooltipController(options) {
     }
   });
   disposables.listen(document, 'keydown', (event) => {
-    if (open && event.key === 'Escape' && consumeTopOverlayEvent(event, document, token)) {
+    if (
+      open &&
+      event.key === 'Escape' &&
+      !isComposingEvent(event) &&
+      consumeTopOverlayEvent(event, document, token)
+    ) {
       event.preventDefault();
       event.stopPropagation();
       closeTooltip('escape');

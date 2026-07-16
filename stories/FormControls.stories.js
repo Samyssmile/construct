@@ -42,14 +42,14 @@ export const Playground = {
     const inputId = 'field-playground';
     const hintId = 'field-playground-hint';
     const errorId = 'field-playground-error';
-    const describedBy = invalid ? errorId : hint ? hintId : '';
+    // Keep the hint referenced while invalid so context is not lost during errors
+    const describedBy = [invalid && errorId, hint && hintId].filter(Boolean).join(' ');
     return `
     <div class="ct-field${fieldClass}" style="max-width: 360px;">
       <label class="ct-field__label" for="${inputId}">${label}</label>
       <input class="ct-input${sizeClass}" id="${inputId}" type="${type}" placeholder="${placeholder}"${invalid ? ' aria-invalid="true"' : ''}${describedBy ? ` aria-describedby="${describedBy}"` : ''} />
-      ${invalid
-        ? `<div class="ct-field__error" id="${errorId}" aria-live="polite">This field is required.</div>`
-        : hint ? `<div class="ct-field__hint" id="${hintId}">${hint}</div>` : ''}
+      ${invalid ? `<div class="ct-field__error" id="${errorId}" aria-live="polite">This field is required.</div>` : ''}
+      ${hint ? `<div class="ct-field__hint" id="${hintId}">${hint}</div>` : ''}
     </div>`;
   },
   play: async ({ canvasElement }) => {

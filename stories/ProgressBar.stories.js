@@ -5,7 +5,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'Accessible progress indicator using the native `<progress>` element. Supports color variants (default, info, success, warning, danger) and size options (sm, md, lg).',
+        component: 'Progress indicator built from a `div` with `role="progressbar"`. Determinate bars must set `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` plus an accessible name (`aria-label` or `aria-labelledby`). Indeterminate bars omit `aria-valuenow` (which signals "indeterminate" to assistive tech) and should mark the loading region with `aria-busy="true"`. Supports color variants (default, info, success, warning, danger) and size options (sm, md, lg).',
       },
     },
   },

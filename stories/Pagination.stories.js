@@ -40,11 +40,14 @@ function renderPagination({
 
   let items = '';
 
+  // Native `disabled` blocks activation; aria-disabled alone would not (guidelines.md).
+  const disabledAttrs = ' disabled aria-disabled="true"';
+
   if (showFirstLast) {
-    items += `<li><button class="ct-pagination__link" type="button" aria-label="First page"${prevDisabled ? ' aria-disabled="true"' : ''}>\u00AB</button></li>\n      `;
+    items += `<li><button class="ct-pagination__link" type="button" aria-label="First page"${prevDisabled ? disabledAttrs : ''}>\u00AB</button></li>\n      `;
   }
   if (showPrevNext) {
-    items += `<li><button class="ct-pagination__link" type="button" aria-label="Previous page"${prevDisabled ? ' aria-disabled="true"' : ''}>\u2039</button></li>\n      `;
+    items += `<li><button class="ct-pagination__link" type="button" aria-label="Previous page"${prevDisabled ? disabledAttrs : ''}>\u2039</button></li>\n      `;
   }
 
   for (const page of pages) {
@@ -53,15 +56,15 @@ function renderPagination({
     } else {
       const isCurrent = page === current;
       const activeItemClass = isCurrent ? ' ct-pagination__page-item--active' : '';
-      items += `<li class="ct-pagination__page-item${activeItemClass}"><button class="ct-pagination__link" type="button"${isCurrent ? ' aria-current="page"' : ''} aria-label="Page ${page}${isCurrent ? ', current page' : ''}">${page}</button></li>\n      `;
+      items += `<li class="ct-pagination__page-item${activeItemClass}"><button class="ct-pagination__link" type="button"${isCurrent ? ' aria-current="page"' : ''} aria-label="Page ${page}">${page}</button></li>\n      `;
     }
   }
 
   if (showPrevNext) {
-    items += `<li><button class="ct-pagination__link" type="button" aria-label="Next page"${nextDisabled ? ' aria-disabled="true"' : ''}>\u203A</button></li>\n      `;
+    items += `<li><button class="ct-pagination__link" type="button" aria-label="Next page"${nextDisabled ? disabledAttrs : ''}>\u203A</button></li>\n      `;
   }
   if (showFirstLast) {
-    items += `<li><button class="ct-pagination__link" type="button" aria-label="Last page"${nextDisabled ? ' aria-disabled="true"' : ''}>\u00BB</button></li>`;
+    items += `<li><button class="ct-pagination__link" type="button" aria-label="Last page"${nextDisabled ? disabledAttrs : ''}>\u00BB</button></li>`;
   }
 
   return `
@@ -158,16 +161,18 @@ export const FirstPage = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Previous is disabled on first page
+    // Previous is disabled on first page (native disabled + aria-disabled)
     const prevBtn = canvas.getByRole('button', { name: 'Previous page' });
+    expect(prevBtn).toBeDisabled();
     expect(prevBtn).toHaveAttribute('aria-disabled', 'true');
 
     // Next is enabled
     const nextBtn = canvas.getByRole('button', { name: 'Next page' });
+    expect(nextBtn).toBeEnabled();
     expect(nextBtn).not.toHaveAttribute('aria-disabled');
 
     // Page 1 is current
-    const page1 = canvas.getByRole('button', { name: /Page 1, current/ });
+    const page1 = canvas.getByRole('button', { name: 'Page 1' });
     expect(page1).toHaveAttribute('aria-current', 'page');
   },
 };
@@ -177,16 +182,18 @@ export const LastPage = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Next is disabled on last page
+    // Next is disabled on last page (native disabled + aria-disabled)
     const nextBtn = canvas.getByRole('button', { name: 'Next page' });
+    expect(nextBtn).toBeDisabled();
     expect(nextBtn).toHaveAttribute('aria-disabled', 'true');
 
     // Previous is enabled
     const prevBtn = canvas.getByRole('button', { name: 'Previous page' });
+    expect(prevBtn).toBeEnabled();
     expect(prevBtn).not.toHaveAttribute('aria-disabled');
 
     // Page 10 is current
-    const page10 = canvas.getByRole('button', { name: /Page 10, current/ });
+    const page10 = canvas.getByRole('button', { name: 'Page 10' });
     expect(page10).toHaveAttribute('aria-current', 'page');
   },
 };
@@ -197,10 +204,12 @@ export const SinglePage = {
     const canvas = within(canvasElement);
     const nav = canvas.getByRole('navigation');
 
-    // Both prev and next are disabled
+    // Both prev and next are disabled (native disabled + aria-disabled)
     const prevBtn = canvas.getByRole('button', { name: 'Previous page' });
     const nextBtn = canvas.getByRole('button', { name: 'Next page' });
+    expect(prevBtn).toBeDisabled();
     expect(prevBtn).toHaveAttribute('aria-disabled', 'true');
+    expect(nextBtn).toBeDisabled();
     expect(nextBtn).toHaveAttribute('aria-disabled', 'true');
 
     // Only one page button
@@ -267,10 +276,12 @@ export const FirstLastDisabled = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // First and prev are disabled on page 1
+    // First and prev are disabled on page 1 (native disabled + aria-disabled)
     const firstBtn = canvas.getByRole('button', { name: 'First page' });
     const prevBtn = canvas.getByRole('button', { name: 'Previous page' });
+    expect(firstBtn).toBeDisabled();
     expect(firstBtn).toHaveAttribute('aria-disabled', 'true');
+    expect(prevBtn).toBeDisabled();
     expect(prevBtn).toHaveAttribute('aria-disabled', 'true');
   },
 };
@@ -407,7 +418,7 @@ export const CustomProperties = {
         <ul class="ct-pagination__list">
           <li><button class="ct-pagination__link" type="button" aria-label="Previous page">\u2039</button></li>
           <li class="ct-pagination__page-item"><button class="ct-pagination__link" type="button" aria-label="Page 1">1</button></li>
-          <li class="ct-pagination__page-item ct-pagination__page-item--active"><button class="ct-pagination__link" type="button" aria-current="page" aria-label="Page 2, current page">2</button></li>
+          <li class="ct-pagination__page-item ct-pagination__page-item--active"><button class="ct-pagination__link" type="button" aria-current="page" aria-label="Page 2">2</button></li>
           <li class="ct-pagination__page-item"><button class="ct-pagination__link" type="button" aria-label="Page 3">3</button></li>
           <li><button class="ct-pagination__link" type="button" aria-label="Next page">\u203A</button></li>
         </ul>
@@ -419,7 +430,7 @@ export const CustomProperties = {
         <ul class="ct-pagination__list">
           <li><button class="ct-pagination__link" type="button" aria-label="Previous page">\u2039</button></li>
           <li class="ct-pagination__page-item"><button class="ct-pagination__link" type="button" aria-label="Page 1">1</button></li>
-          <li class="ct-pagination__page-item ct-pagination__page-item--active"><button class="ct-pagination__link" type="button" aria-current="page" aria-label="Page 2, current page">2</button></li>
+          <li class="ct-pagination__page-item ct-pagination__page-item--active"><button class="ct-pagination__link" type="button" aria-current="page" aria-label="Page 2">2</button></li>
           <li class="ct-pagination__page-item"><button class="ct-pagination__link" type="button" aria-label="Page 3">3</button></li>
           <li><button class="ct-pagination__link" type="button" aria-label="Next page">\u203A</button></li>
         </ul>

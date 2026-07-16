@@ -93,6 +93,9 @@
   background: var(--ct-control-bg-disabled);
   border-color: var(--color-border-subtle);
   color: var(--color-text-muted);
+  /* Disabled is fully colour-encoded above; cancel foundations' global
+     :disabled opacity so controls are not double-dimmed. */
+  opacity: 1;
 }
 
 :where(.ct-input, .ct-select, .ct-textarea, .ct-control)[aria-invalid='true'],
@@ -134,4 +137,12 @@
   --ct-control-padding-x: var(--space-6);
   --ct-control-font-size: var(--font-size-lg);
   --ct-control-line-height: var(--line-height-lg);
+}
+
+/* Per-file kill switch: standalone/core.css imports this file without
+   foundations.css and its global reduced-motion rule. */
+@media (prefers-reduced-motion: reduce) {
+  :where(.ct-input, .ct-select, .ct-textarea, .ct-control) {
+    transition: none;
+  }
 }

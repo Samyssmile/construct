@@ -11,6 +11,8 @@
   border-radius: var(--ct-card-radius);
   padding: var(--ct-card-padding);
   box-shadow: var(--ct-card-shadow);
+  /* The datum edge slides in on activation instead of popping. */
+  transition: box-shadow var(--duration-fast) var(--easing-standard);
 }
 
 .ct-card--sm {
@@ -104,18 +106,30 @@
 .ct-card--datum::before {
   content: '';
   position: absolute;
-  top: calc(-1 * var(--border-thin));
-  left: calc(-1 * var(--border-thin));
-  width: 18px;
-  height: 18px;
-  border-top: var(--border-medium) solid var(--color-brand-accent);
-  border-left: var(--border-medium) solid var(--color-brand-accent);
-  border-top-left-radius: var(--radius-lg);
+  inset-block-start: calc(-1 * var(--border-thin));
+  inset-inline-start: calc(-1 * var(--border-thin));
+  width: var(--component-datum-mark-size);
+  height: var(--component-datum-mark-size);
+  border-block-start: var(--border-medium) solid var(--color-brand-accent);
+  border-inline-start: var(--border-medium) solid var(--color-brand-accent);
+  border-start-start-radius: var(--radius-lg);
+  pointer-events: none;
 }
 
 .ct-card--active,
 .ct-card[data-state='active'] {
   /* The datum: an orange leading edge marks the active/current card,
-     consistent with .ct-list__item and .ct-sidebar active states. */
-  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent), var(--ct-card-shadow);
+     consistent with .ct-list__item and .ct-sidebar active states. The
+     ambient shadow stays first so the list interpolates against the
+     base card shadow and the edge can animate in. */
+  box-shadow: var(--ct-card-shadow), inset var(--component-datum-edge-width) 0 0 0 var(--color-brand-accent);
+}
+
+@media (forced-colors: active) {
+  /* The datum edge is an inset box-shadow, which forced colors drops —
+     re-encode it as a border. */
+  .ct-card--active,
+  .ct-card[data-state='active'] {
+    border-inline-start: var(--component-datum-edge-width) solid SelectedItem;
+  }
 }

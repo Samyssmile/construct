@@ -18,6 +18,12 @@
 html {
   height: 100%;
   text-size-adjust: 100%;
+  /* WCAG 2.4.11 Focus Not Obscured contract: sticky/fixed chrome (navbar,
+     toolbar, banner) does not know the document, so products publish its
+     height by setting --ct-scroll-offset-top/-bottom on :root/html. Scroll
+     operations then keep focused or anchored content clear of the bars. */
+  scroll-padding-block-start: var(--ct-scroll-offset-top, 0px);
+  scroll-padding-block-end: var(--ct-scroll-offset-bottom, 0px);
 }
 
 body {

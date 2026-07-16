@@ -11,7 +11,7 @@ import {
   createDisposables,
   createTypeahead,
   dispatch,
-  focusElement,
+  focusIntoView,
   getItemValue,
   isDisabled,
   nextEnabledIndex,
@@ -82,7 +82,7 @@ export function createDropdownController(options) {
     items.forEach((item, itemIndex) => {
       attributes.set(item, 'data-highlighted', itemIndex === index ? '' : null);
     });
-    if (focus) focusElement(items[index]);
+    if (focus) focusIntoView(items[index]);
     return true;
   }
 
@@ -239,11 +239,25 @@ export function createDropdownController(options) {
     } else if ((event.key === 'Enter' || event.key === ' ') && !layer.isOpen) {
       event.preventDefault();
       open('keyboard');
+    } else if (!layer.isOpen) {
+      /* APG menu button: a printable character opens the menu and moves
+         focus to the first matching item. */
+      const match = typeahead.find(event, items);
+      if (match >= 0) {
+        event.preventDefault();
+        open('keyboard');
+        setHighlighted(match);
+      }
     }
   });
   disposables.listen(menu, 'keydown', onMenuKeyDown);
   items.forEach((item, index) => {
     disposables.listen(item, 'focus', () => setHighlighted(index, { focus: false }));
+    /* Focus follows the pointer, as in native menus — otherwise the roving
+       focus item and the hovered item can show two competing highlights. */
+    disposables.listen(item, 'pointermove', () => {
+      if (layer.isOpen && focusIndex !== index && !isDisabled(item)) setHighlighted(index);
+    });
     disposables.listen(item, 'click', (event) => {
       if (isDisabled(item)) {
         event.preventDefault();

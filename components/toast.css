@@ -23,12 +23,21 @@
   box-shadow: var(--shadow-md);
   color: var(--color-text-primary);
   transition: opacity var(--duration-fast) var(--easing-standard),
-    transform var(--duration-fast) var(--easing-standard);
+    transform var(--duration-fast) var(--easing-standard),
+    visibility 0s linear 0s;
 }
 
+/* Delayed visibility (drawer.css pattern) removes the faded-out toast
+   from the accessibility tree and tab order once the fade completes;
+   reopening restores it instantly via the base transition. */
 .ct-toast[data-state='closed'] {
   opacity: 0;
   transform: translateY(8px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard),
+    visibility 0s linear var(--duration-fast);
 }
 
 .ct-toast__title {

@@ -10,11 +10,12 @@ import {
   createControllerLifecycle,
   createDisposables,
   dispatch,
-  focusElement,
+  focusIntoView,
   getItemValue,
   isDisabled,
   nextEnabledIndex,
   orientationDelta,
+  warnAccessibility,
 } from './internal/dom.js';
 
 const controllers = new WeakMap();
@@ -91,12 +92,35 @@ export function createToggleGroupController(options) {
   if (focusIndex < 0) throw new TypeError('Toggle group controller requires at least one enabled item.');
   if (!allowEmpty && selected.size === 0) selected.add(values[focusIndex]);
 
-  const rootRole = root.getAttribute('role') ?? 'group';
+  /* Two supported state models:
+     - button model (default): aria-pressed toggle buttons in a group/toolbar
+     - radio model: role="radiogroup"/role="radio" markup with aria-checked,
+       selection following focus per the APG radio-group pattern.
+     Radio markup used to be silently rewritten to buttons while its stale
+     aria-checked kept announcing the original selection — now it is honored. */
+  const radioSemantics =
+    type === 'single' &&
+    (root.getAttribute('role') === 'radiogroup' ||
+      items.some((item) => item.getAttribute('role') === 'radio'));
+  if (type === 'multiple' && items.some((item) => item.getAttribute('role') === 'radio')) {
+    warnAccessibility(
+      'Toggle group: role="radio" items require type "single"; falling back to aria-pressed buttons.',
+    );
+  }
+
+  const rootRole = root.getAttribute('role') ?? (radioSemantics ? 'radiogroup' : 'group');
   attributes.set(root, 'role', rootRole);
   attributes.set(root, 'data-orientation', orientation);
   if (rootRole === 'toolbar') attributes.set(root, 'aria-orientation', orientation);
+  if (!root.hasAttribute('aria-label') && !root.hasAttribute('aria-labelledby')) {
+    warnAccessibility(
+      `Toggle group: the ${rootRole} element has neither aria-labelledby nor aria-label. ` +
+        'Grouping roles must expose an accessible name (WCAG 4.1.2).',
+    );
+  }
   items.forEach((item) => {
-    if (!isNativeButton(item)) attributes.set(item, 'role', 'button');
+    if (radioSemantics) attributes.set(item, 'role', 'radio');
+    else if (!isNativeButton(item)) attributes.set(item, 'role', 'button');
   });
 
   function currentValue() {
@@ -105,9 +129,15 @@ export function createToggleGroupController(options) {
   }
 
   function sync() {
+    /* An item disabled after init would otherwise strand the roving
+       tabindex and drop the whole group from the tab order. */
+    if (isDisabled(items[focusIndex])) {
+      const fallback = boundaryEnabledIndex(items);
+      if (fallback >= 0) focusIndex = fallback;
+    }
     items.forEach((item, index) => {
       const pressed = selected.has(values[index]);
-      attributes.set(item, 'aria-pressed', String(pressed));
+      attributes.set(item, radioSemantics ? 'aria-checked' : 'aria-pressed', String(pressed));
       attributes.set(item, 'data-state', pressed ? 'on' : 'off');
       attributes.set(item, 'tabindex', index === focusIndex && !isDisabled(item) ? '0' : '-1');
     });
@@ -185,7 +215,9 @@ export function createToggleGroupController(options) {
       event.preventDefault();
       focusIndex = nextIndex;
       sync();
-      focusElement(items[nextIndex]);
+      focusIntoView(items[nextIndex]);
+      /* APG radio group: selection follows focus. */
+      if (radioSemantics && !selected.has(values[nextIndex])) toggle(nextIndex, 'keyboard');
       return;
     }
 

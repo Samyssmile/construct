@@ -16,7 +16,7 @@
       "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
     },
     "extends": {
-      "enum": ["light", "dark", "high-contrast"]
+      "enum": ["light", "dark", "high-contrast", "high-contrast-dark"]
     },
     "selector": {
       "type": "string",

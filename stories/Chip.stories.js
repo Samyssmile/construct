@@ -57,7 +57,11 @@ export const Playground = {
     const tag = interactive ? 'button' : 'span';
     const attrs = [];
     if (interactive) attrs.push('type="button"', 'aria-pressed="false"');
-    if (disabled) attrs.push('aria-disabled="true"');
+    if (disabled) {
+      attrs.push('aria-disabled="true"');
+      // Native disabled blocks activation on real buttons; spans have no native disabled.
+      if (interactive) attrs.push('disabled');
+    }
 
     const dotEl = dot ? '<span class="ct-chip__dot" aria-hidden="true"></span>' : '';
     const checkEl = check ? '<span class="ct-chip__check" aria-hidden="true"></span>' : '';
@@ -65,7 +69,7 @@ export const Playground = {
       ? `<span class="ct-chip__icon ct-chip__icon--${variant}" aria-hidden="true"></span>`
       : '';
     const removeBtn = removable
-      ? ' <button class="ct-chip__remove" type="button" aria-label="Remove"><span aria-hidden="true">\u00d7</span></button>'
+      ? ` <button class="ct-chip__remove" type="button" aria-label="Remove ${label}"${disabled ? ' disabled' : ''}><span aria-hidden="true">\u00d7</span></button>`
       : '';
 
     return `<${tag} class="${classes.join(' ')}" ${attrs.join(' ')}>${checkEl}${dotEl}${iconEl}${label}${removeBtn}</${tag}>`;
@@ -326,7 +330,7 @@ export const Truncation = {
     <span class="ct-chip">
       <span class="ct-chip__icon ct-chip__icon--info" aria-hidden="true"></span>
       <span class="ct-chip__label" style="--ct-chip-max-width: 120px;">This is a very long label that should truncate</span>
-      <button class="ct-chip__remove" type="button" aria-label="Remove"><span aria-hidden="true">\u00d7</span></button>
+      <button class="ct-chip__remove" type="button" aria-label="Remove This is a very long label that should truncate"><span aria-hidden="true">\u00d7</span></button>
     </span>
     <span class="ct-chip">
       <span class="ct-chip__label" style="--ct-chip-max-width: 80px;">Overflow text here</span>
@@ -414,8 +418,8 @@ export const DisabledState = {
       </span>
     </div>
     <div class="ct-cluster">
-      <button type="button" class="ct-chip ct-chip--interactive" aria-pressed="false" aria-disabled="true">Disabled Interactive</button>
-      <span class="ct-chip" aria-disabled="true">Disabled Removable<button class="ct-chip__remove" type="button" aria-label="Remove" disabled><span aria-hidden="true">\u00d7</span></button></span>
+      <button type="button" class="ct-chip ct-chip--interactive" aria-pressed="false" aria-disabled="true" disabled>Disabled Interactive</button>
+      <span class="ct-chip" aria-disabled="true">Disabled Removable<button class="ct-chip__remove" type="button" aria-label="Remove Disabled Removable" disabled><span aria-hidden="true">\u00d7</span></button></span>
     </div>
   </div>
 `,
@@ -428,6 +432,14 @@ export const DisabledState = {
       const styles = window.getComputedStyle(chip);
       expect(parseFloat(styles.opacity)).toBeLessThan(1);
     }
+
+    // Interactive disabled chip carries native disabled, so it cannot be activated
+    const interactiveChip = canvasElement.querySelector('button.ct-chip--interactive');
+    expect(interactiveChip).toBeDisabled();
+
+    // Remove button inside a disabled chip is disabled too
+    const removeBtn = canvasElement.querySelector('.ct-chip__remove');
+    expect(removeBtn).toBeDisabled();
   },
 };
 

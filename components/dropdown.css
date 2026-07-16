@@ -146,7 +146,7 @@
 /* ── Danger item ─────────────────────────────────────────────────── */
 
 .ct-dropdown__item--danger {
-  color: var(--color-state-danger);
+  color: var(--color-state-danger-text);
 }
 
 @media (hover: hover) {
@@ -158,11 +158,11 @@
 .ct-dropdown__item--danger:focus-visible,
 .ct-dropdown__item--danger[data-highlighted] {
   background: var(--color-state-danger-surface);
-  outline-color: var(--color-state-danger);
+  outline-color: var(--color-state-danger-text);
 }
 
 .ct-dropdown__item--danger .ct-dropdown__item-icon {
-  color: var(--color-state-danger);
+  color: var(--color-state-danger-text);
 }
 
 .ct-dropdown__item--danger .ct-dropdown__item-shortcut {
@@ -389,6 +389,15 @@
   --ct-dropdown-item-gap: var(--space-4);
 }
 
+/* ── Construct 44×44 target policy (WCAG 2.2 SC 2.5.5 is AAA) ────── */
+
+@media (pointer: coarse) {
+  .ct-dropdown__item,
+  .ct-dropdown__sub-trigger {
+    min-block-size: 44px;
+  }
+}
+
 /* ── Reduced motion ──────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -397,5 +406,16 @@
   .ct-dropdown__item,
   .ct-dropdown__item-radio::before {
     transition: none;
+  }
+}
+
+/* ── Forced colors ───────────────────────────────────────────────── */
+
+@media (forced-colors: active) {
+  /* The radio-item dot is background-drawn and must survive forced
+     backgrounds. */
+  .ct-dropdown__item[aria-checked='true'] .ct-dropdown__item-radio::before {
+    background: SelectedItem;
+    forced-color-adjust: none;
   }
 }

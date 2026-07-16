@@ -90,6 +90,9 @@
   min-height: 0;
   text-decoration: none;
   color: inherit;
+  /* The datum edge slides in on selection instead of popping. */
+  transition: background var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
 }
 
 /* ── Item Slots ── */
@@ -222,7 +225,7 @@
 .ct-list__item[aria-selected='true'] {
   background: var(--ct-list-item-bg-active);
   /* The datum: an orange leading edge marks the active/selected item. */
-  box-shadow: inset var(--border-thick) 0 0 0 var(--color-brand-accent);
+  box-shadow: inset var(--component-datum-edge-width) 0 0 0 var(--color-brand-accent);
 }
 
 .ct-list__item--active .ct-list__item-title,
@@ -351,7 +354,8 @@
 .ct-list--nav .ct-list__item {
   cursor: pointer;
   transition: background var(--duration-fast) var(--easing-standard),
-    color var(--duration-fast) var(--easing-standard);
+    color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
 }
 
 @media (hover: hover) {
@@ -473,5 +477,27 @@
   .ct-list__item--skeleton .ct-list__item-description,
   .ct-list__item--skeleton .ct-list__item-trailing {
     animation: none;
+  }
+}
+
+/* ── Forced Colors ── */
+
+@media (forced-colors: active) {
+  /* The datum edge is an inset box-shadow, which forced colors drops —
+     re-encode it as a border. */
+  .ct-list__item--active,
+  .ct-list__item[data-state='active'],
+  .ct-list__item[aria-selected='true'] {
+    border-inline-start: var(--component-datum-edge-width) solid SelectedItem;
+  }
+
+  /* Skeleton rows hide their placeholder text with `color: transparent`;
+     keep the decorative loading state hidden when forced colors would
+     otherwise reveal it. */
+  .ct-list__item--skeleton .ct-list__item-leading,
+  .ct-list__item--skeleton .ct-list__item-title,
+  .ct-list__item--skeleton .ct-list__item-description,
+  .ct-list__item--skeleton .ct-list__item-trailing {
+    forced-color-adjust: none;
   }
 }

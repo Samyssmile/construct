@@ -95,7 +95,7 @@ console.log(tokens.metadata.themes);
 
 ## Built-in themes
 
-Construct ships `light`, `dark`, and `high-contrast` scopes:
+Construct ships `light`, `dark`, `high-contrast`, and `high-contrast-dark` scopes:
 
 ```html
 <html data-theme="dark">…</html>
@@ -103,7 +103,15 @@ Construct ships `light`, `dark`, and `high-contrast` scopes:
 
 Themes can also be nested on containers. Every explicit theme scope declares the complete semantic and component contract, so light inside dark, high-contrast inside light, and custom themes inside any parent do not leak inherited values.
 
-With no explicit `data-theme`, root-level `prefers-color-scheme: dark` and `prefers-contrast: more` preferences apply automatically.
+With no explicit `data-theme`, root-level `prefers-color-scheme: dark` and `prefers-contrast: more` preferences apply automatically — including the combination: dark-scheme users who request more contrast get `high-contrast-dark`, not a light UI. Note that pinning any `data-theme` on the root opts the page out of these automatic preference hookups; products that pin a theme should offer their own contrast/scheme switch (for example by pinning `high-contrast`/`high-contrast-dark` when the user asks for it).
+
+### Type scale units
+
+Font-size and line-height tokens are emitted in `rem` (authored in px, divided by 16) so user browser font-size preferences scale the entire system. Control heights, spacing, and the 44px coarse-pointer targets intentionally stay in px.
+
+### Accent roles
+
+`--color-brand-accent` is the decorative datum orange for edges and rules on canvas/surface. `--color-brand-accent-strong` is the validated fill orange — gated at ≥3:1 against `bg.canvas`, `bg.surface`, and `bg.muted` in every theme — for progress fills, meters, and any indicator drawn against the muted track color. Orange is never a text color; text uses the neutral `--color-text-*` roles.
 
 ## Custom product themes
 

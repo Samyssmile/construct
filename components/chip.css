@@ -35,7 +35,9 @@
   --ct-chip-padding-x: var(--space-2);
   --ct-chip-font-size: var(--font-size-xs);
   --ct-chip-line-height: var(--line-height-xs);
-  --ct-chip-remove-size: var(--icon-sm);
+  /* WCAG 2.2 SC 2.5.8: the remove button stays at least 24px in every
+     pointer context, so the small chip cannot shrink it below that. */
+  --ct-chip-remove-size: var(--icon-lg);
   --ct-chip-gap: var(--space-1);
 }
 
@@ -346,6 +348,17 @@
   .ct-chip {
     min-height: 44px;
   }
+
+  /* Hit area may extend past the chip edge, mirroring checkbox.css. */
+  .ct-chip__remove {
+    position: relative;
+  }
+
+  .ct-chip__remove::before {
+    content: '';
+    position: absolute;
+    inset: calc((var(--ct-chip-remove-size) - 44px) / 2);
+  }
 }
 
 /* ── Reduced motion ──────────────────────────────────────────── */
@@ -359,5 +372,20 @@
 
   .ct-chip--interactive:active {
     transform: none;
+  }
+}
+
+/* ── Forced colors ───────────────────────────────────────────── */
+
+@media (forced-colors: active) {
+  /* Mask-drawn glyphs and the status dot paint via background-color,
+     which forced colors resets — repaint them with system ink. The
+     selected checkmark is border-drawn and survives on its own. */
+  .ct-chip__icon--info,
+  .ct-chip__icon--success,
+  .ct-chip__icon--warning,
+  .ct-chip__icon--danger,
+  .ct-chip__dot {
+    background-color: CanvasText;
   }
 }

@@ -50,5 +50,15 @@
     "height": "{space.3}",
     "radius": "{radius.pill}",
     "track": "{color.background.muted}"
+  },
+  "datum": {
+    "edgeWidth": "{border.width.thick}",
+    "tickWidth": "24px",
+    "tickHeight": "3px",
+    "originLength": "48px",
+    "markSize": "18px",
+    "scaleHeight": "9px",
+    "scaleMinorStep": "12px",
+    "scaleMajorStep": "60px"
   }
 }

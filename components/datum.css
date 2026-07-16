@@ -6,9 +6,12 @@
    promote that signature from focus rings and the intro page into
    reusable structural vocabulary every surface can speak.
 
-   Accessibility contract (must hold across light/dark/high-contrast):
-     · orange as TEXT  → --color-brand-accent-active (orange.700, ≥4.5:1)
-     · orange as EDGE/RULE (non-text) → --color-brand-accent (orange.500)
+   Accessibility contract (must hold across all built-in themes):
+     · orange as TEXT → never; use --color-text-* neutrals (orange fails
+       4.5:1 as small text on several theme surfaces)
+     · orange as FILL vs muted tracks → --color-brand-accent-strong
+       (validated ≥3:1 against bg.muted/canvas/surface per theme)
+     · orange as EDGE/RULE (decorative, on canvas/surface) → --color-brand-accent
    ============================================================ */
 
 /* ── Eyebrow ──
@@ -32,10 +35,34 @@
 
 .ct-eyebrow::before {
   content: '';
-  width: 24px;
-  height: 3px;
+  width: var(--component-datum-tick-width);
+  height: var(--component-datum-tick-height);
   border-radius: var(--radius-xs);
   background: var(--color-brand-accent);
+}
+
+/* ── Numbered eyebrow ──
+   Sheet numbers, like an engineering drawing set: `--numbered` inserts
+   an auto-incremented, zero-padded counter between tick and label.
+   Scope numbering with a `.ct-eyebrow-set` ancestor (or any element
+   that declares `counter-reset: ct-eyebrow`). */
+.ct-eyebrow-set {
+  counter-reset: ct-eyebrow;
+}
+
+.ct-eyebrow--numbered {
+  counter-increment: ct-eyebrow;
+}
+
+.ct-eyebrow--numbered::before {
+  order: -2;
+}
+
+.ct-eyebrow--numbered::after {
+  content: counter(ct-eyebrow, decimal-leading-zero);
+  order: -1;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Datum scale ──
@@ -43,16 +70,41 @@
    ticks (minor every 12px, major every 60px) and an orange "origin"
    segment marking zero. Decorative — mark it role="presentation". */
 .ct-datum-scale {
-  height: 9px;
+  --ct-datum-scale-accent: var(--color-brand-accent);
+  --ct-datum-scale-origin: var(--component-datum-origin-length);
+
+  height: var(--component-datum-scale-height);
   background:
     /* orange origin segment — the datum's zero */
-    linear-gradient(var(--color-brand-accent), var(--color-brand-accent)) 0 0 / 48px 2px no-repeat,
+    linear-gradient(var(--ct-datum-scale-accent), var(--ct-datum-scale-accent)) 0 0 / var(--ct-datum-scale-origin) 2px no-repeat,
     /* full-width baseline hairline */
     linear-gradient(var(--color-border-strong), var(--color-border-strong)) 0 0 / 100% 1px no-repeat,
     /* major ticks */
-    repeating-linear-gradient(90deg, var(--color-border-strong) 0 1px, transparent 1px 60px) 0 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(90deg, var(--color-border-strong) 0 1px, transparent 1px var(--component-datum-scale-major-step)) 0 0 / 100% 8px no-repeat,
     /* minor ticks */
-    repeating-linear-gradient(90deg, var(--color-border-default) 0 1px, transparent 1px 12px) 0 0 / 100% 5px no-repeat;
+    repeating-linear-gradient(90deg, var(--color-border-default) 0 1px, transparent 1px var(--component-datum-scale-minor-step)) 0 0 / 100% 5px no-repeat;
+}
+
+/* RTL: the origin and tick phase anchor to the inline start. */
+.ct-datum-scale:is([dir='rtl'] *, :dir(rtl)) {
+  background:
+    linear-gradient(var(--ct-datum-scale-accent), var(--ct-datum-scale-accent)) 100% 0 / var(--ct-datum-scale-origin) 2px no-repeat,
+    linear-gradient(var(--color-border-strong), var(--color-border-strong)) 0 0 / 100% 1px no-repeat,
+    repeating-linear-gradient(270deg, var(--color-border-strong) 0 1px, transparent 1px var(--component-datum-scale-major-step)) 0 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(270deg, var(--color-border-default) 0 1px, transparent 1px var(--component-datum-scale-minor-step)) 0 0 / 100% 5px no-repeat;
+}
+
+/* ── Progress variant ──
+   The origin segment becomes meaning-bearing: its length reports
+   progress. Set `--ct-datum-scale-progress` (a percentage) on the
+   element and give it `role="progressbar"` with the matching
+   `aria-valuenow/min/max`. Meaning-bearing fill uses accent-strong,
+   validated ≥3:1 against muted/canvas/surface tracks per theme. */
+.ct-datum-scale--progress {
+  --ct-datum-scale-accent: var(--color-brand-accent-strong);
+  --ct-datum-scale-origin: var(--ct-datum-scale-progress, 0%);
+
+  transition: background-size var(--duration-normal) var(--easing-standard);
 }
 
 /* ── Spec datasheet ──
@@ -103,7 +155,7 @@
 :is(.ct-metric--active, .ct-metric[data-state='active'], .ct-spec--origin) {
   --ct-metric-accent: var(--color-brand-accent);
 
-  box-shadow: inset 0 var(--border-thick) 0 0 var(--ct-metric-accent);
+  box-shadow: inset 0 var(--component-datum-edge-width) 0 0 var(--ct-metric-accent);
 }
 
 :is(.ct-metric__value, .ct-spec__value) {
@@ -186,7 +238,7 @@
 
 .ct-metric[data-status],
 .ct-metric[data-state='error'] {
-  box-shadow: inset var(--border-thick) 0 0 0 var(--ct-metric-accent);
+  box-shadow: inset var(--component-datum-edge-width) 0 0 0 var(--ct-metric-accent);
 }
 
 .ct-metric:is([aria-busy='true'], [data-state='loading']) {
@@ -195,6 +247,27 @@
 
 .ct-metric:is([aria-disabled='true'], [data-state='disabled']) {
   opacity: var(--opacity-disabled);
+}
+
+/* ── Datum frame ──
+   The corner registration mark generalised beyond cards: an opt-in
+   "exhibit" treatment for figures, code samples, and media. Decorative;
+   forced colors keeps the borders via CanvasText automatically. */
+.ct-datum-frame {
+  position: relative;
+}
+
+.ct-datum-frame::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: var(--component-datum-mark-size);
+  height: var(--component-datum-mark-size);
+  border-block-start: var(--border-medium) solid var(--color-brand-accent);
+  border-inline-start: var(--border-medium) solid var(--color-brand-accent);
+  border-start-start-radius: var(--radius-lg);
+  pointer-events: none;
 }
 
 @media (forced-colors: active) {

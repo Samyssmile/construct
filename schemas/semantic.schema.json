@@ -27,7 +27,7 @@
         "brand": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["primary", "primaryHover", "primaryActive", "accent", "accentHover", "accentActive", "onAccent"],
+          "required": ["primary", "primaryHover", "primaryActive", "accent", "accentHover", "accentActive", "accentStrong", "onAccent"],
           "properties": {
             "primary": { "$ref": "#/$defs/token" },
             "primaryHover": { "$ref": "#/$defs/token" },
@@ -35,6 +35,7 @@
             "accent": { "$ref": "#/$defs/token" },
             "accentHover": { "$ref": "#/$defs/token" },
             "accentActive": { "$ref": "#/$defs/token" },
+            "accentStrong": { "$ref": "#/$defs/token" },
             "onAccent": { "$ref": "#/$defs/token" }
           }
         },

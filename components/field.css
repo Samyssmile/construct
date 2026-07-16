@@ -16,12 +16,14 @@
 
 .ct-field__error {
   font-size: var(--font-size-sm);
-  color: var(--color-state-danger);
+  color: var(--color-state-danger-text);
 }
 
 .ct-field__label--required::after {
-  content: ' *';
-  color: var(--color-state-danger);
+  /* Alt-text syntax hides the decorative asterisk from assistive tech;
+     the `required` attribute is the programmatic signal. */
+  content: ' *' / '';
+  color: var(--color-state-danger-text);
 }
 
 .ct-field__counter {
@@ -31,7 +33,7 @@
 }
 
 .ct-field__counter--limit {
-  color: var(--color-state-danger);
+  color: var(--color-state-danger-text);
 }
 
 .ct-field__row {

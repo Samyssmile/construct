@@ -1,4 +1,4 @@
-import { focusElement, getFocusableElements, isElement } from './dom.js';
+import { focusIntoView, getFocusableElements, isElement } from './dom.js';
 
 const bodyLocks = new WeakMap();
 const overlayStates = new WeakMap();
@@ -216,7 +216,7 @@ export function trapTabKey(event, containers) {
   }
   if (!focusable.length) {
     event.preventDefault();
-    focusElement(scopes[0]);
+    focusIntoView(scopes[0]);
     return true;
   }
 
@@ -227,13 +227,13 @@ export function trapTabKey(event, containers) {
 
   if (event.shiftKey && (!activeInside || active === first)) {
     event.preventDefault();
-    focusElement(last);
+    focusIntoView(last);
     return true;
   }
 
   if (!event.shiftKey && (!activeInside || active === last)) {
     event.preventDefault();
-    focusElement(first);
+    focusIntoView(first);
     return true;
   }
 

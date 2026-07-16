@@ -159,7 +159,7 @@ function renderPanel() {
 function renderFooter() {
   return `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); font-size: var(--font-size-xs); color: var(--color-text-muted);">
-      <span>Construct Design System v2.1.1</span>
+      <span>Construct Design System v2.1.2</span>
       <span>Built with accessibility in mind</span>
     </div>`;
 }
@@ -439,10 +439,10 @@ export const SidebarStates = {
           <div class="ct-app-shell__header">
             ${renderNavbar(`Navigation ${state}`)}
           </div>
-          <div class="ct-app-shell__sidebar" aria-label="Navigation (${state})">
+          <div class="ct-app-shell__sidebar">
             ${renderSidebar(`Sidebar (${state})`)}
           </div>
-          <div class="ct-app-shell__main" tabindex="0">
+          <div class="ct-app-shell__main">
             <div style="padding: var(--space-6);">
               <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">
                 Sidebar state: <code>${state}</code>

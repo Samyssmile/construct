@@ -230,6 +230,13 @@
   background: var(--color-bg-canvas);
 }
 
+/* The shell owns its scroll container, so it can satisfy WCAG 2.4.11
+   itself: scrolled-to content clears the sticky page header. Override
+   --ct-shell-scroll-offset when the header height is customized. */
+.ct-app-shell__main:has(.ct-app-shell__page-header--sticky) {
+  scroll-padding-block-start: var(--ct-shell-scroll-offset, 64px);
+}
+
 
 
 /* ── Backdrop (Mobile Sidebar Overlay) ── */
