@@ -64,10 +64,10 @@
   flex-wrap: wrap;
 }
 
-/* Wrappers hide the footer via the `hidden` attribute when no content is
-   projected; `display: flex` above would otherwise override the UA
-   stylesheet's `[hidden]` rule and leave a ghost divider behind. */
-.ct-modal__footer[hidden] {
+/* The footer wrapper renders even when no content is projected into it
+   (framework wrappers cannot reliably detect projection). Hide it when
+   empty so footerless modals leave no ghost divider behind. */
+.ct-modal__footer:not(:has(*)) {
   display: none;
 }
 

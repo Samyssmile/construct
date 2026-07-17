@@ -5,6 +5,20 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.5] - 2026-07-17
+
+### Fixed
+
+- **Card & Modal: the 2.1.4 `[hidden]` slot guards are replaced with `:not(:has(*))`
+  empty-slot rules — update immediately if you are on 2.1.4.** The attribute guards
+  trusted the wrapper's projection detection; ng-construct's `AfCard`/`AfModal` detection
+  (`contentChild('[header]')` resolves a template reference name, never a CSS selector)
+  reports "empty" for every slot, so 2.1.4 blanked out populated card headers/footers and
+  every modal footer in consuming apps. The slots now decide visibility purely in CSS:
+  a header/footer wrapper with no projected element hides itself, one with content always
+  renders — regardless of what the wrapper's `hidden` attribute claims. The original
+  2.1.4 goal (no ghost divider under footerless cards/modals) is preserved.
+
 ## [2.1.4] - 2026-07-17
 
 ### Fixed

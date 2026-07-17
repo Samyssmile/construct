@@ -46,12 +46,12 @@
   border-top: var(--border-thin) solid var(--color-border-subtle);
 }
 
-/* Wrappers hide empty slots via the `hidden` attribute (e.g. framework
-   integrations when no content is projected). The display rules above would
-   otherwise override the UA stylesheet's `[hidden] { display: none }` and
-   leave a ghost divider + spacing behind. */
-.ct-card__header[hidden],
-.ct-card__footer[hidden] {
+/* Slot wrappers render even when no content is projected into them (framework
+   wrappers cannot reliably detect projection, and the `hidden` attribute they
+   set is overridden by the display rules above). Hide slots without projected
+   content so an empty header/footer leaves no ghost spacing or divider. */
+.ct-card__header:not(:has(*)),
+.ct-card__footer:not(:has(*)) {
   display: none;
 }
 
