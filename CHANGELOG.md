@@ -5,6 +5,15 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3] - 2026-07-17
+
+### Fixed
+
+- Chip: custom icons composed into the `.ct-chip__icon` slot (a `.ct-icon` — also when wrapped
+  by a framework component host — or a bare `<svg>`) now adopt the slot's 1em size. Previously
+  `.ct-icon` kept its fixed `--icon-md` box and overflowed the slot onto the chip label
+  (visible as a copy icon overlapping the first characters of ID chips).
+
 ## [2.1.2] - 2026-07-16
 
 ### Added

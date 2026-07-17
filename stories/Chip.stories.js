@@ -620,6 +620,64 @@ export const KeyboardNavigation = {
   },
 };
 
+export const ComposedCustomIcon = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom icons composed into the `.ct-chip__icon` slot — as a `.ct-icon` (possibly wrapped by a framework component host) or a bare `<svg>` — adopt the slot’s 1em size instead of overflowing onto the label.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-cluster" style="align-items: center;">
+    <span class="ct-chip ct-chip--sm" style="font-family: var(--font-family-mono);">
+      <span class="ct-chip__icon" aria-hidden="true">
+        <span style="display: inline-flex; align-items: center; justify-content: center;">
+          <span class="ct-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </span>
+        </span>
+      </span>
+      <span class="ct-chip__label">0dc51b34-2026-4d75-84f5-94624663f125</span>
+    </span>
+    <span class="ct-chip">
+      <span class="ct-chip__icon" aria-hidden="true">
+        <span class="ct-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        </span>
+      </span>
+      <span class="ct-chip__label">Add filter</span>
+    </span>
+    <span class="ct-chip ct-chip--lg">
+      <span class="ct-chip__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <span class="ct-chip__label">Search</span>
+    </span>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    const chips = canvasElement.querySelectorAll('.ct-chip');
+    expect(chips).toHaveLength(3);
+
+    for (const chip of chips) {
+      const slot = chip.querySelector('.ct-chip__icon');
+      const label = chip.querySelector('.ct-chip__label');
+      const composed = slot.querySelector('.ct-icon, svg');
+
+      // The composed icon adopts the slot box instead of keeping --icon-md.
+      const slotBox = slot.getBoundingClientRect();
+      const composedBox = composed.getBoundingClientRect();
+      expect(composedBox.width).toBeLessThanOrEqual(slotBox.width + 0.5);
+      expect(composedBox.height).toBeLessThanOrEqual(slotBox.height + 0.5);
+
+      // No overlap: the icon ends before the label starts.
+      const labelBox = label.getBoundingClientRect();
+      expect(composedBox.right).toBeLessThanOrEqual(labelBox.left + 0.5);
+    }
+  },
+};
+
 export const EdgeCases = {
   render: () => `
   <div class="ct-stack" style="--ct-stack-space: var(--space-6);">

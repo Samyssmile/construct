@@ -159,7 +159,7 @@ function renderPanel() {
 function renderFooter() {
   return `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); font-size: var(--font-size-xs); color: var(--color-text-muted);">
-      <span>Construct Design System v2.1.2</span>
+      <span>Construct Design System v2.1.3</span>
       <span>Built with accessibility in mind</span>
     </div>`;
 }

@@ -206,6 +206,18 @@
   color: var(--ct-chip-accent);
 }
 
+/* Composed icon content adopts the slot's size. `.ct-icon` carries a
+   fixed `--icon-md` box of its own; inside the 1em chip slot that box
+   would overflow onto the label (an intermediate wrapper — e.g. a
+   framework component host — keeps `width: 100%` from resolving, so
+   the slot size is restated in em). */
+.ct-chip__icon .ct-icon,
+.ct-chip__icon > svg {
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+}
+
 /* ── Built-in semantic icons via CSS mask-image ──────────────── */
 
 .ct-chip__icon--info,
