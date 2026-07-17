@@ -126,6 +126,72 @@ export const WithIcons = {
   },
 };
 
+export const ComposedCustomIcon = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Custom icons composed into the `.ct-button__icon` slot — as a `.ct-icon` (possibly wrapped by a framework component host) or a bare `<svg>` — adopt the slot’s size via `--ct-button-icon-size` instead of overflowing. Context overrides like `.ct-modal__header` flow through to the composed content.',
+      },
+    },
+  },
+  render: () => `
+  <div class="ct-cluster" style="align-items: center;">
+    <button class="ct-button ct-button--secondary">
+      <span class="ct-button__icon" aria-hidden="true">
+        <span style="display: inline-flex; align-items: center; justify-content: center;">
+          <span class="ct-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </span>
+        </span>
+      </span>
+      Copy ID
+    </button>
+    <button class="ct-button ct-button--ghost">
+      <span class="ct-button__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      Search
+    </button>
+    <div class="ct-modal__header" style="border: none; padding: 0;">
+      <button class="ct-button ct-button--ghost ct-button--icon" aria-label="Close">
+        <span class="ct-button__icon" aria-hidden="true">
+          <span class="ct-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+`,
+  play: async ({ canvasElement }) => {
+    const slots = canvasElement.querySelectorAll('.ct-button__icon');
+    expect(slots).toHaveLength(3);
+
+    for (const slot of slots) {
+      const composed = slot.querySelector('.ct-icon, svg');
+      const slotBox = slot.getBoundingClientRect();
+      const composedBox = composed.getBoundingClientRect();
+
+      // The composed icon adopts the slot box instead of keeping --icon-md.
+      expect(composedBox.width).toBeLessThanOrEqual(slotBox.width + 0.5);
+      expect(composedBox.height).toBeLessThanOrEqual(slotBox.height + 0.5);
+
+      // Fully contained: nothing bleeds toward the button label.
+      expect(composedBox.right).toBeLessThanOrEqual(slotBox.right + 0.5);
+      expect(composedBox.left).toBeGreaterThanOrEqual(slotBox.left - 0.5);
+    }
+
+    // Default slot is --icon-sm (16px)…
+    const defaultSlot = slots[0].getBoundingClientRect();
+    expect(defaultSlot.width).toBeCloseTo(16, 0);
+
+    // …while the modal-header context override (--icon-lg, 24px) flows
+    // through to the composed icon via --ct-button-icon-size.
+    const modalIcon = slots[2].querySelector('.ct-icon').getBoundingClientRect();
+    expect(modalIcon.width).toBeCloseTo(24, 0);
+  },
+};
+
 export const Loading = {
   parameters: {
     docs: {

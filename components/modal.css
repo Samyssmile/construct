@@ -46,8 +46,7 @@
 }
 
 .ct-modal__header .ct-button__icon {
-  width: var(--icon-lg);
-  height: var(--icon-lg);
+  --ct-button-icon-size: var(--icon-lg);
 }
 
 .ct-modal__body {
@@ -63,6 +62,13 @@
   justify-content: flex-end;
   gap: var(--space-3);
   flex-wrap: wrap;
+}
+
+/* Wrappers hide the footer via the `hidden` attribute when no content is
+   projected; `display: flex` above would otherwise override the UA
+   stylesheet's `[hidden]` rule and leave a ghost divider behind. */
+.ct-modal__footer[hidden] {
+  display: none;
 }
 
 /* Modal size variants */

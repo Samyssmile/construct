@@ -5,6 +5,24 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.4] - 2026-07-17
+
+### Fixed
+
+- Button: custom icons composed into the `.ct-button__icon` slot (a `.ct-icon` — also when
+  wrapped by a framework component host — or a bare `<svg>`) now adopt the slot's size,
+  completing the composition contract introduced for the chip slot in 2.1.3. The slot size
+  is expressed as `--ct-button-icon-size` (default `--icon-sm`); context overrides like the
+  modal header's larger close icon set the custom property and flow through to composed
+  content. Consumers that override `.ct-button__icon` dimensions directly should switch to
+  `--ct-button-icon-size` so composed icons follow.
+- Card & Modal: header/footer slots hidden via the `hidden` attribute (e.g. by framework
+  wrappers when no content is projected) now actually disappear. The slots' `display: flex`
+  previously overrode the UA stylesheet's `[hidden] { display: none }`, so every card
+  without footer content rendered a ghost divider plus spacing at the bottom edge (same
+  for modals without a footer). New guards: `.ct-card__header[hidden]`,
+  `.ct-card__footer[hidden]`, `.ct-modal__footer[hidden]`.
+
 ## [2.1.3] - 2026-07-17
 
 ### Fixed

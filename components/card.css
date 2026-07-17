@@ -46,6 +46,15 @@
   border-top: var(--border-thin) solid var(--color-border-subtle);
 }
 
+/* Wrappers hide empty slots via the `hidden` attribute (e.g. framework
+   integrations when no content is projected). The display rules above would
+   otherwise override the UA stylesheet's `[hidden] { display: none }` and
+   leave a ghost divider + spacing behind. */
+.ct-card__header[hidden],
+.ct-card__footer[hidden] {
+  display: none;
+}
+
 :is(a, button, [role='button'], [role='link']).ct-card--interactive {
   cursor: pointer;
   transition: box-shadow var(--duration-fast) var(--easing-standard),

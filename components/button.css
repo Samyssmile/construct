@@ -186,11 +186,27 @@
 }
 
 .ct-button__icon {
-  width: var(--icon-sm);
-  height: var(--icon-sm);
+  --ct-button-icon-size: var(--icon-sm);
+
+  width: var(--ct-button-icon-size);
+  height: var(--ct-button-icon-size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Composed icon content adopts the slot's size — same composition
+   contract as `.ct-chip__icon` (see chip.css). `.ct-icon` carries a
+   fixed `--icon-md` box of its own that would overflow the slot; the
+   size is restated via the slot's custom property because `width: 100%`
+   does not resolve through an intermediate framework component host.
+   Context overrides (e.g. `.ct-modal__header`) set
+   `--ct-button-icon-size` and flow through to composed content. */
+.ct-button__icon .ct-icon,
+.ct-button__icon > svg {
+  width: var(--ct-button-icon-size);
+  height: var(--ct-button-icon-size);
+  font-size: var(--ct-button-icon-size);
 }
 
 @media (pointer: coarse) {
