@@ -255,6 +255,9 @@
    forced colors keeps the borders via CanvasText automatically. */
 .ct-datum-frame {
   position: relative;
+  /* Keep the datum's internal paint layer above local figure chrome without
+     allowing it to participate in the consumer's global overlay stack. */
+  isolation: isolate;
 }
 
 .ct-datum-frame::before {
@@ -267,6 +270,9 @@
   border-block-start: var(--border-medium) solid var(--color-brand-accent);
   border-inline-start: var(--border-medium) solid var(--color-brand-accent);
   border-start-start-radius: var(--radius-lg);
+  /* Code-frame headers commonly occupy layer 1. The datum must remain visible
+     above that chrome because it is the frame's registration mark. */
+  z-index: 2;
   pointer-events: none;
 }
 

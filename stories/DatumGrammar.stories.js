@@ -98,13 +98,22 @@ export const DatumFrame = {
     },
   },
   render: () => `
-  <figure class="ct-datum-frame" style="max-width: 440px; margin: 0; padding: var(--space-6); background: var(--color-bg-surface); border-radius: var(--radius-lg);">
-    <pre style="margin: 0; overflow-x: auto;"><code style="font-family: var(--font-family-mono); font-size: var(--font-size-sm);">--component-datum-edge-width: 3px;
+  <figure class="ct-datum-frame" style="max-width: 440px; margin: 0; overflow: clip; background: var(--color-bg-surface); border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-lg);">
+    <figcaption data-frame-chrome style="position: relative; z-index: 1; margin: 0; padding: var(--space-3) var(--space-6); background: var(--color-bg-muted); border-block-end: var(--border-thin) solid var(--color-border-default); font-size: var(--font-size-sm);">Code sample</figcaption>
+    <pre style="margin: 0; padding: var(--space-6); overflow-x: auto;"><code style="font-family: var(--font-family-mono); font-size: var(--font-size-sm);">--component-datum-edge-width: 3px;
 --component-datum-origin-length: 48px;</code></pre>
-    <figcaption class="ct-muted" style="margin-top: var(--space-4); font-size: var(--font-size-sm);">Fig. 01 — Die Kante ist tokenisiert.</figcaption>
   </figure>`,
   play: async ({ canvasElement }) => {
-    expect(canvasElement.querySelector('.ct-datum-frame')).toBeInTheDocument();
+    const frame = canvasElement.querySelector('.ct-datum-frame');
+    const chrome = frame.querySelector('[data-frame-chrome]');
+    const frameStyle = getComputedStyle(frame);
+    const markStyle = getComputedStyle(frame, '::before');
+    const chromeStyle = getComputedStyle(chrome);
+
+    expect(frame).toBeInTheDocument();
+    expect(frameStyle.isolation).toBe('isolate');
+    expect(Number(markStyle.zIndex)).toBeGreaterThan(Number(chromeStyle.zIndex));
+    expect(markStyle.borderStartStartRadius).toBe(frameStyle.borderStartStartRadius);
   },
 };
 
@@ -179,7 +188,11 @@ export const CardRegistrationMark = {
   </div>`,
   play: async ({ canvasElement }) => {
     const card = canvasElement.querySelector('.ct-card--datum');
+    const markStyle = getComputedStyle(card, '::before');
+
     expect(card).toBeInTheDocument();
+    expect(getComputedStyle(card).isolation).toBe('isolate');
+    expect(Number(markStyle.zIndex)).toBeGreaterThan(1);
   },
 };
 

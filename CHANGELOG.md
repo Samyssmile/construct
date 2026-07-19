@@ -5,6 +5,17 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.6] - 2026-07-19
+
+### Fixed
+
+- Datum registration marks on `ct-datum-frame` and `ct-card--datum` now establish an
+  isolated component stacking context and render above component-local chrome. Opaque,
+  positioned headers (such as terminal captions at `z-index: 1`) previously painted over
+  the orange corner even though `ct-datum-frame` explicitly supports code samples. The
+  mark remains contained below global overlays, and the Storybook contract now covers a
+  clipped, rounded code frame with layered chrome.
+
 ## [2.1.5] - 2026-07-17
 
 ### Fixed

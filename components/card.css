@@ -110,6 +110,9 @@
    Both are opt-in and additive — they don't change default cards. */
 .ct-card--datum {
   position: relative;
+  /* Contain the datum's internal paint layer so it cannot overlap adjacent
+     cards or consumer overlays. */
+  isolation: isolate;
 }
 
 .ct-card--datum::before {
@@ -122,6 +125,8 @@
   border-block-start: var(--border-medium) solid var(--color-brand-accent);
   border-inline-start: var(--border-medium) solid var(--color-brand-accent);
   border-start-start-radius: var(--radius-lg);
+  /* Card chrome may use layer 1; the registration mark stays above it. */
+  z-index: 2;
   pointer-events: none;
 }
 
