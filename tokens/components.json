@@ -33,6 +33,12 @@
     "shadow": "{shadow.card}",
     "shadowHover": "{shadow.dropdown}"
   },
+  "frame": {
+    "background": "{color.background.elevated}",
+    "border": "{color.border.subtle}",
+    "radius": "{radius.card}",
+    "shadow": "{shadow.card}"
+  },
   "status": {
     "gap": "{space.2}",
     "fontSize": "{font.size.sm}",

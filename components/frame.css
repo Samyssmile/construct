@@ -1,0 +1,33 @@
+/* ── Frame ────────────────────────────────────────────────────
+   An owned surface for content whose inner chrome must clip to a
+   rounded boundary while an optional datum mark remains aligned
+   with the outer border. Keep clipping on .ct-frame__content;
+   clipping the outer frame would cut the registration mark back
+   to the padding edge. */
+.ct-frame {
+  --ct-frame-background: var(--component-frame-background);
+  --ct-frame-border: var(--component-frame-border);
+  --ct-frame-border-width: var(--border-thin);
+  --ct-frame-radius: var(--component-frame-radius);
+  --ct-frame-shadow: var(--component-frame-shadow);
+
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  overflow: visible;
+  border: var(--ct-frame-border-width) solid var(--ct-frame-border);
+  border-radius: var(--ct-frame-radius);
+  background: var(--ct-frame-background);
+  box-shadow: var(--ct-frame-shadow);
+}
+
+.ct-frame__content {
+  min-width: 0;
+  overflow: clip;
+  border-radius: max(0px, calc(var(--ct-frame-radius) - var(--ct-frame-border-width)));
+}
+
+.ct-frame--datum {
+  --ct-datum-mark-inset: calc(-1 * var(--ct-frame-border-width));
+  --ct-datum-mark-radius: var(--ct-frame-radius);
+}

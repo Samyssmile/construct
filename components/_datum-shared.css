@@ -1,0 +1,23 @@
+/* Shared datum registration-mark paint contract.
+   Owning components provide the inset and radius through local properties so
+   every standalone entry renders the same geometry without copying it. */
+:is(.ct-datum-frame, .ct-card--datum, .ct-frame--datum)::before {
+  content: '';
+  position: absolute;
+  inset-block-start: var(--ct-datum-mark-inset);
+  inset-inline-start: var(--ct-datum-mark-inset);
+  width: var(--component-datum-mark-size);
+  height: var(--component-datum-mark-size);
+  border-block-start: var(--border-medium) solid var(--color-brand-accent);
+  border-inline-start: var(--border-medium) solid var(--color-brand-accent);
+  border-start-start-radius: var(--ct-datum-mark-radius);
+  z-index: 2;
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  :is(.ct-datum-frame, .ct-card--datum, .ct-frame--datum)::before {
+    border-block-start-color: CanvasText;
+    border-inline-start-color: CanvasText;
+  }
+}

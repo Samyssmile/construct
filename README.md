@@ -25,7 +25,7 @@
 Construct is a **single source of design truth** that ships portable CSS, validated design tokens, and opt-in headless behaviors — without framework lock-in. Style values live once as JSON tokens and compile to CSS custom properties, JSON, and typed TypeScript exports. Components use `ct-` classes and ARIA/data state, so they work anywhere that renders DOM.
 
 - 🎯 **Three token layers** — primitive, semantic, and component contracts with schema and contrast validation
-- 🧩 **Framework-agnostic** — 49 standalone component style entries and a full CSS bundle
+- 🧩 **Framework-agnostic** — 50 standalone component style entries and a full CSS bundle
 - ♿ **Accessibility first** — WCAG 2.2 AA targets, tested ARIA/keyboard controllers, focus and forced-colors contracts
 - ⚙️ **Optional behavior** — nine typed, dependency-free ESM controllers; importing CSS never starts JavaScript
 - 🎨 **Three themes** — `light`, `dark`, `high-contrast`, with system-preference fallback
@@ -133,7 +133,7 @@ npx construct-theme --theme node_modules/@neuravision/construct/themes/walnut.th
 
 ## 🧩 Components
 
-49 standalone component style entries, documented and accessibility-tested in [Storybook](https://samyssmile.github.io/construct/).
+50 standalone component style entries, documented and accessibility-tested in [Storybook](https://samyssmile.github.io/construct/).
 
 | Category | Components |
 |----------|-----------|
@@ -143,7 +143,7 @@ npx construct-theme --theme node_modules/@neuravision/construct/themes/walnut.th
 | **Feedback** | Alert · Banner · Toast · Spinner · Skeleton · Progress Bar · Status · Empty State |
 | **Navigation** | Navbar · Breadcrumbs · Tabs · Pagination · Sidebar · Skip Link |
 | **Overlays** | Modal · Drawer · Popover · Dropdown |
-| **Layout** | Card · Divider · Accordion · App Shell (V1 compatibility + V2 recommended) |
+| **Layout** | Card · Frame · Divider · Accordion · App Shell (V1 compatibility + V2 recommended) |
 
 → [**Explore every component in the live Storybook**](https://samyssmile.github.io/construct/)
 

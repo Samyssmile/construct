@@ -3,7 +3,7 @@
   "$id": "https://neuravision.dev/construct/schemas/components.schema.json",
   "title": "Construct component token contract",
   "type": "object",
-  "required": ["button", "control", "card", "status", "metric", "meter", "datum"],
+  "required": ["button", "control", "card", "frame", "status", "metric", "meter", "datum"],
   "additionalProperties": false,
   "properties": {
     "button": {
@@ -53,6 +53,17 @@
         "padding": { "$ref": "#/$defs/token" },
         "shadow": { "$ref": "#/$defs/token" },
         "shadowHover": { "$ref": "#/$defs/token" }
+      }
+    },
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["background", "border", "radius", "shadow"],
+      "properties": {
+        "background": { "$ref": "#/$defs/token" },
+        "border": { "$ref": "#/$defs/token" },
+        "radius": { "$ref": "#/$defs/token" },
+        "shadow": { "$ref": "#/$defs/token" }
       }
     },
     "status": {

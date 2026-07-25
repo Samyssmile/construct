@@ -13,6 +13,15 @@ const indexCss = fs.readFileSync(path.join(componentsDir, 'index.css'), 'utf8');
 const componentFiles = [...indexCss.matchAll(importPattern)]
   .map((match) => match[1])
   .filter((file) => !file.startsWith('_'));
+const dependenciesBeforeComponent = {
+  'card.css': ['_datum-shared.css'],
+  'datum.css': ['_datum-shared.css'],
+  'frame.css': ['_datum-shared.css'],
+};
+const dependenciesAfterComponent = {
+  'app-shell.css': ['_shell-shared.css'],
+  'app-shell-v2.css': ['_shell-shared.css'],
+};
 
 if (new Set(componentFiles).size !== componentFiles.length) {
   throw new Error('components/index.css imports a public component more than once.');
@@ -35,10 +44,13 @@ const expected = new Map([
     [
       generatedHeader,
       "@import './core.css';",
+      ...(dependenciesBeforeComponent[file] ?? []).map(
+        (dependency) => `@import '../components/${dependency}';`
+      ),
       `@import '../components/${file}';`,
-      ...(['app-shell.css', 'app-shell-v2.css'].includes(file)
-        ? ["@import '../components/_shell-shared.css';"]
-        : []),
+      ...(dependenciesAfterComponent[file] ?? []).map(
+        (dependency) => `@import '../components/${dependency}';`
+      ),
       '',
     ].join('\n'),
   ]),

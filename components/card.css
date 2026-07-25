@@ -109,25 +109,13 @@
    state carries the same orange leading edge as list and sidebar items.
    Both are opt-in and additive — they don't change default cards. */
 .ct-card--datum {
+  --ct-datum-mark-inset: calc(-1 * var(--border-thin));
+  --ct-datum-mark-radius: var(--ct-card-radius);
+
   position: relative;
   /* Contain the datum's internal paint layer so it cannot overlap adjacent
      cards or consumer overlays. */
   isolation: isolate;
-}
-
-.ct-card--datum::before {
-  content: '';
-  position: absolute;
-  inset-block-start: calc(-1 * var(--border-thin));
-  inset-inline-start: calc(-1 * var(--border-thin));
-  width: var(--component-datum-mark-size);
-  height: var(--component-datum-mark-size);
-  border-block-start: var(--border-medium) solid var(--color-brand-accent);
-  border-inline-start: var(--border-medium) solid var(--color-brand-accent);
-  border-start-start-radius: var(--radius-lg);
-  /* Card chrome may use layer 1; the registration mark stays above it. */
-  z-index: 2;
-  pointer-events: none;
 }
 
 .ct-card--active,

@@ -174,14 +174,18 @@ activation. Use the native `disabled` attribute whenever the HTML element suppor
 ## The Datum
 
 Construct's signature is one orange reference line — "the datum" — that marks what is focused, active,
-current, or the reference value. The grammar lives in `components/datum.css` (eyebrow, scale, frame,
-metrics), in active leading edges (list, sidebar, card, table rows), in the tab indicator and sorted
-column, and in the chart reference line. Its dimensions are component tokens (`--component-datum-*`).
+current, or the reference value. The grammar lives in `components/datum.css` (eyebrow, scale,
+metrics), in the owned `ct-frame--datum` surface, in active leading edges (list, sidebar, card, table
+rows), in the tab indicator and sorted column, and in the chart reference line. Its dimensions are
+component tokens (`--component-datum-*`).
 
 Rules that keep the signature strong and accessible:
 
 - **One datum per surface.** Orange marks exactly one thing per view region — the current, active, or
   reference element. Never let two orange edges compete; if everything is highlighted, nothing is.
+- **The component that owns the border owns the datum.** Use `ct-frame ct-frame--datum` for framed
+  exhibits and put clipping on `ct-frame__content`. Do not attach overflow clipping to the outer frame
+  or rebuild the corner in product CSS.
 - **Orange is never text.** Labels and values stay on `--color-text-*` neutrals; orange is carried by
   non-text ticks, edges, rules, and lines.
 - **Edges are `--color-brand-accent`; meaning-bearing fills are `--color-brand-accent-strong`**

@@ -5,6 +5,25 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-07-25
+
+### Added
+
+- Frame: new `ct-frame` owned-surface component for figures, code samples, media, and callouts.
+  `ct-frame__content` owns rounded clipping while the outer frame owns its border, radius,
+  background, shadow, and optional `ct-frame--datum` registration mark. This separation keeps
+  the orange and neutral contours pixel-aligned without relying on browser-specific overflow
+  behavior. Frame surface decisions are exposed as `component.frame.*` tokens and local
+  `--ct-frame-*` override hooks, with a dedicated standalone `components/frame.css` entry.
+
+### Changed
+
+- Datum registration-mark painting is centralized in one internal component contract shared by
+  `ct-frame--datum`, `ct-card--datum`, and the low-level `ct-datum-frame` decorator. Card marks now
+  follow the card's effective radius instead of the global radius directly. Bordered or clipped
+  exhibits should use the owned Frame anatomy; `ct-datum-frame` remains available for custom,
+  unclipped compositions.
+
 ## [2.1.6] - 2026-07-19
 
 ### Fixed

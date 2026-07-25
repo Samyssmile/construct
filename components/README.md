@@ -214,6 +214,27 @@ Content card with header, body, and footer:
 </section>
 ```
 
+### Frame
+
+Owned surface for figures, code samples, media, and callouts. The outer frame owns its border,
+radius, background, shadow, and optional datum mark. Put content that must be clipped inside
+`ct-frame__content`; never clip the outer frame, because that would cut the mark back to the
+padding edge.
+
+```html
+<div class="ct-frame ct-frame--datum">
+  <figure class="ct-frame__content" aria-labelledby="sample-caption">
+    <figcaption id="sample-caption">Code sample</figcaption>
+    <pre><code>npm install @neuravision/construct</code></pre>
+  </figure>
+</div>
+```
+
+Use any semantically appropriate outer element (`aside`, `section`, or `div`). When the framed
+content is a figure, use the `figure` itself as `ct-frame__content` so its `figcaption` remains a
+valid direct child. Customize the owned surface with `--ct-frame-background`, `--ct-frame-border`,
+`--ct-frame-border-width`, `--ct-frame-radius`, and `--ct-frame-shadow`.
+
 ### Datum Primitives
 
 The reference-line grammar from `components/datum.css` — Construct's orange signature as reusable
@@ -230,7 +251,9 @@ structural vocabulary. All dimensions are component tokens (`--component-datum-*
   aria-label="Upload" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
   style="--ct-datum-scale-progress: 60%;"></div>
 
-<figure class="ct-datum-frame">…</figure>
+<div class="ct-frame ct-frame--datum">
+  <figure class="ct-frame__content">…</figure>
+</div>
 ```
 
 - `ct-eyebrow` - Mono kicker with a leading datum tick; `--numbered` adds drawing-set sheet numbers
@@ -238,7 +261,8 @@ structural vocabulary. All dimensions are component tokens (`--component-datum-*
 - `ct-datum-scale` - Measured ruler line; decorative, mark it `role="presentation"`
 - `ct-datum-scale--progress` - The origin segment reports progress via `--ct-datum-scale-progress`;
   pair with `role="progressbar"` and `aria-value*`
-- `ct-datum-frame` - Corner registration mark for figures, code samples, and media
+- `ct-frame--datum` - Preferred owned frame for bordered or clipped figures, code samples, and media
+- `ct-datum-frame` - Low-level corner decorator for custom surfaces that do not clip the decorated element
 - `ct-card--datum`, active leading edges, the tab indicator, sorted table columns, and
   `ct-chart__datum-line` speak the same grammar
 

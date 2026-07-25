@@ -5,6 +5,7 @@
 @import './_keyframes.css';
 
 /* Structural grammar — the "datum" reference-line vocabulary */
+@import './_datum-shared.css';
 @import './datum.css';
 
 /* Components */
@@ -17,6 +18,7 @@
 @import './checkbox.css';
 @import './switch.css';
 @import './card.css';
+@import './frame.css';
 @import './table.css';
 @import './modal.css';
 @import './toast.css';
