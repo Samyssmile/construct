@@ -2,15 +2,24 @@
    Owning components provide the inset and radius through local properties so
    every standalone entry renders the same geometry without copying it. */
 :is(.ct-datum-frame, .ct-card--datum, .ct-frame--datum)::before {
+  /* The mark absorbs the owner's hairline instead of merely covering it. Both
+     arcs are antialiased at the same radius when they share one outer edge, so
+     the owner's border blends through outside the mark — invisible on a subtle
+     border, a grey double line on a strong one. Starting the mark one hairline
+     further out, and growing its stroke and radius by the same amount, makes
+     the corner read as a single orange mark. The inner edge, the mark's length,
+     and the datum's own stroke weight are unchanged. */
+  --ct-datum-mark-bleed: var(--border-thin);
+
   content: '';
   position: absolute;
-  inset-block-start: var(--ct-datum-mark-inset);
-  inset-inline-start: var(--ct-datum-mark-inset);
-  width: var(--component-datum-mark-size);
-  height: var(--component-datum-mark-size);
-  border-block-start: var(--border-medium) solid var(--color-brand-accent);
-  border-inline-start: var(--border-medium) solid var(--color-brand-accent);
-  border-start-start-radius: var(--ct-datum-mark-radius);
+  inset-block-start: calc(var(--ct-datum-mark-inset) - var(--ct-datum-mark-bleed));
+  inset-inline-start: calc(var(--ct-datum-mark-inset) - var(--ct-datum-mark-bleed));
+  width: calc(var(--component-datum-mark-size) + var(--ct-datum-mark-bleed));
+  height: calc(var(--component-datum-mark-size) + var(--ct-datum-mark-bleed));
+  border-block-start: calc(var(--border-medium) + var(--ct-datum-mark-bleed)) solid var(--color-brand-accent);
+  border-inline-start: calc(var(--border-medium) + var(--ct-datum-mark-bleed)) solid var(--color-brand-accent);
+  border-start-start-radius: calc(var(--ct-datum-mark-radius) + var(--ct-datum-mark-bleed));
   z-index: 2;
   pointer-events: none;
 }

@@ -185,7 +185,9 @@ Rules that keep the signature strong and accessible:
   reference element. Never let two orange edges compete; if everything is highlighted, nothing is.
 - **The component that owns the border owns the datum.** Use `ct-frame ct-frame--datum` for framed
   exhibits and put clipping on `ct-frame__content`. Do not attach overflow clipping to the outer frame
-  or rebuild the corner in product CSS.
+  or rebuild the corner in product CSS. The registration mark absorbs the owner's hairline — it is
+  painted one border width further out — so the corner reads as one orange arc on strong borders as
+  well as subtle ones.
 - **Orange is never text.** Labels and values stay on `--color-text-*` neutrals; orange is carried by
   non-text ticks, edges, rules, and lines.
 - **Edges are `--color-brand-accent`; meaning-bearing fills are `--color-brand-accent-strong`**

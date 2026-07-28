@@ -59,9 +59,24 @@ export const Datum = {
     expect(Number.parseFloat(contentStyle.borderStartStartRadius)).toBe(
       Number.parseFloat(frameStyle.borderStartStartRadius) - frameBorderWidth
     );
-    expect(Number.parseFloat(markStyle.insetBlockStart)).toBe(-frameBorderWidth);
-    expect(Number.parseFloat(markStyle.insetInlineStart)).toBe(-frameBorderWidth);
-    expect(markStyle.borderStartStartRadius).toBe(frameStyle.borderStartStartRadius);
+    // The mark absorbs the frame's hairline: it starts one bleed outside the
+    // frame's outer edge and carries the matching radius, so no antialiased
+    // border edge survives outside the orange corner.
+    const bleed = Number.parseFloat(markStyle.getPropertyValue('--ct-datum-mark-bleed'));
+
+    expect(bleed).toBeGreaterThan(0);
+    expect(Number.parseFloat(markStyle.insetBlockStart)).toBe(-frameBorderWidth - bleed);
+    expect(Number.parseFloat(markStyle.insetInlineStart)).toBe(-frameBorderWidth - bleed);
+    expect(Number.parseFloat(markStyle.borderStartStartRadius)).toBe(
+      Number.parseFloat(frameStyle.borderStartStartRadius) + bleed
+    );
+    // Growing the stroke by the same bleed keeps the mark's inner edge — and so
+    // the datum's weight over the surface — exactly where it was.
+    const markStroke = Number.parseFloat(markStyle.borderBlockStartWidth);
+    const innerEdgeFromFrameEdge =
+      Number.parseFloat(markStyle.insetBlockStart) + markStroke + frameBorderWidth;
+
+    expect(innerEdgeFromFrameEdge).toBe(markStroke - bleed);
     expect(Number(markStyle.zIndex)).toBeGreaterThan(Number(chromeStyle.zIndex));
   },
 };

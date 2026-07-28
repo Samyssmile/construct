@@ -119,7 +119,12 @@ export const DatumFrame = {
     expect(frameStyle.overflow).toBe('visible');
     expect(contentStyle.overflow).toBe('clip');
     expect(Number(markStyle.zIndex)).toBeGreaterThan(Number(chromeStyle.zIndex));
-    expect(markStyle.borderStartStartRadius).toBe(frameStyle.borderStartStartRadius);
+    // The mark carries the frame's radius plus the hairline it absorbs, so the
+    // orange corner and the neutral contour stay one continuous arc.
+    expect(Number.parseFloat(markStyle.borderStartStartRadius)).toBe(
+      Number.parseFloat(frameStyle.borderStartStartRadius) +
+        Number.parseFloat(markStyle.getPropertyValue('--ct-datum-mark-bleed'))
+    );
   },
 };
 
