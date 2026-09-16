@@ -5,16 +5,6 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Fixed
-
-- Storybook Docs prose link styles no longer override links inside embedded story
-  previews. Aperture action labels retain their theme colors instead of becoming
-  dark text on dark buttons with orange underlines. Regression coverage checks
-  primary, quiet and wordmark links at rest, on hover and with keyboard focus in
-  all four theme scopes.
-
 ## [2.3.0] - 2026-09-16
 
 ### Added
@@ -26,14 +16,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cobalt and graphite primitives, Aperture semantic/component tokens, and contrast gates
   for all four built-in theme scopes. The look includes reduced-motion, forced-colors,
   keyboard-focus and touch-target support.
-- A standalone interactive preview, integration guide, visual polish review, and ten
+- A standalone interactive preview, integration guide, visual polish review, and eleven
   Storybook examples covering the complete look, compact layout, themes, primitives,
-  monochrome composition, long action labels and right-to-left layout.
+  monochrome composition, long action labels, Docs link isolation and right-to-left layout.
 - Aperture's seam and offset carry through shared action hit areas, heading lines,
   composition rules and staggered specimens, with a larger closing wordmark.
 
 ### Fixed
 
+- Storybook Docs prose link styles no longer override links inside embedded story
+  previews. Aperture action labels retain their theme colors instead of becoming
+  dark text on dark buttons with orange underlines. Regression coverage checks
+  primary, quiet and wordmark links at rest, on hover and with keyboard focus in
+  all four theme scopes.
 - Aperture action labels retain their contrast on hover and active links. Logical
   action padding preserves the seam in RTL; disclosure arrows and keyboard focus
   follow the signature's direction and palette.
