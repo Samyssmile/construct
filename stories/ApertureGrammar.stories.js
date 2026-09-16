@@ -173,6 +173,56 @@ export const ThemeMatrix = {
     </div>`,
 };
 
+export const DocsPreview = {
+  name: 'Integration / Docs link isolation',
+  // Exercise the same prose/preview boundary that Storybook's Docs page uses.
+  render: () => `
+    <div class="sbdocs-content" style="padding: 24px;">
+      <p><a href="#aperture-docs-detail">Documentation link</a></p>
+      <div class="sb-unstyled">
+        <section class="ct-aperture" data-theme="light" style="padding: 24px;">
+          <h1 class="ct-aperture-heading" id="aperture-docs-detail">Inside the preview.</h1>
+          <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px;">
+            <a class="ct-aperture-action" href="#aperture-docs-detail">Explore Aperture ${apertureArrow}</a>
+            <a class="ct-aperture-action ct-aperture-action--quiet" href="#aperture-docs-detail">Read more ${apertureArrow}</a>
+            <a class="ct-aperture-wordmark" href="#aperture-docs-detail">${apertureMark}aperture</a>
+          </div>
+        </section>
+      </div>
+    </div>`,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const root = canvasElement.querySelector('.ct-aperture');
+    const primary = canvas.getByRole('link', { name: 'Explore Aperture' });
+    const quiet = canvas.getByRole('link', { name: 'Read more' });
+    const wordmark = canvas.getByRole('link', { name: 'aperture', exact: true });
+    const prose = canvas.getByRole('link', { name: 'Documentation link' });
+    expect(getComputedStyle(prose).textDecorationLine).toBe('underline');
+
+    try {
+      for (const theme of ['light', 'dark', 'high-contrast', 'high-contrast-dark']) {
+        root.dataset.theme = theme;
+        const paper = getComputedStyle(root).backgroundColor;
+        const ink = getComputedStyle(root).color;
+        for (const [link, color] of [[primary, paper], [quiet, ink], [wordmark, ink]]) {
+          expect(getComputedStyle(link).color).toBe(color);
+          expect(getComputedStyle(link).textDecorationLine).toBe('none');
+          await userEvent.hover(link);
+          expect(getComputedStyle(link).color).toBe(color);
+          expect(getComputedStyle(link).textDecorationColor).toBe(color);
+          await userEvent.unhover(link);
+          link.focus();
+          expect(getComputedStyle(link).color).toBe(color);
+          expect(Number.parseFloat(getComputedStyle(link).outlineWidth)).toBeGreaterThanOrEqual(3);
+          link.blur();
+        }
+      }
+    } finally {
+      root.dataset.theme = 'light';
+    }
+  },
+};
+
 export const RightToLeft = {
   render: () => {
     const root = createApertureShowcase();

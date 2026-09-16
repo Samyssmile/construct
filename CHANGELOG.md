@@ -5,6 +5,16 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Storybook Docs prose link styles no longer override links inside embedded story
+  previews. Aperture action labels retain their theme colors instead of becoming
+  dark text on dark buttons with orange underlines. Regression coverage checks
+  primary, quiet and wordmark links at rest, on hover and with keyboard focus in
+  all four theme scopes.
+
 ## [2.3.0] - 2026-09-16
 
 ### Added

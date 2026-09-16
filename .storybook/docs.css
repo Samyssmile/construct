@@ -92,7 +92,9 @@
   margin-bottom: var(--space-3);
 }
 
-.sbdocs-content a {
+/* Inline Docs previews use .sb-unstyled. Prose link colors must not cross
+   that boundary and override the component's label or hover contrast. */
+.sbdocs-content a:not(:where(.sb-unstyled *)) {
   color: var(--color-text-primary);
   text-decoration: underline;
   text-decoration-color: var(--color-brand-accent);
@@ -101,7 +103,7 @@
   font-weight: 600;
 }
 
-.sbdocs-content a:hover {
+.sbdocs-content a:not(:where(.sb-unstyled *)):hover {
   color: var(--color-brand-accent-active);
 }
 
