@@ -260,6 +260,15 @@ try {
   );
 
   const validateOnlyOutput = path.join(temporaryDirectory, 'validate-only-output');
+  const illegibleAperturePath = writeTheme('illegible-aperture', {
+    name: 'illegible-aperture',
+    components: { aperture: { onAccent: '{color.aperture.accent}' } },
+  });
+  assert.throws(
+    () => buildTokens(optionsFor(illegibleAperturePath, { validateOnly: true })),
+    /aperture text on accent/
+  );
+
   buildTokens(optionsFor(validThemePath, {
     outDir: validateOnlyOutput,
     validateOnly: true,

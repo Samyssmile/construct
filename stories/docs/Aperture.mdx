@@ -1,0 +1,91 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Patterns/Aperture Integration" tags={['!autodocs']} />
+
+# Aperture
+
+Aperture is an opt-in signature introduced in Construct 2.3. Its split oval,
+eight-percent seam and vertical offset repeat through heading lines, actions and
+composition rules. Oversized grotesk type, paper, ink and a single cobalt field
+establish the hierarchy. Choose one signature for a composition: Datum's measured
+orange accents or Aperture's open seam and displaced forms.
+
+[Explore the full look](?path=/story/patterns-aperture-grammar--showcase) ·
+[Monochrome](?path=/story/patterns-aperture-grammar--monochrome) ·
+[Four theme scopes](?path=/story/patterns-aperture-grammar--theme-matrix)
+
+## Import and opt in
+
+```css
+@import '@neuravision/construct/foundations.css';
+@import '@neuravision/construct/components/aperture.css';
+```
+
+The full component bundle includes Aperture too. The root follows its parent theme
+unless you set `data-theme="light"`, `dark`, `high-contrast` or `high-contrast-dark`.
+The signature uses local Arial/Helvetica/sans-serif fallbacks; no hosted font or
+image service is required.
+
+```html
+<section class="ct-aperture" aria-labelledby="work-title">
+  <p class="ct-aperture-label">A new perspective</p>
+  <h2 class="ct-aperture-heading" id="work-title">
+    <span class="ct-aperture-line">Room for</span>
+    <span class="ct-aperture-line">character.</span>
+  </h2>
+  <div class="ct-aperture-rule" aria-hidden="true"></div>
+  <a class="ct-aperture-action" href="/work">
+    Explore the work
+    <span class="ct-aperture-action__icon" aria-hidden="true">↗</span>
+  </a>
+</section>
+```
+
+## Public vocabulary
+
+| Class | Role |
+| --- | --- |
+| `ct-aperture-mark` | Decorative split oval; hide with `aria-hidden="true"` |
+| `ct-aperture-wordmark` | Mark and name on one line |
+| `ct-aperture-label` | Small uppercase section label |
+| `ct-aperture-display` / `ct-aperture-heading` | Fluid headline and section-heading scales |
+| `ct-aperture-line` | Heading span; later lines step out by 0.24em in the reading direction |
+| `ct-aperture-rule` | Decorative interrupted rule; hide with `aria-hidden="true"` |
+| `ct-aperture-poster` | Figure containing `__art` and `__caption`; optional `__title` |
+| `ct-aperture-action` / `ct-aperture-action--quiet` | Shared native action with a displaced `__icon` disc |
+| `ct-aperture-panel` | Restrained supporting surface |
+| `ct-aperture-choices` / `ct-aperture-choice` | Fieldset and labels wrapping native radios |
+| `ct-aperture-disclosure` | Native `details` with `summary` |
+
+## Keep the signature usable
+
+Use one native link or button for the entire action. Text, seam and arrow share the
+same clickable area and keyboard focus. The disc is decorative, never a second
+button. Use `disabled` for unavailable buttons, and supply real link destinations.
+Long labels wrap; the [long-label specimen](?path=/story/patterns-aperture-grammar--action-reflow)
+demonstrates the compact layout.
+
+Keep heading spans within one heading element, with whitespace between them. Use
+the display scale for short headlines and the heading scale for longer text. Split
+rules are decorative and do not replace semantic section markup.
+
+The radio choices and disclosure use browser-native keyboard interaction. The
+signature primitives require no JavaScript; application theme switching is owned
+by the consumer. Reduced motion keeps the arrow stationary, and forced colors
+preserves the silhouette and control boundaries with system colors.
+
+## Tokens and composition
+
+Colors resolve from cobalt/graphite primitives through `color.aperture.*` semantic
+roles to `aperture.*` component tokens. Edit token sources and run `npm run build`.
+Set the local `--ct-aperture-mark-size` hook to a CSS length or percentage to resize
+the entire mark; preserve the halves' proportions.
+
+The shared page in `examples/aperture/showcase.css` demonstrates composition, while
+`components/aperture.css` defines the reusable primitives. The standalone
+`aperture.demo.html` uses the same showcase as Storybook. Serve it over HTTP so the
+example's theme-switching module can load.
+
+Storybook covers the full composition, all built-in themes, compact containers,
+monochrome, long action labels and RTL. Automated contrast and accessibility checks
+support review; they do not establish complete conformance for a consuming page.

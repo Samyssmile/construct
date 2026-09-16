@@ -6,7 +6,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Theming
 
-Construct ships three built-in colour themes — **light**, **dark**, and **high-contrast** — all controlled through a single `data-theme` HTML attribute and backed by CSS custom properties.
+Construct ships four built-in colour theme scopes — **light**, **dark**, **high-contrast**, and **high-contrast-dark** — all controlled through a single `data-theme` HTML attribute and backed by CSS custom properties.
 
 ---
 
@@ -50,6 +50,7 @@ Set `data-theme` on the `<html>` element to apply a theme globally:
 <html data-theme="light">   <!-- default -->
 <html data-theme="dark">
 <html data-theme="high-contrast">
+<html data-theme="high-contrast-dark">
 ```
 
 ### Scoped theme
@@ -73,6 +74,7 @@ Set `data-theme` on any container to theme only that section — useful for side
 | `light` | Light backgrounds, dark text (default) |
 | `dark` | Dark backgrounds, light text |
 | `high-contrast` | Maximum contrast for visual accessibility |
+| `high-contrast-dark` | High contrast with dark backgrounds |
 
 ---
 
@@ -131,6 +133,10 @@ if (saved) document.documentElement.setAttribute('data-theme', saved);
 ## Storybook Theme Switcher
 
 In this Storybook, use the **Themes** toolbar at the top of the page to switch between Light, Dark, and High Contrast. The switcher sets `data-theme` on the preview iframe's root element.
+
+The [Aperture theme matrix](?path=/story/patterns-aperture-grammar--theme-matrix)
+shows all four explicit scopes, including High Contrast Dark. Aperture follows the
+parent theme when its `.ct-aperture` root has no explicit `data-theme` attribute.
 
 ---
 

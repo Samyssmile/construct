@@ -1,0 +1,363 @@
+/* Composition for the Aperture specimen. Public primitives live in
+   components/aperture.css; this file contains only page layout. */
+.aperture-demo {
+  inline-size: 100%;
+}
+
+.aperture-demo__page {
+  max-inline-size: 1600px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4.5cqi, 5rem);
+}
+
+.aperture-demo__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  padding-block: var(--space-7);
+}
+
+.aperture-demo__header .ct-aperture-wordmark {
+  font-size: 28px;
+}
+
+.aperture-demo__nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 3cqi, 3rem);
+}
+
+.aperture-demo__link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  color: inherit;
+  font-size: var(--font-size-sm);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.aperture-demo__link:is(:hover, :active) {
+  color: inherit;
+}
+
+.aperture-demo__skip {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: var(--space-6);
+  z-index: 1;
+  padding: var(--space-5);
+  background: var(--component-aperture-paper);
+  color: inherit;
+  transform: translateY(-150%);
+}
+
+.aperture-demo__skip:focus {
+  transform: none;
+}
+
+.aperture-demo__hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 4cqi;
+  padding-block: clamp(2.5rem, 5cqi, 5rem) var(--space-10);
+}
+
+.aperture-demo__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-inline-size: 0;
+  padding-block: var(--space-5) var(--space-4);
+}
+
+.aperture-demo__intro .ct-aperture-display {
+  margin-block: clamp(2.5rem, 4.6cqi, 5rem) clamp(2rem, 3.5cqi, 4rem);
+}
+
+.aperture-demo__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-7);
+}
+
+.aperture-demo__eyebrow span:last-child {
+  color: var(--component-aperture-muted);
+}
+
+.aperture-demo__poster-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.aperture-demo__poster-heading > :last-child {
+  font-size: var(--font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.aperture-demo__description {
+  max-inline-size: 29ch;
+  font-size: clamp(1rem, 0.75rem + 0.7cqi, 1.4rem);
+  line-height: 1.55;
+  color: var(--component-aperture-muted);
+}
+
+.aperture-demo__intro .ct-aperture-action {
+  margin-block-start: var(--space-8);
+}
+
+.aperture-demo__hero .ct-aperture-poster {
+  min-block-size: 540px;
+}
+
+.aperture-demo__hero .ct-aperture-poster__art .ct-aperture-mark {
+  --ct-aperture-mark-size: 86%;
+}
+
+.aperture-demo__edition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+  font-size: var(--font-size-xs);
+}
+
+.aperture-demo__edition span:last-child {
+  color: var(--component-aperture-muted);
+}
+
+.aperture-demo__section {
+  padding-block: clamp(4rem, 8cqi, 8rem);
+  scroll-margin-block-start: var(--space-7);
+}
+
+.aperture-demo__section-head {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: var(--space-9);
+  align-items: end;
+  margin-block-end: var(--space-10);
+}
+
+.aperture-demo__section-head .ct-aperture-label {
+  margin-block-end: var(--space-7);
+}
+
+.aperture-demo__section-head > p {
+  max-inline-size: 36ch;
+  color: var(--component-aperture-muted);
+}
+
+.aperture-demo__specimens {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.aperture-demo__specimen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-inline-size: 0;
+}
+
+.aperture-demo__specimen:nth-child(2) {
+  margin-block-start: var(--space-8);
+}
+
+.aperture-demo__specimen:nth-child(3) {
+  margin-block-start: var(--space-10);
+}
+
+.aperture-demo__specimen h3 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  font-size: var(--font-size-xl);
+  letter-spacing: -0.035em;
+}
+
+.aperture-demo__index {
+  color: var(--component-aperture-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.aperture-demo__specimen p {
+  margin-block-start: var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--component-aperture-muted);
+}
+
+.aperture-demo__sample {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 260px;
+  padding: var(--space-10) var(--space-6) var(--space-6);
+  border: 1px solid var(--component-aperture-border);
+  border-radius: var(--component-aperture-panel-radius);
+}
+
+.aperture-demo__sample-label {
+  position: absolute;
+  inset-block-start: var(--space-5);
+  inset-inline: var(--space-6);
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.aperture-demo__sample--mark {
+  color: var(--component-aperture-ink);
+  background: var(--component-aperture-surface);
+}
+
+.aperture-demo__marks {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: clamp(1.5rem, 12cqi, 3rem);
+  inline-size: 100%;
+}
+
+.aperture-demo__sample--mark .ct-aperture-mark:first-child {
+  --ct-aperture-mark-size: clamp(80px, 40cqi, 120px);
+}
+
+.aperture-demo__sample--mark .ct-aperture-mark:last-child {
+  --ct-aperture-mark-size: 32px;
+}
+
+.aperture-demo__sample--type {
+  justify-content: start;
+  color: var(--component-aperture-paper);
+  background: var(--component-aperture-ink);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.07em;
+  line-height: 1;
+}
+
+.aperture-demo__sample--type > div {
+  font-size: clamp(2rem, 20cqi, 5.5rem);
+}
+
+.aperture-demo__sample--action {
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.aperture-demo__note {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  align-items: start;
+  gap: clamp(2rem, 6cqi, 6rem);
+  padding-block: var(--space-8) clamp(4rem, 8cqi, 8rem);
+  scroll-margin-block-start: var(--space-7);
+}
+
+.aperture-demo__note .ct-aperture-label {
+  margin-block-end: var(--space-6);
+}
+
+.aperture-demo__footer {
+  padding-block-end: var(--space-7);
+  font-size: var(--font-size-xs);
+}
+
+.aperture-demo__signoff {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-7);
+  padding-block: clamp(2.5rem, 5cqi, 5rem);
+}
+
+.aperture-demo__signature {
+  --ct-aperture-mark-size: 0.8em;
+  gap: 0.2em;
+  font-size: clamp(3.5rem, 10.5cqi, 10rem);
+  letter-spacing: -0.075em;
+}
+
+.aperture-demo__signoff > p {
+  padding-block-end: 0.25em;
+  font-size: clamp(1.25rem, 2.5cqi, 2rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.aperture-demo__colophon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  color: var(--component-aperture-muted);
+}
+
+@container (max-width: 850px) {
+  .aperture-demo__hero,
+  .aperture-demo__section-head,
+  .aperture-demo__note {
+    grid-template-columns: 1fr;
+  }
+
+  .aperture-demo__hero {
+    gap: var(--space-9);
+  }
+
+  .aperture-demo__intro .ct-aperture-display {
+    font-size: clamp(3.25rem, 0.75rem + 15cqi, 8.5rem);
+  }
+
+  .aperture-demo__hero .ct-aperture-poster {
+    min-block-size: 0;
+  }
+
+  .aperture-demo__hero .ct-aperture-poster__art .ct-aperture-mark {
+    --ct-aperture-mark-size: min(65%, 320px);
+  }
+
+  .aperture-demo__specimens {
+    grid-template-columns: 1fr;
+    gap: var(--space-9);
+  }
+
+  .aperture-demo__specimen:nth-child(n) {
+    margin-block-start: 0;
+  }
+
+  .aperture-demo__sample {
+    min-block-size: 240px;
+  }
+
+  .aperture-demo__sample--type > div {
+    font-size: clamp(2rem, 20cqi, 6rem);
+  }
+}
+
+@media (forced-colors: active) {
+  .aperture-demo__sample {
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
+  }
+}

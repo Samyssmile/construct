@@ -27,6 +27,14 @@ describe('coarse-pointer target contract', () => {
   beforeEach(async () => {
     document.body.innerHTML = `
       <main id="fixture">
+        <section class="ct-aperture">
+          <button class="ct-aperture-action" type="button">Explore <span class="ct-aperture-action__icon" aria-hidden="true">↗</span></button>
+          <fieldset class="ct-aperture-choices">
+            <legend>Appearance</legend>
+            <label class="ct-aperture-choice"><input type="radio" name="aperture-theme" checked>Light</label>
+          </fieldset>
+          <details class="ct-aperture-disclosure"><summary>Details</summary><p>Content</p></details>
+        </section>
         <button class="ct-button" type="button">Continue</button>
         <button class="ct-button ct-button--sm" type="button">Save</button>
 
@@ -97,6 +105,9 @@ describe('coarse-pointer target contract', () => {
       '.ct-button--sm',
       '.ct-pagination__link',
       '.ct-chip--interactive',
+      '.ct-aperture-action',
+      '.ct-aperture-choice',
+      '.ct-aperture-disclosure summary',
     ]) {
       const element = document.querySelector(selector);
       expect(element).not.toBeNull();

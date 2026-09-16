@@ -20,10 +20,25 @@
         "overlay",
         "focus",
         "avatarSeed",
-        "chartSeries"
+        "chartSeries",
+        "aperture"
       ],
       "additionalProperties": false,
       "properties": {
+        "aperture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["paper", "surface", "ink", "muted", "accent", "onAccent", "border"],
+          "properties": {
+            "paper": { "$ref": "#/$defs/token" },
+            "surface": { "$ref": "#/$defs/token" },
+            "ink": { "$ref": "#/$defs/token" },
+            "muted": { "$ref": "#/$defs/token" },
+            "accent": { "$ref": "#/$defs/token" },
+            "onAccent": { "$ref": "#/$defs/token" },
+            "border": { "$ref": "#/$defs/token" }
+          }
+        },
         "brand": {
           "type": "object",
           "additionalProperties": false,
@@ -124,8 +139,9 @@
         "family": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["heading", "body", "code"],
+          "required": ["heading", "body", "code", "aperture"],
           "properties": {
+            "aperture": { "$ref": "#/$defs/token" },
             "heading": { "$ref": "#/$defs/token" },
             "body": { "$ref": "#/$defs/token" },
             "code": { "$ref": "#/$defs/token" }

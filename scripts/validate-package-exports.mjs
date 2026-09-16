@@ -151,10 +151,11 @@ for (const [name, target] of Object.entries(manifest.bin ?? {})) {
     continue;
   }
   const source = fs.readFileSync(executablePath, 'utf8');
-  if (!source.startsWith('#!/usr/bin/env node\n')) {
+  if (!/^#!\/usr\/bin\/env node\r?\n/.test(source)) {
     failures.push(`bin ${name} target ${target} has no Node shebang`);
   }
-  if ((fs.statSync(executablePath).mode & 0o111) === 0) {
+  // Windows checkout permissions do not expose POSIX executable bits.
+  if (process.platform !== 'win32' && (fs.statSync(executablePath).mode & 0o111) === 0) {
     failures.push(`bin ${name} target ${target} is not executable`);
   }
 }

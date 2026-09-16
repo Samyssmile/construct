@@ -3,9 +3,27 @@
   "$id": "https://neuravision.dev/construct/schemas/components.schema.json",
   "title": "Construct component token contract",
   "type": "object",
-  "required": ["button", "control", "card", "frame", "status", "metric", "meter", "datum"],
+  "required": ["button", "control", "card", "frame", "status", "metric", "meter", "datum", "aperture"],
   "additionalProperties": false,
   "properties": {
+    "aperture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paper", "surface", "ink", "muted", "accent", "onAccent", "border", "fontFamily", "markSize", "actionHeight", "panelRadius"],
+      "properties": {
+        "paper": { "$ref": "#/$defs/token" },
+        "surface": { "$ref": "#/$defs/token" },
+        "ink": { "$ref": "#/$defs/token" },
+        "muted": { "$ref": "#/$defs/token" },
+        "accent": { "$ref": "#/$defs/token" },
+        "onAccent": { "$ref": "#/$defs/token" },
+        "border": { "$ref": "#/$defs/token" },
+        "fontFamily": { "$ref": "#/$defs/token" },
+        "markSize": { "$ref": "#/$defs/token" },
+        "actionHeight": { "$ref": "#/$defs/token" },
+        "panelRadius": { "$ref": "#/$defs/token" }
+      }
+    },
     "button": {
       "type": "object",
       "additionalProperties": false,

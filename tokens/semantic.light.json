@@ -1,5 +1,14 @@
 {
   "color": {
+    "aperture": {
+      "paper": "{color.graphite.50}",
+      "surface": "{color.graphite.100}",
+      "ink": "{color.graphite.950}",
+      "muted": "{color.graphite.600}",
+      "accent": "{color.cobalt.500}",
+      "onAccent": "{color.stone.0}",
+      "border": "{color.graphite.400}"
+    },
     "brand": {
       "primary": "{color.stone.950}",
       "primaryHover": "{color.stone.800}",
@@ -95,6 +104,7 @@
   },
   "font": {
     "family": {
+      "aperture": "{font.family.grotesk}",
       "heading": "{font.family.brand}",
       "body": "{font.family.text}",
       "code": "{font.family.mono}"

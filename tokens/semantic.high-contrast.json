@@ -1,5 +1,14 @@
 {
   "color": {
+    "aperture": {
+      "paper": "{color.stone.0}",
+      "surface": "{color.stone.0}",
+      "ink": "{color.graphite.950}",
+      "muted": "{color.graphite.950}",
+      "accent": "{color.cobalt.700}",
+      "onAccent": "{color.stone.0}",
+      "border": "{color.graphite.950}"
+    },
     "brand": {
       "primary": "{color.stone.950}",
       "primaryHover": "{color.stone.900}",

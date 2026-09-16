@@ -25,11 +25,12 @@
 Construct is a **single source of design truth** that ships portable CSS, validated design tokens, and opt-in headless behaviors — without framework lock-in. Style values live once as JSON tokens and compile to CSS custom properties, JSON, and typed TypeScript exports. Components use `ct-` classes and ARIA/data state, so they work anywhere that renders DOM.
 
 - 🎯 **Three token layers** — primitive, semantic, and component contracts with schema and contrast validation
-- 🧩 **Framework-agnostic** — 50 standalone component style entries and a full CSS bundle
+- 🧩 **Framework-agnostic** — 51 standalone component style entries and a full CSS bundle
 - ♿ **Accessibility first** — WCAG 2.2 AA targets, tested ARIA/keyboard controllers, focus and forced-colors contracts
 - ⚙️ **Optional behavior** — nine typed, dependency-free ESM controllers; importing CSS never starts JavaScript
-- 🎨 **Three themes** — `light`, `dark`, `high-contrast`, with system-preference fallback
+- 🎨 **Four theme scopes** — `light`, `dark`, `high-contrast`, `high-contrast-dark`, with system-preference fallback
 - 📐 **The "datum" grammar** — a signature orange reference line for focus / active / current state
+- ◐ **Aperture** — an additional signature look with a split oval, cobalt surfaces and expressive typography; [usage and preview](docs/aperture.md)
 - 🛠️ **Typed tokens** — autocomplete-friendly TypeScript exports
 - 📖 **Interactive docs** — every component documented & a11y-tested in [Storybook](https://samyssmile.github.io/construct/)
 
@@ -133,7 +134,7 @@ npx construct-theme --theme node_modules/@neuravision/construct/themes/walnut.th
 
 ## 🧩 Components
 
-50 standalone component style entries, documented and accessibility-tested in [Storybook](https://samyssmile.github.io/construct/).
+51 standalone component style entries, documented and accessibility-tested in [Storybook](https://samyssmile.github.io/construct/).
 
 | Category | Components |
 |----------|-----------|
@@ -216,6 +217,7 @@ npm test                 # run behavior, Storybook, touch & forced-colors browse
 
 - [Design Guidelines](docs/guidelines.md) — do's, don'ts & accessibility patterns
 - [Component Usage](components/README.md) — HTML patterns and examples
+- [Aperture](docs/aperture.md) — split-oval signature, integration and theme examples
 - [Token Reference](tokens/README.md) — token structure & naming
 - [Architecture](docs/architecture.md) — package layers and ownership boundaries
 - [Headless Behaviors](docs/behaviors.md) — typed controllers and lifecycle

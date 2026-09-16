@@ -5,6 +5,32 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-09-16
+
+### Added
+
+- Aperture: an additional opt-in signature look with a split oval, proportional offset,
+  cobalt surfaces and oversized grotesk typography. Reusable marks, wordmarks, posters,
+  offset heading lines, split rules, actions, panels, native radio choices and disclosures ship through the full component
+  bundle and the standalone `components/aperture.css` entry. Datum Grammar remains available.
+- Cobalt and graphite primitives, Aperture semantic/component tokens, and contrast gates
+  for all four built-in theme scopes. The look includes reduced-motion, forced-colors,
+  keyboard-focus and touch-target support.
+- A standalone interactive preview, integration guide, visual polish review, and ten
+  Storybook examples covering the complete look, compact layout, themes, primitives,
+  monochrome composition, long action labels and right-to-left layout.
+- Aperture's seam and offset carry through shared action hit areas, heading lines,
+  composition rules and staggered specimens, with a larger closing wordmark.
+
+### Fixed
+
+- Aperture action labels retain their contrast on hover and active links. Logical
+  action padding preserves the seam in RTL; disclosure arrows and keyboard focus
+  follow the signature's direction and palette.
+- Package export validation accepts Windows CRLF shebangs and checks POSIX executable
+  permission bits only on platforms that expose them.
+- Updated the locked development dependencies `nanoid` and `postcss` to patched versions.
+
 ## [2.2.1] - 2026-07-28
 
 ### Fixed

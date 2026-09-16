@@ -1,0 +1,441 @@
+/* Aperture: a split oval, a deliberate offset, generous negative space.
+   Opt in with .ct-aperture. No global theme or Datum overrides.
+   Marks are decorative: render them with aria-hidden="true". */
+.ct-aperture {
+  container-type: inline-size;
+  background: var(--component-aperture-paper);
+  color: var(--component-aperture-ink);
+  font-family: var(--component-aperture-font-family);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  accent-color: var(--component-aperture-ink);
+}
+
+.ct-aperture,
+.ct-aperture *,
+.ct-aperture *::before,
+.ct-aperture *::after {
+  box-sizing: border-box;
+}
+
+.ct-aperture :is(h1, h2, h3, p, figure) {
+  margin: 0;
+  font-family: inherit;
+}
+
+.ct-aperture :is(a, button, summary, input, [tabindex]):focus-visible,
+.ct-aperture-action:focus-visible,
+.ct-aperture-choice:has(input:focus-visible) {
+  outline: 3px solid currentColor;
+  outline-offset: 5px;
+}
+
+.ct-aperture ::selection {
+  color: var(--component-aperture-paper);
+  background: var(--component-aperture-ink);
+}
+
+/* The same two half-ovals work at wordmark, control, and poster scale.
+   Percentages keep the seam and vertical offset proportional at every size. */
+.ct-aperture-mark {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  inline-size: var(--ct-aperture-mark-size, var(--component-aperture-mark-size));
+  aspect-ratio: 1;
+  color: inherit;
+}
+
+.ct-aperture-mark::before,
+.ct-aperture-mark::after {
+  content: '';
+  position: absolute;
+  inline-size: 46%;
+  block-size: 84%;
+  background: currentColor;
+}
+
+.ct-aperture-mark::before {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  border-start-start-radius: 100% 50%;
+  border-end-start-radius: 100% 50%;
+}
+
+.ct-aperture-mark::after {
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  border-start-end-radius: 100% 50%;
+  border-end-end-radius: 100% 50%;
+}
+
+.ct-aperture-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: inherit;
+  font-family: var(--component-aperture-font-family);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.065em;
+  line-height: 1;
+  text-decoration: none;
+  min-block-size: var(--component-aperture-action-height);
+}
+
+.ct-aperture-wordmark:is(:hover, :active) {
+  color: inherit;
+}
+
+.ct-aperture-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.ct-aperture .ct-aperture-display {
+  font-size: clamp(3.25rem, 1rem + 9.6cqi, 10.5rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.075em;
+  line-height: 0.91;
+  overflow-wrap: anywhere;
+}
+
+.ct-aperture .ct-aperture-heading {
+  font-size: clamp(2.25rem, 1.5rem + 3.5cqi, 5rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.065em;
+  line-height: 1.02;
+  overflow-wrap: anywhere;
+}
+
+/* A second line steps out of the first line's axis, like the two halves
+   of the mark. Keep the text in normal flow so zoom and wrapping still work. */
+.ct-aperture-line {
+  display: block;
+}
+
+.ct-aperture-line + .ct-aperture-line {
+  margin-inline-start: 0.24em;
+}
+
+/* One interrupted rule, with the same 46 / 8 / 46 proportions as the mark.
+   Decorative only: render with aria-hidden="true". */
+.ct-aperture-rule {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8%;
+  padding-block: 1px 7px;
+  color: var(--component-aperture-border);
+}
+
+.ct-aperture-rule::before,
+.ct-aperture-rule::after {
+  content: '';
+  border-block-start: 1px solid currentColor;
+}
+
+.ct-aperture-rule::after {
+  transform: translateY(6px);
+}
+
+/* The poster is a figure, never a cropped interactive surface. */
+.ct-aperture-poster {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-8);
+  min-inline-size: 0;
+  padding: clamp(1.5rem, 3cqi, 3rem);
+  color: var(--component-aperture-on-accent);
+  background: var(--component-aperture-accent);
+  border-radius: var(--component-aperture-panel-radius);
+}
+
+.ct-aperture-poster__art {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  padding-block: var(--space-7);
+}
+
+.ct-aperture-poster__art .ct-aperture-mark {
+  --ct-aperture-mark-size: 82%;
+}
+
+.ct-aperture-poster__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-5);
+  font-size: var(--font-size-xs);
+}
+
+.ct-aperture-poster__title {
+  font-size: clamp(2rem, 4cqi, 4rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.075em;
+  line-height: 1;
+}
+
+/* The label and disc share one hit area. The open seam and lowered disc
+   carry the mark's offset into actions without splitting keyboard focus. */
+.ct-aperture-action {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  min-block-size: calc(var(--component-aperture-action-height) + 8px);
+  max-inline-size: 100%;
+  padding-block: 0 8px;
+  padding-inline: var(--space-6) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--component-aperture-paper);
+  font-family: var(--component-aperture-font-family);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.4;
+  text-align: start;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.ct-aperture-action:is(:hover, :active) {
+  color: var(--component-aperture-paper);
+}
+
+.ct-aperture-action::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-block: 0 8px;
+  inset-inline: 0 calc(var(--component-aperture-action-height) + 6px);
+  border: 1px solid var(--component-aperture-ink);
+  border-radius: var(--radius-round);
+  background: var(--component-aperture-ink);
+}
+
+.ct-aperture-action__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--component-aperture-action-height);
+  block-size: var(--component-aperture-action-height);
+  border: 1px solid var(--component-aperture-ink);
+  border-radius: 50%;
+  background: var(--component-aperture-ink);
+  color: var(--component-aperture-paper);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-regular);
+  transform: translateY(8px);
+  transition: transform var(--duration-normal) var(--easing-standard);
+}
+
+.ct-aperture-action__icon svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+.ct-aperture-action--quiet,
+.ct-aperture-action--quiet:is(:hover, :active) {
+  color: var(--component-aperture-ink);
+}
+
+.ct-aperture-action--quiet::before,
+.ct-aperture-action--quiet .ct-aperture-action__icon {
+  background: transparent;
+  color: var(--component-aperture-ink);
+}
+
+.ct-aperture-action:focus-visible {
+  outline-color: var(--component-aperture-ink);
+}
+
+.ct-aperture-action:disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+@media (hover: hover) {
+  .ct-aperture-action:where(:not(:disabled)):hover .ct-aperture-action__icon {
+    transform: translateY(0);
+  }
+
+  .ct-aperture-action:where(:not(:disabled)):hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+/* Native radio inputs retain keyboard behavior. The text, inset border and
+   weight identify selection without depending on the accent color. */
+.ct-aperture-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ct-aperture-choice {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-round);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+}
+
+.ct-aperture-choice input,
+.ct-aperture-choices legend {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ct-aperture-choice:has(input:checked) {
+  border-color: currentColor;
+  font-weight: var(--font-weight-bold);
+}
+
+.ct-aperture-panel {
+  min-inline-size: 0;
+  padding: clamp(1.5rem, 3cqi, 3rem);
+  border: 1px solid var(--component-aperture-border);
+  border-radius: var(--component-aperture-panel-radius);
+  background: var(--component-aperture-surface);
+}
+
+.ct-aperture-disclosure {
+  border-block-start: 1px solid var(--component-aperture-border);
+}
+
+.ct-aperture-disclosure:last-child {
+  border-block-end: 1px solid var(--component-aperture-border);
+}
+
+.ct-aperture-disclosure summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  min-block-size: var(--component-aperture-action-height);
+  padding-block: var(--space-6);
+  list-style: none;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.ct-aperture-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.ct-aperture-disclosure summary::after {
+  content: '';
+  flex: none;
+  inline-size: 10px;
+  block-size: 10px;
+  margin-inline-end: var(--space-3);
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.ct-aperture-disclosure[open] summary::after {
+  transform: rotate(225deg);
+}
+
+.ct-aperture-disclosure summary:dir(rtl)::after {
+  transform: rotate(-45deg);
+}
+
+.ct-aperture-disclosure[open] summary:dir(rtl)::after {
+  transform: rotate(135deg);
+}
+
+.ct-aperture-disclosure > :not(summary) {
+  max-inline-size: 60ch;
+  padding-block-end: var(--space-7);
+  color: var(--component-aperture-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-aperture-action__icon {
+    transition: none;
+  }
+
+  .ct-aperture-action:hover .ct-aperture-action__icon {
+    transform: translateY(8px);
+  }
+}
+
+@media (forced-colors: active) {
+  .ct-aperture {
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .ct-aperture-mark::before,
+  .ct-aperture-mark::after {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .ct-aperture-poster,
+  .ct-aperture-panel {
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+  }
+
+  .ct-aperture-action,
+  .ct-aperture-action:is(:hover, :active),
+  .ct-aperture-action::before,
+  .ct-aperture-action__icon {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .ct-aperture-rule {
+    color: CanvasText;
+  }
+
+  .ct-aperture-action:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .ct-aperture-choice:has(input:checked) {
+    border: 2px solid Highlight;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .ct-aperture-action:disabled,
+  .ct-aperture-action:disabled::before,
+  .ct-aperture-action:disabled .ct-aperture-action__icon {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}

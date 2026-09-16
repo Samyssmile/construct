@@ -235,6 +235,38 @@ content is a figure, use the `figure` itself as `ct-frame__content` so its `figc
 valid direct child. Customize the owned surface with `--ct-frame-background`, `--ct-frame-border`,
 `--ct-frame-border-width`, `--ct-frame-radius`, and `--ct-frame-shadow`.
 
+### Aperture Signature Look
+
+An additional opt-in grammar: split ovals, a proportional offset, cobalt and paper,
+and oversized grotesk typography. Import `@neuravision/construct/components/aperture.css`
+or use the full component bundle. Wrap the composition in `.ct-aperture`.
+
+```html
+<section class="ct-aperture">
+  <h2 class="ct-aperture-heading">Room for character.</h2>
+  <figure class="ct-aperture-poster">
+    <div class="ct-aperture-poster__art">
+      <span class="ct-aperture-mark" aria-hidden="true"></span>
+    </div>
+    <figcaption class="ct-aperture-poster__title">Open by design.</figcaption>
+  </figure>
+</section>
+```
+
+Primitives: `ct-aperture-mark`, `ct-aperture-wordmark`, `ct-aperture-label`,
+`ct-aperture-display`, `ct-aperture-heading`, `ct-aperture-line`,
+decorative `ct-aperture-rule`, `ct-aperture-poster`,
+`ct-aperture-action` (and `--quiet`), `ct-aperture-panel`, native radio
+`ct-aperture-choices` / `ct-aperture-choice`, and native `ct-aperture-disclosure`.
+
+Action text and its displaced arrow disc remain inside one native link or button;
+the visual seam is part of the same hit area. Put `ct-aperture-line` on spans inside
+one heading to offset later lines, and hide decorative rules with `aria-hidden="true"`.
+
+All colors use `--component-aperture-*` tokens. Mark size can be overridden with
+`--ct-aperture-mark-size`. See [the design and integration guide](../docs/aperture.md)
+and **Patterns → Aperture Grammar** in Storybook.
+
 ### Datum Primitives
 
 The reference-line grammar from `components/datum.css` — Construct's orange signature as reusable

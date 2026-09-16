@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F5F5F0">
+  <meta name="description" content="Aperture – ein zusätzlicher Signature Look für Construct. Kobaltblau, große Typografie und ein versetztes, geteiltes Oval.">
+  <title>Aperture — Construct Signature Look</title>
+  <link rel="stylesheet" href="./foundations.css">
+  <link rel="stylesheet" href="./standalone/aperture.css">
+  <link rel="stylesheet" href="./examples/aperture/showcase.css">
+</head>
+<body>
+  <div id="aperture-preview"></div>
+  <noscript>Diese interaktive Vorschau benötigt JavaScript. Die Aperture-Komponenten selbst bestehen aus HTML und CSS.</noscript>
+  <script type="module">
+    import { createApertureShowcase } from './examples/aperture/showcase.js';
+    document.querySelector('#aperture-preview').replaceWith(createApertureShowcase({ themeControls: true }));
+  </script>
+</body>
+</html>

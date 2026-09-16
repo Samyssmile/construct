@@ -1,5 +1,18 @@
 {
   "color": {
+    "cobalt": {
+      "200": "#A5B4FF",
+      "500": "#2448FF",
+      "700": "#1834CE"
+    },
+    "graphite": {
+      "50": "#F5F5F0",
+      "100": "#E7E8E2",
+      "400": "#95978F",
+      "600": "#585B55",
+      "800": "#282B28",
+      "950": "#111411"
+    },
     "stone": {
       "0": "#FFFFFF",
       "50": "#FAFAF8",
@@ -113,6 +126,7 @@
   },
   "font": {
     "family": {
+      "grotesk": "Arial, Helvetica, sans-serif",
       "brand": "Lato",
       "text": "Lato",
       "mono": "JetBrains Mono"

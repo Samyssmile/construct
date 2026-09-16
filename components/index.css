@@ -8,6 +8,9 @@
 @import './_datum-shared.css';
 @import './datum.css';
 
+/* Aperture — opt-in split-oval signature vocabulary */
+@import './aperture.css';
+
 /* Components */
 @import './button.css';
 @import './field.css';

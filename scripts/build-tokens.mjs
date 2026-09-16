@@ -27,6 +27,20 @@ const schemaPaths = {
 const builtInThemeNames = new Set(['light', 'dark', 'high-contrast', 'high-contrast-dark']);
 
 const defaultContrastPairs = [
+  ...['ink', 'muted'].flatMap((foreground) =>
+    ['paper', 'surface'].map((background) => ({
+      name: `aperture ${foreground} on ${background}`,
+      foreground: `components.aperture.${foreground}`,
+      background: `components.aperture.${background}`,
+      minRatio: 4.5,
+    }))
+  ),
+  {
+    name: 'aperture text on accent',
+    foreground: 'components.aperture.onAccent',
+    background: 'components.aperture.accent',
+    minRatio: 4.5,
+  },
   ...['primary', 'secondary', 'muted'].flatMap((text) =>
     ['canvas', 'surface', 'elevated'].map((background) => ({
       name: `${text} text on ${background}`,
@@ -838,6 +852,7 @@ const validateCssShadow = (value, label) => {
 };
 
 const componentColorPaths = new Set([
+  ...['paper', 'surface', 'ink', 'muted', 'accent', 'onAccent', 'border'].map((name) => `aperture.${name}`),
   'button.background',
   'button.backgroundHover',
   'button.backgroundActive',
@@ -859,6 +874,9 @@ const componentColorPaths = new Set([
 ]);
 
 const componentLengthPaths = new Set([
+  'aperture.markSize',
+  'aperture.actionHeight',
+  'aperture.panelRadius',
   'button.height',
   'button.paddingX',
   'button.fontSize',
@@ -881,6 +899,8 @@ const componentLengthPaths = new Set([
 ]);
 
 const componentPositiveLengthPaths = new Set([
+  'aperture.markSize',
+  'aperture.actionHeight',
   'button.height',
   'button.fontSize',
   'button.lineHeight',

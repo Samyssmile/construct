@@ -1,4 +1,17 @@
 {
+  "aperture": {
+    "paper": "{color.aperture.paper}",
+    "surface": "{color.aperture.surface}",
+    "ink": "{color.aperture.ink}",
+    "muted": "{color.aperture.muted}",
+    "accent": "{color.aperture.accent}",
+    "onAccent": "{color.aperture.onAccent}",
+    "border": "{color.aperture.border}",
+    "fontFamily": "{font.family.aperture}",
+    "markSize": "32px",
+    "actionHeight": "48px",
+    "panelRadius": "{radius.sm}"
+  },
   "button": {
     "background": "{color.brand.primary}",
     "backgroundHover": "{color.brand.primaryHover}",

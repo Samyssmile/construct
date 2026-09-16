@@ -1,6 +1,6 @@
 {
   "name": "@neuravision/construct",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Construct Design System - Accessible, token-based design system for modern web applications",
   "license": "MIT",
   "repository": {
@@ -103,7 +103,10 @@
     "scripts/construct-theme.mjs",
     "scripts/validate-tokens.mjs",
     "docs/*.md",
+    "docs/assets/aperture-review/*.png",
     "examples/react/*",
+    "examples/aperture/*",
+    "aperture.demo.html",
     "CHANGELOG.md",
     "README.md"
   ],

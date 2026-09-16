@@ -15,8 +15,8 @@ Construct gives you:
 - **Design tokens** — a single source of truth for colors, typography, spacing, and more
 - **Framework-agnostic CSS** — works with Angular, React, Svelte, Vue, or vanilla HTML
 - **Accessibility first** — WCAG 2.2 AA targets, ARIA contracts, and optional tested keyboard controllers
-- **Theming** — light, dark, and high-contrast modes with system-preference fallback
-- **49 standalone style entries** — buttons, forms, tables, modals, metrics, status, and more
+- **Theming** — light, dark, high-contrast, and high-contrast-dark scopes with system-preference fallback
+- **51 standalone style entries** — buttons, forms, tables, modals, frames, Aperture, and more
 
 ---
 
@@ -55,6 +55,11 @@ For a smaller style graph, keep foundations imported once and replace the full c
 ```
 
 Self-hosting guidance and the exact shipped weights are documented in `docs/fonts.md`.
+
+For the Aperture signature, import `@neuravision/construct/components/aperture.css`
+after foundations and wrap the composition in `.ct-aperture`. The full bundle also
+includes it. See [Aperture integration](?path=/docs/patterns-aperture-integration--docs)
+for heading lines, split rules, shared action hit areas and theme behavior.
 
 ### 2. Use components in HTML
 

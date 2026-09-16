@@ -13,6 +13,16 @@ describe('forced-colors contract', () => {
   beforeEach(async () => {
     document.body.innerHTML = `
       <main>
+        <section class="ct-aperture">
+          <figure class="ct-aperture-poster"><span class="ct-aperture-mark" aria-hidden="true"></span><figcaption>Aperture</figcaption></figure>
+          <div class="ct-aperture-rule" aria-hidden="true"></div>
+          <button class="ct-aperture-action" type="button">Explore <span class="ct-aperture-action__icon" aria-hidden="true">↗</span></button>
+          <fieldset class="ct-aperture-choices">
+            <legend>Appearance</legend>
+            <label class="ct-aperture-choice"><input type="radio" name="aperture-theme" checked>Light</label>
+            <label class="ct-aperture-choice"><input type="radio" name="aperture-theme">Dark</label>
+          </fieldset>
+        </section>
         <button class="ct-button" type="button">Continue</button>
 
         <span class="ct-status" data-status="connecting" aria-busy="true">
@@ -83,6 +93,27 @@ describe('forced-colors contract', () => {
     const style = getComputedStyle(button);
     expect(style.outlineStyle).not.toBe('none');
     expect(Number.parseFloat(style.outlineWidth)).toBeGreaterThanOrEqual(2);
+  });
+
+  it('preserves Aperture silhouette, actions and selected radio without brand colors', () => {
+    expectVisibleBorder(document.querySelector('.ct-aperture-poster'));
+    const actionSurface = getComputedStyle(document.querySelector('.ct-aperture-action'), '::before');
+    expect(actionSurface.borderTopStyle).toBe('solid');
+    expect(Number.parseFloat(actionSurface.borderTopWidth)).toBeGreaterThanOrEqual(1);
+    expectVisibleBorder(document.querySelector('.ct-aperture-action__icon'));
+    const rule = getComputedStyle(document.querySelector('.ct-aperture-rule'), '::before');
+    expect(rule.borderTopStyle).toBe('solid');
+    expect(rule.borderTopColor).not.toBe(getComputedStyle(document.querySelector('.ct-aperture')).backgroundColor);
+    const mark = getComputedStyle(document.querySelector('.ct-aperture-mark'), '::before');
+    expect(mark.forcedColorAdjust).toBe('none');
+    expect(mark.backgroundColor).not.toBe(getComputedStyle(document.querySelector('.ct-aperture')).backgroundColor);
+    const selected = getComputedStyle(document.querySelector('.ct-aperture-choice:has(input:checked)'));
+    expect(Number.parseFloat(selected.borderTopWidth)).toBeGreaterThanOrEqual(2);
+    expect(selected.textDecorationLine).toContain('underline');
+    const action = document.querySelector('.ct-aperture-action');
+    action.focus();
+    expect(Number.parseFloat(getComputedStyle(action).outlineWidth)).toBeGreaterThanOrEqual(3);
+    expect(getComputedStyle(action).outlineColor).not.toBe(getComputedStyle(document.querySelector('.ct-aperture')).backgroundColor);
   });
 
   it('keeps the switch track visible without shadows', () => {
