@@ -66,22 +66,45 @@ if [[ -n "$PUBLISH_TOKEN" ]]; then
   PUBLISH_TOKEN=""
   chmod 600 "$AUTH_CONFIG"
   export NPM_CONFIG_USERCONFIG="$AUTH_CONFIG"
-  echo "🔐 Using NPM_TOKEN for publish (no OTP required)."
-  npm publish --access public
+  echo "🔐 Using NPM_TOKEN for authentication."
 else
-  OTP=""
+  echo "🔐 Using the local npm login for authentication."
+fi
 
-  prompt_otp() {
-    printf 'Enter your npm OTP: '
-    read -r OTP
-    OTP="${OTP//[[:space:]]/}"
-  }
+# Read a one-time password from the terminal, even when stdin is redirected.
+prompt_otp() {
+  local prompt="$1"
+  local value=""
 
-  prompt_otp
+  if [[ -r /dev/tty ]]; then
+    printf '%s' "$prompt" > /dev/tty
+    read -r value < /dev/tty
+  else
+    printf '%s' "$prompt"
+    read -r value
+  fi
+
+  printf '%s' "${value//[[:space:]]/}"
+}
+
+# Only an automation token publishes without a one-time password. Every other
+# credential still has to satisfy 2FA, so attempt the publish first and ask for
+# a code when — and only when — npm answers EOTP. Anything else is a real
+# failure and must not turn into an OTP prompt.
+PUBLISH_OUTPUT=""
+if PUBLISH_OUTPUT="$(npm publish --access public 2>&1)"; then
+  printf '%s\n' "$PUBLISH_OUTPUT"
+else
+  printf '%s\n' "$PUBLISH_OUTPUT"
+
+  if ! grep -q 'EOTP' <<< "$PUBLISH_OUTPUT"; then
+    echo "❌ Publish failed for a reason other than two-factor authentication." >&2
+    exit 1
+  fi
+
+  OTP="$(prompt_otp 'npm requires a one-time password. Enter your npm OTP: ')"
   while ! npm publish --access public --otp="$OTP"; do
-    printf '⚠️ Publish failed. New OTP (Enter = retry): '
-    read -r NEW_OTP
-    NEW_OTP="${NEW_OTP//[[:space:]]/}"
+    NEW_OTP="$(prompt_otp '⚠️ Publish failed. New OTP (Enter = retry the same code): ')"
     [[ -n "$NEW_OTP" ]] && OTP="$NEW_OTP"
   done
 fi

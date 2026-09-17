@@ -5,6 +5,17 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `publish.sh` asks for a one-time password whenever npm demands one. It assumed that an
+  `NPM_TOKEN` in the environment made 2FA unnecessary, which only holds for automation tokens —
+  with any other credential the publish stopped at `EOTP` and the script had no way to recover,
+  because its OTP prompt sat in the branch without a token. The token now only authenticates,
+  the prompt is shared by both paths, and a failure that is not `EOTP` aborts instead of asking
+  for a code.
+
 ## [2.3.1] - 2026-09-17
 
 ### Fixed
