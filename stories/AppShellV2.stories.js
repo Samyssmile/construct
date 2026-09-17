@@ -176,7 +176,7 @@ function renderPanel() {
 function renderFooter() {
   return `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); font-size: var(--font-size-xs); color: var(--color-text-muted);">
-      <span>Construct v2.3.0</span>
+      <span>Construct v2.3.1</span>
       <span>Floating Canvas Shell</span>
     </div>`;
 }

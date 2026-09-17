@@ -33,6 +33,12 @@
 
 .ct-card__body {
   display: grid;
+  /* Content slots hold whatever the product projects into them. An `auto`
+     track grows to the widest item's max-content size, so a table, a long
+     identifier or a media element pushes the surface past its own width
+     instead of scrolling or wrapping inside it. A clamped track keeps the
+     slot at the surface width and leaves overflow to the item. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
 }
 

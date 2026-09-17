@@ -131,6 +131,9 @@
 .ct-drawer__body {
   padding: var(--space-6) var(--space-7);
   display: grid;
+  /* Clamped content track: projected content wraps or scrolls inside the
+     slot instead of widening the surface. See `.ct-card__body`. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   overflow-y: auto;
   flex: 1;

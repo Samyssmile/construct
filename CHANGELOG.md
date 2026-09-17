@@ -5,6 +5,22 @@ All notable changes to `@neuravision/construct` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-09-17
+
+### Fixed
+
+- Grid content slots clamp their content track. `ct-card__body`, `ct-modal__body`,
+  `ct-drawer__body`, `ct-field`, `ct-alert` and `ct-confirmation` sized their column to the
+  widest item's max-content size, so a table, a long identifier or any wide embedded content
+  stretched the surface past the width it was given instead of wrapping or scrolling inside it.
+  A scroll container one level down — the usual shape when a framework component host sits
+  between the slot and `ct-table-wrap` — was stretched with it and stopped scrolling, which
+  pushed the overflow out to the page or the application shell. Regression coverage measures
+  every slot's track against its own content box at 320px.
+- Documented that `ct-table-wrap` needs `tabindex="0"`, `role="region"` and an accessible name:
+  now that wide tables scroll inside the wrapper again, keyboard users must be able to reach
+  the columns that are out of view.
+
 ## [2.3.0] - 2026-09-16
 
 ### Added

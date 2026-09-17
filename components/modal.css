@@ -52,6 +52,9 @@
 .ct-modal__body {
   padding: var(--space-6) var(--space-7);
   display: grid;
+  /* Clamped content track: projected content wraps or scrolls inside the
+     slot instead of widening the surface. See `.ct-card__body`. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
 }
 
@@ -116,7 +119,9 @@
   --ct-confirmation-icon-color: var(--color-text-secondary);
 
   display: grid;
-  grid-template-columns: auto 1fr;
+  /* The content column is clamped so long words or wide embedded content
+     stay inside the dialog instead of stretching it. */
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-4);
   align-items: start;
 }
@@ -135,6 +140,7 @@
 
 .ct-confirmation__content {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
 }
 

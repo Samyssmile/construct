@@ -214,6 +214,11 @@ Content card with header, body, and footer:
 </section>
 ```
 
+`ct-card__body` clamps its content track, as every grid content slot does (`ct-modal__body`,
+`ct-drawer__body`, `ct-field`, `ct-alert`, `ct-confirmation`). Content wider than the card wraps,
+truncates, or scrolls inside its own scroll container — `ct-table-wrap` for tables — instead of
+stretching the card past the width it was given.
+
 ### Frame
 
 Owned surface for figures, code samples, media, and callouts. The outer frame owns its border,
@@ -306,7 +311,7 @@ One datum per surface — see `docs/guidelines.md`.
 Basic data table with variants:
 
 ```html
-<div class="ct-table-wrap">
+<div class="ct-table-wrap" tabindex="0" role="region" aria-label="Projects">
   <table class="ct-table ct-table--striped">
     <thead>
       <tr>
@@ -330,6 +335,10 @@ Basic data table with variants:
   </table>
 </div>
 ```
+
+`ct-table-wrap` scrolls a table that is wider than its container. A scrollable region needs a
+keyboard tab stop and its own accessible name, so give the wrapper `tabindex="0"`, `role="region"`
+and an `aria-label` — otherwise keyboard users cannot reach the columns that are out of view.
 
 Variants:
 - `ct-table--striped` - Alternating row backgrounds
